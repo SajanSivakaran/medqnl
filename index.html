@@ -248,7 +248,9 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 .layout.app-nav-collapsed .side{display:none}.layout.app-nav-collapsed .main{max-width:none;width:100%}
 .lib-layout.lib-nav-collapsed{grid-template-columns:minmax(0,1fr)!important}.lib-layout.lib-nav-collapsed .lib-side{display:none}.standalone-library .lib-article{min-width:0}
 .note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
-.ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}</style>
+.ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
+.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
+</style>
 </head>
 <body class="gate-locked">
 <div id="accessGate" aria-label="Gesloten bèta toegang">
@@ -751,7 +753,7 @@ function library(){
    for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>"+esc(state.articles[j].title)+"</button>";
  }
  return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>iVTG Bibliotheek</h1><p>Leerstof met zoeken, markeringen, notities en bronnen.</p></div></div>"+
- "<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'><div class='lib-library-tools'><button class='lib-tool' title='Notities' data-open-notes>□</button><button class='lib-tool' title='Instellingen' data-page='settings'>⚙</button></div></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
+ "<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Algemene medische naslagomgeving.</p></div><button class='btn primary' data-page='ivtg-library'>Open iVTG Bibliotheek</button></div><div class='empty'>De inhoud van de medische bibliotheek wordt later opgebouwd met jouw eigen Nederlandse hoofdstukken.</div>")}
@@ -790,16 +792,38 @@ function saveDragOrder(){
 function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
 
 function admin(){
- var secId=(state.ui&&state.ui.selectedSection)||(state.sections[0]&&state.sections[0].id)||"",secs="",arts="",qs="",sources="",feedback="",i,s,a,q,src;
+ var secId=(state.ui&&state.ui.selectedSection)||(state.sections[0]&&state.sections[0].id)||"",secs="",arts="",sources="",feedback="",i,s,a,src;
  for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
- for(i=0;i<state.questions.length;i++){q=state.questions[i];qs+="<div class='manager-item'><div style='min-width:0;flex:1'><div style='font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"+esc(q.title||q.stem||'Onbenoemde vraag')+"</div><div class='small muted'>"+esc(q.subject||'')+" · "+esc(q.topic||'')+"</div></div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn' data-delq='"+esc(q.id)+"'>×</button></div></div>"}
  for(i=0;i<state.sources.length;i++){src=state.sources[i];sources+="<div class='manager-item'><input class='inline-edit' data-source-title='"+esc(src.id)+"' value='"+esc(src.title)+"'><button class='tiny-btn' data-edits='"+esc(src.id)+"'>Bewerken</button><button class='tiny-btn' data-dels='"+esc(src.id)+"'>×</button></div>"}
  var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.questionTitle||fb.questionId||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message||'')+"</div><div class='small muted'>"+esc(fb.date||'')+"</div></div></div>"}
- return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Sleep secties en hoofdstukken. Voeg vragen toe en beheer bronnen, afbeeldingen en feedback.</p></div></div><div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Vragen <button class='tiny-btn' data-editq='new'>+</button></div><div class='manager-list' id='questionList'>"+(qs||"<div class='empty'>Nog geen vragen.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
+ return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer vragen, hoofdstukken, secties en bronnen vanuit één overzicht.</p></div><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div>"+
+ "<div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div>"+
+ "<div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div>"+
+ "<div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span></div>"+
+ "<div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, WGBO, onderwerp...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle onderwerpen</option></select></div>"+
+ "<div class='question-manager-grid' id='adminQuestionList'></div></div>"+
+ "<div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div>"+
+ "<div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>"+
+ "<script>/* no-op placeholder intentionally ignored */</script>");
 }
-
-
+function renderAdminQuestions(){
+ var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject");
+ if(!box)return;
+ var q=normalizeSearch(search?search.value:""),sub=subject?subject.value:"",tokens=q?q.split(" "):[],h="",count=0,subjects=[],i,qq,text,match;
+ for(i=0;i<state.questions.length;i++){qq=state.questions[i];if(qq.subject&&!has(subjects,qq.subject))subjects.push(qq.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ if(subject&&subject.options.length===1)for(i=0;i<subjects.length;i++)subject.add(new Option(subjects[i],subjects[i]));
+ for(i=0;i<state.questions.length;i++){
+   qq=state.questions[i];if(sub&&qq.subject!==sub)continue;text=searchCorpusText(qq);match=!tokens.length;
+   for(var j=0;j<tokens.length;j++)if(text.indexOf(tokens[j])<0){match=false;break}
+   if(!match)continue;
+   count++;
+   h+="<article class='question-admin-card'><div class='question-admin-top'><div><span class='question-chip'>"+esc(qq.subject||"Onbekend")+"</span>"+(qq.topic?" <span class='small muted'>"+esc(qq.topic)+"</span>":"")+"</div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(qq.id)+"'>Bewerken</button><button class='tiny-btn danger' data-delq='"+esc(qq.id)+"'>Verwijderen</button></div></div><h3>"+esc(qq.title||qq.stem||"Onbenoemde vraag")+"</h3><p>"+esc(String(qq.stem||"").slice(0,180))+(String(qq.stem||"").length>180?"…":"")+"</p><div class='small muted'>ABCD · "+esc(qq.difficulty||"")+" </div></article>";
+ }
+ box.innerHTML=h||"<div class='empty'>Geen vragen gevonden.</div>";
+ var counter=document.getElementById("questionCount");if(counter)counter.textContent=count+" "+(count===1?"vraag":"vragen");
+}
 function performanceBenchmark(){
  var b=state.benchmark||{};
  return {
@@ -864,7 +888,40 @@ function performancePreviousPlaceholder(){return previousTests()}
 function previousTests(){return shell("<div class='pagehead'><div><h1>Voorgaande tests</h1></div></div><div class='empty'>Deze pagina is uit de hoofd­navigatie verwijderd.</div>");}
 
 function searchPage(){
- return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek vragen en bibliotheekhoofdstukken.</p></div></div><div class='card'><input id='globalSearch' class='search' placeholder='Zoek bijvoorbeeld naar WGBO, meningitis of fysiologie...'><div id='globalResults' class='search-results'></div></div>");
+ return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek door vragen, hoofdstukken en bronnen.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek bijvoorbeeld naar WGBO, intake, meningitis of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om resultaten te bekijken.</div></div></div>");
+}
+function normalizeSearch(s){
+ return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g," ").replace(/\s+/g," ").trim();
+}
+function searchCorpusText(q){
+ var parts=[q.title,q.stem,q.caseText,q.explanation,q.objective,q.subject,q.topic,(q.options||[]).join(" ")];
+ for(var i=0;i<(q.sourceIds||[]).length;i++){var src=byId(state.sources,q.sourceIds[i]);if(src)parts.push(src.title,src.url)}
+ return normalizeSearch(parts.join(" "));
+}
+function searchGlobal(){
+ var input=document.getElementById("globalSearch"),out=document.getElementById("globalResults");if(!input||!out)return;
+ var query=normalizeSearch(input.value),tokens=query?query.split(" "):[];
+ if(!tokens.length){out.innerHTML="<div class='empty'>Voer een zoekterm in om resultaten te bekijken.</div>";return}
+ var results=[],i,j,text,score,articleText;
+ for(i=0;i<state.questions.length;i++){
+   text=searchCorpusText(state.questions[i]);score=0;
+   for(j=0;j<tokens.length;j++){if(text.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
+   if(score>0)results.push({type:"Vraag",title:state.questions[i].title||state.questions[i].stem||"Vraag",meta:(state.questions[i].subject||"")+" · "+(state.questions[i].topic||""),score:score,action:"data-editq-search='"+state.questions[i].id+"'"});
+ }
+ for(i=0;i<state.articles.length;i++){
+   articleText=normalizeSearch([state.articles[i].title,(state.articles[i].body||[]).join(" "),sectionTitle(state.articles[i].sectionId)].join(" "));
+   score=0;for(j=0;j<tokens.length;j++){if(articleText.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
+   if(score>0)results.push({type:"Hoofdstuk",title:state.articles[i].title,meta:sectionTitle(state.articles[i].sectionId),score:score,action:"data-art-search='"+state.articles[i].id+"'"});
+ }
+ for(i=0;i<state.sources.length;i++){
+   text=normalizeSearch([state.sources[i].title,state.sources[i].url].join(" "));score=0;
+   for(j=0;j<tokens.length;j++){if(text.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
+   if(score>0)results.push({type:"Bron",title:state.sources[i].title,meta:state.sources[i].url,score:score,action:"data-source-search='"+state.sources[i].id+"'"});
+ }
+ results.sort(function(a,b){return b.score-a.score||a.type.localeCompare(b.type,"nl")});
+ var h="";
+ for(i=0;i<results.length&&i<30;i++)h+="<button class='result' "+results[i].action+" style='display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);cursor:pointer'><strong>"+esc(results[i].title)+"</strong><div class='small muted'>"+esc(results[i].type)+" · "+esc(results[i].meta)+"</div></button>";
+ out.innerHTML=h||"<div class='empty'>Geen directe resultaten. Probeer een kortere zoekterm, bijvoorbeeld <strong>WGBO</strong> of <strong>intake</strong>.</div>";
 }
 function noteKeys(){var keys=[],k;for(k in state.notes)if(state.notes.hasOwnProperty(k))keys.push(k);keys.sort(function(a,b){return String(state.notes[a].title||"").localeCompare(String(state.notes[b].title||""),"nl")});return keys}
 function noteRecord(key){return key&&state.notes[key]?state.notes[key]:{title:"Nieuwe notitie",body:""}}
@@ -966,6 +1023,10 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-close-notebook]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-scrollto]"):null;if(el){var se=document.getElementById(el.getAttribute("data-scrollto"));if(se)se.scrollIntoView({behavior:"smooth",block:"start"});return}
  if(t.id==="startqb"){startSession(false);return}
+ if(t.id==="globalSearchBtn"){searchGlobal();return}
+ el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
+ el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
  if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
@@ -1011,6 +1072,8 @@ document.addEventListener("click",function(ev){
 });
 document.addEventListener("input",function(ev){
  if(ev.target.id==="labsearch")renderLabs();
+ if(ev.target.id==="globalSearch"){searchGlobal()}
+ if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"){renderAdminQuestions()}
  if(ev.target.id==="libsearch"){var q=ev.target.value.toLowerCase(),b=document.querySelectorAll(".lib-side button[data-art]"),i;for(i=0;i<b.length;i++)b[i].style.display=b[i].textContent.toLowerCase().indexOf(q)>=0?"block":"none"}
  if(ev.target.id==="drawerLibSearch"){var q2=ev.target.value.toLowerCase(),b2=document.querySelectorAll("[data-drawer-art]"),j;for(j=0;j<b2.length;j++)b2[j].style.display=b2[j].textContent.toLowerCase().indexOf(q2)>=0?"block":"none"}
  if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
@@ -1047,7 +1110,7 @@ function render(){
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
  var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
- root.innerHTML=body;
+ root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
 render();
 })();
