@@ -805,7 +805,7 @@ function admin(){
  "<div class='question-manager-grid' id='adminQuestionList'></div></div>"+
  "<div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div>"+
  "<div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>"+
- "<script>/* no-op placeholder intentionally ignored */</script>");
+ );
 }
 function renderAdminQuestions(){
  var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject");
