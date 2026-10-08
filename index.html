@@ -303,6 +303,19 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 </div>
 <script>
 (function(){
+var __medqnlFatalShown=false;
+function __medqnlShowFatal(err){
+  if(__medqnlFatalShown)return;
+  __medqnlFatalShown=true;
+  var root=document.getElementById("app");
+  if(!root)return;
+  var msg=err&&err.stack?err.stack:(err&&err.message?err.message:String(err||"Onbekende fout"));
+  root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #e1c5c0;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>Er is een technische fout opgetreden na het openen van de website.</p><pre style='white-space:pre-wrap;font-size:12px;background:#fff6f4;padding:12px;border-radius:8px;overflow:auto'>"+String(msg).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</pre></div></div>";
+  try{console.error(err)}catch(e){}
+}
+window.addEventListener("error",function(e){__medqnlShowFatal(e&&e.error?e.error:e)});
+window.addEventListener("unhandledrejection",function(e){__medqnlShowFatal(e&&e.reason?e.reason:e)});
+
 var KEY="medqnl_v15";
 var page="dashboard",session=null,articleId="a1",labCategory="Chemie";
 
@@ -1140,7 +1153,7 @@ function bootMedQNL(){
     }
   }
 }
-window.addEventListener("error",function(e){if(e&&e.error)console.error(e.error)});
+
 bootMedQNL();
 })();
 </script>
