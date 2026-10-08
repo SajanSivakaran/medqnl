@@ -1,6 +1,6 @@
 name: MedQNL syntax check
 on:
-  push:
+  pull_request:
     branches: [ main ]
 jobs:
   check:
