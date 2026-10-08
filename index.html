@@ -154,12 +154,12 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 
 
 .ico,.nav .ico,.subnav .ico{width:20px;height:20px;display:inline-block;vertical-align:-5px;stroke-width:1.8}
-.nav-search-icon{width:24px!important;height:24px!important;vertical-align:-7px!important;margin-right:4px!important}
+.nav-search-icon{width:24px!important;height:24px!important;vertical-align:-7px!important;margin-right:4px!important}.note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}.app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
 .layout.app-nav-collapsed .side{width:0;padding-left:0;padding-right:0;overflow:visible}
-.layout.app-nav-collapsed .side>*{display:none}.layout.app-nav-collapsed .side>.app-nav-toggle{display:flex!important}
+.layout.app-nav-collapsed .side>*{display:none}.layout.app-nav-collapsed .main{max-width:none}.layout.app-nav-collapsed .side>.app-nav-toggle{display:none!important}
 .note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
 .app-nav-toggle{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:28px;height:56px;border:1px solid #31536d;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;z-index:120;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:2px 0 10px rgba(0,0,0,.12)}
-.app-nav-toggle-floating{position:fixed;left:0;right:auto;top:110px;transform:none;border-radius:0 9px 9px 0}
+.app-nav-toggle-floating{display:none}
 .lib-layout.lib-nav-collapsed .lib-side{display:none}
 .lib-layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:0;min-height:calc(100vh - 170px);background:var(--card);border:1px solid var(--line);border-radius:0;overflow:hidden}
 .lib-side{width:auto;background:#f3f6f9;border:0;border-right:1px solid var(--line);border-radius:0;padding:0;height:calc(100vh - 170px);position:sticky;top:84px;max-height:none;overflow:auto}
@@ -243,7 +243,7 @@ body.dark #accessGate{background:#0e1822}
 body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-shadow:none}
 body.dark #accessGate h1,#accessGate.dark h1,body.dark #accessGate label{color:#f1f5f8}
 body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
-</style>
+.layout.app-nav-collapsed .main{width:100%;max-width:none}.app-nav-global-toggle{flex:none}.standalone-library{width:100%!important;min-width:0;display:grid!important;grid-template-columns:248px minmax(0,1fr)!important;align-items:stretch}.standalone-library.lib-nav-collapsed{grid-template-columns:minmax(0,1fr)!important}.standalone-library .lib-side{min-width:0}.standalone-library .lib-article{min-width:0;width:auto}.standalone-library .lib-library-head{min-width:0;overflow:hidden}.standalone-library .lib-library-search{min-width:0;width:auto;flex:1}.ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1080px;margin:0 auto}.ivtg-welcome{padding:12px 4px 24px}.ivtg-welcome .small{letter-spacing:1.1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:190px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
 </head>
 <body class="gate-locked">
 <div id="accessGate" aria-label="Gesloten bèta toegang">
@@ -635,23 +635,9 @@ function stats(){var n=0,c=0,k;for(k in state.answers)if(state.answers.hasOwnPro
 function srcFoot(ids){var h="",i,s;ids=ids||[];for(i=0;i<ids.length;i++){s=byId(state.sources,ids[i]);if(s)h+="<div><span class='sup'>["+(i+1)+"]</span> "+esc(s.title)+" — <a href='"+esc(s.url)+"' target='_blank'>bron openen</a></div>"}return h}
 function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+"' data-page='"+id+"'>"+svg+" "+label+"</button>"}
 function shell(body){
- var s=stats();
- var progressOpen = page.indexOf("performance")===0;
- if(!state.ui)state.ui={};
- var appNavCollapsed=!!state.ui.appNavCollapsed;
- var qtree="<div class='qnavtree'>"+
- "<button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button>"+
- "<div style='padding-left:12px'>"+
- "<button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button>"+
- "<button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button>"+
- "</div>"+
- "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
- "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
- "</div>";
- return "<div class='top'><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><button class='app-nav-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>"+(appNavCollapsed?"›":"‹")+"</button><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
- "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
- "</aside><main class='main'>"+(appNavCollapsed?"<button class='app-nav-toggle app-nav-toggle-floating' data-toggle-appnav title='Navigatie tonen'>›</button>":"")+body+"</main></div>";
+ var s=stats();var progressOpen=page.indexOf("performance")===0;if(!state.ui)state.ui={};var appNavCollapsed=!!state.ui.appNavCollapsed;
+ var qtree="<div class='qnavtree'><button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button><div style='padding-left:12px'><button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button><button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button></div><button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button><button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button></div>";
+ return "<div class='top'><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>☰</button><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+"</aside><main class='main'>"+body+"</main></div>";
 }
 function welcomeMessage(){
  var name=state.name||"Student";
@@ -678,11 +664,12 @@ function dashboard(){
 function qbank(){
  return shell("<div class='pagehead'><div><h1>Vraagbank</h1><p>Selecteer een onderwerp en start een oefenblok.</p></div></div><div class='card'><div class='grid g3'><div class='field'><label>Onderwerp</label><select id='qbs'><option>Alle onderwerpen</option><option>Fysiologie</option><option>Metamedica</option></select></div><div class='field'><label>Aantal</label><select id='qbn'><option>5</option><option>10</option></select></div><div style='padding-top:20px'><button class='btn primary' id='startqb'>Start</button></div></div></div>");
 }
-function startSession(ivtg){
+function startSession(ivtg,forcedSubject){
  var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
- var subject=(document.getElementById("qbs")||{}).value||"Alle onderwerpen";for(i=0;i<state.questions.length;i++)if(subject==="Alle onderwerpen"||state.questions[i].subject===subject)pool.push(state.questions[i]);
+ var subject=forcedSubject||((document.getElementById("qbs")||{}).value||"Alle onderwerpen");
+ for(i=0;i<state.questions.length;i++)if(subject==="Alle onderwerpen"||state.questions[i].subject===subject)pool.push(state.questions[i]);
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
- session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime()};page="question";render();
+ session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject};page="question";render();
 }
 function questionBody(){
  var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",i,nums="",opts="",letters="ABCD";
@@ -698,7 +685,13 @@ function questionPage(){
  body+="</div><div class='ivtg-main'><div class='ivtg-question'>"+questionBody()+"</div></div><div class='ivtg-bottom'><span class='ivtg-time' id='chapterTimer'>Tijd besteed: "+formatTime(currentChapterSeconds())+"</span><button class='ivtg-item' data-open-library>"+ICONS.book+"<div>iVTG Bibliotheek</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='feedback'>"+ICONS.feedback+"<div>Feedback</div></button><button class='ivtg-item' data-end>"+ICONS.end+"<div>Einde</div></button></div></div>";
  return body;
 }
-function ivtg(){return shell("<div class='pagehead'><div><h1>iVTG Trainer</h1><p>Een aparte toetsomgeving met hulpmiddelen en een eigen bibliotheek.</p></div><button class='btn secondary' data-page='ivtg-library'>Bibliotheek</button></div><div class='hero'><div><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Oefen met casussen en hulpmiddelen.</h2><p>Start een sessie. Een antwoord wordt direct verwerkt; daarna verschijnen uitleg en bronnen.</p><button class='btn primary' id='startivtg'>Start iVTG</button></div><div class='mock'><div class='mockbar'><span>MedQNL</span><span>1 / 5</span></div><strong>Een patiënt heeft een afwijkende labwaarde. Welke interpretatie past het best?</strong><div class='mockopt'>A. Binnen referentie</div><div class='mockopt'>B. Afwijkend</div></div></div>")}
+function ivtg(){
+ if(!state.ui)state.ui={};var open=!!state.ui.ivtgTopicOpen,subjects=[],i,q,buttons="";
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>iVTG Trainer</h1><p>Oefen klinisch redeneren in een aparte toetsomgeving.</p></div></div><div class='ivtg-landing'><div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct met een gemengde oefensessie of kies eerst een onderwerp.</p></div><div class='ivtg-start-grid'><div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde iVTG-oefensessie.</p><button class='btn primary' id='startivtg'>Start</button></div><div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Oefen alleen vragen binnen één onderwerp.</p><button class='btn secondary' data-ivtg-subject-toggle>"+(open?"Onderwerpen verbergen":"Onderwerpen kiezen")+"</button></div></div>"+(open?"<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>":"")+"</div>");
+}
 function articleBlocks(a){
  var blocks=[],i,b,lines;
  for(i=0;i<(a.body||[]).length;i++){
@@ -723,11 +716,9 @@ function articleToc(a,prefix){
  return out;
 }
 function library(){
- var a=byId(state.articles,articleId)||state.articles[0],navs="",i,sec,j;
- if(!state.ui)state.ui={};
- var collapsed=!!state.ui.libNavCollapsed,toc=articleToc(a,"mainsec");
- for(i=0;i<state.sections.length;i++){sec=state.sections[i];navs+="<div class='small muted' style='font-weight:700;padding:14px 16px 6px;color:#6e7d8a'>"+esc(sec.title)+"</div>";for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>"+esc(state.articles[j].title)+"</button>"}
- return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>iVTG Bibliotheek</h1><p>Leerstof met zoeken, markeringen, notities en bronnen.</p></div><button class='btn secondary' data-toggle-libnav>"+(collapsed?"Navigatie tonen":"Navigatie verbergen")+"</button></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'><div class='lib-library-tools'><button class='lib-tool' title='Bibliotheek'>▱</button><button class='lib-tool' title='Notities' data-open-notes>□</button><button class='lib-tool' title='Instellingen' data-page='settings'>⚙</button></div></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button><button class='lib-action' title='Bronnen'>▤</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
+ var a=byId(state.articles,articleId)||state.articles[0],navs="",i,sec,j;if(!state.ui)state.ui={};var collapsed=!!state.ui.libNavCollapsed,toc=articleToc(a,"mainsec");
+ for(i=0;i<state.sections.length;i++){sec=state.sections[i];navs+="<div class='small muted' style='font-weight:700;padding:13px 16px 5px;color:#6f7d88'>"+esc(sec.title)+"</div>";for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>"+esc(state.articles[j].title)+"</button>"}
+ return shell("<div class='lib-layout standalone-library "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'><div class='lib-library-tools'><button class='lib-tool' title='Notities' data-open-notes>□</button><button class='lib-tool' title='Instellingen' data-page='settings'>⚙</button></div></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Algemene medische naslagomgeving.</p></div><button class='btn primary' data-page='ivtg-library'>Open iVTG Bibliotheek</button></div><div class='empty'>De inhoud van de medische bibliotheek wordt later opgebouwd met jouw eigen Nederlandse hoofdstukken.</div>")}
@@ -771,7 +762,7 @@ function admin(){
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
  for(i=0;i<state.questions.length;i++){q=state.questions[i];qs+="<div class='manager-item'><div style='min-width:0;flex:1'><div style='font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"+esc(q.title||q.stem||'Onbenoemde vraag')+"</div><div class='small muted'>"+esc(q.subject||'')+" · "+esc(q.topic||'')+"</div></div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn' data-delq='"+esc(q.id)+"'>×</button></div></div>"}
  for(i=0;i<state.sources.length;i++){src=state.sources[i];sources+="<div class='manager-item'><input class='inline-edit' data-source-title='"+esc(src.id)+"' value='"+esc(src.title)+"'><button class='tiny-btn' data-edits='"+esc(src.id)+"'>Bewerken</button><button class='tiny-btn' data-dels='"+esc(src.id)+"'>×</button></div>"}
- var fbs=REMOTE.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.question_title||fb.question_id||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message)+"</div><div class='small muted'>"+esc(new Date(fb.created_at).toLocaleString('nl-NL'))+"</div></div><button class='tiny-btn' data-feedback-handle='"+fb.id+"'>"+(fb.handled?'Heropenen':'Afhandelen')+"</button></div>"}
+ var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.questionTitle||fb.questionId||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message||'')+"</div><div class='small muted'>"+esc(fb.date||'')+"</div></div></div>"}
  return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Sleep secties en hoofdstukken. Voeg vragen toe en beheer bronnen, afbeeldingen en feedback.</p></div></div><div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Vragen <button class='tiny-btn' data-editq='new'>+</button></div><div class='manager-list' id='questionList'>"+(qs||"<div class='empty'>Nog geen vragen.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
 }
 
@@ -944,7 +935,9 @@ document.addEventListener("click",function(ev){
  if(t.id==="startqb"){startSession(false);return}
  if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
- if(t.id==="startivtg"){startSession(true);return}
+ if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
+ if(t.hasAttribute("data-ivtg-subject-toggle")){if(!state.ui)state.ui={};state.ui.ivtgTopicOpen=!state.ui.ivtgTopicOpen;save();render();return}
+ el=t.closest?t.closest("[data-ivtg-subject]"):null;if(el){startSession(true,el.getAttribute("data-ivtg-subject"));return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
  if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
