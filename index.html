@@ -30,7 +30,7 @@ a{color:var(--blue)}
 .navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea5b8;padding:11px}
 .nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0}.nav:hover,.nav.active{background:#1b4b72;color:#fff}
 .ico{width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:9px;stroke:currentColor;fill:none;stroke-width:1.8}
-.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}
+.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding-top:0}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
@@ -864,7 +864,7 @@ function shell(body){
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
- "</aside><main class='main'>"+body+"</main></div>";
+ "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
 function welcomeMessage(){
  var name=state.name||"Student";
@@ -965,7 +965,7 @@ function library(){
    navs+="<button class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
    if(!secCollapsed && hasArticles)navs+="<div class='lib-section-items'>"+secArticles+"</div>";
  }
- return shell("<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
+ return shell("<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){
@@ -982,7 +982,7 @@ function medicalLibrary(){
    if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
  }
  return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
- "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
+ "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
 }
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
@@ -999,7 +999,7 @@ function articleForm(a){
  if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:""};
  var sec="";
  for(var i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' style='min-height:260px' required>"+esc(a.body.join("\n\n"))+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' style='min-height:260px' required>"+esc(a.body.join("\n\n"))+"</textarea><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><div class='small muted'>Gebruik *term* voor vetgedrukte tekst. Inline afbeelding: kies een bestand en voeg het direct naast je tekst toe.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' style='display:none'></div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1269,6 +1269,22 @@ document.addEventListener("click",function(ev){
  }
  if(t.id==="inlineImagePopover"||(t.closest&&t.closest(".inline-image-close"))){var p=document.getElementById("inlineImagePopover");if(p)p.remove();}
 });
+document.addEventListener("click",function(ev){
+ var rm=ev.target.closest?ev.target.closest("[data-remove-image]"):null;
+ if(rm){
+  ev.preventDefault();
+  var form=rm.closest("form"),kind=rm.getAttribute("data-remove-image");
+  if(form){
+   var cur=form.querySelector("input[name='currentImage']"),file=form.querySelector("input[name='imageFile']");
+   if(cur)cur.value="";
+   if(file)file.value="";
+   var img=form.querySelector(".image-preview");if(img)img.remove();
+   rm.remove();
+   if(kind==="article"||kind==="question"){var note=document.createElement("div");note.className="small muted";note.textContent="Afbeelding verwijderd. Sla het item op om dit definitief te bewaren.";var field=form.querySelector("input[name='currentImage']");if(field&&field.parentNode)field.parentNode.appendChild(note)}
+  }
+  return;
+ }
+});
 document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
@@ -1353,6 +1369,20 @@ document.addEventListener("input",function(ev){
  if(ev.target.hasAttribute("data-source-title")){var so=byId(state.sources,ev.target.getAttribute("data-source-title"));if(so){so.title=ev.target.value;save()}}
 });
 document.addEventListener("change",function(ev){
+ if(ev.target.id==="inlineImageFile"){
+  var file=ev.target.files&&ev.target.files[0],ta=document.querySelector("#articleform textarea[name='body']");
+  if(!file||!ta)return;
+  if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}
+  var start=ta.selectionStart||0,end=ta.selectionEnd||start,reader=new FileReader();
+  reader.onload=function(){
+   var token="[image:"+reader.result+"]",val=ta.value;
+   ta.value=val.slice(0,start)+token+val.slice(end);
+   ta.focus();ta.selectionStart=ta.selectionEnd=start+token.length;
+   ev.target.value="";
+  };
+  reader.readAsDataURL(file);
+  return;
+ }
  if(ev.target.name==="imageFile"){var file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}var reader=new FileReader(),input=ev.target;reader.onload=function(){input.setAttribute("data-image-data",reader.result)};reader.readAsDataURL(file)}
 });
 document.addEventListener("submit",function(ev){
