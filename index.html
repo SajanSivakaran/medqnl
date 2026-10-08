@@ -57,8 +57,8 @@ a{color:var(--blue)}
 .lib-section-toggle:hover{background:var(--blue2)!important}
 .lib-section-items{display:block}
 .lib-section-chevron{font-size:16px;color:var(--muted);margin-left:8px}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
-.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:move;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-editor-remove{border:0;background:#18222b;color:#fff;border-radius:50%;width:22px;height:22px;line-height:20px;font-size:15px;cursor:pointer}.inline-image-editor-broken{color:var(--red);font-weight:700}
-.inline-image-trigger{display:inline;border:0;background:transparent;color:var(--blue);padding:0 2px;font:inherit;font-weight:700;cursor:pointer;text-decoration:underline dotted}.inline-image-trigger:hover{opacity:.8}.inline-image-popover{position:fixed;z-index:1200;max-width:min(420px,calc(100vw - 24px));max-height:min(420px,calc(100vh - 24px));background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 35px rgba(0,0,0,.22);padding:8px}.inline-image-popover img{display:block;max-width:400px;max-height:400px;width:auto;height:auto;border-radius:7px}.inline-image-close{position:absolute;right:7px;top:7px;z-index:2;width:28px;height:28px;border:0;border-radius:50%;background:rgba(16,43,67,.82);color:#fff;font-size:18px;line-height:28px;cursor:pointer}
+.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:move;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
+.inline-image-live{display:inline;color:var(--blue);font-weight:700;cursor:pointer;text-decoration:underline dotted}.inline-image-live-img{display:inline-block;vertical-align:middle;max-width:320px;max-height:260px;border-radius:7px;border:1px solid var(--line);cursor:pointer}.inline-image-trigger:hover{opacity:.8}
 .search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
 .floating-mark{position:fixed;z-index:900;display:none;background:#18222b;color:#fff;border-radius:8px;padding:6px 8px;gap:5px;align-items:center;box-shadow:0 7px 18px rgba(0,0,0,.25)}.floating-mark:before{content:"Markeren";font-size:12px;font-weight:700;margin:0 4px 0 2px}.mark-dot{width:22px;height:22px;border-radius:5px;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(850px,100%);max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:12px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
@@ -829,7 +829,7 @@ function migrateInlineImages(x){
 }
 function renderInlineImages(html){
  return String(html||"").replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
-   return "<button type='button' class='inline-image-trigger' data-inline-image-id='"+esc(String(id).trim())+"'>[afbeelding]</button>";
+   return "<span class='inline-image-live' data-inline-live-id='"+esc(String(id).trim())+"' data-inline-live-open='0'>[afbeelding]</span>";
  });
 }
 function articleEditorHtml(a){
@@ -838,7 +838,7 @@ function articleEditorHtml(a){
  text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
    var src=images[String(id).trim()]||"";
    if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(String(id).trim())+"'>[afbeelding]</span>";
-   return "<span class='inline-image-editor' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(String(id).trim())+"'><img src='"+esc(src)+"' alt=''><button type='button' class='inline-editor-remove' title='Afbeelding verwijderen'>×</button></span>";
+   return "<span class='inline-image-editor' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(String(id).trim())+"' title='Selecteer en gebruik Delete of Backspace om te verwijderen'><img src='"+esc(src)+"' alt=''></span>";
  });
  return text.replace(/\n/g,"<br>");
 }
@@ -1052,7 +1052,7 @@ function articleForm(a){
  var sec="",i;
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px'><div class='small muted'>Je kunt meerdere afbeeldingen toevoegen, slepen naar een andere plek en per afbeelding verwijderen.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' style='display:none'></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px'><div class='small muted'>Je kunt meerdere afbeeldingen tegelijk toevoegen en ze naar een andere plek slepen. Selecteer een afbeelding en gebruik Delete of Backspace om die afbeelding te verwijderen.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1307,49 +1307,37 @@ function showMarkbar(){
  bar.style.display="flex";bar.style.left=Math.max(8,r.left+(r.width/2)-90)+"px";bar.style.top=Math.max(8,r.top-48)+"px";
 }
 document.addEventListener("selectionchange",function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return;var node=sel.anchorNode,box=document.getElementById("articleText");if(!box||!box.contains(node))return;showMarkbar()});
-document.addEventListener("click",function(ev){
- var t=ev.target,trigger=t.closest?t.closest("[data-inline-image-id]"):null;
- var rm=t.closest?t.closest(".inline-editor-remove"):null;
- if(rm){
-  ev.preventDefault();var wrap=rm.closest(".inline-image-editor"),form=wrap&&wrap.closest("form"),store=form&&form.querySelector("input[name='inlineImages']");
-  if(wrap&&form&&store){
-    var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
-    var rid=wrap.getAttribute("data-inline-editor-id");delete imgs[rid];store.value=JSON.stringify(imgs);wrap.remove();
-  }
-  return;
+document.addEventListener("keydown",function(ev){
+ var ed=document.getElementById("articleEditor"),sel=window.getSelection();if(!ed||!sel||!sel.rangeCount)return;
+ var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
+ if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){
+  ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+  var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove();
  }
- if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
-
- if(trigger){
-   ev.preventDefault();
-   var existing=document.getElementById("inlineImagePopover");if(existing)existing.remove();
-   var id=trigger.getAttribute("data-inline-image-id"),art=byId(state.articles,articleId),src=art&&art.inlineImages?art.inlineImages[id]:"";
-   if(!src)return;
-   var pop=document.createElement("div");pop.id="inlineImagePopover";pop.className="inline-image-popover";
-   var close=document.createElement("button");close.type="button";close.className="inline-image-close";close.title="Sluiten";close.textContent="×";
-   var img=document.createElement("img");img.alt="Afbeelding";img.src=src;
-   pop.appendChild(close);pop.appendChild(img);document.body.appendChild(pop);
-   var rect=trigger.getBoundingClientRect();
-   pop.style.left=Math.min(window.innerWidth-432,Math.max(12,rect.left))+"px";
-   pop.style.top=Math.min(window.innerHeight-432,Math.max(12,rect.bottom+8))+"px";
-   return;
- }
- if(t.id==="inlineImagePopover"||(t.closest&&t.closest(".inline-image-close"))){var p=document.getElementById("inlineImagePopover");if(p)p.remove();}
 });
 document.addEventListener("click",function(ev){
- var rm=ev.target.closest?ev.target.closest("[data-remove-image]"):null;
- if(rm){
-  ev.preventDefault();
-  var form=rm.closest("form"),kind=rm.getAttribute("data-remove-image");
-  if(form){
-   var cur=form.querySelector("input[name='currentImage']"),file=form.querySelector("input[name='imageFile']");
-   if(cur)cur.value="";
-   if(file)file.value="";
-   var img=form.querySelector(".image-preview");if(img)img.remove();
-   rm.remove();
-   if(kind==="article"||kind==="question"){var note=document.createElement("div");note.className="small muted";note.textContent="Afbeelding verwijderd. Sla het item op om dit definitief te bewaren.";var field=form.querySelector("input[name='currentImage']");if(field&&field.parentNode)field.parentNode.appendChild(note)}
+ var t=ev.target,trigger=t.closest?t.closest("[data-inline-live-id]"):null;
+ if(trigger){
+  var id=trigger.getAttribute("data-inline-live-id"),art=byId(state.articles,articleId),src=art&&art.inlineImages?art.inlineImages[id]:"";
+  if(!src)return;
+  if(trigger.getAttribute("data-inline-live-open")==="1"){
+   trigger.textContent="[afbeelding]";
+   trigger.setAttribute("data-inline-live-open","0");
+  }else{
+   var img=document.createElement("img");img.src=src;img.alt="Afbeelding";img.className="inline-image-live-img";
+   trigger.textContent="";trigger.appendChild(img);trigger.setAttribute("data-inline-live-open","1");
   }
   return;
+ }
+});
+document.addEventListener("click",function(ev){
+ var t=ev.target;
+ if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
+ el=t.closest?t.closest("[data-remove-image]"):null;
+ if(el){
+  ev.preventDefault();
+  var form=el.closest("form"),cur=form&&form.querySelector("input[name='currentImage']"),file=form&&form.querySelector("input[name='imageFile']");
+  if(cur)cur.value="";if(file)file.value="";var img=form&&form.querySelector(".image-preview");if(img)img.remove();el.remove();return;
  }
 });
 document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
@@ -1388,16 +1376,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
  if(t.id==="toggleTheme"){toggleTheme();render();return}
  if(t.id==="modalTheme"){toggleTheme();closeModal();return}
- if(t.id==="addInlineImage"){
-   var ta=document.querySelector("#articleform textarea[name='body']");
-   var url=prompt("URL van de afbeelding:");
-   if(ta&&url){
-     var token="[image:"+url.trim()+"]",start=ta.selectionStart||0,end=ta.selectionEnd||start,val=ta.value;
-     ta.value=val.slice(0,start)+token+val.slice(end);
-     ta.focus();ta.selectionStart=ta.selectionEnd=start+token.length;
-   }
-   return
-}
+ if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
 if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
  if(t.id==="openNotebookPage"){openNotebook("","full");return}
  if(t.id==="newNotebookNote"){createNotebookNote();return}
@@ -1426,7 +1405,11 @@ document.addEventListener("input",function(ev){
  if(ev.target.id==="labsearch")renderLabs();
  if(ev.target.id==="globalSearch"){searchGlobal()}
  if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"){renderAdminQuestions()}
- if(ev.target.id==="libsearch"){var q=ev.target.value.toLowerCase(),b=document.querySelectorAll(".lib-side button[data-art]"),i;for(i=0;i<b.length;i++)b[i].style.display=b[i].textContent.toLowerCase().indexOf(q)>=0?"block":"none"}
+ if(ev.target.id==="libsearch"){
+ var q=normalizeSearch(ev.target.value),b=document.querySelectorAll(".lib-side button[data-art]"),i,j,matched={};
+ for(i=0;i<b.length;i++){var aid=b[i].getAttribute("data-art"),art=byId(state.articles,aid),txt=art?normalizeSearch([art.title,(art.body||[]).join(" "),sectionTitle(art.sectionId)].join(" ")):"",show=!q||q.split(" ").every(function(tok){return txt.indexOf(tok)>=0});b[i].style.display=show?"block":"none";if(show&&art)matched[art.sectionId]=true}
+ var toggles=document.querySelectorAll(".lib-side [data-toggle-lib-section]");for(j=0;j<toggles.length;j++){var sid=toggles[j].getAttribute("data-toggle-lib-section");toggles[j].style.display=(!q||matched[sid])?"flex":"none"}
+}
  if(ev.target.id==="medlibsearch"){var qmed=normalizeSearch(ev.target.value),bm=document.querySelectorAll(".lib-side button[data-art-med]"),k;for(k=0;k<bm.length;k++)bm[k].style.display=normalizeSearch(bm[k].textContent).indexOf(qmed)>=0?"block":"none"}
  if(ev.target.id==="drawerLibSearch"){var q2=ev.target.value.toLowerCase(),b2=document.querySelectorAll("[data-drawer-art]"),j;for(j=0;j<b2.length;j++)b2[j].style.display=b2[j].textContent.toLowerCase().indexOf(q2)>=0?"block":"none"}
  if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
@@ -1437,19 +1420,26 @@ document.addEventListener("input",function(ev){
 });
 document.addEventListener("change",function(ev){
  if(ev.target.id==="inlineImageFile"){
-  var file=ev.target.files&&ev.target.files[0],ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']");
-  if(!file||!ed||!store)return;
-  if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}
+ var files=Array.from(ev.target.files||[]),ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']");
+ if(!files.length||!ed||!store)return;
+ var valid=files.filter(function(f){return f.type.indexOf("image/")===0&&f.size<=3500000});
+ if(valid.length<files.length)alert("Ongeldige of te grote afbeeldingen zijn overgeslagen.");
+ var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+ var range=ed._savedRange?ed._savedRange.cloneRange():null;
+ function addOne(file,index){
   var reader=new FileReader();reader.onload=function(){
-    var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
-    var id="img"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);imgs[id]=reader.result;store.value=JSON.stringify(imgs);
-    var span=document.createElement("span");span.className="inline-image-editor";span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);
-    var im=document.createElement("img");im.src=reader.result;im.alt="";var b=document.createElement("button");b.type="button";b.className="inline-editor-remove";b.title="Afbeelding verwijderen";b.textContent="×";span.appendChild(im);span.appendChild(b);
-    ed.focus();var range=ed._savedRange;
-    if(range){var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);range.deleteContents();range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range)}else ed.appendChild(span);
-    ev.target.value="";
-  };reader.readAsDataURL(file);return;
+   var id="img"+Date.now().toString(36)+Math.random().toString(36).slice(2,8),span=document.createElement("span");
+   imgs[id]=reader.result;store.value=JSON.stringify(imgs);
+   span.className="inline-image-editor";span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);
+   var im=document.createElement("img");im.src=reader.result;im.alt="";span.appendChild(im);
+   ed.focus();var sel=window.getSelection();
+   if(range&&ed.contains(range.commonAncestorContainer)){sel.removeAllRanges();sel.addRange(range);range.deleteContents();range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range);range=range.cloneRange();}
+   else{ed.appendChild(span);var rr=document.createRange();rr.selectNodeContents(ed);rr.collapse(false);range=rr;}
+   if(index+1<valid.length)addOne(valid[index+1],index+1);
+  };reader.readAsDataURL(file);
  }
+ if(valid.length)addOne(valid[0],0);
+ ev.target.value="";return;
  if(ev.target.name==="imageFile"){var file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}var reader=new FileReader(),input=ev.target;reader.onload=function(){input.setAttribute("data-image-data",reader.result)};reader.readAsDataURL(file)}
 });
 document.addEventListener("submit",function(ev){
