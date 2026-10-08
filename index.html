@@ -946,15 +946,15 @@ function library(){
  var ivtgArticles=[],ivtgSections=[],i,sec,j;
  for(i=0;i<state.articles.length;i++)if(state.articles[i].library!=="medical")ivtgArticles.push(state.articles[i]);
  for(i=0;i<state.sections.length;i++)if(state.sections[i].library!=="medical")ivtgSections.push(state.sections[i]);
- var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{};
  if(!state.ui)state.ui={};
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{};
  var collapsed=!!state.ui.libNavCollapsed,toc=articleToc(a,"mainsec");
  for(i=0;i<ivtgSections.length;i++){
-   sec=state.sections[i];
+   sec=ivtgSections[i];
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
    for(j=0;j<ivtgArticles.length;j++)if(ivtgArticles[j].sectionId===sec.id){
      hasArticles=true;
-     secArticles+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>"+esc(state.articles[j].title)+"</button>";
+     secArticles+="<button data-art='"+ivtgArticles[j].id+"' class='"+(ivtgArticles[j].id===a.id?"active":"")+"'>"+esc(ivtgArticles[j].title)+"</button>";
    }
    navs+="<button class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
    if(!secCollapsed && hasArticles)navs+="<div class='lib-section-items'>"+secArticles+"</div>";
