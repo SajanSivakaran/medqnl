@@ -826,11 +826,10 @@ function removeSection(id){
  var section=byId(state.sections,id);
  if(!section)return;
  var chapterIds=[],i;
- for(i=state.articles.length-1;i>=0;i--)if(state.articles[i].sectionId===id){chapterIds.push(state.articles[i].id);state.articles.splice(i,1);}
- if(!confirm("Sectie '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" hoofdstuk(ken) in deze sectie worden ook verwijderd.":""))) {
-   return;
- }
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)chapterIds.push(state.articles[i].id);
+ if(!confirm("Sectie '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" hoofdstuk(ken) in deze sectie worden ook verwijderd.":"")))return;
  removeBy(state.sections,id);
+ for(i=state.articles.length-1;i>=0;i--)if(state.articles[i].sectionId===id)state.articles.splice(i,1);
  for(i=0;i<chapterIds.length;i++){delete state.highlights[chapterIds[i]];delete state.chapterTime[chapterIds[i]];}
  if(state.ui&&state.ui.selectedSection===id)state.ui.selectedSection=state.sections[0]?state.sections[0].id:"";
  save();render();
