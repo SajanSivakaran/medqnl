@@ -30,7 +30,7 @@ a{color:var(--blue)}
 .navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea5b8;padding:11px}
 .nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0}.nav:hover,.nav.active{background:#1b4b72;color:#fff}
 .ico{width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:9px;stroke:currentColor;fill:none;stroke-width:1.8}
-.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding-top:0}
+.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
@@ -57,6 +57,7 @@ a{color:var(--blue)}
 .lib-section-toggle:hover{background:var(--blue2)!important}
 .lib-section-items{display:block}
 .lib-section-chevron{font-size:16px;color:var(--muted);margin-left:8px}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:move;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-editor-remove{border:0;background:#18222b;color:#fff;border-radius:50%;width:22px;height:22px;line-height:20px;font-size:15px;cursor:pointer}.inline-image-editor-broken{color:var(--red);font-weight:700}
 .inline-image-trigger{display:inline;border:0;background:transparent;color:var(--blue);padding:0 2px;font:inherit;font-weight:700;cursor:pointer;text-decoration:underline dotted}.inline-image-trigger:hover{opacity:.8}.inline-image-popover{position:fixed;z-index:1200;max-width:min(420px,calc(100vw - 24px));max-height:min(420px,calc(100vh - 24px));background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 35px rgba(0,0,0,.22);padding:8px}.inline-image-popover img{display:block;max-width:400px;max-height:400px;width:auto;height:auto;border-radius:7px}.inline-image-close{position:absolute;right:7px;top:7px;z-index:2;width:28px;height:28px;border:0;border-radius:50%;background:rgba(16,43,67,.82);color:#fff;font-size:18px;line-height:28px;cursor:pointer}
 .search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
 .floating-mark{position:fixed;z-index:900;display:none;background:#18222b;color:#fff;border-radius:8px;padding:6px 8px;gap:5px;align-items:center;box-shadow:0 7px 18px rgba(0,0,0,.25)}.floating-mark:before{content:"Markeren";font-size:12px;font-weight:700;margin:0 4px 0 2px}.mark-dot{width:22px;height:22px;border-radius:5px;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
@@ -778,12 +779,14 @@ function load(){
     if(!x.ui || typeof x.ui!=="object")x.ui={};
     migrateABCD(x);
     ensureMedicalLibrary(x);
+    if(migrateInlineImages(x))localStorage.setItem(KEY,JSON.stringify(x));
     return x;
   }
  }catch(e){}
  var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
  migrateABCD(fresh);
  ensureMedicalLibrary(fresh);
+ migrateInlineImages(fresh);
  localStorage.setItem(KEY,JSON.stringify(fresh));return fresh;
 }
 function migrateABCD(x){
@@ -798,10 +801,59 @@ function migrateABCD(x){
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
+function migrateInlineImages(x){
+ var changed=false,i,j,text,id,src;
+ for(i=0;i<x.articles.length;i++){
+  var a=x.articles[i];if(!a.inlineImages||typeof a.inlineImages!=="object")a.inlineImages={};
+  text=(a.body||[]).join("\n\n");
+  text=text.replace(/\[(?:image|afbeelding):([^\]]+)\]/gi,function(_,raw){
+    src=String(raw||"").trim();
+    if(src.indexOf("inlineimg:")===0){
+      id=src.slice(10);
+      return "[inlineimg:"+id+"]";
+    }
+    id="img"+Date.now().toString(36)+(i.toString(36))+(Math.random().toString(36).slice(2,7));
+    a.inlineImages[id]=src;
+    changed=true;
+    return "[inlineimg:"+id+"]";
+  });
+  if(text.indexOf("[inlineimg:")>=0){
+    var ids=[],m;
+    var re=/\[inlineimg:([^\]]+)\]/gi;
+    while((m=re.exec(text)))ids.push(m[1]);
+    for(j=0;j<ids.length;j++)if(!a.inlineImages[ids[j]]){ /* leave unresolved token visible in editor */ }
+  }
+  a.body=text.split(/\n\s*\n/);
+ }
+ return changed;
+}
 function renderInlineImages(html){
- return String(html||"").replace(/\[(?:image|afbeelding):([^\]]+)\]/gi,function(_,src){
-   return "<button type='button' class='inline-image-trigger' data-inline-image='"+esc(String(src).trim())+"'>[afbeelding]</button>";
+ return String(html||"").replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
+   return "<button type='button' class='inline-image-trigger' data-inline-image-id='"+esc(String(id).trim())+"'>[afbeelding]</button>";
  });
+}
+function articleEditorHtml(a){
+ var text=(a.body||[]).join("\n\n"),images=a.inlineImages||{};
+ text=esc(text);
+ text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
+   var src=images[String(id).trim()]||"";
+   if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(String(id).trim())+"'>[afbeelding]</span>";
+   return "<span class='inline-image-editor' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(String(id).trim())+"'><img src='"+esc(src)+"' alt=''><button type='button' class='inline-editor-remove' title='Afbeelding verwijderen'>×</button></span>";
+ });
+ return text.replace(/\n/g,"<br>");
+}
+function serializeArticleEditor(root){
+ function walk(node){
+   var out="",i;
+   if(node.nodeType===3)return node.nodeValue;
+   if(node.nodeType!==1)return "";
+   if(node.classList&&node.classList.contains("inline-image-editor"))return "[inlineimg:"+node.getAttribute("data-inline-editor-id")+"]";
+   if(node.tagName==="BR")return "\n";
+   for(i=0;i<node.childNodes.length;i++)out+=walk(node.childNodes[i]);
+   if(node.tagName==="DIV"||node.tagName==="P")out+="\n";
+   return out;
+ }
+ return walk(root).replace(/\n{3,}/g,"\n\n").trim();
 }
 function md(s){var x=esc(s||"");x=x.replace(/\*([^*]+)\*/g,"<strong class='term'>$1</strong>");x=x.replace(/\n/g,"<br>");return renderInlineImages(x)}
 function byId(arr,id){var i;for(i=0;i<arr.length;i++)if(arr[i].id===id)return arr[i];return null}
@@ -965,7 +1017,7 @@ function library(){
    navs+="<button class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
    if(!secCollapsed && hasArticles)navs+="<div class='lib-section-items'>"+secArticles+"</div>";
  }
- return shell("<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
+ return shell("<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec")))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){
@@ -982,7 +1034,7 @@ function medicalLibrary(){
    if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
  }
  return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
- "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
+ "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec")))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
 }
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
@@ -993,13 +1045,14 @@ function sourcePicker(ids){
 }
 function questionForm(q){
  if(!q)q={id:"",title:"",subject:"Metamedica",topic:"",difficulty:"Gemiddeld",caseText:"",stem:"",options:["","","",""],correct:0,explanation:"",objective:"",sourceIds:[],image:"",source:""};
- return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><div class='small muted'>Gebruik *term* voor vetgedrukte tekst. Inline afbeelding: [image:URL].</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button></div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' required>"+esc(q.explanation)+"</textarea></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' required>"+esc(q.explanation)+"</textarea></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
- if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:""};
- var sec="";
- for(var i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' style='min-height:260px' required>"+esc(a.body.join("\n\n"))+"</textarea><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap'><div class='small muted'>Gebruik *term* voor vetgedrukte tekst. Inline afbeelding: kies een bestand en voeg het direct naast je tekst toe.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' style='display:none'></div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:"",inlineImages:{}};
+ var sec="",i;
+ for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
+ var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c");
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px'><div class='small muted'>Je kunt meerdere afbeeldingen toevoegen, slepen naar een andere plek en per afbeelding verwijderen.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' style='display:none'></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1255,13 +1308,27 @@ function showMarkbar(){
 }
 document.addEventListener("selectionchange",function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return;var node=sel.anchorNode,box=document.getElementById("articleText");if(!box||!box.contains(node))return;showMarkbar()});
 document.addEventListener("click",function(ev){
- var t=ev.target,trigger=t.closest?t.closest("[data-inline-image]"):null;
+ var t=ev.target,trigger=t.closest?t.closest("[data-inline-image-id]"):null;
+ var rm=t.closest?t.closest(".inline-editor-remove"):null;
+ if(rm){
+  ev.preventDefault();var wrap=rm.closest(".inline-image-editor"),form=wrap&&wrap.closest("form"),store=form&&form.querySelector("input[name='inlineImages']");
+  if(wrap&&form&&store){
+    var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+    var rid=wrap.getAttribute("data-inline-editor-id");delete imgs[rid];store.value=JSON.stringify(imgs);wrap.remove();
+  }
+  return;
+ }
+ if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
+
  if(trigger){
    ev.preventDefault();
    var existing=document.getElementById("inlineImagePopover");if(existing)existing.remove();
+   var id=trigger.getAttribute("data-inline-image-id"),art=byId(state.articles,articleId),src=art&&art.inlineImages?art.inlineImages[id]:"";
+   if(!src)return;
    var pop=document.createElement("div");pop.id="inlineImagePopover";pop.className="inline-image-popover";
-   pop.innerHTML="<button type='button' class='inline-image-close' title='Sluiten'>×</button><img src='"+esc(trigger.getAttribute("data-inline-image")||"")+"' alt='Afbeelding'>";
-   document.body.appendChild(pop);
+   var close=document.createElement("button");close.type="button";close.className="inline-image-close";close.title="Sluiten";close.textContent="×";
+   var img=document.createElement("img");img.alt="Afbeelding";img.src=src;
+   pop.appendChild(close);pop.appendChild(img);document.body.appendChild(pop);
    var rect=trigger.getBoundingClientRect();
    pop.style.left=Math.min(window.innerWidth-432,Math.max(12,rect.left))+"px";
    pop.style.top=Math.min(window.innerHeight-432,Math.max(12,rect.bottom+8))+"px";
@@ -1370,18 +1437,18 @@ document.addEventListener("input",function(ev){
 });
 document.addEventListener("change",function(ev){
  if(ev.target.id==="inlineImageFile"){
-  var file=ev.target.files&&ev.target.files[0],ta=document.querySelector("#articleform textarea[name='body']");
-  if(!file||!ta)return;
+  var file=ev.target.files&&ev.target.files[0],ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']");
+  if(!file||!ed||!store)return;
   if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}
-  var start=ta.selectionStart||0,end=ta.selectionEnd||start,reader=new FileReader();
-  reader.onload=function(){
-   var token="[image:"+reader.result+"]",val=ta.value;
-   ta.value=val.slice(0,start)+token+val.slice(end);
-   ta.focus();ta.selectionStart=ta.selectionEnd=start+token.length;
-   ev.target.value="";
-  };
-  reader.readAsDataURL(file);
-  return;
+  var reader=new FileReader();reader.onload=function(){
+    var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+    var id="img"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);imgs[id]=reader.result;store.value=JSON.stringify(imgs);
+    var span=document.createElement("span");span.className="inline-image-editor";span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);
+    var im=document.createElement("img");im.src=reader.result;im.alt="";var b=document.createElement("button");b.type="button";b.className="inline-editor-remove";b.title="Afbeelding verwijderen";b.textContent="×";span.appendChild(im);span.appendChild(b);
+    ed.focus();var range=ed._savedRange;
+    if(range){var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);range.deleteContents();range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range)}else ed.appendChild(span);
+    ev.target.value="";
+  };reader.readAsDataURL(file);return;
  }
  if(ev.target.name==="imageFile"){var file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}var reader=new FileReader(),input=ev.target;reader.onload=function(){input.setAttribute("data-image-data",reader.result)};reader.readAsDataURL(file)}
 });
@@ -1391,7 +1458,7 @@ document.addEventListener("submit",function(ev){
  ev.preventDefault();
  function finish(imageData){
   if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:f.explanation.value,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
-  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:f.body.value.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
+  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),serialized=ed?serializeArticleEditor(ed):f.body.value;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
   else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
   save();page="admin";render()
@@ -1401,9 +1468,36 @@ document.addEventListener("submit",function(ev){
  finish(input?input.getAttribute("data-image-data"):"");
 });
 
-document.addEventListener("dragstart",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
-document.addEventListener("dragover",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()});
-document.addEventListener("drop",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
+document.addEventListener("selectionchange",function(){
+ var ed=document.getElementById("articleEditor"),sel=window.getSelection();
+ if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+});
+document.addEventListener("dragstart",function(ev){
+ var img=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+ if(img){ev.dataTransfer.setData("text/plain","INLINEIMG:"+img.getAttribute("data-inline-editor-id"));ev.dataTransfer.effectAllowed="move";return}
+ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
+document.addEventListener("dragover",function(ev){
+ var ed=ev.target.closest?ev.target.closest("#articleEditor"):null;var inlineId=ev.dataTransfer.getData("text/plain");
+ if(ed&&inlineId.indexOf("INLINEIMG:")===0){ev.preventDefault();ev.dataTransfer.dropEffect="move";return}
+ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()
+});
+document.addEventListener("drop",function(ev){
+ var ed=ev.target.closest?ev.target.closest("#articleEditor"):null,inlineData=ev.dataTransfer.getData("text/plain");
+ if(ed&&inlineData.indexOf("INLINEIMG:")===0){
+  ev.preventDefault();var moving=ed.querySelector("[data-inline-editor-id='"+inlineData.slice(10)+"']");if(!moving)return;
+  var target=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+  if(target&&target!==moving){
+    var rr=target.getBoundingClientRect();
+    if(ev.clientX<rr.left+rr.width/2)target.parentNode.insertBefore(moving,target);else target.parentNode.insertBefore(moving,target.nextSibling);
+  }else{
+    var range=null;
+    if(document.caretRangeFromPoint)range=document.caretRangeFromPoint(ev.clientX,ev.clientY);
+    else if(document.caretPositionFromPoint){var pos=document.caretPositionFromPoint(ev.clientX,ev.clientY);if(pos){range=document.createRange();range.setStart(pos.offsetNode,pos.offset);range.collapse(true)}}
+    if(range&&ed.contains(range.startContainer)){range.insertNode(moving)}
+  }
+  return;
+ }
+var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
 
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
