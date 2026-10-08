@@ -575,8 +575,17 @@ var state=load();if(!state.ui)state.ui={};
 function load(){
  try{
   var x=JSON.parse(localStorage.getItem(KEY));
-  if(x && x.questions && x.articles && x.sources && x.sections){
-    if(!x.answers)x.answers={};if(!x.attempts)x.attempts=[];if(!x.notes)x.notes={};if(!x.feedback)x.feedback=[];if(!x.highlights)x.highlights={};if(!x.chapterTime)x.chapterTime={};if(!x.theme)x.theme="light";if(!x.name)x.name="Student";if(!x.benchmark)x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
+  if(x && Array.isArray(x.questions) && Array.isArray(x.articles) && Array.isArray(x.sources) && Array.isArray(x.sections)){
+    if(!x.answers || typeof x.answers!=="object")x.answers={};
+    if(!Array.isArray(x.attempts))x.attempts=[];
+    if(!x.notes || typeof x.notes!=="object")x.notes={};
+    if(!Array.isArray(x.feedback))x.feedback=[];
+    if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
+    if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
+    if(x.theme!=="dark"&&x.theme!=="light")x.theme="light";
+    if(!x.name)x.name="Student";
+    if(!x.benchmark || typeof x.benchmark!=="object")x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
+    if(!x.ui || typeof x.ui!=="object")x.ui={};
     migrateABCD(x);
     return x;
   }
@@ -1112,7 +1121,27 @@ function render(){
  var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
-render();
+function showAppError(err){
+  var root=document.getElementById("app");
+  if(!root)return;
+  var msg=err&&err.message?err.message:String(err||"Onbekende fout");
+  root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
+}
+function bootMedQNL(){
+  try{
+    render();
+  }catch(err){
+    try{
+      localStorage.removeItem(KEY);
+      state=load();
+      render();
+    }catch(retryErr){
+      showAppError(retryErr||err);
+    }
+  }
+}
+window.addEventListener("error",function(e){if(e&&e.error)console.error(e.error)});
+bootMedQNL();
 })();
 </script>
 </body>
