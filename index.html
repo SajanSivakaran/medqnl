@@ -154,6 +154,17 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 
 
 .ico,.nav .ico,.subnav .ico{width:20px;height:20px;display:inline-block;vertical-align:-5px;stroke-width:1.8}
+.nav-search-icon{width:24px!important;height:24px!important;vertical-align:-7px!important;margin-right:4px!important}
+.layout.app-nav-collapsed .side{width:0;padding-left:0;padding-right:0;overflow:visible}
+.layout.app-nav-collapsed .side>*{display:none}
+.app-nav-toggle{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:28px;height:56px;border:1px solid #31536d;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;z-index:120;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:2px 0 10px rgba(0,0,0,.12)}
+.app-nav-toggle-floating{position:fixed;left:0;right:auto;top:110px;transform:none;border-radius:0 9px 9px 0}
+.lib-layout.lib-nav-collapsed .lib-side{display:none}
+.lib-layout.lib-nav-collapsed .lib-article{width:100%}
+.note-meta{font-size:12px;color:var(--muted);margin-right:auto}
+.note-toolbar .note-sep{width:1px;height:24px;background:var(--line);margin:0 3px}
+.note-toolbar button{font-size:14px}
+@media(max-width:720px){.app-nav-toggle{right:-12px}.app-nav-toggle-floating{position:fixed;left:0;right:auto;top:90px}.lib-layout.lib-nav-collapsed .lib-article{width:100%}}
 .ivtg-item svg{width:20px!important;height:20px!important;min-width:20px}
 .nav,.subnav{display:flex;align-items:center;gap:8px}
 .drawer-backdrop{position:fixed;inset:0;background:rgba(5,18,30,.42);z-index:700}
@@ -278,6 +289,7 @@ var ICONS={
 home:'<svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>',
 qbank:'<svg class="ico" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>',
 book:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 012 2v13H7a2 2 0 01-2-2z"/><path d="M7 4v15M10 8h6M10 12h6"/></svg>',
+search:'<svg class="ico nav-search-icon" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M16 16l4.5 4.5"/></svg>',
 progress:'<svg class="ico" viewBox="0 0 24 24"><path d="M4 18V6M9 18v-5M14 18V8M19 18V4"/></svg>',
 overall:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>',
 report:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5M8 17h8"/></svg>',
@@ -611,21 +623,22 @@ function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+
 function shell(body){
  var s=stats();
  var progressOpen = page.indexOf("performance")===0;
+ if(!state.ui)state.ui={};
+ var appNavCollapsed=!!state.ui.appNavCollapsed;
  var qtree="<div class='qnavtree'>"+
  "<button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button>"+
  "<div style='padding-left:12px'>"+
  "<button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button>"+
  "<button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button>"+
  "</div>"+
- "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>⌕ <span>Zoeken</span></button>"+
- "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>□ <span>Notities</span></button>"+
+ "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
+ "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout'><aside class='side'><div class='navlabel'>Studeren</div>"+
+ return "<div class='top'><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><button class='app-nav-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>"+(appNavCollapsed?"›":"‹")+"</button><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
- "</aside><main class='main'>"+body+"</main></div>";
+ "</aside><main class='main'>"+(appNavCollapsed?"<button class='app-nav-toggle app-nav-toggle-floating' data-toggle-appnav title='Navigatie tonen'>›</button>":"")+body+"</main></div>";
 }
-
 function welcomeMessage(){
  var name=state.name||"Student";
  var messages=[
@@ -693,12 +706,14 @@ function articleHtml(a,prefix){
 function articleToc(a,prefix){
  var bs=articleBlocks(a),out="",i,id,found=false;
  for(i=0;i<bs.length;i++)if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<button class='toc-link' data-scrollto='"+id+"'>"+esc(bs[i].title)+"</button>";found=true}
- return found?out:"<div class='small muted'>Geen subsecties toegevoegd.</div>";
+ return out;
 }
 function library(){
  var a=byId(state.articles,articleId)||state.articles[0],navs="",i,sec,j;
+ if(!state.ui)state.ui={};
+ var collapsed=!!state.ui.libNavCollapsed,toc=articleToc(a,"mainsec");
  for(i=0;i<state.sections.length;i++){sec=state.sections[i];navs+="<div class='small muted' style='font-weight:800;padding:10px 8px 4px'>"+esc(sec.title)+"</div>";for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>▧ "+esc(state.articles[j].title)+"</button>"}
- return shell("<div class='pagehead'><div><h1>iVTG Bibliotheek</h1><p>Nederlandse leerstof met bronnen, notities en markeringen.</p></div></div><div class='lib-layout'><aside class='lib-side'><input id='libsearch' class='search' placeholder='Zoek hoofdstuk...'>"+navs+"</aside><article class='lib-article'><div class='drawer-tools'><button class='btn secondary' data-open-notes>Notitie</button></div><div class='small muted'>"+esc(sectionTitle(a.sectionId))+"</div><h2>"+esc(a.title)+"</h2><div style='display:grid;grid-template-columns:180px 1fr;gap:25px'><aside><div class='small muted' style='font-weight:800;margin:6px 0 8px'>Inhoud</div>"+articleToc(a,"mainsec")+"</aside><div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></article></div>");
+ return shell("<div class='pagehead'><div><h1>iVTG Bibliotheek</h1><p>Nederlandse leerstof met bronnen, notities en markeringen.</p></div><button class='btn secondary' data-toggle-libnav>"+(collapsed?"Navigatie tonen":"Navigatie verbergen")+"</button></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'><input id='libsearch' class='search' placeholder='Zoek hoofdstuk...'>"+navs+"</aside><article class='lib-article'><div class='drawer-tools'><button class='btn secondary' data-open-notes>Notitie</button></div><div class='small muted'>"+esc(sectionTitle(a.sectionId))+"</div><h2>"+esc(a.title)+"</h2>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Algemene medische naslagomgeving.</p></div><button class='btn primary' data-page='ivtg-library'>Open iVTG Bibliotheek</button></div><div class='empty'>De inhoud van de medische bibliotheek wordt later opgebouwd met jouw eigen Nederlandse hoofdstukken.</div>")}
@@ -816,17 +831,29 @@ function searchPage(){
 }
 function noteKeys(){var keys=[],k;for(k in state.notes)if(state.notes.hasOwnProperty(k))keys.push(k);keys.sort(function(a,b){return String(state.notes[a].title||"").localeCompare(String(state.notes[b].title||""),"nl")});return keys}
 function noteRecord(key){return key&&state.notes[key]?state.notes[key]:{title:"Nieuwe notitie",body:""}}
+function noteEditorHtml(body){
+ var x=String(body||"");
+ return /<\/?(strong|b|em|i|u|s|ul|ol|li|h2|h3|blockquote|div|p|br|span)(\s|>)/i.test(x)?x:md(x);
+}
+function updateNotebookStats(){
+ var ed=document.getElementById("nbEditor"),st=document.getElementById("nbStats");
+ if(!ed||!st)return;
+ var t=String(ed.innerText||"").trim(),words=t?t.split(/\s+/).length:0,chars=t.length;
+ st.textContent=words+" "+(words===1?"woord":"woorden")+" · "+chars+" tekens";
+}
 function notebookMarkup(key){
  var keys=noteKeys();if(!key)key=keys[0]||"new";var n=noteRecord(key),list="",i,k;
  for(i=0;i<keys.length;i++){k=keys[i];list+="<button class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button>"}
- return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='bold'><strong>B</strong></button><button data-format='italic'><em>I</em></button><button data-format='underline'><u>U</u></button><button data-format='strikeThrough'><s>S</s></button><button data-format='insertUnorderedList'>•</button><button data-format='insertOrderedList'>1.</button><button data-format='justifyLeft'>≡</button><button data-format='justifyCenter'>≡</button><button data-format='justifyRight'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+md(n.body||"")+"</div><div class='note-footer'><button class='btn secondary' data-close-notebook>Annuleren</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
+ return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
 }
-function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root)}
+function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root);updateNotebookStats()}
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
-function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerText||"";save();openNotebook(key,"full")}
-function notesPage(){return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek.</p></div><button class='btn primary' id='openNotebookPage'>Nieuw</button></div><div class='card'><div class='empty'>Open het notitieboek om notities te maken, te zoeken en te bewerken.</div></div>")}
-
-
+function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerHTML||"";save();openNotebook(key,"full")}
+function notesPage(){
+ var keys=noteKeys(),preview="",i,k,n;
+ for(i=0;i<keys.length&&i<5;i++){k=keys[i];n=state.notes[k]||{};var p=String(n.body||"").replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();preview+="<div class='row'><div style='min-width:0'><strong>"+esc(n.title||"Nieuwe notitie")+"</strong><div class='small muted'>"+esc(p.slice(0,120))+(p.length>120?"…":"")+"</div></div><button class='btn secondary' data-note-key='"+esc(k)+"'>Open</button></div>"}
+ return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div><button class='btn primary' id='openNotebookPage'>Nieuwe notitie</button></div><div class='grid g2'><div class='card'><div class='title'>Mijn notitieboek</div><div class='notice'>Gebruik koppen, lijsten, markeringen, uitlijning, citaten en herstelacties. Opmaak wordt bewaard wanneer je opslaat.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open volledig notitieboek</button></div></div><div class='card'><div class='title'>Recente notities</div>"+(preview||"<div class='empty'>Nog geen notities. Maak je eerste notitie.</div>")+"</div></div>");
+}
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
  return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:640px'><div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div><button class='btn primary' id='saveName' style='margin-top:12px'>Opslaan</button></div>");
@@ -909,6 +936,8 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-close-notebook]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-scrollto]"):null;if(el){var se=document.getElementById(el.getAttribute("data-scrollto"));if(se)se.scrollIntoView({behavior:"smooth",block:"start"});return}
  if(t.id==="startqb"){startSession(false);return}
+ if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
+ if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true);return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
@@ -928,7 +957,7 @@ document.addEventListener("click",function(ev){
  if(t.id==="newNotebookNote"){createNotebookNote();return}
  if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
  el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
- el=t.closest?t.closest("[data-format]"):null;if(el){document.execCommand(el.getAttribute("data-format"),false,null);return}
+ el=t.closest?t.closest("[data-format]"):null;if(el){var fmt=el.getAttribute("data-format"),arg=null;if(fmt.indexOf(":")>0){var parts=fmt.split(":");fmt=parts[0];arg=parts.slice(1).join(":");}if(fmt==="hiliteColor")arg="#fff2a8";if(fmt==="formatBlock")document.execCommand("formatBlock",false,arg);else document.execCommand(fmt,false,arg);updateNotebookStats();return}
  if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
  if(t.hasAttribute("data-calc")){var d=document.getElementById("calc"),v=t.getAttribute("data-calc");if(v==="="){try{d.value=eval(d.value)}catch(e){d.value="Fout"}}else d.value+=v;return}
  if(t.id==="calcClear"){document.getElementById("calc").value="";return}
@@ -952,6 +981,7 @@ document.addEventListener("input",function(ev){
  if(ev.target.id==="libsearch"){var q=ev.target.value.toLowerCase(),b=document.querySelectorAll(".lib-side button[data-art]"),i;for(i=0;i<b.length;i++)b[i].style.display=b[i].textContent.toLowerCase().indexOf(q)>=0?"block":"none"}
  if(ev.target.id==="drawerLibSearch"){var q2=ev.target.value.toLowerCase(),b2=document.querySelectorAll("[data-drawer-art]"),j;for(j=0;j<b2.length;j++)b2[j].style.display=b2[j].textContent.toLowerCase().indexOf(q2)>=0?"block":"none"}
  if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
+ if(ev.target.id==="nbEditor")updateNotebookStats()
  if(ev.target.hasAttribute("data-sec-title")){var s=byId(state.sections,ev.target.getAttribute("data-sec-title"));if(s){s.title=ev.target.value;save()}}
  if(ev.target.hasAttribute("data-art-title")){var a=byId(state.articles,ev.target.getAttribute("data-art-title"));if(a){a.title=ev.target.value;save()}}
  if(ev.target.hasAttribute("data-source-title")){var so=byId(state.sources,ev.target.getAttribute("data-source-title"));if(so){so.title=ev.target.value;save()}}
