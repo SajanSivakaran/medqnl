@@ -57,7 +57,7 @@ a{color:var(--blue)}
 .lib-section-toggle:hover{background:var(--blue2)!important}
 .lib-section-items{display:block}
 .lib-section-chevron{font-size:16px;color:var(--muted);margin-left:8px}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
-.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:move;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
+.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px}.inline-image-tools>.small{flex:1 1 100%}.inline-image-sizebar{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--line);border-radius:7px;background:var(--card)}.inline-image-sizebar input{width:170px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:grab;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
 .inline-image-live{display:inline;color:var(--blue);font-weight:700;cursor:pointer;text-decoration:underline dotted}.inline-image-live-img{display:inline-block;vertical-align:middle;max-width:320px;max-height:260px;border-radius:7px;border:1px solid var(--line);cursor:pointer}.inline-image-trigger:hover{opacity:.8}
 .search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
 .floating-mark{position:fixed;z-index:900;display:none;background:#18222b;color:#fff;border-radius:8px;padding:6px 8px;gap:5px;align-items:center;box-shadow:0 7px 18px rgba(0,0,0,.25)}.floating-mark:before{content:"Markeren";font-size:12px;font-weight:700;margin:0 4px 0 2px}.mark-dot{width:22px;height:22px;border-radius:5px;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
@@ -369,7 +369,6 @@ var SOURCES=[
 {id:"s10",title:"KNMG — Ethische theorieën",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/verdiepen/welke-ethische-theorieen-en-stromingen-zijn-er-1"},
 {id:"s11",title:"NCBI — Adult normal reference ranges",url:"https://www.ncbi.nlm.nih.gov/books/NBK613071/"},
 {id:"s12",title:"OpenStax — Adult lab values",url:"https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values"},
-{id:"s13",title:"Harmonised reference intervals",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5111244/"},
 {id:"s14",title:"NCBI — Physiology, Male Reproductive System",url:"https://www.ncbi.nlm.nih.gov/books/NBK538429/"},
 {id:"s15",title:"NCBI — Portal Hypertension",url:"https://www.ncbi.nlm.nih.gov/sites/books/NBK507718/"},
 {id:"s16",title:"NCBI — Medical Microbiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK7627/"},
@@ -765,6 +764,14 @@ function ensureMedicalLibrary(x){
 }
 function saveStateFor(x){localStorage.setItem(KEY,JSON.stringify(x))}
 var state=load();if(!state.ui)state.ui={};
+function purgeHarmonisedLabSource(x){
+ var i,j,sid;
+ for(i=x.sources.length-1;i>=0;i--)if(x.sources[i].id==="s13"||/harmoni[sz]ed reference intervals/i.test(String(x.sources[i].title||""))){
+  sid=x.sources[i].id;x.sources.splice(i,1);
+  for(j=0;j<x.questions.length;j++)x.questions[j].sourceIds=removeId(x.questions[j].sourceIds,sid);
+  for(j=0;j<x.articles.length;j++)x.articles[j].sourceIds=removeId(x.articles[j].sourceIds,sid);
+ }
+}
 function load(){
  try{
   var x=JSON.parse(localStorage.getItem(KEY));
@@ -782,6 +789,7 @@ function load(){
     migrateABCD(x);
     ensureMedicalLibrary(x);
     if(migrateInlineImages(x))localStorage.setItem(KEY,JSON.stringify(x));
+    purgeHarmonisedLabSource(x);
     return x;
   }
  }catch(e){}
@@ -789,6 +797,7 @@ function load(){
  migrateABCD(fresh);
  ensureMedicalLibrary(fresh);
  migrateInlineImages(fresh);
+ purgeHarmonisedLabSource(fresh);
  localStorage.setItem(KEY,JSON.stringify(fresh));return fresh;
 }
 function migrateABCD(x){
@@ -835,12 +844,12 @@ function renderInlineImages(html){
  });
 }
 function articleEditorHtml(a){
- var text=(a.body||[]).join("\n\n"),images=a.inlineImages||{};
+ var text=(a.body||[]).join("\n\n"),images=a.inlineImages||{},widths=a.inlineImageWidths||{};
  text=esc(text);
- text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
-   var src=images[String(id).trim()]||"";
-   if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(String(id).trim())+"'>[afbeelding]</span>";
-   return "<span class='inline-image-editor' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(String(id).trim())+"' title='Selecteer en gebruik Delete of Backspace om te verwijderen'><img src='"+esc(src)+"' alt=''></span>";
+ text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
+  var id=String(rawId).trim(),src=images[id],w=parseInt(widths[id],10)||180;
+  if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(id)+"'>[afbeelding]</span>";
+  return "<span class='inline-image-editor' tabindex='0' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(id)+"' title='Klik voor grootte · sleep om te verplaatsen'><img src='"+esc(src)+"' alt='' style='width:"+w+"px'></span>";
  });
  return text.replace(/\n/g,"<br>");
 }
@@ -1050,11 +1059,12 @@ function questionForm(q){
  return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' required>"+esc(q.explanation)+"</textarea></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
- if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:"",inlineImages:{}};
+ if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}};
  var sec="",i;
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
- var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div style='display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px'><div class='small muted'>Je kunt meerdere afbeeldingen tegelijk toevoegen en ze naar een andere plek slepen. Selecteer een afbeelding en gebruik Delete of Backspace om die afbeelding te verwijderen.</div><button type='button' class='btn secondary' id='addInlineImage'>+ Inline afbeelding</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
+ var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Kies meerdere bestanden tegelijk. Klik een afbeelding om de grootte aan te passen en sleep haar naar een andere plek in de tekst.</div><button type='button' class='btn secondary' id='addInlineImage'>Bestanden kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1249,13 +1259,13 @@ function settings(){
 function showModal(type){
  var root=document.createElement("div"),html="";
  root.className="overlay";root.id="modalRoot";
- if(type==="tutorial")html="<div class='modal' style='max-width:760px'><div class='modal-head'><h2>Uitleg</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='tutorial-list'><div class='tutorial-step'><strong>1. Beantwoord de vraag</strong><p>Kies direct A, B, C of D. Je antwoord wordt meteen verwerkt en daarna zie je de uitleg.</p></div><div class='tutorial-step'><strong>2. Labwaarden</strong><p>Open de relevante referentiewaarden en kies een categorie zoals Cardiaal, Inflammatie of IJzer.</p></div><div class='tutorial-step'><strong>3. Rekenhulp</strong><p>Gebruik de rekenmachine voor eenvoudige berekeningen zonder de toetsomgeving te verlaten.</p></div><div class='tutorial-step'><strong>4. iVTG Bibliotheek</strong><p>Open de bibliotheek om hoofdstukken en secties te doorbladeren zonder de sessie te beëindigen.</p></div><div class='tutorial-step'><strong>5. Notities</strong><p>Open je notitieboek tijdens de toets om een notitie te lezen of te bewerken.</p></div><div class='tutorial-step'><strong>6. Einde</strong><p>Beëindig de sessie wanneer je klaar bent. Je resultaat wordt daarna opgeslagen.</p></div></div></div>";
+ if(type==="tutorial")html="<div class='modal' style='max-width:780px'><div class='modal-head'><h2>Uitleg — iVTG-toetsomgeving</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='tutorial-list'><div class='tutorial-step'><strong>Antwoord kiezen</strong><p>Lees de casus en vraag en kies A, B, C of D. Je keuze wordt direct verwerkt. Er is geen aparte knop om het antwoord in te dienen.</p></div><div class='tutorial-step'><strong>Uitleg gebruiken</strong><p>Open Uitleg om te zien waarom het juiste antwoord klopt, welke redenering erbij hoort en welke leerpunten je moet onthouden.</p></div><div class='tutorial-step'><strong>Labwaarden gebruiken</strong><p>Open Labwaarden tijdens de toets en kies de gewenste categorie, zoals Cardiaal, Inflammatie of IJzer. De huidige vraag blijft geopend.</p></div><div class='tutorial-step'><strong>Rekenhulp gebruiken</strong><p>Voer een berekening in met de toetsen. Gebruik = voor het resultaat, C om te wissen en ⌫ om het laatste teken te verwijderen.</p></div><div class='tutorial-step'><strong>iVTG Bibliotheek</strong><p>Open de bibliotheek om secties en hoofdstukken te bekijken. Je kunt daarna verdergaan met dezelfde toets.</p></div><div class='tutorial-step'><strong>Notities</strong><p>Open Notities om tijdens de toets aantekeningen te lezen of te maken.</p></div><div class='tutorial-step'><strong>Einde</strong><p>Gebruik Einde wanneer je klaar bent. Je sessie wordt afgesloten en het resultaat wordt getoond.</p></div></div></div>";
  if(type==="note"){var q=session?session.questions[session.index]:null,key=q?q.id:"general";openNotebook(key,"drawer");return}
  if(type==="feedback"){var fq=session?session.questions[session.index]:null;html="<div class='modal'><div class='modal-head'><h2>Feedback over deze vraag</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='field'><label>Categorie</label><select id='fbcat'><option>Inhoudelijke fout</option><option>Onduidelijke vraag</option><option>Fout in antwoord/uitleg</option><option>Bron ontbreekt</option><option>Technisch probleem</option><option>Overig</option></select></div><div class='field'><label>Bericht</label><textarea id='fbmsg' style='min-height:170px' placeholder='Beschrijf de feedback...'></textarea></div><button class='btn primary' id='sendFeedback'>Versturen</button></div>"}
  if(type==="settings")html="<div class='modal'><div class='modal-head'><h2>Instellingen</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Leesbare donkere interface.</div></div><button class='btn secondary' id='modalTheme'>Wisselen</button></div></div>";
  if(type==="calc")html="<div class='calculator-modal'><div class='modal-head'><h2>Rekenhulp</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='calculator'><div class='calculator-display' id='calc'>0</div><div class='calculator-grid'>"+["C","±","⌫","÷","7","8","9","×","4","5","6","−","1","2","3","+","0",".","="].map(function(x){return "<button class='calculator-key "+((x==="÷"||x==="×"||x==="−"||x==="+"||x==="=")?"operator":"")+" "+(x==="C"||x==="±"||x==="⌫"?"utility":"")+"' data-calc='"+x+"'>"+x+"</button>"}).join("")+"</div></div></div>";
  if(type==="lab")html=labModal();
- root.innerHTML=html;document.body.appendChild(root);if(type==="lab")renderLabs();
+ root.innerHTML=html;document.body.appendChild(root);if(type==="lab"){renderLabs();var labsBtns=root.querySelectorAll(".lab-tab");for(var li=0;li<labsBtns.length;li++)labsBtns[li].onclick=function(e){e.stopPropagation();labCategory=this.getAttribute("data-labcat");renderLabs()}}
 }
 function labModal(){
  var cats=[],i,h="<div class='modal'><div class='modal-head'><h2>Labwaarden</h2><button class='btn secondary' data-close>Sluiten</button></div><input id='labsearch' class='lab-search' placeholder='Zoek labwaarde...'><div class='lab-tabs'>";
@@ -1326,10 +1336,24 @@ document.addEventListener("click",function(ev){
    trigger.textContent="[afbeelding]";
    trigger.setAttribute("data-inline-live-open","0");
   }else{
-   var img=document.createElement("img");img.src=src;img.alt="Afbeelding";img.className="inline-image-live-img";
+   var img=document.createElement("img");img.src=src;img.alt="Afbeelding";img.className="inline-image-live-img";var iw=art&&art.inlineImageWidths?parseInt(art.inlineImageWidths[id],10):0;if(iw)img.style.width=iw+"px";
    trigger.textContent="";trigger.appendChild(img);trigger.setAttribute("data-inline-live-open","1");
   }
   return;
+ }
+});
+document.addEventListener("click",function(ev){
+ var img=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+ if(img){
+  var form=img.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}
+  var id=img.getAttribute("data-inline-editor-id"),bar=document.getElementById("inlineImageSizeBar"),slider=document.getElementById("inlineImageSize"),label=document.getElementById("inlineImageSizeValue"),w=parseInt(widths[id],10)||180;
+  if(bar&&slider){slider.value=w;slider.setAttribute("data-image-id",id);if(label)label.textContent=w+" px";bar.style.display="flex";}
+ }
+});
+document.addEventListener("input",function(ev){
+ if(ev.target.id==="inlineImageSize"){
+  var id=ev.target.getAttribute("data-image-id"),ed=document.getElementById("articleEditor"),img=ed&&ed.querySelector("[data-inline-editor-id='"+id+"']"),form=ed&&ed.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']");
+  if(img){var w=parseInt(ev.target.value,10)||180,tg=img.querySelector("img"),widths={};if(tg)tg.style.width=w+"px";if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}widths[id]=w;if(ws)ws.value=JSON.stringify(widths);var lbl=document.getElementById("inlineImageSizeValue");if(lbl)lbl.textContent=w+" px";}
  }
 });
 document.addEventListener("click",function(ev){
@@ -1449,18 +1473,19 @@ document.addEventListener("input",function(ev){
 });
 document.addEventListener("change",function(ev){
  if(ev.target.id==="inlineImageFile"){
- var files=Array.from(ev.target.files||[]),ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']");
+ var files=Array.from(ev.target.files||[]),ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']"),wstore=form&&form.querySelector("input[name='inlineImageWidths']");
  if(!files.length||!ed||!store)return;
  var valid=files.filter(function(f){return f.type.indexOf("image/")===0&&f.size<=3500000});
  if(valid.length<files.length)alert("Ongeldige of te grote afbeeldingen zijn overgeslagen.");
  var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+ var widths={};try{widths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}
  var range=ed._savedRange?ed._savedRange.cloneRange():null;
  function addOne(file,index){
   var reader=new FileReader();reader.onload=function(){
    var id="img"+Date.now().toString(36)+Math.random().toString(36).slice(2,8),span=document.createElement("span");
-   imgs[id]=reader.result;store.value=JSON.stringify(imgs);
-   span.className="inline-image-editor";span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);
-   var im=document.createElement("img");im.src=reader.result;im.alt="";span.appendChild(im);
+   imgs[id]=reader.result;widths[id]=180;if(store)store.value=JSON.stringify(imgs);if(wstore)wstore.value=JSON.stringify(widths);
+   span.className="inline-image-editor";span.tabIndex=0;span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);span.title="Klik voor grootte · sleep om te verplaatsen";
+   var im=document.createElement("img");im.src=reader.result;im.alt="";im.style.width="180px";span.appendChild(im);
    ed.focus();var sel=window.getSelection();
    if(range&&ed.contains(range.commonAncestorContainer)){sel.removeAllRanges();sel.addRange(range);range.deleteContents();range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range);range=range.cloneRange();}
    else{ed.appendChild(span);var rr=document.createRange();rr.selectNodeContents(ed);rr.collapse(false);range=rr;}
@@ -1478,7 +1503,7 @@ document.addEventListener("submit",function(ev){
  ev.preventDefault();
  function finish(imageData){
   if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:f.explanation.value,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
-  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),serialized=ed?serializeArticleEditor(ed):f.body.value;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
+  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),serialized=ed?serializeArticleEditor(ed):f.body.value;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
   else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
   save();page="admin";render()
@@ -1497,8 +1522,8 @@ document.addEventListener("dragstart",function(ev){
  if(img){ev.dataTransfer.setData("text/plain","INLINEIMG:"+img.getAttribute("data-inline-editor-id"));ev.dataTransfer.effectAllowed="move";return}
  var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
 document.addEventListener("dragover",function(ev){
- var ed=ev.target.closest?ev.target.closest("#articleEditor"):null;var inlineId=ev.dataTransfer.getData("text/plain");
- if(ed&&inlineId.indexOf("INLINEIMG:")===0){ev.preventDefault();ev.dataTransfer.dropEffect="move";return}
+ var ed=ev.target.closest?ev.target.closest("#articleEditor"):null;
+ if(ed){ev.preventDefault();ev.dataTransfer.dropEffect="move";return}
  var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()
 });
 document.addEventListener("drop",function(ev){
