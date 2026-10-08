@@ -822,6 +822,19 @@ function saveDragOrder(){
  state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
 }
 function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
+function removeSection(id){
+ var section=byId(state.sections,id);
+ if(!section)return;
+ var chapterIds=[],i;
+ for(i=state.articles.length-1;i>=0;i--)if(state.articles[i].sectionId===id){chapterIds.push(state.articles[i].id);state.articles.splice(i,1);}
+ if(!confirm("Sectie '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" hoofdstuk(ken) in deze sectie worden ook verwijderd.":""))) {
+   return;
+ }
+ removeBy(state.sections,id);
+ for(i=0;i<chapterIds.length;i++){delete state.highlights[chapterIds[i]];delete state.chapterTime[chapterIds[i]];}
+ if(state.ui&&state.ui.selectedSection===id)state.ui.selectedSection=state.sections[0]?state.sections[0].id:"";
+ save();render();
+}
 
 function admin(){
  var secId=(state.ui&&state.ui.selectedSection)||(state.sections[0]&&state.sections[0].id)||"",secs="",arts="",sources="",feedback="",i,s,a,src;
@@ -847,7 +860,7 @@ function renderAdminQuestions(){
  subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
  if(subject&&subject.options.length===1)for(i=0;i<subjects.length;i++)subject.add(new Option(subjects[i],subjects[i]));
  for(i=0;i<state.questions.length;i++){
-   qq=state.questions[i];if(sub&&qq.subject!==sub)continue;text=searchCorpusText(qq);match=!tokens.length;
+   qq=state.questions[i];if(sub&&qq.subject!==sub)continue;text=questionSearchText(qq);match=!tokens.length;
    for(var j=0;j<tokens.length;j++)if(text.indexOf(tokens[j])<0){match=false;break}
    if(!match)continue;
    count++;
@@ -920,40 +933,42 @@ function performancePreviousPlaceholder(){return previousTests()}
 function previousTests(){return shell("<div class='pagehead'><div><h1>Voorgaande tests</h1></div></div><div class='empty'>Deze pagina is uit de hoofd­navigatie verwijderd.</div>");}
 
 function searchPage(){
- return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek door vragen, hoofdstukken en bronnen.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek bijvoorbeeld naar WGBO, intake, meningitis of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om resultaten te bekijken.</div></div></div>");
+ return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek uitsluitend in de Medische Bibliotheek en de iVTG Bibliotheek.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek in bibliotheekhoofdstukken, bijvoorbeeld WGBO, intake of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div></div></div>");
 }
 function normalizeSearch(s){
  return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g," ").replace(/\s+/g," ").trim();
 }
-function searchCorpusText(q){
- var parts=[q.title,q.stem,q.caseText,q.explanation,q.objective,q.subject,q.topic,(q.options||[]).join(" ")];
- for(var i=0;i<(q.sourceIds||[]).length;i++){var src=byId(state.sources,q.sourceIds[i]);if(src)parts.push(src.title,src.url)}
- return normalizeSearch(parts.join(" "));
+function articleLibraryLabel(a){
+ return a&&a.library==="medical"?"Medische Bibliotheek":"iVTG Bibliotheek";
+}
+function articleSearchText(a){
+ return normalizeSearch([a.title,(a.body||[]).join(" "),sectionTitle(a.sectionId),articleLibraryLabel(a)].join(" "));
+}
+function questionSearchText(q){
+ return normalizeSearch([q&&q.title,q&&q.stem,q&&q.caseText,q&&q.explanation,q&&q.objective,q&&q.subject,q&&q.topic,(q&&q.options||[]).join(" ")].join(" "));
 }
 function searchGlobal(){
  var input=document.getElementById("globalSearch"),out=document.getElementById("globalResults");if(!input||!out)return;
  var query=normalizeSearch(input.value),tokens=query?query.split(" "):[];
- if(!tokens.length){out.innerHTML="<div class='empty'>Voer een zoekterm in om resultaten te bekijken.</div>";return}
- var results=[],i,j,text,score,articleText;
- for(i=0;i<state.questions.length;i++){
-   text=searchCorpusText(state.questions[i]);score=0;
-   for(j=0;j<tokens.length;j++){if(text.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
-   if(score>0)results.push({type:"Vraag",title:state.questions[i].title||state.questions[i].stem||"Vraag",meta:(state.questions[i].subject||"")+" · "+(state.questions[i].topic||""),score:score,action:"data-editq-search='"+state.questions[i].id+"'"});
- }
+ if(!tokens.length){out.innerHTML="<div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div>";return}
+ var results=[],i,j,text,score;
  for(i=0;i<state.articles.length;i++){
-   articleText=normalizeSearch([state.articles[i].title,(state.articles[i].body||[]).join(" "),sectionTitle(state.articles[i].sectionId)].join(" "));
-   score=0;for(j=0;j<tokens.length;j++){if(articleText.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
-   if(score>0)results.push({type:"Hoofdstuk",title:state.articles[i].title,meta:sectionTitle(state.articles[i].sectionId),score:score,action:"data-art-search='"+state.articles[i].id+"'"});
- }
- for(i=0;i<state.sources.length;i++){
-   text=normalizeSearch([state.sources[i].title,state.sources[i].url].join(" "));score=0;
+   text=articleSearchText(state.articles[i]);score=0;
    for(j=0;j<tokens.length;j++){if(text.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
-   if(score>0)results.push({type:"Bron",title:state.sources[i].title,meta:state.sources[i].url,score:score,action:"data-source-search='"+state.sources[i].id+"'"});
+   if(score>0){
+     results.push({
+       type:"Hoofdstuk",
+       title:state.articles[i].title||"Hoofdstuk",
+       meta:articleLibraryLabel(state.articles[i])+" · "+sectionTitle(state.articles[i].sectionId),
+       score:score,
+       action:"data-art-search='"+state.articles[i].id+"'"
+     });
+   }
  }
- results.sort(function(a,b){return b.score-a.score||a.type.localeCompare(b.type,"nl")});
+ results.sort(function(a,b){return b.score-a.score||a.title.localeCompare(b.title,"nl")});
  var h="";
  for(i=0;i<results.length&&i<30;i++)h+="<button class='result' "+results[i].action+" style='display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);cursor:pointer'><strong>"+esc(results[i].title)+"</strong><div class='small muted'>"+esc(results[i].type)+" · "+esc(results[i].meta)+"</div></button>";
- out.innerHTML=h||"<div class='empty'>Geen directe resultaten. Probeer een kortere zoekterm, bijvoorbeeld <strong>WGBO</strong> of <strong>intake</strong>.</div>";
+ out.innerHTML=h||"<div class='empty'>Geen bibliotheekresultaten. Probeer bijvoorbeeld <strong>WGBO</strong> of <strong>intake</strong>.</div>";
 }
 function noteKeys(){var keys=[],k;for(k in state.notes)if(state.notes.hasOwnProperty(k))keys.push(k);keys.sort(function(a,b){return String(state.notes[a].title||"").localeCompare(String(state.notes[b].title||""),"nl")});return keys}
 function noteRecord(key){return key&&state.notes[key]?state.notes[key]:{title:"Nieuwe notitie",body:""}}
@@ -1095,7 +1110,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
  el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
  el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
- el=t.closest?t.closest("[data-delsec]"):null;if(el){if(confirm("Sectie verwijderen?")){removeBy(state.sections,el.getAttribute("data-delsec"));save();render()}return}
+ el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
