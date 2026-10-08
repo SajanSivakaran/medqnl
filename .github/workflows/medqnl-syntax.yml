@@ -1,0 +1,20 @@
+name: MedQNL syntax check
+on:
+  push:
+    branches: [ main ]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check JavaScript
+        run: |
+          node - <<'NODE'
+          const fs=require('fs');
+          const html=fs.readFileSync('index.html','utf8');
+          const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
+          if(scripts.length!==2) throw new Error('Expected 2 script blocks, found '+scripts.length);
+          fs.writeFileSync('/tmp/main.js',scripts[1]);
+          console.log('Main script chars:',scripts[1].length);
+          NODE
+          node --check /tmp/main.js
