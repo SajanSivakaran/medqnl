@@ -1,0 +1,993 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedQNL</title>
+<style>
+:root{
+  --navy:#102b43;--navy2:#173e5f;--blue:#2d8de6;--blue2:#eaf5ff;
+  --ink:#1e2a36;--muted:#70808e;--line:#d8e0e7;--bg:#f5f7f9;--card:#fff;
+  --green:#1b7f49;--greenbg:#e9f7ef;--red:#b42318;--redbg:#fff0ed;
+  --shadow:0 2px 10px rgba(10,32,52,.07);
+}
+body.dark{
+  --navy:#eef3f7;--navy2:#d7e4ef;--blue:#68b4ff;--blue2:#12334e;
+  --ink:#f1f5f8;--muted:#b6c4cf;--line:#344b5d;--bg:#0e1822;--card:#15232f;
+  --green:#8be0ad;--greenbg:#123c28;--red:#ffaca1;--redbg:#431b18;--shadow:none;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{color:var(--blue)}
+.top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.logo{font-size:22px;font-weight:800;color:var(--navy)}.logo span{color:var(--blue)}
+.top-actions{display:flex;gap:8px;align-items:center}
+.badge{font-size:12px;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--muted)}
+.layout{display:flex;min-height:calc(100vh - 62px)}
+.side{width:232px;background:#102b43;color:#e2edf6;padding:14px 10px;flex:none}
+.navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea5b8;padding:11px}
+.nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0}.nav:hover,.nav.active{background:#1b4b72;color:#fff}
+.ico{width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:9px;stroke:currentColor;fill:none;stroke-width:1.8}
+.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}
+.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
+.title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
+.grid{display:grid;gap:15px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}.danger{background:var(--redbg);color:var(--red);border:1px solid #e8bbb3}
+.stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:28px;font-weight:800;color:var(--navy);margin-top:3px}
+.notice{background:var(--blue2);color:var(--ink);border:1px solid var(--line);padding:12px 14px;border-radius:9px}
+.hero{background:linear-gradient(135deg,#102b43,#173e5f);color:#fff;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px}.hero h2{color:#fff;margin:4px 0 8px;font-size:30px}.hero p{color:#dcebf6;max-width:760px;line-height:1.55}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
+.field{margin-bottom:11px}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.field input,.field textarea,.field select{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}.field textarea{min-height:110px;resize:vertical}
+.table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px 7px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}.table th{color:var(--muted);font-size:12px}
+.sourcebox{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:10px;max-height:220px;overflow:auto}.source-row{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:7px;padding:8px;margin-bottom:6px}.source-row input{margin-top:3px}
+.image-preview{max-width:420px;max-height:260px;display:block;border:1px solid var(--line);border-radius:8px;margin-top:8px}
+.term{font-weight:800;color:var(--navy)}.sup{font-size:10px;vertical-align:super;color:var(--blue)}
+.footnotes{border-top:1px solid var(--line);padding-top:14px;margin-top:20px;font-size:12px;color:var(--muted)}
+.empty{text-align:center;border:1px dashed var(--line);border-radius:10px;padding:28px;color:var(--muted)}
+.qwrap{display:flex;gap:13px}.qnav{width:70px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px;height:max-content}.qnum{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);margin-bottom:6px}.qnum.active{background:var(--blue);color:#fff;border-color:var(--blue)}.qnum.done{background:var(--greenbg);color:var(--green)}
+.qcard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}.qtop{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.qbody{padding:22px}.qbody h3{margin:0 0 18px;color:var(--navy);font-size:20px;line-height:1.5}.case{background:var(--bg);border-left:4px solid var(--blue);padding:13px 15px;border-radius:8px;margin-bottom:18px}.case-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);font-weight:800;margin-bottom:5px}
+.answer{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px;margin:8px 0}.answer.selected{background:var(--blue2);border-color:var(--blue)}.answer.correct{background:var(--greenbg);border-color:#9fd3b2}.answer.wrong{background:var(--redbg);border-color:#e7aaa1}
+.explain{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.box{padding:11px;border:1px solid var(--line);border-radius:8px;margin-top:8px}.good{background:var(--greenbg)}
+.bottom{background:var(--bg);border-top:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.lib-layout{display:flex;gap:14px}.lib-side{width:270px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;height:max-content;position:sticky;top:84px;max-height:calc(100vh - 105px);overflow:auto}.lib-side button{display:block;width:100%;padding:9px 10px;text-align:left;border:0;background:transparent;color:var(--ink);border-radius:7px}.lib-side button.active{background:var(--blue2);color:var(--blue);font-weight:700}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
+.floating-mark{position:fixed;z-index:300;display:none;background:#17191c;color:#fff;border-radius:7px;padding:7px 9px;gap:7px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.mark-dot{width:23px;height:23px;border-radius:50%;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(850px,100%);max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:12px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.ivtg{min-height:100vh;background:#e3e9f0;color:#102b43}.ivtg.dark-bg{background:#0d1822;color:#eef3f7}.ivtg-top{height:58px;background:#174f7e;color:#fff;display:flex;align-items:center;padding:0 10px;gap:10px}.ivtg-item{background:transparent;border:0;color:#fff;font-size:12px;min-width:70px}.ivtg-item svg{display:block;width:21px;height:21px;margin:0 auto 3px;stroke:currentColor;fill:none;stroke-width:1.8}.ivtg-tools{display:flex;align-items:center;gap:10px;flex:1;justify-content:center}.ivtg-count{font-weight:800;background:#104268;padding:8px 10px}.ivtg-left{position:fixed;left:0;top:58px;bottom:52px;width:110px;background:#fff;border-right:1px solid #c7d1da;overflow:auto}.ivtg-main{margin-left:110px;padding:18px 24px 70px;background:#f0f3f7;min-height:calc(100vh - 110px)}.ivtg-question{max-width:1100px;margin:auto;background:#f8fafc;padding:18px 28px;min-height:calc(100vh - 150px)}.ivtg.dark .ivtg-main{background:#101b26}.ivtg.dark .ivtg-question{background:#14222e;color:#fff}.ivtg.dark .ivtg-left{background:#121f2b;border-color:#33495b}.ivtg.dark .ivtg-question .qcard{background:#15232f;color:#fff;border-color:#33495b}.ivtg.dark .ivtg-question .qbody,.ivtg.dark .ivtg-question .qbody h3,.ivtg.dark .ivtg-question .case{color:#fff}.ivtg.dark .ivtg-question .answer{background:#172835;color:#fff;border-color:#3b5265}.ivtg.dark .ivtg-question .answer.correct{background:#16422c}.ivtg.dark .ivtg-question .answer.wrong{background:#451d1a}.ivtg.dark .ivtg-question .box,.ivtg.dark .ivtg-question .case{background:#0f1d28}.ivtg.dark .ivtg-question .muted{color:#bac8d2}.ivtg-bottom{position:fixed;left:0;right:0;bottom:0;height:52px;background:#174f7e;color:#fff;display:flex;justify-content:flex-end;gap:12px;align-items:center;padding:0 12px;z-index:100}.ivtg-status{height:26px;width:100%;border:0;border-bottom:1px solid #cbd5de;background:#fff}.ivtg-status.active{background:#174f7e;color:#fff}.ivtg-status.done{background:#e2f2e8}
+.lab-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.lab-tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 10px;border-radius:7px}.lab-tab.active{background:var(--blue);color:#fff}.lab-search{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);margin-bottom:10px}.lab-table{width:100%;border-collapse:collapse}.lab-table th,.lab-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.lab-table th{font-size:12px;color:var(--muted)}
+@media(max-width:1000px){.g4{grid-template-columns:1fr 1fr}.hero{display:block}.mock{width:100%;margin-top:14px}.ivtg-left{width:70px}.ivtg-main{margin-left:70px}}
+@media(max-width:720px){.main{padding:15px}.g2,.g3,.g4{grid-template-columns:1fr}.layout{display:block}.side{width:100%;min-height:0;display:flex;overflow:auto}.navlabel{display:none}.qwrap,.lib-layout{display:block}.qnav,.lib-side{width:100%;position:static;margin-bottom:12px}.qnum{width:40px;margin-right:4px}.ivtg-left{width:44px}.ivtg-main{margin-left:44px;padding:8px}.ivtg-tools{gap:4px}.ivtg-item{min-width:54px;font-size:10px}.ivtg-question{padding:10px}}
+/* Force readable dark-mode text */
+body.dark,body.dark .main,body.dark .card,body.dark .pagehead,body.dark .pagehead p,
+body.dark .qbody,body.dark .qbody h3,body.dark .qtop,body.dark .article-content,
+body.dark .lib-article,body.dark .lib-article h2,body.dark .title,
+body.dark .field label,body.dark .row,body.dark .stat .label,body.dark .stat .value{color:var(--ink)}
+body.dark .article-content p,body.dark .article-content li,body.dark .qbody p{color:#f3f6f8}
+body.dark .term{color:#fff}
+
+/* v9: iVTG side panels + chapter timer */
+.ivtg-shell{position:relative;min-height:100vh}
+.ivtg-drawer{position:fixed;top:58px;right:0;bottom:52px;width:min(720px,62vw);background:var(--card);color:var(--ink);z-index:180;border-left:1px solid var(--line);box-shadow:-8px 0 22px rgba(0,0,0,.18);display:flex;flex-direction:column}
+.ivtg-drawer-head{height:50px;background:#174f7e;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex:none}
+.ivtg-drawer-body{display:flex;min-height:0;flex:1}
+.ivtg-drawer-side{width:245px;border-right:1px solid var(--line);background:var(--bg);overflow:auto;padding:12px}
+.ivtg-drawer-side .drawer-search{width:100%;padding:9px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);margin-bottom:9px}
+.ivtg-drawer-side button{display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);padding:8px 9px;border-radius:7px}
+.ivtg-drawer-side button.active{background:var(--blue2);color:var(--blue);font-weight:700}
+.ivtg-drawer-content{flex:1;overflow:auto;padding:22px}
+.ivtg-drawer-content h2{margin:0;color:var(--navy);font-size:27px}
+.ivtg-drawer-content h3{color:var(--navy);font-size:16px;margin:22px 0 7px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.ivtg-drawer-content p{line-height:1.7;color:var(--ink)}
+body.dark .ivtg-drawer,body.dark .ivtg-drawer-content p,body.dark .ivtg-drawer-content h2,body.dark .ivtg-drawer-content h3{color:#fff}
+body.dark .ivtg-drawer-side{background:#111e29}
+body.dark .ivtg-drawer-side button{color:#f0f4f7}
+.ivtg-note-panel{position:fixed;top:58px;right:0;bottom:52px;width:min(820px,66vw);background:var(--card);color:var(--ink);z-index:180;border-left:1px solid var(--line);box-shadow:-8px 0 22px rgba(0,0,0,.18);display:flex;flex-direction:column}
+.ivtg-note-head{height:50px;background:#dfe1e3;color:#1d2a34;display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex:none}
+.ivtg-note-body{display:flex;min-height:0;flex:1}
+.ivtg-note-list{width:245px;background:#f3f4f6;border-right:1px solid #d5d9dd;padding:10px;overflow:auto}
+.ivtg-note-list button{width:100%;text-align:left;border:0;background:transparent;padding:9px;border-radius:6px;color:#26333d}
+.ivtg-note-list button.active{background:#fff;border:1px solid #d5d9dd}
+.ivtg-note-editor{flex:1;padding:20px;display:flex;flex-direction:column}
+.ivtg-note-editor input{font-size:23px;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:4px 0 10px;margin-bottom:10px}
+.ivtg-note-editor textarea{flex:1;min-height:280px;resize:none;border:0;outline:0;background:var(--card);color:var(--ink);font-size:15px;line-height:1.65}
+.ivtg-time{margin-right:auto;padding-left:10px;font-size:12px;font-weight:700}
+body.dark .ivtg-note-head{background:#26343f;color:#f4f7f9}
+body.dark .ivtg-note-list{background:#101a23;border-color:#324555}
+body.dark .ivtg-note-list button{color:#e8eef2}
+body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
+@media(max-width:900px){
+  .ivtg-drawer,.ivtg-note-panel{width:calc(100vw - 44px)}
+  .ivtg-drawer-side,.ivtg-note-list{width:185px}
+}
+@media(max-width:650px){
+  .ivtg-drawer,.ivtg-note-panel{width:100vw}
+  .ivtg-drawer-side,.ivtg-note-list{width:160px}
+}
+
+
+.qnavtree{margin:2px 0 8px 10px;border-left:1px solid #406079;padding-left:8px}
+.qnavtree .subnav{display:block;width:100%;border:0;background:transparent;color:#b9c9d7;text-align:left;padding:8px 8px;border-radius:6px;font-size:13px}
+.qnavtree .subnav:hover,.qnavtree .subnav.active{background:#1b4b72;color:#fff}
+.qnavtree .subnav.section{color:#e3edf5;font-weight:700}
+.perf-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.perf-tab{border:0;background:transparent;color:var(--muted);padding:11px 15px;border-bottom:2px solid transparent}
+.perf-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.perf-table{width:100%;border-collapse:collapse}
+.perf-table th,.perf-table td{padding:12px 9px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}
+.perf-table th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.perf-bar{height:8px;border-radius:99px;background:#e8edf2;overflow:hidden;min-width:120px}
+.perf-bar>span{display:block;height:100%;background:#57bf67}
+.ring{width:156px;height:156px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:conic-gradient(#57bf67 var(--p),#f0c9c6 0);position:relative}
+.ring:after{content:"";width:116px;height:116px;background:var(--card);border-radius:50%;position:absolute}
+.ring .ringtext{position:relative;z-index:2;text-align:center;color:var(--navy);font-weight:800}
+.metric-list .row{padding:13px 0}
+.search-results .result{padding:12px;border-bottom:1px solid var(--line)}
+.search-results .result:last-child{border-bottom:0}
+@media(max-width:760px){.qnavtree{display:none}.perf-tabs{overflow:auto}.perf-table{min-width:720px}}
+
+
+/* v14 performance + selection marking */
+.floating-mark .mark-remove{padding:4px 8px;min-width:24px}
+.perf-tabs{display:flex;gap:0;border-bottom:1px solid var(--line);margin-bottom:14px}
+.perf-tab{border:0;background:transparent;color:var(--muted);padding:12px 17px;border-bottom:2px solid transparent}
+.perf-tab.active{color:var(--blue);border-bottom-color:var(--blue);font-weight:700}
+.perf-table-wrap{overflow:auto}
+.perf-table{width:100%;border-collapse:collapse}
+.perf-table th,.perf-table td{padding:13px 9px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}
+.perf-table th{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.3px}
+.perf-bar{height:7px;background:#e8edf1;border-radius:20px;overflow:hidden;margin-top:6px;min-width:120px}
+.perf-bar span{display:block;height:100%;background:#58bf67;border-radius:20px}
+.ring{width:160px;height:160px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;background:conic-gradient(#58bf67 var(--p),#f2c7c7 0)}
+.ring:after{content:"";position:absolute;width:118px;height:118px;border-radius:50%;background:var(--card)}
+.ringtext{position:relative;z-index:2;text-align:center;color:var(--navy);font-size:28px;font-weight:800}
+.metric-list .row{padding:13px 0}
+.metric-list .row strong{background:#edf0f2;border-radius:99px;padding:3px 9px;font-size:12px}
+.performance-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.performance-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.percentile-box{display:grid;grid-template-columns:1fr 1fr;gap:25px;align-items:center}
+.bellcurve{height:160px;position:relative;overflow:hidden}
+.bellcurve svg{width:100%;height:100%}
+@media(max-width:900px){.performance-grid,.percentile-box{grid-template-columns:1fr}.performance-stat-grid{grid-template-columns:1fr}}
+
+
+.ico,.nav .ico,.subnav .ico{width:20px;height:20px;display:inline-block;vertical-align:-5px;stroke-width:1.8}
+.ivtg-item svg{width:20px!important;height:20px!important;min-width:20px}
+.nav,.subnav{display:flex;align-items:center;gap:8px}
+.drawer-backdrop{position:fixed;inset:0;background:rgba(5,18,30,.42);z-index:700}
+.ivtg-drawer{position:absolute;right:0;top:0;bottom:0;width:min(980px,78vw);background:var(--card);color:var(--ink);display:flex;box-shadow:-10px 0 30px rgba(0,0,0,.2)}
+.drawer-head{height:58px;position:absolute;top:0;left:0;right:0;background:#eee;border-bottom:1px solid #ccd3d9;display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:3}
+.drawer-body{display:flex;width:100%;padding-top:58px}
+.drawer-side{width:290px;background:#f6f8fa;border-right:1px solid var(--line);padding:14px;overflow:auto}
+.drawer-side button{width:100%;border:0;background:transparent;color:var(--ink);text-align:left;border-radius:7px;padding:9px 10px;margin:2px 0}
+.drawer-side button.active{background:#e9f3ff;color:var(--blue);font-weight:700}
+.drawer-main{flex:1;overflow:auto;background:var(--card);padding:22px 26px}
+.drawer-main h2{font-size:30px;margin:0 0 18px;color:var(--navy)}
+.drawer-main h3{font-size:19px;margin:26px 0 8px;color:var(--navy)}
+.drawer-search{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:10px 16px;width:100%;margin-bottom:14px}
+.drawer-tools{display:flex;gap:8px;justify-content:flex-end;margin-bottom:10px}
+.notebook-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:750;display:flex}
+.notebook{width:min(1180px,94vw);height:min(760px,92vh);margin:auto;background:var(--card);border-radius:4px;box-shadow:0 12px 45px rgba(0,0,0,.25);display:grid;grid-template-columns:300px 1fr;overflow:hidden;color:var(--ink)}
+.notebook-side{background:#f7f8fa;border-right:1px solid var(--line);padding:24px 14px;overflow:auto}
+.note-new{display:flex;justify-content:space-between;align-items:center;font-weight:800;font-size:17px;margin-bottom:14px}
+.note-plus{font-size:28px;line-height:1;background:none;border:0;color:var(--blue)}
+.note-search{width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;padding:9px 5px;margin-bottom:14px;color:var(--ink)}
+.note-list button{display:block;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;padding:8px 10px;border-radius:7px}
+.note-list button.active{background:#eef4f8;font-weight:700}
+.notebook-main{display:flex;flex-direction:column;min-width:0}
+.notebook-title{font-size:29px;border:0;border-bottom:1px solid var(--line);padding:25px 32px 13px;background:transparent;color:var(--ink);outline:0;width:100%}
+.note-toolbar{display:flex;align-items:center;gap:4px;padding:8px 32px;border-bottom:1px solid var(--line);background:var(--card);flex-wrap:wrap}
+.note-toolbar button{border:0;background:transparent;color:var(--ink);min-width:30px;height:30px;border-radius:5px}
+.note-toolbar button:hover{background:var(--bg)}
+.note-editor{flex:1;padding:24px 32px;outline:0;overflow:auto;line-height:1.7}
+.note-footer{display:flex;justify-content:flex-end;gap:10px;padding:10px 22px;border-top:1px solid var(--line)}
+.content-manager{display:grid;grid-template-columns:220px 1fr 1.2fr 320px;gap:12px}
+.manager-col{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
+.manager-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:800}
+.manager-list{padding:8px;max-height:68vh;overflow:auto}
+.manager-item{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid transparent;border-radius:8px;margin-bottom:5px;background:var(--card)}
+.manager-item:hover{border-color:var(--line);background:var(--bg)}
+.manager-item.active{border-color:var(--blue);background:var(--blue2)}
+.drag-handle{cursor:grab;color:var(--muted);user-select:none}
+.inline-edit{border:0;background:transparent;color:var(--ink);outline:0;min-width:0;width:100%;padding:4px}
+.manager-actions{display:flex;gap:4px}
+.tiny-btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:4px 7px}
+.editor-compact{padding:14px;overflow:auto;max-height:68vh}
+.toc-link{display:block;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;padding:5px 0;font-size:13px}
+@media(max-width:1200px){.content-manager{grid-template-columns:1fr 1fr}}
+@media(max-width:1050px){.content-manager{grid-template-columns:1fr}.manager-list,.editor-compact{max-height:none}.ivtg-drawer{width:96vw}}
+
+
+/* Gesloten bèta-toegang */
+#accessGate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#f5f7f9;padding:24px}
+#accessGate .gate-card{width:min(410px,100%);background:#fff;border:1px solid #d8e0e7;border-radius:14px;box-shadow:0 16px 40px rgba(10,32,52,.12);padding:28px}
+#accessGate .gate-logo{font-weight:800;font-size:28px;color:#102b43;margin-bottom:18px}
+#accessGate .gate-logo span{color:#2d8de6}
+#accessGate h1{font-size:21px;line-height:1.25;margin:0 0 8px;color:#1e2a36}
+#accessGate p{margin:0 0 18px;color:#70808e;font-size:14px;line-height:1.5}
+#accessGate label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#1e2a36}
+#accessGate input{width:100%;border:1px solid #cbd5df;border-radius:8px;padding:11px 12px;outline:none}
+#accessGate input:focus{border-color:#2d8de6;box-shadow:0 0 0 3px rgba(45,141,230,.12)}
+#accessGate button{width:100%;border:0;border-radius:8px;padding:11px 12px;margin-top:12px;background:#2d8de6;color:#fff;font-weight:700}
+#accessGate .gate-error{min-height:18px;color:#b42318;font-size:12px;margin-top:9px}
+body.gate-locked #app{display:none!important}
+body.gate-unlocked #accessGate{display:none}
+body.dark #accessGate{background:#0e1822}
+body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-shadow:none}
+body.dark #accessGate h1,#accessGate.dark h1,body.dark #accessGate label{color:#f1f5f8}
+body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
+</style>
+</head>
+<body class="gate-locked">
+<div id="accessGate" aria-label="Gesloten bèta toegang">
+  <div class="gate-card">
+    <div class="gate-logo">MedQ<span>NL</span></div>
+    <h1>Gesloten testomgeving</h1>
+    <p>Voer het wachtwoord in om de MedQNL-website te openen.</p>
+    <form id="accessForm" autocomplete="off">
+      <label for="accessPassword">Wachtwoord</label>
+      <input id="accessPassword" type="password" inputmode="text" autocomplete="current-password" autofocus>
+      <button type="submit">Naar MedQNL</button>
+      <div class="gate-error" id="accessError" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+
+<div id="app"></div>
+<script>
+(function(){
+  var PASSWORD='Chanel';
+  var gate=document.getElementById('accessGate');
+  var form=document.getElementById('accessForm');
+  var input=document.getElementById('accessPassword');
+  var error=document.getElementById('accessError');
+  function unlock(){
+    document.body.classList.remove('gate-locked');
+    document.body.classList.add('gate-unlocked');
+    try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
+    if(input) input.value='';
+    if(error) error.textContent='';
+  }
+  var unlocked=false;
+  try{unlocked=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
+  if(unlocked) unlock();
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    if(input.value===PASSWORD){unlock();}
+    else{error.textContent='Onjuist wachtwoord.';input.value='';input.focus();}
+  });
+})();
+</script>
+
+<div id="markbar" class="floating-mark">
+<button class="mark-dot yellow" data-mark-color="yellow" title="Geel"></button>
+<button class="mark-dot green" data-mark-color="green" title="Groen"></button>
+<button class="mark-dot cyan" data-mark-color="cyan" title="Blauw"></button>
+<button class="mark-dot pink" data-mark-color="pink" title="Roze"></button>
+<button class="mark-dot orange" data-mark-color="orange" title="Oranje"></button>
+<button class="btn secondary" data-remove-mark title="Markering verwijderen">×</button>
+</div>
+<script>
+(function(){
+var KEY="medqnl_v15";
+var page="dashboard",session=null,articleId="a1",labCategory="Chemie";
+
+var ICONS={
+home:'<svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>',
+qbank:'<svg class="ico" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>',
+book:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 012 2v13H7a2 2 0 01-2-2z"/><path d="M7 4v15M10 8h6M10 12h6"/></svg>',
+progress:'<svg class="ico" viewBox="0 0 24 24"><path d="M4 18V6M9 18v-5M14 18V8M19 18V4"/></svg>',
+overall:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>',
+report:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5M8 17h8"/></svg>',
+gear:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 00-.1-1l2-1.2-2-3.4-2.2 1a7 7 0 00-1.7-1L14.8 4h-4l-.2 2.4a7 7 0 00-1.7 1l-2.2-1-2 3.4L6.7 11a7 7 0 000 2l-2 1.2 2 3.4 2.2-1a7 7 0 001.7 1l.2 2.4h4l.2-2.4a7 7 0 001.7-1l2.2 1 2-3.4-2-1.2c.1-.3.1-.7.1-1z"/></svg>',
+prev:'<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',
+next:'<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>',
+tutorial:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9a2 2 0 014 1c0 2-2 2-2 4M12 17h.01"/></svg>',
+lab:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3"/><path d="M7 15h10"/></svg>',
+note:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+calc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01M8 18h2M12 18h2M16 18h.01"/></svg>',
+feedback:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>',
+end:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
+};
+
+var SOURCES=[
+{id:"s1",title:"WGBO — Boek 7 BW",url:"https://wetten.overheid.nl/BWBR0005290/"},
+{id:"s2",title:"Rijksoverheid — invloed op medische behandeling",url:"https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/rechten-van-patient-en-privacy/rechten-bij-een-medische-behandeling/heb-ik-invloed-op-mijn-medische-behandeling"},
+{id:"s3",title:"Rijksoverheid — medisch dossier bewaren",url:"https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/rechten-van-patient-en-privacy/uw-medisch-dossier/bewaren-medisch-dossier"},
+{id:"s4",title:"Rijksoverheid — verplichte ggz",url:"https://www.rijksoverheid.nl/themas/familie-zorg-en-gezondheid/geestelijke-gezondheidszorg/gedwongen-opname-en-dwang-in-de-zorg"},
+{id:"s5",title:"KNMG — Waarden",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/dilemmas-begrippen/waarden"},
+{id:"s6",title:"KNMG — Weldoen",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/dilemmas-begrippen/weldoen"},
+{id:"s7",title:"KNMG — Niet-schaden",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/dilemmas-begrippen/niet-schaden"},
+{id:"s8",title:"KNMG — Respect voor autonomie",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/dilemmas-begrippen/respect-voor-autonomie"},
+{id:"s9",title:"KNMG — Beroepsgeheim",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/dilemmas-begrippen/beroepsgeheim"},
+{id:"s10",title:"KNMG — Ethische theorieën",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/verdiepen/welke-ethische-theorieen-en-stromingen-zijn-er-1"},
+{id:"s11",title:"NCBI — Adult normal reference ranges",url:"https://www.ncbi.nlm.nih.gov/books/NBK613071/"},
+{id:"s12",title:"OpenStax — Adult lab values",url:"https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values"},
+{id:"s13",title:"Harmonised reference intervals",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5111244/"},
+{id:"s14",title:"NCBI — Physiology, Male Reproductive System",url:"https://www.ncbi.nlm.nih.gov/books/NBK538429/"},
+{id:"s15",title:"NCBI — Portal Hypertension",url:"https://www.ncbi.nlm.nih.gov/sites/books/NBK507718/"},
+{id:"s16",title:"NCBI — Medical Microbiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK7627/"},
+{id:"s17",title:"RIVM — Vaccinaties",url:"https://www.rivm.nl/vaccinaties"},
+{id:"s18",title:"RIVM — Pneumokokken",url:"https://www.rivm.nl/pneumokokken"},
+{id:"s19",title:"NHG — Urineweginfecties",url:"https://richtlijnen.nhg.org/standaarden/urineweginfecties"},
+{id:"s20",title:"NCBI — Cardiovascular Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK482280/"},
+{id:"s21",title:"NCBI — Pulmonary Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK482280/"},
+{id:"s22",title:"NCBI — Renal Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK538327/"},
+{id:"s23",title:"NCBI — Neuronal Action Potentials",url:"https://www.ncbi.nlm.nih.gov/books/NBK538143/"},
+{id:"s24",title:"NCBI — Endocrine Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK279388/"},
+{id:"s25",title:"NCBI — Gastrointestinal Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK279394/"},
+{id:"s26",title:"NCBI — Hemostasis",url:"https://www.ncbi.nlm.nih.gov/books/NBK507711/"}
+];
+
+var LABS=[
+["Hematologie","Hemoglobine","V: 7,5–10,0; M: 8,5–11,0","mmol/L","Geslacht en laboratoriumafhankelijk."],
+["Hematologie","Hematocriet","V: 0,35–0,47; M: 0,42–0,53","L/L","Volwassenen."],
+["Hematologie","Leukocyten","4,0–10,0","×10^9/L","Volwassenen."],
+["Hematologie","Trombocyten","150–400","×10^9/L","Volwassenen."],
+["Hematologie","MCV","80–100","fL","Volwassenen."],
+["Chemie","Natrium","135–145","mmol/L","Algemene volwassen referentie."],
+["Chemie","Kalium","3,5–5,2","mmol/L","Serum/plasma; laboratoriumafhankelijk."],
+["Chemie","Calcium totaal","2,10–2,60","mmol/L","Interpretatie mede afhankelijk van albumine."],
+["Chemie","Glucose nuchter","3,9–5,5","mmol/L","Nuchter; diagnostische drempels zijn anders."],
+["Nier","Creatinine","V: 45–90; M: 60–110","µmol/L","Geslacht en laboratoriumafhankelijk."],
+["Nier","Ureum","2,5–7,5","mmol/L","Educatieve richtwaarde."],
+["Lever","ALAT","V: 5–35; M: 5–40","U/L","Geslacht en assayafhankelijk."],
+["Lever","ASAT","V: 5–30; M: 5–35","U/L","Geslacht en assayafhankelijk."],
+["Lever","GGT","V: <35; M: <50","U/L","Geslacht en laboratoriumafhankelijk."],
+["Lever","Bilirubine totaal","1–20","µmol/L","Volwassenen."],
+["Stolling","INR","0,8–1,2","ratio","Zonder vitamine-K-antagonist."],
+["Stolling","aPTT","25–35","s","Laboratoriumafhankelijk."],
+["Endocrinologie","TSH","0,4–4,0","mU/L","Zwangerschap en leeftijd beïnvloeden referentie."],
+["Endocrinologie","Vrij T4","12–22","pmol/L","Assayafhankelijk."],
+["Cardiaal","Troponine T/I","Assay-specifieke 99e percentielgrens","ng/L","Geen universele referentiewaarde."],
+["Inflammatie","CRP","<5","mg/L","Klinische context essentieel."],
+["Inflammatie","BSE","V: <20; M: <15","mm/uur","Leeftijd en geslacht beïnvloeden waarde."],
+["IJzer","Ferritine","V: 15–150; M: 30–400","µg/L","Ontsteking beïnvloedt interpretatie."],
+["Bloedgas","pH","7,35–7,45","","Arterieel bloedgas."],
+["Bloedgas","pCO2","4,7–6,0","kPa","Arterieel bloedgas."],
+["Bloedgas","pO2","10,0–13,3","kPa","Op kamerlucht."],
+["Bloedgas","HCO3−","22–28","mmol/L","Arterieel bloedgas."],
+["Urine","Urinedichtheid","1,005–1,030","","Hydratatie beïnvloedt."],
+["Urine","Urine pH","4,5–8,0","","Voeding en stofwisseling beïnvloeden."],
+["Urine","Proteïne","Negatief","","Kwalitatieve dipstick."]
+];
+
+var QUESTIONS=[
+
+{id:"q4",subject:"Fysiologie",topic:"Hart en vaatstelsel",difficulty:"Makkelijk",title:"Baroreflex",caseText:"Een patiënt krijgt plotseling een duidelijke daling van de arteriële bloeddruk.",stem:"Welke combinatie past het best bij de snelle compensatie?",options:["Lagere hartfrequentie en vasodilatatie","Hogere hartfrequentie en vasoconstrictie","Hogere hartfrequentie en vasodilatatie","Lagere hartfrequentie en vasoconstrictie"],correct:1,explanation:"Bij acute hypotensie neemt de baroreceptoractiviteit af. De sympathische respons verhoogt onder andere de hartfrequentie en perifere vaatweerstand.",objective:"De baroreflex bij acute hypotensie herkennen.",sourceIds:["s20"],image:""},
+{id:"q5",subject:"Fysiologie",topic:"Ademhaling",difficulty:"Makkelijk",title:"Vitale capaciteit",caseText:"Een student krijgt een vraag over de samenstelling van de vitale capaciteit.",stem:"Welke combinatie vormt de vitale capaciteit?",options:["TV + RV","IRV + TV + ERV","RV + ERV","RV + TV"],correct:1,explanation:"De vitale capaciteit bestaat uit IRV + TV + ERV.",objective:"Longvolumes en longcapaciteiten onderscheiden.",sourceIds:["s21"],image:""},
+{id:"q6",subject:"Fysiologie",topic:"Nieren",difficulty:"Gemiddeld",title:"Afferente arteriole",caseText:"Een student bespreekt de invloed van vaattonus op de glomerulaire filtratie.",stem:"Wat gebeurt er doorgaans bij dilatatie van de afferente arteriole?",options:["De glomerulaire bloedtoevoer neemt af","De glomerulaire bloedtoevoer en doorgaans de GFR nemen toe","De renineafgifte stopt volledig","Er is geen effect op de glomerulaire hemodynamiek"],correct:1,explanation:"Dilatatie van de afferente arteriole vergroot de instroom naar de glomerulus en ondersteunt doorgaans een hogere GFR.",objective:"Afferente vaattonus koppelen aan GFR.",sourceIds:["s22"],image:""},
+{id:"q7",subject:"Fysiologie",topic:"Hemostase",difficulty:"Gemiddeld",title:"Fibrinevorming",caseText:"Na vaatbeschadiging is al een primaire plaatjesplug gevormd. Daarna moet het stolsel verder worden gestabiliseerd.",stem:"Welke stap zorgt voor de belangrijkste structurele versteviging?",options:["Fibrinevorming uit fibrinogeen","Afbraak van fibrine door plasmin","Remming van trombine door antitrombine","Vasodilatatie van het beschadigde vat"],correct:0,explanation:"Trombine zet fibrinogeen om in fibrine. Het fibrinenetwerk stabiliseert de plaatjesplug.",objective:"Primaire en secundaire hemostase onderscheiden.",sourceIds:["s26"],image:""},
+{id:"q8",subject:"Fysiologie",topic:"Hormonen en metabolisme",difficulty:"Makkelijk",title:"Insuline en GLUT4",caseText:"Na een maaltijd stijgt de plasmaglucose en reageert de pancreas met insulineafgifte.",stem:"Welk effect past het best bij insuline?",options:["Minder glucoseopname in spierweefsel","Meer GLUT4-gemedieerde glucoseopname in spier- en vetweefsel","Directe afbraak van glycogeen","Volledige remming van glucoseopname in vetweefsel"],correct:1,explanation:"Insuline bevordert GLUT4-gemedieerde glucoseopname in spier- en vetweefsel.",objective:"Het effect van insuline op glucoseopname herkennen.",sourceIds:["s24"],image:""},
+
+{id:"q1",subject:"Metamedica",topic:"Medische ethiek",difficulty:"Makkelijk",title:"Niet-schaden",caseText:"Een arts overweegt een invasieve ingreep met een zeer kleine kans op voordeel en een reële kans op ernstige complicaties.",stem:"Welk principe is hier het meest direct relevant?",options:["Niet-schaden","Alleen autonomie","Alleen vertrouwelijkheid","Beschrijvende ethiek","Meta-ethiek"],correct:0,explanation:"Het principe van **niet-schaden** vraagt aandacht voor het vermijden van onnodige of disproportionele schade. Ook **proportionaliteit** is relevant.",objective:"Niet-schaden en proportionaliteit toepassen.",sourceIds:["s7"],image:""},
+{id:"q2",subject:"Metamedica",topic:"WGBO",difficulty:"Gemiddeld",title:"13-jarige patiënt",caseText:"Een 13-jarige wilsbekwame patiënt heeft een reguliere medische behandeling nodig. De patiënt en de ouders zijn beiden betrokken bij de beslissing.",stem:"Welke regel past in beginsel bij de WGBO?",options:["Alleen de arts beslist.","Alleen de ouders beslissen.","De jongere en de ouder(s)/voogd hebben in beginsel beide een rol in de toestemming.","De burgemeester beslist.","Niemand hoeft toestemming te geven."],correct:2,explanation:"Tussen **12 en 16 jaar** geldt in beginsel een vorm van dubbele toestemming: de jongere en de ouder(s) of voogd met gezag hebben beide een rol.",objective:"De WGBO-leeftijdsregeling voor 12- tot 16-jarigen kennen.",sourceIds:["s1","s2"],image:""},
+{id:"q3",subject:"Metamedica",topic:"Laboratoriuminterpretatie",difficulty:"Makkelijk",title:"Hyponatriëmie",caseText:"Een 72-jarige patiënt gebruikt een diureticum en is sinds twee dagen misselijk en suf. Het serum-natrium is 124 mmol/L.",stem:"Welke labafwijking is duidelijk aanwezig?",options:["Hypernatriëmie","Hyponatriëmie","Hyperkaliëmie","Hypocalciëmie","Hyperchloremie"],correct:1,explanation:"Een natriumwaarde van **124 mmol/L** ligt onder de gebruikelijke volwassen referentiewaarde en past bij **hyponatriëmie**.",objective:"Elektrolytenafwijkingen herkennen met behulp van een referentietabel.",sourceIds:["s11","s13"],image:""}
+];
+
+var SECTIONS=[
+{id:"sec1",title:"Metamedica",order:1},
+{id:"sec2",title:"Laboratoriumwaarden",order:2},
+{id:"sec3",title:"Fysiologie",order:3},
+{id:"sec4",title:"Microbiologie & infectieziekten",order:4}
+];
+
+var ARTICLES=[
+{id:"a1",sectionId:"sec1",title:"Metamedica — overzicht",body:["Metamedica onderzoekt de verhouding tussen geneeskunde, mens, waarden, samenleving en recht.","De kern bestaat uit *ethiek*, *medische ethiek*, de *WGBO*, het *beroepsgeheim*, het *medisch dossier* en *verplichte geestelijke gezondheidszorg*."],sourceIds:["s5","s10"],image:""},
+{id:"a2",sectionId:"sec1",title:"Normen, waarden en ethiek",body:["Een *waarde* is iets wat iemand of een gemeenschap belangrijk vindt. Een *norm* is een regel of verwachting die richting geeft aan gedrag.","*Beschrijvende ethiek* brengt bestaande normen en waarden in kaart. *Normatieve ethiek* vraagt wat moreel gerechtvaardigd is. *Meta-ethiek* onderzoekt de betekenis en status van morele begrippen."],sourceIds:["s5","s10"],image:""},
+{id:"a3",sectionId:"sec1",title:"WGBO en toestemming",body:["De *WGBO* bevat belangrijke regels over de geneeskundige behandelingsovereenkomst. *Informed consent* betekent dat een patiënt relevante informatie krijgt en vrijwillig kan beslissen.","*Wilsbekwaamheid* is besluitgebonden. De vraag is of de patiënt de informatie kan begrijpen, gevolgen kan waarderen, opties kan afwegen en een keuze kan uiten."],sourceIds:["s1","s2"],image:""},
+{id:"a4",sectionId:"sec1",title:"Beroepsgeheim en dossier",body:["Het *medisch dossier* bevat informatie die voor de behandeling relevant is. De algemene bewaartermijn is minimaal 20 jaar vanaf de laatste wijziging.","Het *beroepsgeheim* beschermt patiëntinformatie tegenover derden. Delen kan bijvoorbeeld op grond van toestemming of een wettelijke uitzondering."],sourceIds:["s3","s9"],image:""},
+{id:"a5",sectionId:"sec2",title:"Labwaarden gebruiken",body:["Gebruik deze kaart als *educatieve leerhulp*. Referentie-intervallen kunnen verschillen per laboratorium, methode, leeftijd en geslacht.","Voor patiëntenzorg moet altijd het interval op het eigen laboratoriumrapport worden gebruikt."],sourceIds:["s11","s12","s13"],image:""},
+{id:"f1",sectionId:"sec3",title:"Portale circulatie en portale hypertensie",body:[
+"De *vena portae* voert bloed vanuit onder andere het maag-darmkanaal en de milt naar de lever. Daarmee vormt de portale circulatie een schakel tussen het spijsverteringsgebied en de lever.",
+"Wanneer de vaatweerstand in het portale systeem stijgt, kan *portale hypertensie* ontstaan. Het lichaam probeert die druk deels te omzeilen via collaterale verbindingen tussen het portale en systemische veneuze vaatbed.",
+"Belangrijke gevolgen van zulke collateralen zijn *oesofagusvarices*, rectale varices en zichtbare venen rond de navel. Een varixbloeding, vooral uit de slokdarm, kan acuut levensbedreigend zijn.",
+"Een behandelingsprincipe is het creëren van een gecontroleerde verbinding tussen portale en systemische circulatie. Een transjugulaire portosystemische shunt heet een *TIPS*.",
+"**Toetskoppeling:** denk bij verhoogde portale weerstand aan: hogere portaledruk → vorming van collateralen → risico op varices en andere complicaties."
+],sourceIds:["s15"],image:""},
+
+{id:"f2",sectionId:"sec3",title:"Mannelijke voortplantingsfysiologie",body:[
+"De testis combineert endocriene functie met de productie van gameten. *Leydigcellen* maken testosteron onder invloed van LH. *Sertolicellen* ondersteunen de ontwikkeling van kiemcellen en de spermatogenese; FSH is hierbij belangrijk.",
+"De regeling verloopt via de *hypothalamus-hypofyse-gonade-as*. Pulsgewijze GnRH-afgifte stimuleert de hypofyse tot secretie van LH en FSH. Gonadale hormonen zorgen vervolgens voor negatieve terugkoppeling.",
+"Sertolicellen produceren onder andere *inhibine B*. Tijdens de embryonale ontwikkeling speelt *AMH* uit Sertolicellen een rol bij het remmen van de Müller-structuren.",
+"Bij een typisch mannelijk embryologisch ontwikkelingspad blijft de Wolff-structuur bestaan en vormt deze een groot deel van het interne afvoersysteem van de mannelijke geslachtsorganen. De Müller-structuren regresseren onder invloed van AMH."
+],sourceIds:["s14"],image:""},
+
+{id:"f3",sectionId:"sec3",title:"Spermatogenese en hormonale feedback",body:[
+"De *spermatogenese* vindt plaats in de seminifere tubuli. Sertolicellen leveren hierbij structurele en metabole ondersteuning aan ontwikkelende kiemcellen.",
+"De kern van de hormonale koppeling is eenvoudig te onthouden: *LH → Leydig → testosteron* en *FSH → Sertoli → ondersteuning van spermatogenese*. Testosteron en inhibine B leveren negatieve feedback aan de hypothalamus-hypofyse-as.",
+"Bij vragen over mannelijke voortplantingsfysiologie is het nuttig eerst de betrokken cel te benoemen en pas daarna het hormoon en de functie te koppelen."
+],sourceIds:["s14"],image:""},
+
+{id:"m1",sectionId:"sec4",title:"Basale virologie",body:[
+"Virussen zijn afhankelijk van gastheercellen voor hun replicatie. Bij de indeling spelen onder andere het *genoom*, de eiwitmantel en het al dan niet aanwezig zijn van een *envelop* een rol.",
+"Virale genomen kunnen uit DNA of RNA bestaan. RNA-virussen kunnen onder meer verschillen in positieve en negatieve polariteit. Deze eigenschappen beïnvloeden hoe het virus zijn genetische informatie kan gebruiken.",
+"Een envelop is een lipidemembraan en is daardoor relatief kwetsbaar voor omstandigheden die membranen verstoren. Dat helpt bij het begrijpen van verschillen in overleving en transmissie tussen virusgroepen.",
+"Voor klinische herkenning is het nuttig om virusgroepen te koppelen aan patronen, zoals latentie bij herpesvirussen, respiratoire infecties bij influenzavirussen en vectorgebonden transmissie bij verschillende arbovirussen."
+],sourceIds:["s16"],image:""},
+
+{id:"m2",sectionId:"sec4",title:"Basale bacteriologie",body:[
+"Bacteriën worden onder meer ingedeeld op celwand, vorm en rangschikking. De Gramkleuring maakt onderscheid tussen *grampositieve* en *gramnegatieve* bacteriën op basis van verschillen in hun celwandstructuur.",
+"Grampositieve bacteriën hebben een relatief dikke peptidoglycaanlaag. Gramnegatieve bacteriën hebben minder peptidoglycaan en daarnaast een buitenmembraan met onder andere lipopolysaccharide.",
+"Ook de vorm helpt bij herkenning: kokken kunnen in paren, ketens of clusters voorkomen, terwijl staven en spiraalvormige bacteriën andere patronen hebben.",
+"Antibiotica grijpen aan op verschillende processen, waaronder celwandsynthese, eiwitsynthese en nucleïnezuursynthese. Resistentie kan bijvoorbeeld ontstaan door geneesmiddelen af te breken of het aangrijpingspunt te veranderen."
+],sourceIds:["s16"],image:""},
+
+{id:"m3",sectionId:"sec4",title:"Luchtweginfecties",body:[
+"Luchtweginfecties worden praktisch verdeeld in aandoeningen van de bovenste en onderste luchtwegen. Bij pneumonie is het belangrijk om de setting van ontstaan mee te nemen, bijvoorbeeld buiten of tijdens een ziekenhuisopname.",
+"Bij een patiënt met koorts, hoest en dyspneu helpen tijdsbeloop, risicofactoren, auscultatie en eventueel beeldvorming bij het ordenen van de differentiaaldiagnose.",
+"Blootstelling kan richting geven. Contact met vogels, bepaalde dieren, reizen of verminderde afweer kan specifieke verwekkers waarschijnlijker maken.",
+"**Toetskoppeling:** leer niet alleen een verwekker, maar de combinatie *verwekker + blootstelling + klinisch beeld + passende diagnostiek*."
+],sourceIds:["s16"],image:""},
+
+{id:"m4",sectionId:"sec4",title:"Urogenitale infecties en soa's",body:[
+"Bij een *cystitis* staan klachten van de blaas op de voorgrond. Bij *pyelonefritis* is er sprake van betrokkenheid van het nierweefsel, vaak met koorts en flankpijn.",
+"Een nitriettest kan de waarschijnlijkheid van een bacteriële urineweginfectie verhogen, maar een negatieve uitslag sluit de diagnose niet altijd uit. Leeftijd, geslacht, zwangerschap, kathetergebruik en systemische verschijnselen beïnvloeden de aanpak.",
+"Bij soa's passen verschillende klinische syndromen bij verschillende verwekkers. Chlamydia en gonokokken kunnen urethritis veroorzaken; herpes simplex veroorzaakt typisch pijnlijke vesikels; syfilis kent karakteristieke stadia.",
+"*PID* is een opstijgende infectie van de vrouwelijke voortplantingsorganen en kan op termijn schade aan eileiders en vruchtbaarheid veroorzaken."
+],sourceIds:["s19","s16"],image:""},
+
+{id:"m5",sectionId:"sec4",title:"Gastro-intestinale infecties",body:[
+"Acute diarree kan viraal, bacterieel of parasitair zijn. Het onderscheid tussen *waterige* en *bloederige* diarree helpt bij de eerste differentiaaldiagnose.",
+"*Clostridioides difficile* is vooral relevant wanneer de normale darmflora is verstoord, bijvoorbeeld na antibiotica. Een ernstige infectie kan leiden tot pseudomembraneuze colitis.",
+"Bij bloederige diarree is *STEC/EHEC* een belangrijke differentiaal. Shigatoxine kan bijdragen aan het *hemolytisch-uremisch syndroom*, met hemolyse, trombocytopenie en nierschade.",
+"Reisgeschiedenis, voedselblootstelling, leeftijd en immuunstatus helpen om virale, bacteriële en parasitaire oorzaken verder te onderscheiden."
+],sourceIds:["s16"],image:""},
+
+{id:"m6",sectionId:"sec4",title:"Infecties van het zenuwstelsel",body:[
+"*Meningitis* is een ontsteking van de hersenvliezen. Liquoronderzoek ondersteunt het onderscheid tussen bacteriële en virale oorzaken. Celtype, eiwit, glucose en het macroscopische aspect moeten in samenhang worden beoordeeld.",
+"Bij een typische bacteriële meningitis zijn neutrofielen en eiwit verhoogd en kan glucose dalen. Bij virale meningitis overheersen vaker lymfocyten en blijft glucose meestal behouden.",
+"*Encefalitis* betreft het hersenparenchym. Veranderingen in bewustzijn, gedrag en persoonlijkheid kunnen naast neurologische uitval optreden.",
+"*Guillain-Barré* is geen primaire infectie van het zenuwstelsel, maar een immuungemedieerde postinfectieuze neuropathie. Een opstijgende slappe parese en areflexie zijn kenmerkend."
+],sourceIds:["s16"],image:""},
+
+{id:"m7",sectionId:"sec4",title:"Vaccinaties en infectiepreventie",body:[
+"Het Nederlandse vaccinatiebeleid verandert in de tijd. Voor actuele examenvragen over het *Rijksvaccinatieprogramma* moet daarom steeds de meest recente informatie van het RIVM worden gebruikt.",
+"Vaccinaties beschermen tegen meerdere ernstige infectieziekten. Het programma kent verschillende leeftijdsmomenten en aparte aanbevelingen voor specifieke groepen.",
+"Voor de iVTG is het nuttig om drie dingen uit elkaar te houden: de ziekte die je voorkomt, de doelgroep die wordt gevaccineerd en het actuele Nederlandse schema.",
+"De kern van infectiepreventie blijft breder dan vaccinatie alleen: broncontrole, transmissieroutes, hygiënische maatregelen en tijdige herkenning van besmettelijke ziekte spelen eveneens een rol."
+],sourceIds:["s17","s18"],image:""},
+
+{id:"m8",sectionId:"sec4",title:"Koppeling: verwekker, syndroom en context",body:[
+"Een sterke microbiologiekennis bestaat uit drie niveaus. Eerst herken je het *syndroom* — bijvoorbeeld urethritis, meningitis of waterige diarree. Daarna koppel je de meest waarschijnlijke *verwekker*. Ten slotte voeg je de *context* toe, zoals leeftijd, reis, immuunstatus, blootstelling of antibioticagebruik.",
+"Deze aanpak voorkomt dat microbiologie alleen een lijst met losse organismen wordt. Dezelfde verwekker kan bovendien verschillende beelden geven afhankelijk van de gastheer en de plaats van infectie.",
+"**Toetsstrategie:** begin bij het klinische beeld en ga pas daarna naar de verwekker. Vraag jezelf vervolgens af welke bevinding de keuze het sterkst ondersteunt."
+],sourceIds:["s16"],image:""},
+{id:"f0",sectionId:"sec3",title:"Fysiologie — overzicht",body:[
+"Dit hoofdstuk bundelt de belangrijkste fysiologische leerprincipes. Gebruik de subsecties links om snel naar een onderwerp te gaan.",
+"De onderdelen zijn *hart en vaatstelsel*, *ademhalingsstelsel*, *nieren en urinewegen*, *hemostase*, *bloed en lymfe*, *zenuwstelsel*, *hormonen en metabolisme*, *spijsverteringsstelsel* en *voortplantingsstelsel*.",
+"Bij fysiologievragen helpt een vaste redeneerstap: bepaal welke variabele verandert, identificeer het regelsysteem en voorspel daarna het effect."
+],sourceIds:["s20","s21","s22","s23","s24","s25","s26"],image:""},
+
+{id:"f4",sectionId:"sec3",title:"Hart en vaatstelsel",body:[
+"*S1* ontstaat door het sluiten van de atrioventriculaire kleppen en hoort bij het begin van de systole. *S2* ontstaat door het sluiten van de aorta- en pulmonalisklep en hoort bij het begin van de diastole.",
+"*Polsdruk* is het verschil tussen systolische en diastolische bloeddruk. Een stijve aorta kan de polsdruk vergroten.",
+"De *mean arterial pressure (MAP)* kan bij een normale hartfrequentie worden benaderd met: MAP ≈ (SBD + 2 × DBD) / 3.",
+"Bij een plotselinge bloeddrukdaling neemt de baroreceptoractiviteit af. De sympathische respons verhoogt onder andere hartfrequentie, contractiliteit en perifere vaatweerstand.",
+"*Compliance* beschrijft de volumeverandering bij een drukverandering. Venen zijn zeer compliant en vormen daardoor een bloedreservoir.",
+"Volgens het Poiseuille-principe heeft de vaatstraal een zeer sterke invloed op de weerstand tegen stroming."
+],sourceIds:["s20"],image:""},
+
+{id:"f5",sectionId:"sec3",title:"Ademhalingsstelsel",body:[
+"De vier basisvolumes zijn *teugvolume (TV)*, *inspiratoir reservevolume (IRV)*, *expiratoir reservevolume (ERV)* en *residuaal volume (RV)*.",
+"Belangrijke capaciteiten zijn: *vitale capaciteit = IRV + TV + ERV*, *inspiratoire capaciteit = TV + IRV*, *functionele residuele capaciteit = RV + ERV* en *totale longcapaciteit = IRV + TV + ERV + RV*.",
+"Type I-pneumocyten vormen het belangrijkste gaswisselingsoppervlak. Type II-pneumocyten produceren *surfactant*, waarmee de oppervlaktespanning in alveoli wordt verlaagd.",
+"De *V/Q-verhouding* verschilt regionaal binnen de long. In rechtopstaande houding is de perfusie naar de basis relatief groter.",
+"Sympathische β2-stimulatie bevordert bronchodilatatie; parasympathische muscarinereceptoractiviteit bevordert bronchoconstrictie."
+],sourceIds:["s21"],image:""},
+
+{id:"f6",sectionId:"sec3",title:"Nieren en urinewegen",body:[
+"De *glomerulaire filtratiesnelheid (GFR)* hangt samen met de netto filtratiedruk en de eigenschappen van de glomerulaire filtratiebarrière.",
+"Dilatatie van de afferente arteriole vergroot doorgaans de renale bloedtoevoer en ondersteunt een hogere GFR. De efferente arteriole heeft een belangrijke invloed op de glomerulaire druk.",
+"Bij lage renale perfusie kan het *renine-angiotensine-aldosteronsysteem (RAAS)* worden geactiveerd. Renine start een cascade die leidt tot *angiotensine II* en aldosteron.",
+"Aldosteron bevordert natriumreabsorptie in het distale nefron, waardoor waterretentie en kaliumuitscheiding toenemen.",
+"NSAID's remmen prostaglandinesynthese en kunnen daardoor de renale perfusie verminderen bij kwetsbare patiënten."
+],sourceIds:["s22"],image:""},
+
+{id:"f7",sectionId:"sec3",title:"Hemostase",body:[
+"Na vaatbeschadiging verlopen *primaire hemostase*, *secundaire hemostase* en fibrinolyse functioneel na elkaar.",
+"Tijdens de primaire fase worden trombocyten geactiveerd. *Von Willebrandfactor* ondersteunt de adhesie aan beschadigd subendotheel en daarna ontstaat aggregatie.",
+"Tijdens de secundaire fase leidt de stollingscascade uiteindelijk tot *trombine*. Trombine zet fibrinogeen om in *fibrine*, dat de primaire plaatjesplug stabiliseert.",
+"Antitrombine, actief proteïne C en TFPI beperken de stollingsreactie. Bij fibrinolyse wordt plasminogeen omgezet in *plasmin*, dat fibrine afbreekt."
+],sourceIds:["s26"],image:""},
+
+{id:"f8",sectionId:"sec3",title:"Bloed en lymfe",body:[
+"Het meeste lichaamswater bevindt zich intracellulair. Het extracellulaire compartiment bestaat vooral uit interstitieel vocht en intravasculair volume.",
+"Een hypertonische vloeistof trekt water uit cellen; een hypotone vloeistof kan water de cellen in verplaatsen. De richting van waterverplaatsing wordt bepaald door de effectieve osmolariteit.",
+"De *Starling-krachten* beschrijven de balans tussen hydrostatische en colloïd-osmotische krachten over de capillaire wand.",
+"Het *lymfestelsel* voert een deel van het interstitiële vocht terug naar de veneuze circulatie. De ductus thoracicus is hiervoor een belangrijk verzamelvat."
+],sourceIds:["s20"],image:""},
+
+{id:"f9",sectionId:"sec3",title:"Zenuwstelsel",body:[
+"Het rustmembraanpotentiaal van een neuron is negatief. De *Na+/K+-ATPase* helpt de ionengradiënten onderhouden die nodig zijn voor prikkelgeleiding.",
+"Tijdens een actiepotentiaal veroorzaken Na+-instroom en daarna K+-efflux respectievelijk depolarisatie en repolarisatie.",
+"*EPSP's* vergroten de kans op een actiepotentiaal, terwijl *IPSP's* die kans verkleinen. De som van synaptische input wordt rond de axonheuvel geïntegreerd.",
+"De sterkte van een zenuwprikkel wordt vooral gecodeerd door de frequentie van actiepotentialen en niet door een grotere amplitude van een individueel actiepotentiaal.",
+"Sympathische en parasympathische activiteit hebben vaak tegengestelde effecten op hart, luchtwegen, pupil, maag-darmkanaal en urineblaas."
+],sourceIds:["s23"],image:""},
+
+{id:"f10",sectionId:"sec3",title:"Hormonen en metabolisme",body:[
+"De calciumhuishouding wordt onder andere gereguleerd door *PTH*, calcitriol en calcitonine. PTH stijgt bij een lage calciumconcentratie.",
+"*Insuline* wordt uitgescheiden door β-cellen van de pancreas. Het stimuleert onder andere GLUT4-gemedieerde glucoseopname in spier- en vetweefsel.",
+"*Glucagon* helpt bij een lage energiebeschikbaarheid de glucosevoorziening in stand te houden.",
+"Bij lipidenmetabolisme vervoeren lipoproteïnen triglyceriden en cholesterol tussen darm, lever en perifere weefsels. *LDL* levert cholesterol aan weefsels; *HDL* ondersteunt transport terug richting lever.",
+"Bij een hormooncasus is de snelste redeneerlijn vaak: broncel → hormoon → doelcel → effect → terugkoppeling."
+],sourceIds:["s24"],image:""},
+
+{id:"f11",sectionId:"sec3",title:"Spijsverteringsstelsel",body:[
+"De opname van voedingsstoffen verschilt per segment van het maag-darmkanaal. Het duodenum is belangrijk voor vroege opnameprocessen, het jejunum voor veel macronutriënten en het terminale ileum voor onder andere galzuren en vitamine B12.",
+"*Heemijzer* wordt relatief efficiënt opgenomen. Niet-heemijzer wordt beïnvloed door de chemische omgeving; vitamine C ondersteunt de opname.",
+"*Vitamine B12* wordt in het terminale ileum opgenomen wanneer het aan intrinsic factor is gebonden.",
+"De *enterohepatische kringloop* hergebruikt galzuren. Verlies van galzuren kan de vetabsorptie beïnvloeden.",
+"Koolhydraten, eiwitten en vetten moeten eerst enzymatisch worden afgebroken tot opneembare bouwstenen."
+],sourceIds:["s25"],image:""},
+
+{id:"f12",sectionId:"sec3",title:"Voortplantingsstelsel",body:[
+"*Leydigcellen* produceren testosteron onder invloed van LH. *Sertolicellen* ondersteunen de spermatogenese en worden vooral door FSH gereguleerd.",
+"Tijdens mannelijke embryonale ontwikkeling draagt AMH uit Sertolicellen bij aan regressie van de Müller-structuren. Androgenen ondersteunen de ontwikkeling van Wolff-structuren.",
+"De hypothalamus-hypofyse-gonade-as wordt door negatieve feedback vanuit de gonaden gereguleerd.",
+"Voor toetsvragen helpt de vaste koppeling: hormoon → doelcel → effect."
+],sourceIds:["s14"],image:""},
+
+{id:"f13",sectionId:"sec3",title:"Klinische fysiologie — mechanisme naar casus",body:[
+"Veel fysiologievragen zijn ketenvragen. Een bloeddrukdaling kan bijvoorbeeld de baroreflex activeren; een verminderde renale perfusie kan het RAAS activeren; een verandering in osmolariteit kan water tussen compartimenten verschuiven.",
+"Formules en vaste relaties zijn nuttig bij MAP, longcapaciteiten, GFR en vaatweerstand.",
+"**Toetsstrategie:** identificeer eerst de primaire verandering, benoem het regelsysteem en bepaal daarna het uiteindelijke fysiologische en klinische effect."
+],sourceIds:["s20","s21","s22","s24"],image:""}
+];
+
+var state=load();if(!state.ui)state.ui={};
+function load(){
+ try{
+  var x=JSON.parse(localStorage.getItem(KEY));
+  if(x && x.questions && x.articles && x.sources && x.sections){
+    if(!x.answers)x.answers={};if(!x.attempts)x.attempts=[];if(!x.notes)x.notes={};if(!x.feedback)x.feedback=[];if(!x.highlights)x.highlights={};if(!x.chapterTime)x.chapterTime={};if(!x.theme)x.theme="light";if(!x.name)x.name="Student";if(!x.benchmark)x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
+    migrateABCD(x);
+    return x;
+  }
+ }catch(e){}
+ var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
+ migrateABCD(fresh);
+ localStorage.setItem(KEY,JSON.stringify(fresh));return fresh;
+}
+function migrateABCD(x){
+ var i;
+ for(i=0;i<x.questions.length;i++){
+   if(!x.questions[i].options)x.questions[i].options=["","","",""];
+   x.questions[i].options=x.questions[i].options.slice(0,4);
+   while(x.questions[i].options.length<4)x.questions[i].options.push("");
+   if(x.questions[i].correct>3)x.questions[i].correct=0;
+ }
+}
+function clone(x){return JSON.parse(JSON.stringify(x))}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
+function md(s){var x=esc(s||"");x=x.replace(/\*([^*]+)\*/g,"<strong class='term'>$1</strong>");return x.replace(/\n/g,"<br>")}
+function byId(arr,id){var i;for(i=0;i<arr.length;i++)if(arr[i].id===id)return arr[i];return null}
+function idx(arr,id){var i;for(i=0;i<arr.length;i++)if(arr[i].id===id)return i;return -1}
+function removeBy(arr,id){var i;for(i=arr.length-1;i>=0;i--)if(arr[i].id===id)arr.splice(i,1)}
+function removeId(arr,id){var o=[],i;if(!arr)return o;for(i=0;i<arr.length;i++)if(arr[i]!==id)o.push(arr[i]);return o}
+function has(arr,x){var i;for(i=0;i<arr.length;i++)if(arr[i]===x)return true;return false}
+
+function formatTime(sec){
+ sec=Math.max(0,Number(sec)||0);
+ var h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=Math.floor(sec%60);
+ return (h?String(h).padStart(2,"0")+":":"")+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+var activeChapterId=null,activeChapterStarted=0,chapterTimerHandle=null;
+function startChapterTimer(id){
+ flushChapterTimer();
+ activeChapterId=id;
+ activeChapterStarted=new Date().getTime();
+ if(chapterTimerHandle)clearInterval(chapterTimerHandle);
+ chapterTimerHandle=setInterval(function(){
+   var e=document.getElementById("chapterTimer");
+   if(e)e.innerHTML="Tijd besteed: "+formatTime(currentChapterSeconds());
+ },1000);
+}
+function flushChapterTimer(){
+ if(!activeChapterId||!activeChapterStarted)return;
+ var sec=Math.floor((new Date().getTime()-activeChapterStarted)/1000);
+ state.chapterTime[activeChapterId]=(state.chapterTime[activeChapterId]||0)+Math.max(0,sec);
+ activeChapterStarted=new Date().getTime();
+ save();
+}
+function stopChapterTimer(){
+ flushChapterTimer();
+ if(chapterTimerHandle)clearInterval(chapterTimerHandle);
+ chapterTimerHandle=null;activeChapterStarted=0;activeChapterId=null;
+}
+function currentChapterSeconds(){
+ var id=activeChapterId||articleId,base=state.chapterTime[id]||0;
+ if(activeChapterId===id&&activeChapterStarted)base+=Math.floor((new Date().getTime()-activeChapterStarted)/1000);
+ return base;
+}
+
+function stats(){var n=0,c=0,k;for(k in state.answers)if(state.answers.hasOwnProperty(k)){n++;if(state.answers[k].correct)c++}return{n:n,c:c,acc:n?Math.round(c/n*100):null}}
+function srcFoot(ids){var h="",i,s;ids=ids||[];for(i=0;i<ids.length;i++){s=byId(state.sources,ids[i]);if(s)h+="<div><span class='sup'>["+(i+1)+"]</span> "+esc(s.title)+" — <a href='"+esc(s.url)+"' target='_blank'>bron openen</a></div>"}return h}
+function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+"' data-page='"+id+"'>"+svg+" "+label+"</button>"}
+function shell(body){
+ var s=stats();
+ var progressOpen = page.indexOf("performance")===0;
+ var qtree="<div class='qnavtree'>"+
+ "<button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button>"+
+ "<div style='padding-left:12px'>"+
+ "<button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button>"+
+ "<button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button>"+
+ "</div>"+
+ "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>⌕ <span>Zoeken</span></button>"+
+ "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>□ <span>Notities</span></button>"+
+ "</div>";
+ return "<div class='top'><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout'><aside class='side'><div class='navlabel'>Studeren</div>"+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
+ "</aside><main class='main'>"+body+"</main></div>";
+}
+
+function welcomeMessage(){
+ var name=state.name||"Student";
+ var messages=[
+  "Welkom terug, "+name+"!",
+  "Je kan het, "+name+"!",
+  "Zet 'm op, "+name+"!",
+  "Goed dat je er bent, "+name+".",
+  "Klaar om verder te leren, "+name+"?"
+ ];
+ return messages[Math.floor(Math.random()*messages.length)];
+}
+function dashboard(){
+ var s=stats(),timeTotal=0,k;
+ for(k in state.chapterTime)if(state.chapterTime.hasOwnProperty(k))timeTotal+=state.chapterTime[k]||0;
+ return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
+ "<div class='grid g4'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>Studietijd</div><div class='value'>"+formatTime(timeTotal)+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
+ "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
+ "<div class='row'><div><strong>Vraagbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
+ "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
+ "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
+ "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
+}
+function qbank(){
+ return shell("<div class='pagehead'><div><h1>Vraagbank</h1><p>Selecteer een onderwerp en start een oefenblok.</p></div></div><div class='card'><div class='grid g3'><div class='field'><label>Onderwerp</label><select id='qbs'><option>Alle onderwerpen</option><option>Fysiologie</option><option>Metamedica</option></select></div><div class='field'><label>Aantal</label><select id='qbn'><option>5</option><option>10</option></select></div><div style='padding-top:20px'><button class='btn primary' id='startqb'>Start</button></div></div></div>");
+}
+function startSession(ivtg){
+ var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
+ var subject=(document.getElementById("qbs")||{}).value||"Alle onderwerpen";for(i=0;i<state.questions.length;i++)if(subject==="Alle onderwerpen"||state.questions[i].subject===subject)pool.push(state.questions[i]);
+ for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
+ session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime()};page="question";render();
+}
+function questionBody(){
+ var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",i,nums="",opts="",letters="ABCD";
+ for(i=0;i<session.questions.length;i++)nums+="<button class='qnum "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";
+ for(i=0;i<4;i++){var c="";if(submitted&&i===q.correct)c=" correct";else if(submitted&&i===picked)c=" wrong";opts+="<button class='answer"+c+"' "+(submitted?"disabled":"")+" data-a='"+i+"'><strong>"+letters.charAt(i)+".</strong> "+md(q.options[i])+"</button>"}
+ var expl=submitted?"<div class='explain'><div class='title'>"+(picked===q.correct?"Correct":"Onjuist")+"</div><p>"+md(q.explanation)+"</p><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective)+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
+ var im=q.image?"<img class='image-preview' src='"+q.image+"'>":"";
+ return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" • "+esc(q.topic)+"</strong><span class='small muted'>"+esc(q.difficulty)+"</span></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<h3>"+md(q.stem)+"</h3>"+opts+expl+"</div><div class='bottom'><span class='small muted'>Klik direct op A, B, C of D.</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
+}
+function questionPage(){
+ var i,body="<div class='ivtg ivtg-shell'><div class='ivtg-top'><div class='ivtg-count'>"+(session.index+1)+" / "+session.questions.length+"</div><div class='ivtg-tools'><button class='ivtg-item' data-prev>"+ICONS.prev+"<div>Vorige</div></button><button class='ivtg-item' data-next>"+ICONS.next+"<div>Volgende</div></button></div><button class='ivtg-item' data-modal='tutorial'>"+ICONS.tutorial+"<div>Uitleg</div></button><button class='ivtg-item' data-modal='lab'>"+ICONS.lab+"<div>Labwaarden</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='calc'>"+ICONS.calc+"<div>Rekenhulp</div></button><button class='ivtg-item' data-modal='settings'>"+ICONS.gear+"<div>Instellingen</div></button></div><div class='ivtg-left'>";
+ for(i=0;i<session.questions.length;i++)body+="<button class='ivtg-status "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";
+ body+="</div><div class='ivtg-main'><div class='ivtg-question'>"+questionBody()+"</div></div><div class='ivtg-bottom'><span class='ivtg-time' id='chapterTimer'>Tijd besteed: "+formatTime(currentChapterSeconds())+"</span><button class='ivtg-item' data-open-library>"+ICONS.book+"<div>iVTG Bibliotheek</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='feedback'>"+ICONS.feedback+"<div>Feedback</div></button><button class='ivtg-item' data-end>"+ICONS.end+"<div>Einde</div></button></div></div>";
+ return body;
+}
+function ivtg(){return shell("<div class='pagehead'><div><h1>iVTG Trainer</h1><p>Een aparte toetsomgeving met hulpmiddelen en een eigen bibliotheek.</p></div><button class='btn secondary' data-page='ivtg-library'>Bibliotheek</button></div><div class='hero'><div><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Oefen met casussen en hulpmiddelen.</h2><p>Start een sessie. Een antwoord wordt direct verwerkt; daarna verschijnen uitleg en bronnen.</p><button class='btn primary' id='startivtg'>Start iVTG</button></div><div class='mock'><div class='mockbar'><span>MedQNL</span><span>1 / 5</span></div><strong>Een patiënt heeft een afwijkende labwaarde. Welke interpretatie past het best?</strong><div class='mockopt'>A. Binnen referentie</div><div class='mockopt'>B. Afwijkend</div></div></div>")}
+function articleBlocks(a){
+ var blocks=[],i,b,lines;
+ for(i=0;i<(a.body||[]).length;i++){
+  b=String(a.body[i]||"");lines=b.split(/\n/);
+  if(lines[0].indexOf("## ")===0)blocks.push({type:"h3",title:lines[0].replace(/^##\s*/,""),body:lines.slice(1).join("\n")});
+  else blocks.push({type:"p",title:"",body:b});
+ }
+ return blocks;
+}
+function articleHtml(a,prefix){
+ var bs=articleBlocks(a),out="",i,id;
+ for(i=0;i<bs.length;i++){
+  if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<h3 id='"+id+"'>"+md(bs[i].title)+"</h3>"+(bs[i].body?"<p>"+md(bs[i].body)+"</p>":"")}
+  else out+="<p>"+md(bs[i].body)+"</p>";
+ }
+ if(a.image)out+="<p><img src='"+esc(a.image)+"' alt='Afbeelding'></p>";
+ return out;
+}
+function articleToc(a,prefix){
+ var bs=articleBlocks(a),out="",i,id,found=false;
+ for(i=0;i<bs.length;i++)if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<button class='toc-link' data-scrollto='"+id+"'>"+esc(bs[i].title)+"</button>";found=true}
+ return found?out:"<div class='small muted'>Geen subsecties toegevoegd.</div>";
+}
+function library(){
+ var a=byId(state.articles,articleId)||state.articles[0],navs="",i,sec,j;
+ for(i=0;i<state.sections.length;i++){sec=state.sections[i];navs+="<div class='small muted' style='font-weight:800;padding:10px 8px 4px'>"+esc(sec.title)+"</div>";for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>▧ "+esc(state.articles[j].title)+"</button>"}
+ return shell("<div class='pagehead'><div><h1>iVTG Bibliotheek</h1><p>Nederlandse leerstof met bronnen, notities en markeringen.</p></div></div><div class='lib-layout'><aside class='lib-side'><input id='libsearch' class='search' placeholder='Zoek hoofdstuk...'>"+navs+"</aside><article class='lib-article'><div class='drawer-tools'><button class='btn secondary' data-open-notes>Notitie</button></div><div class='small muted'>"+esc(sectionTitle(a.sectionId))+"</div><h2>"+esc(a.title)+"</h2><div style='display:grid;grid-template-columns:180px 1fr;gap:25px'><aside><div class='small muted' style='font-weight:800;margin:6px 0 8px'>Inhoud</div>"+articleToc(a,"mainsec")+"</aside><div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></article></div>");
+}
+function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
+function medicalLibrary(){return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Algemene medische naslagomgeving.</p></div><button class='btn primary' data-page='ivtg-library'>Open iVTG Bibliotheek</button></div><div class='empty'>De inhoud van de medische bibliotheek wordt later opgebouwd met jouw eigen Nederlandse hoofdstukken.</div>")}
+function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
+
+function sourcePicker(ids){
+ var h="",i,s;
+ for(i=0;i<state.sources.length;i++){s=state.sources[i];h+="<label class='source-row'><input type='checkbox' name='src' value='"+esc(s.id)+"'"+(has(ids||[],s.id)?" checked":"")+"><span><strong>"+esc(s.title)+"</strong><br><span class='small muted'>"+esc(s.url)+"</span></span></label>"}
+ return "<div class='sourcebox'>"+(h||"<div class='small muted'>Nog geen bronnen.</div>")+"</div>";
+}
+function questionForm(q){
+ if(!q)q={id:"",title:"",subject:"Metamedica",topic:"",difficulty:"Gemiddeld",caseText:"",stem:"",options:["","","",""],correct:0,explanation:"",objective:"",sourceIds:[],image:"",source:""};
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' required>"+esc(q.explanation)+"</textarea></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+}
+function articleForm(a){
+ if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:""};
+ var sec="";
+ for(var i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' style='min-height:260px' required>"+esc(a.body.join("\n\n"))+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+}
+function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
+function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
+
+function quickNewSection(){
+ var id='sec'+Date.now();state.sections.push({id:id,title:'Nieuwe sectie',order:state.sections.length+1});state.ui.selectedSection=id;save();render();
+}
+function quickNewArticle(){
+ if(!state.sections.length)quickNewSection();
+ var sec=(state.ui&&state.ui.selectedSection)||state.sections[0].id;var id='a'+Date.now();state.articles.push({id:id,sectionId:sec,title:'Nieuw hoofdstuk',body:['Nieuwe inhoud.'],sourceIds:[],image:''});save();editArticle(id);
+}
+function saveDragOrder(){
+ var list=document.getElementById('sectionList');if(list){var els=list.querySelectorAll('[data-dragsec]');for(var i=0;i<els.length;i++){var obj=byId(state.sections,els[i].getAttribute('data-dragsec'));if(obj)obj.order=i+1;}}
+ var al=document.getElementById('articleList');if(al){var aes=al.querySelectorAll('[data-dragart]');for(var j=0;j<aes.length;j++){var art=byId(state.articles,aes[j].getAttribute('data-dragart'));if(art)art.order=j+1;}}
+ state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
+}
+function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
+
+function admin(){
+ if(!REMOTE||!REMOTE.isAdmin)return shell("<div class='pagehead'><div><h1>Geen toegang</h1><p>Contentbeheer is alleen beschikbaar voor beheerders.</p></div></div><div class='card'>Je account heeft geen beheerdersrechten.</div>");
+ var secId=(state.ui&&state.ui.selectedSection)||(state.sections[0]&&state.sections[0].id)||"",secs="",arts="",qs="",sources="",feedback="",i,s,a,q,src;
+ for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='drag-handle'>⋮⋮</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><span class='drag-handle'>⋮⋮</span><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];qs+="<div class='manager-item'><div style='min-width:0;flex:1'><div style='font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"+esc(q.title||q.stem||'Onbenoemde vraag')+"</div><div class='small muted'>"+esc(q.subject||'')+" · "+esc(q.topic||'')+"</div></div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn' data-delq='"+esc(q.id)+"'>×</button></div></div>"}
+ for(i=0;i<state.sources.length;i++){src=state.sources[i];sources+="<div class='manager-item'><input class='inline-edit' data-source-title='"+esc(src.id)+"' value='"+esc(src.title)+"'><button class='tiny-btn' data-edits='"+esc(src.id)+"'>Bewerken</button><button class='tiny-btn' data-dels='"+esc(src.id)+"'>×</button></div>"}
+ var fbs=REMOTE.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.question_title||fb.question_id||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message)+"</div><div class='small muted'>"+esc(new Date(fb.created_at).toLocaleString('nl-NL'))+"</div></div><button class='tiny-btn' data-feedback-handle='"+fb.id+"'>"+(fb.handled?'Heropenen':'Afhandelen')+"</button></div>"}
+ return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Sleep secties en hoofdstukken. Voeg vragen toe en beheer bronnen, afbeeldingen en feedback.</p></div></div><div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Vragen <button class='tiny-btn' data-editq='new'>+</button></div><div class='manager-list' id='questionList'>"+(qs||"<div class='empty'>Nog geen vragen.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
+}
+
+
+function performanceBenchmark(){
+ var b=state.benchmark||{};
+ return {
+   median: typeof b.medianScore==="number"?b.medianScore:null,
+   percentile: typeof b.percentile==="number"?b.percentile:null,
+   otherTime: typeof b.otherAvgTime==="number"?b.otherAvgTime:null,
+   sample: typeof b.sampleSize==="number"?b.sampleSize:0
+ };
+}
+function performanceOverall(){
+ var s=stats(), used=s.n, total=state.questions.length, unused=Math.max(0,total-used);
+ var completed=0,i,avgSec=0,elapsedCount=0;
+ for(i=0;i<state.attempts.length;i++){ if(state.attempts[i].answered>=state.attempts[i].total)completed++; if(state.attempts[i].elapsed){avgSec+=state.attempts[i].elapsed;elapsedCount++;} }
+ if(elapsedCount)avgSec=Math.round(avgSec/elapsedCount);
+ var pct=used?s.c/used*100:0,b=performanceBenchmark();
+ var percentileText=b.percentile===null?"Nog niet beschikbaar":b.percentile+"e percentiel";
+ var medianText=b.median===null?"Nog niet beschikbaar":Math.round(b.median)+"%";
+ var otherTimeText=b.otherTime===null?"Nog niet beschikbaar":formatTime(b.otherTime);
+ return shell("<div class='pagehead'><div><h1>Algehele prestatie</h1><p>Een overzicht van je prestaties in de MedQNL-vraagbank.</p></div><button class='btn secondary' data-print>Print</button></div>"+
+ "<div class='card'><div class='small muted' style='margin-bottom:10px'>Statistieken</div><div class='grid g2'>"+
+ "<div style='display:flex;align-items:center;justify-content:center;min-height:240px'><div class='ring' style='--p:"+pct+"%'><div class='ringtext'>"+(used?Math.round(pct)+"%":"—")+"<div class='small muted'>Correct</div></div></div></div>"+
+ "<div class='metric-list'><div class='title'>Jouw score</div><div class='row'><span>Totaal correct</span><strong>"+s.c+"</strong></div><div class='row'><span>Totaal incorrect</span><strong>"+Math.max(0,used-s.c)+"</strong></div><div class='row'><span>Overgeslagen</span><strong>0</strong></div></div>"+
+ "</div></div>"+
+ "<div class='performance-stat-grid' style='margin-top:15px'>"+
+ "<div class='card'><div class='title'>Vraagbankgebruik</div><div class='row'><span>Gebruikte vragen</span><strong>"+used+"</strong></div><div class='row'><span>Ongebruikte vragen</span><strong>"+unused+"</strong></div><div class='row'><span>Totaal aantal vragen</span><strong>"+total+"</strong></div></div>"+
+ "<div class='card'><div class='title'>Tests</div><div class='row'><span>Tests aangemaakt</span><strong>"+state.attempts.length+"</strong></div><div class='row'><span>Tests voltooid</span><strong>"+completed+"</strong></div><div class='row'><span>Opgeschorte tests</span><strong>0</strong></div></div>"+
+ "</div>"+
+ "<div class='card' style='margin-top:15px'><div class='title'>Percentielrang</div><div class='percentile-box'><div class='bellcurve'><svg viewBox='0 0 520 160' preserveAspectRatio='none'><path d='M20 145 C90 145,115 35,260 35 C405 35,430 145,500 145' fill='none' stroke='#7b7b7b' stroke-width='1.4'/><line x1='280' y1='10' x2='280' y2='145' stroke='#2d8de6'/></svg><div class='small muted' style='position:absolute;left:54%;top:2px'>Percentielpositie</div></div><div class='metric-list'><div class='row'><span>Jouw positie</span><strong>"+percentileText+"</strong></div><div class='row'><span>Mediaan score</span><strong>"+medianText+"</strong></div><div class='row'><span>Jouw gemiddelde tijd</span><strong>"+(avgSec?formatTime(avgSec):"Nog niet beschikbaar")+"</strong></div><div class='row'><span>Gemiddelde andere studenten</span><strong>"+otherTimeText+"</strong></div>"+(b.sample?"<div class='small muted' style='margin-top:8px'>Gebaseerd op "+b.sample+" studenten.</div>":"<div class='small muted' style='margin-top:8px'>De relatieve positie wordt pas getoond zodra MedQNL voldoende geanonimiseerde studentgegevens heeft verzameld.</div>")+"</div></div></div></div>");
+}
+function performanceReports(){
+ var groups={},i,q,a,k,keys=[],rows="";
+ for(i=0;i<state.questions.length;i++){
+   q=state.questions[i];k=q.subject||"Overig";
+   if(!groups[k])groups[k]={total:0,used:0,correct:0,incorrect:0};
+   groups[k].total++;
+   a=state.answers[q.id];
+   if(a){groups[k].used++;if(a.correct)groups[k].correct++;else groups[k].incorrect++}
+ }
+ for(k in groups)if(groups.hasOwnProperty(k))keys.push(k);
+ keys.sort();
+ for(i=0;i<keys.length;i++){
+  var g=groups[keys[i]],score=g.used?Math.round(g.correct/g.used*100):null,bar=score===null?0:score;
+  rows+="<tr><td><button class='btn secondary' style='padding:3px 6px'>+</button> <strong>"+esc(keys[i])+"</strong><div class='perf-bar'><span style='width:"+bar+"%'></span></div></td><td>"+g.used+" / "+g.total+"</td><td>"+g.correct+" ("+(g.used?Math.round(g.correct/g.used*100):0)+"%)</td><td>"+g.incorrect+" ("+(g.used?Math.round(g.incorrect/g.used*100):0)+"%)</td><td>"+(g.total-g.used)+" ("+(g.total?Math.round((g.total-g.used)/g.total*100):0)+"%)</td><td>—</td></tr>";
+ }
+ var total=state.questions.length,used=stats().n;
+ return shell("<div class='pagehead'><div><h1>Rapport</h1><p>Je prestaties uitgesplitst per onderwerp.</p></div><button class='btn secondary' data-print>Print</button></div>"+
+ "<div class='card'><div class='perf-tabs'><button class='perf-tab active' data-page='performance-reports'>Onderwerpen</button><button class='perf-tab' data-page='performance-reports-systems'>Systemen</button><button class='perf-tab' data-page='performance-reports-topics'>Topics</button></div>"+
+ "<div class='grid g4' style='margin-bottom:15px'><div class='field'><label>Weergave</label><select><option>Score</option><option>Gebruik</option></select></div><div class='field'><label>Antwoorden</label><select><option>Alles</option><option>Alleen correct</option><option>Alleen incorrect</option></select></div><div></div><div class='field'><label>Zoeken</label><input placeholder='Zoek onderwerp...'></div></div>"+
+ "<div class='perf-table-wrap'><table class='perf-table'><thead><tr><th>Naam</th><th>Gebruik</th><th>Correcte vragen</th><th>Incorrecte vragen</th><th>Overgeslagen</th><th>P-rang</th></tr></thead><tbody>"+(rows||"<tr><td colspan='6'>Nog geen gegevens.</td></tr>")+"</tbody></table></div></div>");
+}
+function performanceReportsSystems(){
+ return shell("<div class='pagehead'><div><h1>Rapport — Systemen</h1><p>Systemen kunnen hier worden gerapporteerd zodra vragen aan een systeem zijn gekoppeld.</p></div></div><div class='card'><div class='empty'>Nog geen systeemclassificaties beschikbaar.</div></div>");
+}
+function performanceReportsTopics(){
+ var groups={},i,q,a,k,keys=[],rows="";
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];k=q.topic||"Overig";if(!groups[k])groups[k]={total:0,used:0,c:0,ic:0};groups[k].total++;a=state.answers[q.id];if(a){groups[k].used++;if(a.correct)groups[k].c++;else groups[k].ic++}}
+ for(k in groups)if(groups.hasOwnProperty(k))keys.push(k);keys.sort();
+ for(i=0;i<keys.length;i++){var g=groups[keys[i]],score=g.used?Math.round(g.c/g.used*100):0;rows+="<tr><td><strong>"+esc(keys[i])+"</strong><div class='perf-bar'><span style='width:"+score+"%'></span></div></td><td>"+g.used+" / "+g.total+"</td><td>"+g.c+" ("+score+"%)</td><td>"+g.ic+" ("+(g.used?Math.round(g.ic/g.used*100):0)+"%)</td><td>"+(g.total-g.used)+"</td><td>—</td></tr>"}
+ return shell("<div class='pagehead'><div><h1>Rapport — Topics</h1></div></div><div class='card'><div class='perf-table-wrap'><table class='perf-table'><thead><tr><th>Naam</th><th>Gebruik</th><th>Correct</th><th>Incorrect</th><th>Overgeslagen</th><th>P-rang</th></tr></thead><tbody>"+(rows||"<tr><td colspan='6'>Nog geen gegevens.</td></tr>")+"</tbody></table></div></div>");
+}
+function performancePreviousPlaceholder(){return previousTests()}
+function previousTests(){return shell("<div class='pagehead'><div><h1>Voorgaande tests</h1></div></div><div class='empty'>Deze pagina is uit de hoofd­navigatie verwijderd.</div>");}
+
+function searchPage(){
+ return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek vragen en bibliotheekhoofdstukken.</p></div></div><div class='card'><input id='globalSearch' class='search' placeholder='Zoek bijvoorbeeld naar WGBO, meningitis of fysiologie...'><div id='globalResults' class='search-results'></div></div>");
+}
+function noteKeys(){var keys=[],k;for(k in state.notes)if(state.notes.hasOwnProperty(k))keys.push(k);keys.sort(function(a,b){return String(state.notes[a].title||"").localeCompare(String(state.notes[b].title||""),"nl")});return keys}
+function noteRecord(key){return key&&state.notes[key]?state.notes[key]:{title:"Nieuwe notitie",body:""}}
+function notebookMarkup(key){
+ var keys=noteKeys();if(!key)key=keys[0]||"new";var n=noteRecord(key),list="",i,k;
+ for(i=0;i<keys.length;i++){k=keys[i];list+="<button class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button>"}
+ return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='bold'><strong>B</strong></button><button data-format='italic'><em>I</em></button><button data-format='underline'><u>U</u></button><button data-format='strikeThrough'><s>S</s></button><button data-format='insertUnorderedList'>•</button><button data-format='insertOrderedList'>1.</button><button data-format='justifyLeft'>≡</button><button data-format='justifyCenter'>≡</button><button data-format='justifyRight'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+md(n.body||"")+"</div><div class='note-footer'><button class='btn secondary' data-close-notebook>Annuleren</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
+}
+function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root)}
+function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
+function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerText||"";save();openNotebook(key,"full")}
+function notesPage(){return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek.</p></div><button class='btn primary' id='openNotebookPage'>Nieuw</button></div><div class='card'><div class='empty'>Open het notitieboek om notities te maken, te zoeken en te bewerken.</div></div>")}
+
+
+function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
+function settings(){
+ return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:640px'><div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div><button class='btn primary' id='saveName' style='margin-top:12px'>Opslaan</button></div>");
+}
+function showModal(type){
+ var root=document.createElement("div"),html="";
+ root.className="overlay";root.id="modalRoot";
+ if(type==="tutorial")html="<div class='modal'><div class='modal-head'><h2>Hulpmiddelen</h2><button class='btn secondary' data-close>Sluiten</button></div><p>Gebruik de bovenste hulpmiddelen voor Uitleg, Labwaarden, Notities, Rekenhulp en Instellingen. De onderste balk bevat alleen de iVTG Bibliotheek, Notities, Feedback en Einde.</p></div>";
+ if(type==="note"){var q=session?session.questions[session.index]:null,key=q?q.id:"general";openNotebook(key,"drawer");return}
+ if(type==="feedback"){var fq=session?session.questions[session.index]:null;html="<div class='modal'><div class='modal-head'><h2>Feedback over deze vraag</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='field'><label>Categorie</label><select id='fbcat'><option>Inhoudelijke fout</option><option>Onduidelijke vraag</option><option>Fout in antwoord/uitleg</option><option>Bron ontbreekt</option><option>Technisch probleem</option><option>Overig</option></select></div><div class='field'><label>Bericht</label><textarea id='fbmsg' style='min-height:170px' placeholder='Beschrijf de feedback...'></textarea></div><button class='btn primary' id='sendFeedback'>Versturen</button></div>"}
+ if(type==="settings")html="<div class='modal'><div class='modal-head'><h2>Instellingen</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Leesbare donkere interface.</div></div><button class='btn secondary' id='modalTheme'>Wisselen</button></div></div>";
+ if(type==="calc")html="<div class='modal'><div class='modal-head'><h2>Rekenhulp</h2><button class='btn secondary' data-close>Sluiten</button></div><input id='calc' readonly style='width:100%;padding:12px;font-size:22px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px'><div class='grid g2' style='margin-top:10px'>"+["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(function(x){return "<button class='btn secondary' data-calc='"+x+"'>"+x+"</button>"}).join("")+"</div><button class='btn secondary' id='calcClear' style='margin-top:8px'>Wissen</button></div>";
+ if(type==="lab")html=labModal();
+ root.innerHTML=html;document.body.appendChild(root);if(type==="lab")renderLabs();
+}
+function labModal(){
+ var cats=[],i,h="<div class='modal'><div class='modal-head'><h2>Labwaarden</h2><button class='btn secondary' data-close>Sluiten</button></div><input id='labsearch' class='lab-search' placeholder='Zoek labwaarde...'><div class='lab-tabs'>";
+ for(i=0;i<LABS.length;i++)if(!has(cats,LABS[i][0]))cats.push(LABS[i][0]);
+ for(i=0;i<cats.length;i++)h+="<button class='lab-tab "+(cats[i]===labCategory?"active":"")+"' data-labcat='"+esc(cats[i])+"'>"+esc(cats[i])+"</button>";
+ h+="</div><table class='lab-table'><thead><tr><th>Test</th><th>Referentiewaarde</th><th>Eenheid</th><th>Opmerking</th></tr></thead><tbody id='labbody'></tbody></table><div class='footnotes'><strong>Bronnen</strong><div>Educatieve leerkaart. Referentiewaarden verschillen per laboratorium en methode. <a href='https://www.ncbi.nlm.nih.gov/books/NBK613071/' target='_blank'>NCBI</a> • <a href='https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values' target='_blank'>OpenStax</a> • <a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC5111244/' target='_blank'>Geharmoniseerde intervallen</a></div></div></div>";
+ return h;
+}
+function renderLabs(){
+ var tb=document.getElementById("labbody");if(!tb)return;var q=(document.getElementById("labsearch")||{}).value||"",h="",i,l,btns=document.querySelectorAll(".lab-tab");
+ q=q.toLowerCase();
+ for(i=0;i<LABS.length;i++){l=LABS[i];if(l[0]!==labCategory)continue;if(q&&l[1].toLowerCase().indexOf(q)<0&&l[2].toLowerCase().indexOf(q)<0)continue;h+="<tr><td><strong>"+esc(l[1])+"</strong></td><td>"+esc(l[2])+"</td><td>"+esc(l[3])+"</td><td>"+esc(l[4])+"</td></tr>"}
+ tb.innerHTML=h||"<tr><td colspan='4'>Geen resultaten.</td></tr>";
+ for(i=0;i<btns.length;i++)btns[i].className="lab-tab "+(btns[i].getAttribute("data-labcat")===labCategory?"active":"");
+}
+function closeModal(){var x=document.getElementById("modalRoot");if(x)x.remove()}
+function editQuestion(id){var q=byId(state.questions,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Vraag bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card'>"+questionForm(q)+"</div>"}
+function editArticle(id){var a=byId(state.articles,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Artikel bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card'>"+articleForm(a)+"</div>"}
+function editSource(id){var s=byId(state.sources,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Bron bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card' style='max-width:650px'>"+sourceForm(s)+"</div>"}
+function editSection(id){var s=byId(state.sections,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Sectie bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card' style='max-width:650px'>"+sectionForm(s)+"</div>"}
+function openInlineSource(btn){
+ var slot=btn.parentNode.parentNode.querySelector("#inline-source-slot");
+ slot.innerHTML="<div class='notice'><div class='field'><label>Brontitel</label><input id='inlineTitle'></div><div class='field'><label>URL</label><input id='inlineUrl'></div><button class='btn primary' id='inlineSave'>Toevoegen en selecteren</button></div>";
+ document.getElementById("inlineSave").onclick=function(){
+  var t=document.getElementById("inlineTitle").value,u=document.getElementById("inlineUrl").value;if(!t||!u){alert("Vul beide velden in.");return}
+  var s={id:"s"+new Date().getTime(),title:t,url:u};state.sources.push(s);save();
+  var box=btn.parentNode.parentNode.querySelector(".sourcebox"),lab=document.createElement("label");lab.className="source-row";lab.innerHTML="<input type='checkbox' name='src' value='"+esc(s.id)+"' checked><span><strong>"+esc(s.title)+"</strong><br><span class='small muted'>"+esc(s.url)+"</span></span>";box.appendChild(lab);slot.innerHTML="";
+ };
+}
+function toggleTheme(){state.theme=state.theme==="dark"?"light":"dark";save();render()}
+
+function removeSelectedMark(){
+ var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed){hideMarkbar();return}
+ var node=sel.anchorNode,mark=node&&node.nodeType===3?node.parentElement:node;
+ while(mark&&mark!==document.body&&mark.tagName!=="MARK")mark=mark.parentElement;
+ if(mark&&mark.tagName==="MARK"){
+   var parent=mark.parentNode;while(mark.firstChild)parent.insertBefore(mark.firstChild,mark);parent.removeChild(mark);
+   sel.removeAllRanges();hideMarkbar();saveCurrentArticleHighlights();
+ }
+}
+
+function hideMarkbar(){var b=document.getElementById("markbar");b.style.display="none"}
+function applyMark(color){
+ var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed){hideMarkbar();return}
+ var range=sel.getRangeAt(0),span=document.createElement("mark");
+ var colors={yellow:"#ffe93f",green:"#a6ef4b",cyan:"#65e3ea",pink:"#eaa6c8",orange:"#f7ac3f"};
+ span.style.background=colors[color]||colors.yellow;
+ try{range.surroundContents(span)}catch(e){span.appendChild(range.extractContents());range.insertNode(span)}
+ sel.removeAllRanges();hideMarkbar();saveCurrentArticleHighlights();
+}
+function saveCurrentArticleHighlights(){
+ var c=document.getElementById("articleText");if(c){state.highlights[articleId]=c.innerHTML;save()}
+}
+function showMarkbar(){
+ var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed)return;
+ var anc=sel.anchorNode,box=document.getElementById("articleText")||document.getElementById("drawerArticleText");if(!box||!box.contains(anc))return;
+ var r=sel.getRangeAt(0).getBoundingClientRect(),bar=document.getElementById("markbar");
+ bar.style.display="flex";bar.style.left=Math.max(8,r.left+(r.width/2)-90)+"px";bar.style.top=Math.max(8,r.top-48)+"px";
+}
+document.addEventListener("click",function(ev){
+ var t=ev.target,el;
+ el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-art]"):null;if(el){articleId=el.getAttribute("data-art");startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-modal]"):null;if(el){showModal(el.getAttribute("data-modal"));return}
+ el=t.closest?t.closest("[data-close]"):null;if(el){closeModal();return}
+ el=t.closest?t.closest("[data-close-notebook]"):null;if(el){closeModal();return}
+ el=t.closest?t.closest("[data-scrollto]"):null;if(el){var se=document.getElementById(el.getAttribute("data-scrollto"));if(se)se.scrollIntoView({behavior:"smooth",block:"start"});return}
+ if(t.id==="startqb"){startSession(false);return}
+ if(t.id==="startivtg"){startSession(true);return}
+ el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
+ el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
+ if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
+ el=t.closest?t.closest("[data-q]"):null;if(el&&session){session.index=parseInt(el.getAttribute("data-q"),10);render();return}
+ el=t.closest?t.closest("[data-a]"):null;if(el&&session){var q=session.questions[session.index],pick=parseInt(el.getAttribute("data-a"),10),ok=pick===q.correct;session.answers[q.id]=pick;if(ok)session.score++;state.answers[q.id]={correct:ok,when:Date.now(),selected:pick};save();render();return}
+ el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();page="result";render()}return}
+ el=t.closest?t.closest("[data-print]"):null;if(el){window.print();return}
+ el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){openIVTGLibraryDrawer();return}
+ el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null;openNotebook(nq?nq.id:"general","drawer");return}
+ el=t.closest?t.closest("[data-drawer-art]"):null;if(el){articleId=el.getAttribute("data-drawer-art");var d=document.getElementById("ivtgLibraryDrawer");if(d){d.remove();openIVTGLibraryDrawer()}return}
+ el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
+ if(t.id==="toggleTheme"){toggleTheme();render();return}
+ if(t.id==="modalTheme"){toggleTheme();closeModal();return}
+ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
+ if(t.id==="openNotebookPage"){openNotebook("","full");return}
+ if(t.id==="newNotebookNote"){createNotebookNote();return}
+ if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
+ el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
+ el=t.closest?t.closest("[data-format]"):null;if(el){document.execCommand(el.getAttribute("data-format"),false,null);return}
+ if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
+ if(t.hasAttribute("data-calc")){var d=document.getElementById("calc"),v=t.getAttribute("data-calc");if(v==="="){try{d.value=eval(d.value)}catch(e){d.value="Fout"}}else d.value+=v;return}
+ if(t.id==="calcClear"){document.getElementById("calc").value="";return}
+ el=t.closest?t.closest("[data-remove-mark]"):null;if(el){removeSelectedMark();return}
+ el=t.closest?t.closest("[data-mark-color]"):null;if(el){applyMark(el.getAttribute("data-mark-color"));return}
+ el=t.closest?t.closest("[data-mark-close]"):null;if(el){hideMarkbar();return}
+ el=t.closest?t.closest("[data-newsource-inline]"):null;if(el){openInlineSource(el);return}
+ el=t.closest?t.closest("[data-new-section-inline]"):null;if(el){quickNewSection();return}
+ el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
+ el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
+ el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
+ el=t.closest?t.closest("[data-delsec]"):null;if(el){if(confirm("Sectie verwijderen?")){removeBy(state.sections,el.getAttribute("data-delsec"));save();render()}return}
+ el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
+ el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
+ el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
+ el=t.closest?t.closest("[data-edita]"):null;if(el){editArticle(el.getAttribute("data-edita"));return}
+ el=t.closest?t.closest("[data-edits]"):null;if(el){editSource(el.getAttribute("data-edits"));return}
+});
+document.addEventListener("input",function(ev){
+ if(ev.target.id==="labsearch")renderLabs();
+ if(ev.target.id==="libsearch"){var q=ev.target.value.toLowerCase(),b=document.querySelectorAll(".lib-side button[data-art]"),i;for(i=0;i<b.length;i++)b[i].style.display=b[i].textContent.toLowerCase().indexOf(q)>=0?"block":"none"}
+ if(ev.target.id==="drawerLibSearch"){var q2=ev.target.value.toLowerCase(),b2=document.querySelectorAll("[data-drawer-art]"),j;for(j=0;j<b2.length;j++)b2[j].style.display=b2[j].textContent.toLowerCase().indexOf(q2)>=0?"block":"none"}
+ if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
+ if(ev.target.hasAttribute("data-sec-title")){var s=byId(state.sections,ev.target.getAttribute("data-sec-title"));if(s){s.title=ev.target.value;save()}}
+ if(ev.target.hasAttribute("data-art-title")){var a=byId(state.articles,ev.target.getAttribute("data-art-title"));if(a){a.title=ev.target.value;save()}}
+ if(ev.target.hasAttribute("data-source-title")){var so=byId(state.sources,ev.target.getAttribute("data-source-title"));if(so){so.title=ev.target.value;save()}}
+});
+document.addEventListener("change",function(ev){
+ if(ev.target.name==="imageFile"){var file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}var reader=new FileReader(),input=ev.target;reader.onload=function(){input.setAttribute("data-image-data",reader.result)};reader.readAsDataURL(file)}
+});
+document.addEventListener("submit",function(ev){
+ var f=ev.target,i,nodes,checked,obj,ix,input,file;
+ if(["questionform","articleform","sourceform","sectionform"].indexOf(f.id)<0)return;
+ ev.preventDefault();
+ function finish(imageData){
+  if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:f.explanation.value,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
+  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:f.body.value.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
+  else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
+  else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
+  save();page="admin";render()
+ }
+ input=f.querySelector("input[name='imageFile']");
+ if((f.id==="questionform"||f.id==="articleform")&&input&&input.files&&input.files[0]&&!input.getAttribute("data-image-data")){file=input.files[0];var reader=new FileReader();reader.onload=function(){finish(reader.result)};reader.readAsDataURL(file);return}
+ finish(input?input.getAttribute("data-image-data"):"");
+});
+
+document.addEventListener("dragstart",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
+document.addEventListener("dragover",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()});
+document.addEventListener("drop",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
+
+function render(){
+ document.body.classList.toggle("dark",state.theme==="dark");
+ var root=document.getElementById("app");
+ if(page==="question"){root.innerHTML=questionPage();return}
+ var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
+ root.innerHTML=body;
+}
+render();
+})();
+</script>
+</body>
+</html>
