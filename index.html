@@ -52,7 +52,6 @@ a{color:var(--blue)}
 .answer{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px;margin:8px 0}.answer.selected{background:var(--blue2);border-color:var(--blue)}.answer.correct{background:var(--greenbg);border-color:#9fd3b2}.answer.wrong{background:var(--redbg);border-color:#e7aaa1}
 .explain{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.box{padding:11px;border:1px solid var(--line);border-radius:8px;margin-top:8px}.good{background:var(--greenbg)}
 .bottom{background:var(--bg);border-top:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.note-title-row{position:relative;display:flex;align-items:center;gap:7px;margin-bottom:8px}.note-title-row .notebook-title{flex:1;margin-bottom:0}.note-menu{position:absolute;right:0;top:42px;z-index:20;min-width:180px;background:var(--card);border:1px solid var(--line);border-radius:9px;box-shadow:var(--shadow);padding:6px}.note-menu button{display:block;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;padding:8px 10px;border-radius:6px}.note-menu button:hover{background:var(--blue2)}.note-menu .danger-text{color:var(--red)}
 .lib-layout{display:flex;gap:14px;align-items:flex-start}.lib-side{width:270px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;height:max-content;position:sticky;top:0;max-height:calc(100vh - 88px);overflow:auto;box-sizing:border-box}.lib-side button{display:block;width:100%;padding:9px 10px;text-align:left;border:0;background:transparent;color:var(--ink);border-radius:7px}.lib-side button.active{background:var(--blue2);color:var(--blue);font-weight:700}
 .lib-section-toggle{display:flex!important;align-items:center;justify-content:space-between;font-weight:700!important;color:var(--ink)!important;background:transparent!important;border:0;text-align:left}
 .lib-section-toggle:hover{background:var(--blue2)!important}
@@ -332,9 +331,6 @@ window.addEventListener("error",function(e){__medqnlShowFatal(e&&e.error?e.error
 window.addEventListener("unhandledrejection",function(e){__medqnlShowFatal(e&&e.reason?e.reason:e)});
 
 var KEY="medqnl_v15";
-var ADMIN_PASSWORD="MedQNL-beheer-2026";
-var adminUnlocked=false;
-try{adminUnlocked=sessionStorage.getItem("medqnl_admin")==="1"}catch(e){}
 var page="dashboard",session=null,articleId="a1",labCategory="Chemie";
 
 var ICONS={
@@ -845,23 +841,6 @@ function currentChapterSeconds(){
 function stats(){var n=0,c=0,k;for(k in state.answers)if(state.answers.hasOwnProperty(k)){n++;if(state.answers[k].correct)c++}return{n:n,c:c,acc:n?Math.round(c/n*100):null}}
 function srcFoot(ids){var h="",i,s;ids=ids||[];for(i=0;i<ids.length;i++){s=byId(state.sources,ids[i]);if(s)h+="<div><span class='sup'>["+(i+1)+"]</span> "+esc(s.title)+" — <a href='"+esc(s.url)+"' target='_blank'>bron openen</a></div>"}return h}
 function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+"' data-page='"+id+"'>"+svg+" "+label+"</button>"}
-function requireAdmin(){
- if(adminUnlocked)return true;
- var entered=prompt("Beheerderstoegang\nVoer het beheerwachtwoord in:");
- if(entered===ADMIN_PASSWORD){
-  adminUnlocked=true;
-  try{sessionStorage.setItem("medqnl_admin","1")}catch(e){}
-  render();return true;
- }
- if(entered!==null)alert("Geen toegang.");
- return false;
-}
-function adminLogout(){
- adminUnlocked=false;
- try{sessionStorage.removeItem("medqnl_admin")}catch(e){}
- if(page==="admin")page="dashboard";
- render();
-}
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
@@ -878,7 +857,7 @@ function shell(body){
  return "<div class='top'><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>☰</button><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
- (adminUnlocked?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
+ "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
  "</aside><main class='main'>"+body+"</main></div>";
 }
 function welcomeMessage(){
@@ -997,7 +976,7 @@ function medicalLibrary(){
    navs+="<button class='lib-section-toggle' data-toggle-med-section='"+esc(sec.id)+"' aria-expanded='"+(!isCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(isCollapsed?"›":"⌄")+"</span></button>";
    if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
  }
- return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
+ return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
  "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
 }
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
@@ -1052,7 +1031,7 @@ function admin(){
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
  for(i=0;i<state.sources.length;i++){src=state.sources[i];sources+="<div class='manager-item'><input class='inline-edit' data-source-title='"+esc(src.id)+"' value='"+esc(src.title)+"'><button class='tiny-btn' data-edits='"+esc(src.id)+"'>Bewerken</button><button class='tiny-btn' data-dels='"+esc(src.id)+"'>×</button></div>"}
  var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.questionTitle||fb.questionId||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message||'')+"</div><div class='small muted'>"+esc(fb.date||'')+"</div></div></div>"}
- return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer vragen, hoofdstukken, secties en bronnen vanuit één overzicht.</p></div><div style='display:flex;gap:8px'><button class='btn secondary' id='adminLogout'>Beheerdersmodus verlaten</button><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div>"+
+ return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer vragen, hoofdstukken, secties en bronnen vanuit één overzicht.</p></div><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div>"+
  "<div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div>"+
  "<div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div>"+
  "<div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span></div>"+
@@ -1195,13 +1174,13 @@ function updateNotebookStats(){
 function notebookMarkup(key){
  var keys=noteKeys();if(!key)key=keys[0]||"new";var n=noteRecord(key),list="",i,k;
  for(i=0;i<keys.length;i++){k=keys[i];list+="<button class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button>"}
- return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><div class='note-title-row'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><button class='tiny-btn' id='noteMore' title='Meer opties'>⋯</button><div class='note-menu' id='noteMenu' style='display:none'><button id='renameNote'>Titel bewerken</button><button id='duplicateNote'>Notitie dupliceren</button><button id='deleteNote' class='danger-text'>Notitie verwijderen</button></div></div><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
+ return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
 }
 function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root);updateNotebookStats()}
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
 function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerHTML||"";save();openNotebook(key,"full")}
 function notesPage(){
- return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
+ return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Open het notitieboek vanuit de bibliotheek of iVTG-omgeving.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
 }
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
@@ -1273,11 +1252,6 @@ document.addEventListener("selectionchange",function(){var sel=window.getSelecti
 document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
- if(t.id==="noteMore"){var nm=document.getElementById("noteMenu");if(nm)nm.style.display=nm.style.display==="none"?"block":"none";return}
- if(t.id==="renameNote"){var nt=document.getElementById("nbTitle");if(nt){nt.focus();nt.select()}var nm2=document.getElementById("noteMenu");if(nm2)nm2.style.display="none";return}
- if(t.id==="duplicateNote"){var ct=document.getElementById("nbTitle")?document.getElementById("nbTitle").value:"Nieuwe notitie",cb=document.getElementById("nbEditor")?document.getElementById("nbEditor").innerHTML:"",nid="note"+Date.now();state.notes[nid]={title:ct+" kopie",body:cb};save();openNotebook(nid,"full");return}
- if(t.id==="deleteNote"){var sk=document.getElementById("saveNotebookNote");var activeKey=sk?sk.getAttribute("data-key"):"";if(activeKey&&state.notes[activeKey]&&confirm("Deze notitie verwijderen?")){delete state.notes[activeKey];save();var ks=noteKeys();openNotebook(ks[0]||"","full")}return}
- if(!t.closest("#noteMenu")&&t.id!=="noteMore"){var nm3=document.getElementById("noteMenu");if(nm3)nm3.style.display="none"}
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
@@ -1312,7 +1286,6 @@ document.addEventListener("click",function(ev){
  if(t.id==="toggleTheme"){toggleTheme();render();return}
  if(t.id==="modalTheme"){toggleTheme();closeModal();return}
  if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
- if(t.id==="adminLogout"){adminLogout();return}
  if(t.id==="openNotebookPage"){openNotebook("","full");return}
  if(t.id==="newNotebookNote"){createNotebookNote();return}
  if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
@@ -1368,9 +1341,6 @@ document.addEventListener("submit",function(ev){
  finish(input?input.getAttribute("data-image-data"):"");
 });
 
-document.addEventListener("keydown",function(ev){
- if(ev.ctrlKey&&ev.shiftKey&&String(ev.key).toLowerCase()==="a"){ev.preventDefault();if(adminUnlocked){page="admin";render()}else requireAdmin();}
-});
 document.addEventListener("dragstart",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
 document.addEventListener("dragover",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()});
 document.addEventListener("drop",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
@@ -1378,7 +1348,6 @@ document.addEventListener("drop",function(ev){var el=ev.target.closest?ev.target
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
  var root=document.getElementById("app");
- if(page==="admin"&&!adminUnlocked)page="dashboard";
  if(page==="question"){root.innerHTML=questionPage();return}
  var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
