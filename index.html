@@ -863,7 +863,7 @@ function openNotebook(key,mode){var root=document.getElementById("modalRoot");if
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
 function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerHTML||"";save();openNotebook(key,"full")}
 function notesPage(){
- return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Gebruik de plus in het notitieboek wanneer je een nieuwe notitie wilt toevoegen.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
+ return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Open het notitieboek vanuit de bibliotheek of iVTG-omgeving.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
 }
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
@@ -932,7 +932,7 @@ function showMarkbar(){
  bar.style.display="flex";bar.style.left=Math.max(8,r.left+(r.width/2)-90)+"px";bar.style.top=Math.max(8,r.top-48)+"px";
 }
 document.addEventListener("selectionchange",function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return;var node=sel.anchorNode,box=document.getElementById("articleText");if(!box||!box.contains(node))return;showMarkbar()});
-document.addEventListener("mousedown",function(ev){if(!ev.target.closest||!ev.target.closest("#articleText"))hideMarkbar()});
+document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
