@@ -281,6 +281,16 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
     try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
     if(input) input.value='';
     if(error) error.textContent='';
+    try{
+      var app=document.getElementById('app');
+      if(app) app.style.display='block';
+      if(typeof window.__medqnlBoot==='function') window.__medqnlBoot();
+      setTimeout(function(){
+        try{
+          if(app && !app.innerHTML.trim() && typeof window.__medqnlBoot==='function') window.__medqnlBoot();
+        }catch(e){}
+      },50);
+    }catch(e){}
   }
   var unlocked=false;
   try{unlocked=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
@@ -1153,6 +1163,7 @@ function bootMedQNL(){
     }
   }
 }
+window.__medqnlBoot=bootMedQNL;
 
 bootMedQNL();
 })();
