@@ -1038,13 +1038,32 @@ function qbank(){
  "<div style='display:flex;align-items:end;gap:10px;flex-wrap:wrap'><div class='field' style='margin:0;width:130px'><label>Aantal vragen</label><input id='qbankCount' type='number' min='1' max='100' value='10'></div><button class='btn primary' id='startqb'>Genereer oefentoets</button></div></div>"+
  "<div class='card' style='margin-top:14px'><div class='title'>Hoofdonderwerpen en subsecties</div>"+subsHtml+"</div>");
 }
-function startSession(ivtg,forcedSubject){
- var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
- var subject=forcedSubject||((document.getElementById("qbs")||{}).value||"Alle onderwerpen");
- for(i=0;i<state.questions.length;i++){var qq=state.questions[i],mods=qq.modules||{qbank:true,ivtg:true};if((ivtg?mods.ivtg!==false:mods.qbank!==false)&&(subject==="Alle onderwerpen"||(ivtg&&qq.subject===subject)||(!ivtg&&isQbankSubject(subject)&&qq.subject===subject)))pool.push(qq);}
- if(!pool.length){alert(ivtg?"Er zijn nog geen iVTG-vragen beschikbaar.":"Er zijn nog geen vragen voor dit Qbank-onderwerp beschikbaar.");return}
+function startSession(ivtg,forcedSubject,forcedSubsection,forcedMode,forcedCount){
+ var pool=[],i,n=forcedCount||5,e=document.getElementById("qbn");if(!forcedCount&&e)n=parseInt(e.value,10)||5;
+ var subject=forcedSubject||((document.getElementById("qbs")||{}).value||"Alle onderwerpen"),subsection=forcedSubsection||"",mode=forcedMode||"mixed";
+ for(i=0;i<state.questions.length;i++){
+  var qq=state.questions[i],mods=qq.modules||{qbank:true,ivtg:true};
+  var includeMode=mode==="mixed"||questionMode(qq)===mode;
+  var includeSub=!subsection||qq.qbankSubsection===subsection;
+  var includeSubject=subject==="Alle onderwerpen"||(ivtg&&qq.subject===subject)||(!ivtg&&isQbankSubject(subject)&&qq.subject===subject);
+  if((ivtg?mods.ivtg!==false:mods.qbank!==false)&&includeMode&&includeSub&&includeSubject)pool.push(qq);
+ }
+ if(!pool.length){alert(ivtg?"Er zijn nog geen iVTG-vragen beschikbaar voor deze selectie.":"Er zijn nog geen vragen voor deze Qbank-selectie beschikbaar.");return}
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
- session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject};page="question";render();
+ session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject,subsection:subsection,mode:mode};
+ page="question";render();
+}
+function startQbankSession(){
+ var s=document.getElementById("qbankSubject"),sub=document.getElementById("qbankSubsection"),count=document.getElementById("qbankCount");
+ var modeEl=document.querySelector("input[name='qbankMode']:checked");
+ var subject=s?s.value:"",subsection=sub?sub.value:"",mode=modeEl?modeEl.value:"mixed",n=count?Math.max(1,Math.min(100,parseInt(count.value,10)||10)):10;
+ startSession(false,subject?subject:"Alle onderwerpen",subsection,mode,n);
+}
+function updateQbankSubsections(){
+ var s=document.getElementById("qbankSubject"),sub=document.getElementById("qbankSubsection");if(!s||!sub)return;
+ var list=qbankSubsections(s.value),html="<option value=''>Alle subsecties</option>",i;
+ for(i=0;i<list.length;i++)html+="<option value='"+esc(list[i])+"'>"+esc(list[i])+"</option>";
+ sub.innerHTML=html;
 }
 function questionBody(){
  var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",marked=isQuestionMarked(q.id),i,nums="",opts="",letters="ABCD";
