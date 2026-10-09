@@ -1156,7 +1156,7 @@ function medicalLibrary(){
  for(i=0;i<state.articles.length;i++)if(state.articles[i].library==="medical"){if(!a)a=state.articles[i];arts.push(state.articles[i]);}
  if(!a)return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Section III uit First Aid for the USMLE Step 1 2026, inhoudelijk omgezet naar een eigen Nederlandse leeromgeving.</p></div></div><div class='empty'>Nog geen medische bibliotheekinhoud.</div>");
  var active=byId(state.articles,articleId);if(!active||active.library!=="medical")active=a;
- var toc="";
+
  for(i=0;i<sections.length;i++){
    sec=sections[i];var isCollapsed=!!sectionCollapsed[sec.id],items="";
    for(j=0;j<arts.length;j++)if(arts[j].sectionId===sec.id)items+="<button data-art-med='"+arts[j].id+"' class='"+(arts[j].id===active.id?"active":"")+"'>"+esc(arts[j].title)+"</button>";
@@ -1164,7 +1164,7 @@ function medicalLibrary(){
    if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
  }
  return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
- "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
+ "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'><div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
 }
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
