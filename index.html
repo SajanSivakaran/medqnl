@@ -2180,6 +2180,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
+ el=t.closest?t.closest("[data-remove-current-question]"):null;if(el){var qform=el.closest("#questionform"),qid=qform?qform.getAttribute("data-id"):"";if(qid)removeQuestion(qid);return}
  el=t.closest?t.closest("[data-edita]"):null;if(el){editArticle(el.getAttribute("data-edita"));return}
  el=t.closest?t.closest("[data-edits]"):null;if(el){editSource(el.getAttribute("data-edits"));return}
 });
