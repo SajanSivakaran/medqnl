@@ -320,23 +320,43 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
       anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'
     };
   }
+  function readAuthSessionFromUrl(){
+    try{
+      var hash=String(window.location.hash||"").replace(/^#/,""),query=String(window.location.search||"").replace(/^\?/,"");
+      var raw=hash||query;if(!raw)return null;
+      var p=new URLSearchParams(raw),access=p.get("access_token"),refresh=p.get("refresh_token");
+      if(!access)return null;
+      var s={access_token:access,refresh_token:refresh||"",token_type:p.get("token_type")||"bearer",expires_in:Number(p.get("expires_in")||3600)};
+      if(p.get("expires_at"))s.expires_at=Number(p.get("expires_at"));
+      if(p.get("expires_in")&&!s.expires_at)s.expires_at=Math.floor(Date.now()/1000)+Number(p.get("expires_in"));
+      try{history.replaceState({},document.title,window.location.pathname+window.location.search.replace(/([?&])(?:access_token|refresh_token|token_type|expires_in|expires_at|type)=[^&]*/g,"$1").replace(/[?&]$/,""))}catch(e){window.location.hash=""}
+      return s;
+    }catch(e){return null}
+  }
   function showAuth(message,mode){
     mode=mode||'login';if(authPanel)authPanel.remove();
+    var adminMode=mode==='admin',signupMode=mode==='signup';
     authPanel=document.createElement('div');authPanel.id='supabaseAuthPanel';
     authPanel.innerHTML="<div style='position:fixed;inset:0;z-index:99990;background:rgba(9,25,40,.62);display:flex;align-items:center;justify-content:center;padding:20px'>"+
       "<div style='width:min(430px,100%);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 18px 55px rgba(0,0,0,.22)'>"+
-      "<div style='font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px'>MedQNL-account</div>"+
-      "<div class='small muted' style='margin-bottom:18px'>Log in om je persoonlijke mailbox, voortgang en feedback op meerdere apparaten te gebruiken.</div>"+
+      "<div style='font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px'>"+(adminMode?"Admin-login":"MedQNL-account")+"</div>"+
+      "<div class='small muted' style='margin-bottom:18px'>"+(adminMode?"Log in als admin met je admin-account. Hiervoor is geen e-mailbevestiging of aparte accountregistratie nodig.":"Log in om je persoonlijke mailbox, voortgang en feedback op meerdere apparaten te gebruiken.")+"</div>"+
       "<div class='field' data-auth-name-field><label>Naam</label><input data-auth-name placeholder='Bijvoorbeeld Student'></div>"+
       "<div class='field'><label>E-mailadres</label><input data-auth-email type='email' autocomplete='email' placeholder='jij@voorbeeld.nl'></div>"+
       "<div class='field'><label>Wachtwoord</label><input data-auth-password type='password' autocomplete='current-password' minlength='6'></div>"+
-      "<div data-auth-message class='notice' style='display:"+(message?'block':'none')+";margin-bottom:12px'>"+String(message||'')+"</div>"+
-      "<div style='display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap'><button class='btn secondary' data-auth-mode='login' style='display:"+(mode==='signup'?'inline-block':'none')+"'>Ik heb al een account</button><button class='btn secondary' data-auth-mode='signup' style='display:"+(mode==='login'?'inline-block':'none')+"'>Account maken</button><button class='btn primary' data-auth-submit>"+(mode==='signup'?'Account maken':'Inloggen')+"</button></div>"+
+      "<div data-auth-message class='notice' style='display:"+(message?'block':'none')+";margin-bottom:12px'></div>"+
+      "<div style='display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap'>"+
+      "<button class='btn secondary' data-auth-mode='login' style='display:"+(signupMode||adminMode?'inline-block':'none')+"'>Student-login</button>"+
+      "<button class='btn secondary' data-auth-mode='signup' style='display:"+(mode==='login'?'inline-block':'none')+"'>Account maken</button>"+
+      "<button class='btn secondary' data-auth-mode='admin' style='display:"+(mode==='login'?'inline-block':'none')+"'>Admin-login</button>"+
+      "<button class='btn primary' data-auth-submit>"+(signupMode?'Account maken':'Inloggen')+"</button></div>"+
       "</div></div>";
     document.body.appendChild(authPanel);
-    var nf=authPanel.querySelector("[data-auth-name-field]");if(nf)nf.style.display=mode==='signup'?'block':'none';
+    var nf=authPanel.querySelector("[data-auth-name-field]");if(nf)nf.style.display=signupMode?'block':'none';
+    authPanel.querySelector("[data-auth-message]").textContent=String(message||"");
     authPanel.querySelector("[data-auth-submit]").addEventListener('click',function(){submitAuth(mode)});
-    var toggle=authPanel.querySelector("[data-auth-mode='"+(mode==='login'?'signup':'login')+"']");if(toggle)toggle.addEventListener('click',function(){showAuth('',mode==='login'?'signup':'login')});
+    var alt=authPanel.querySelector("[data-auth-mode='"+(signupMode?'login':adminMode?'login':'signup')+"']");if(alt)alt.addEventListener('click',function(){showAuth('',signupMode||adminMode?'login':'signup')});
+    var adminBtn=authPanel.querySelector("[data-auth-mode='admin']");if(adminBtn)adminBtn.addEventListener('click',function(){showAuth('', 'admin')});
     authPanel.querySelector("[data-auth-password]").addEventListener('keydown',function(e){if(e.key==='Enter')submitAuth(mode)});
   }
   async function submitAuth(mode){
@@ -349,7 +369,14 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
       var rr=await fetch(authConfig.url+path,{method:'POST',headers:{'Content-Type':'application/json',apikey:authConfig.anonKey},body:JSON.stringify(body)});
       var d=await rr.json().catch(function(){return {}});
       if(!rr.ok){msg.style.display='block';msg.textContent=d.msg||d.error_description||d.error||'Inloggen mislukt.';return}
-      if(mode==='signup'&&!d.access_token){showAuth('Account aangemaakt. Bevestig je e-mailadres als e-mailbevestiging aanstaat en log daarna in.','login');return}
+      if(mode==='admin'){
+        var uid=d&&d.user&&d.user.id?d.user.id:"";
+        if(!uid||!d.access_token){msg.style.display='block';msg.textContent='Admin-login kon geen geldige sessie openen.';return}
+        var pr=await fetch(authConfig.url+'/rest/v1/profiles?id=eq.'+encodeURIComponent(uid)+'&select=id,role&limit=1',{headers:{apikey:authConfig.anonKey,Authorization:'Bearer '+d.access_token,Accept:'application/json'}});
+        var pd=await pr.json().catch(function(){return []});
+        if(!pr.ok||!Array.isArray(pd)||!pd[0]||pd[0].role!=='admin'){msg.style.display='block';msg.textContent='Dit account heeft geen adminrechten.';return}
+      }
+      if(mode==='signup'&&!d.access_token){showAuth('Account aangemaakt. Controleer je e-mail. Na het klikken op de bevestigingslink wordt je sessie automatisch geopend.','login');return}
       writeAuthSession(d);window.__medqnlAuthSession=d;authPanel.remove();authPanel=null;continueBoot();
     }catch(e){msg.style.display='block';msg.textContent=e&&e.message?e.message:'Verbinding met Supabase mislukt.'}
   }
@@ -363,8 +390,13 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
     bootWhenReady();
   }
   async function startApp(){
-    try{authConfig=await loadAuthConfig();authSession=readAuthSession();window.__medqnlAuthSession=authSession;if(!authSession)showAuth('', 'login');else continueBoot()}
-    catch(e){if(error)error.textContent=e&&e.message?e.message:'Supabase kon niet worden geladen.'}
+    try{
+      authConfig=await loadAuthConfig();
+      var callbackSession=readAuthSessionFromUrl();
+      if(callbackSession){authSession=callbackSession;writeAuthSession(callbackSession);window.__medqnlAuthSession=callbackSession;continueBoot();return}
+      authSession=readAuthSession();window.__medqnlAuthSession=authSession;
+      if(!authSession)showAuth('', 'login');else continueBoot();
+    }catch(e){if(error)error.textContent=e&&e.message?e.message:'Supabase kon niet worden geladen.'}
   }
   function unlock(){
     try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
