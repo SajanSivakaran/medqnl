@@ -1125,6 +1125,7 @@ async function syncFeedbackFromServer(){
   if(!rr.ok)throw new Error((d&&d.message)||'Feedback ophalen mislukt.');
   state.feedback=Array.isArray(d)?d.map(function(f){return {id:f.id,date:f.created_at||'',category:f.category||'Overig',message:f.message||'',questionId:f.question_id||'',questionTitle:f.question_title||'',studentName:f.student_name||'Student',studentEmail:f.student_email||'',status:f.status==='resolved'||f.handled===true?'resolved':'open',response:f.response||'',respondedAt:f.responded_at||''}}):[];
   save();
+ }catch(e){console.warn("Feedback sync:",e&&e.message?e.message:e)}
 }
 function tokenUserId(){
  var s=window.__medqnlAuthSession||authSession||{},id=s.user&&s.user.id?s.user.id:s.user_id;
