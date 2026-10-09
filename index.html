@@ -813,6 +813,9 @@ function migrateABCD(x){
    x.questions[i].options=x.questions[i].options.slice(0,4);
    while(x.questions[i].options.length<4)x.questions[i].options.push("");
    if(x.questions[i].correct>3)x.questions[i].correct=0;
+   if(!x.questions[i].modules||typeof x.questions[i].modules!=="object")x.questions[i].modules={qbank:true,ivtg:true};
+   if(typeof x.questions[i].modules.qbank!=="boolean")x.questions[i].modules.qbank=true;
+   if(typeof x.questions[i].modules.ivtg!=="boolean")x.questions[i].modules.ivtg=true;
  }
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
