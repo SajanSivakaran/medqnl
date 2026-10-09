@@ -1148,13 +1148,57 @@ function updateQbankSubsections(){
  for(i=0;i<list.length;i++)html+="<option value='"+esc(list[i])+"'>"+esc(list[i])+"</option>";
  sub.innerHTML=html;
 }
+
+function recalcSessionTotals(){
+ if(!session)return;
+ var score=0,points=0,max=0,i,q,a,ap;
+ for(i=0;i<session.questions.length;i++){
+  q=session.questions[i];ap=Math.max(0,Number(q.points)||1);max+=ap;a=session.answers[q.id];
+  if(typeof a==="undefined")continue;
+  if(q.type==="open"){
+   if(a&&typeof a==="object"&&a.graded){points+=Math.max(0,Math.min(ap,Number(a.points)||0));if((Number(a.points)||0)>=ap)score++;}
+  }else if(a===q.correct){points+=ap;score++;}
+ }
+ session.score=score;session.pointsEarned=points;session.maxPoints=max;
+}
+function questionAnswered(q){
+ if(!q||!session)return false;
+ var a=session.answers[q.id];
+ return q.type==="open" ? !!(a&&typeof a==="object"&&a.graded) : typeof a!=="undefined";
+}
+function aiEndpoint(){return String((state.ai&&state.ai.endpoint)||"/api/grade-open").trim();}
+async function gradeOpenAnswer(qid){
+ if(!session)return;
+ var q=byId(session.questions,qid);if(!q||q.type!=="open")return;
+ var box=document.querySelector("[data-open-answer='"+esc(qid)+"']"),btn=document.querySelector("[data-grade-open='"+esc(qid)+"']"),status=document.querySelector("[data-open-status='"+esc(qid)+"']");
+ var answer=box?String(box.value||"").trim():"";
+ if(!answer){alert("Vul eerst een antwoord in.");return}
+ var endpoint=aiEndpoint();if(!endpoint){alert("Stel eerst een AI-endpoint in via Instellingen.");return}
+ if(btn){btn.disabled=true;btn.textContent="AI kijkt na…";}if(status)status.textContent="Antwoord wordt beoordeeld…";
+ var requestBody={question:String(q.stem||""),modelAnswer:String(q.modelAnswer||""),rubric:Array.isArray(q.rubric)?q.rubric:[],points:Math.max(0.5,Number(q.points)||1),studentAnswer:answer};
+ try{
+  var res=await fetch(endpoint,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(requestBody)});
+  var data=await res.json().catch(function(){return {}});
+  if(!res.ok)throw new Error((data&&data.error)||"AI-service gaf HTTP "+res.status);
+  var max=Math.max(0.5,Number(q.points)||1),pts=Math.max(0,Math.min(max,Number(data.points)||0));
+  if(typeof data.points==="undefined")throw new Error("AI gaf geen geldige puntenverdeling terug.");
+  session.answers[q.id]={text:answer,points:pts,feedback:String(data.feedback||""),missing:Array.isArray(data.missing)?data.missing.map(function(x){return String(x)}):[],graded:true};
+  state.answers[q.id]={correct:pts>=max,when:Date.now(),selected:"open",points:pts};recalcSessionTotals();save();render();
+ }catch(err){if(status)status.textContent="Nakijken mislukt.";if(btn){btn.disabled=false;btn.textContent="Laat AI nakijken";}alert("AI-nakijken mislukt: "+(err&&err.message?err.message:String(err)));}
+}
+
 function questionBody(){
- var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",marked=isQuestionMarked(q.id),i,nums="",opts="",letters="ABCD";
- for(i=0;i<session.questions.length;i++)nums+="<button class='qnum "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done ":"")+(isQuestionMarked(session.questions[i].id)?"marked":"")+"' data-q='"+i+"' aria-label='Vraag "+(i+1)+(isQuestionMarked(session.questions[i].id)?" gemarkeerd":"")+"' title='"+(isQuestionMarked(session.questions[i].id)?"Gemarkeerde vraag":"Vraag markeren")+"'>"+(i+1)+"</button>";
- for(i=0;i<4;i++){var c="";if(submitted&&i===q.correct)c=" correct";else if(submitted&&i===picked)c=" wrong";opts+="<button class='answer"+c+"' "+(submitted?"disabled":"")+" data-a='"+i+"'><strong>"+letters.charAt(i)+".</strong> "+md(q.options[i])+"</button>"}
- var expl=submitted?"<div class='explain'><div class='title'>"+(picked===q.correct?"Correct":"Onjuist")+"</div><div class='question-explanation-rich'>"+(q.explanationRichHtml?renderInlineImages(applyStarBoldHtml(sanitizeRichHtml(q.explanationRichHtml))):md(q.explanation))+"</div><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective)+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
- var im=q.image?"<img class='image-preview' src='"+q.image+"'>":"";
- return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" "+(q.qbankSubsection?"• "+esc(q.qbankSubsection):"")+(q.topic?" • "+esc(q.topic):"")+"</strong><div style='display:flex;align-items:center;gap:8px'><span class='small muted'>"+esc(q.difficulty)+"</span><button class='btn secondary ivtg-mark-question "+(marked?"active":"")+"' data-mark-question='"+esc(q.id)+"' title='"+(marked?"Markering verwijderen":"Vraag markeren")+"'>"+(marked?"★ Gemarkeerd":"☆ Markeren")+"</button></div></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<div class='question-stem-live'>"+renderQuestionRichHtml(q)+"</div>"+opts+expl+"</div><div class='bottom'><span class='small muted'>Klik direct op A, B, C of D. Gebruik “Markeren” om deze vraag voor later te bekijken.</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
+ var q=session.questions[session.index],raw=session.answers[q.id],open=q.type==="open",submitted=open?questionAnswered(q):typeof raw!=="undefined",draft=raw&&typeof raw==="object"?raw:{text:typeof raw==="string"?raw:""},marked=isQuestionMarked(q.id),i,nums="",opts="",letters="ABCD";
+ for(i=0;i<session.questions.length;i++){var nq=session.questions[i];nums+="<button class='qnum "+(i===session.index?"active ":"")+(questionAnswered(nq)?"done ":"")+(isQuestionMarked(nq.id)?"marked":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";}
+ if(!open){
+  for(i=0;i<4;i++){var cc="";if(submitted&&i===q.correct)cc=" correct";else if(submitted&&i===raw)cc=" wrong";opts+="<button class='answer"+cc+"' "+(submitted?"disabled":"")+" data-a='"+i+"'><strong>"+letters.charAt(i)+".</strong> "+md(q.options[i]||"")+"</button>";}
+ }else{
+  var gh=draft&&draft.graded?"<div class='explain'><div class='title'>AI-beoordeling: "+esc(String(draft.points))+" / "+esc(String(q.points||1))+" punten</div><div class='box'>"+md(draft.feedback||"")+(draft.missing&&draft.missing.length?"<div style='margin-top:8px'><strong>Nog niet herkend:</strong><ul>"+draft.missing.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+"</ul></div>":"")+"</div><div class='small muted' style='margin-top:7px'>De score volgt de ingestelde rubric. Controleer twijfelgevallen handmatig.</div></div>":"";
+  opts="<div class='field'><label>Jouw antwoord</label><textarea data-open-answer='"+esc(q.id)+"' "+(draft&&draft.graded?"disabled":"")+" style='min-height:190px' placeholder='Schrijf hier je antwoord...'>"+esc(draft.text||"")+"</textarea></div>"+(!draft.graded?"<div style='display:flex;align-items:center;gap:10px'><button class='btn primary' data-grade-open='"+esc(q.id)+"'>Laat AI nakijken</button><span class='small muted' data-open-status='"+esc(q.id)+"'></span></div>":"")+gh;
+ }
+ var expl=!open&&submitted?"<div class='explain'><div class='title'>"+(raw===q.correct?"Correct":"Onjuist")+"</div><div class='question-explanation-rich'>"+(q.explanationRichHtml?renderInlineImages(applyStarBoldHtml(sanitizeRichHtml(q.explanationRichHtml))):md(q.explanation||""))+"</div><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective||"")+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
+ var im=q.image?"<img class='image-preview' src='"+esc(q.image)+"'>":"";
+ return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" "+(q.qbankSubsection?"• "+esc(q.qbankSubsection):"")+(q.topic?" • "+esc(q.topic):"")+"</strong><div style='display:flex;align-items:center;gap:8px'><span class='small muted'>"+esc(q.difficulty||"")+" · "+esc(String(q.points||1))+" pt</span><button class='btn secondary ivtg-mark-question "+(marked?"active":"")+"' data-mark-question='"+esc(q.id)+"'>"+(marked?"★ Gemarkeerd":"☆ Markeren")+"</button></div></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<div class='question-stem-live'>"+renderQuestionRichHtml(q)+"</div>"+opts+expl+"</div><div class='bottom'><span class='small muted'>"+(open?"Beantwoord en laat de AI volgens het modelantwoord en de rubric beoordelen.":"Klik op A, B, C of D om te antwoorden.")+"</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
 }
 function questionPage(){
  var i,body="<div class='ivtg ivtg-shell'><div class='ivtg-top'><div class='ivtg-count'>"+(session.index+1)+" / "+session.questions.length+"</div><div class='ivtg-tools'><button class='ivtg-item' data-prev>"+ICONS.prev+"<div>Vorige</div></button><button class='ivtg-item' data-next>"+ICONS.next+"<div>Volgende</div></button></div><button class='ivtg-item' data-modal='tutorial'>"+ICONS.tutorial+"<div>Uitleg</div></button><button class='ivtg-item' data-modal='lab'>"+ICONS.lab+"<div>Labwaarden</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='calc'>"+ICONS.calc+"<div>Rekenhulp</div></button><button class='ivtg-item' data-modal='settings'>"+ICONS.gear+"<div>Instellingen</div></button></div><div class='ivtg-left'>";
