@@ -289,22 +289,33 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
   var form=document.getElementById('accessForm');
   var input=document.getElementById('accessPassword');
   var error=document.getElementById('accessError');
+  function startApp(){
+    var tries=0;
+    function bootWhenReady(){
+      tries++;
+      try{
+        if(typeof window.__medqnlBoot==='function'){
+          var app=document.getElementById('app');
+          if(app) app.style.display='block';
+          window.__medqnlBoot();
+          return;
+        }
+      }catch(e){
+        if(error) error.textContent='De website kon niet worden gestart.';
+        return;
+      }
+      if(tries<40)setTimeout(bootWhenReady,25);
+      else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.';
+    }
+    bootWhenReady();
+  }
   function unlock(){
+    try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
     document.body.classList.remove('gate-locked');
     document.body.classList.add('gate-unlocked');
-    try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
     if(input) input.value='';
     if(error) error.textContent='';
-    try{
-      var app=document.getElementById('app');
-      if(app) app.style.display='block';
-      if(typeof window.__medqnlBoot==='function') window.__medqnlBoot();
-      setTimeout(function(){
-        try{
-          if(app && !app.innerHTML.trim() && typeof window.__medqnlBoot==='function') window.__medqnlBoot();
-        }catch(e){}
-      },50);
-    }catch(e){}
+    startApp();
   }
   var unlocked=false;
   try{unlocked=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
@@ -2060,7 +2071,9 @@ function bootMedQNL(){
 }
 window.__medqnlBoot=bootMedQNL;
 
-bootMedQNL();
+var __accessReady=false;
+try{__accessReady=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
+if(__accessReady)bootMedQNL();
 })();
 </script>
 </body>
