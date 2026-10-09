@@ -1270,7 +1270,7 @@ function shell(body){
  "</div>";
  return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+nav("mailbox","Mailbox",ICONS.mail)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+nav("mailbox","Mailbox","")+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
@@ -1974,13 +1974,9 @@ function notesPage(){
 }
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
- var ai=state.ai||{endpoint:"/api/grade-open"};
- return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen en AI-nakijken.</p></div></div><div class='card' style='max-width:720px'>"+
+ return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:720px'>"+
  "<div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div>"+
  "<div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div>"+
- "<div style='margin-top:18px;padding-top:16px;border-top:1px solid var(--line)'><div class='title'>AI-nakijken voor open vragen</div><div class='notice' style='margin-bottom:12px'>AI gebruikt alleen de ingestelde endpoint. Bewaar de OpenAI-sleutel uitsluitend server-side en zet geen sleutel in deze site of repository.</div>"+
- "<div class='field'><label>AI-endpoint</label><input id='aiEndpointInput' value='"+esc(ai.endpoint||"/api/grade-open")+"' placeholder='/api/grade-open'></div>"+
- "<button class='btn primary' id='saveAI'>AI-instellingen opslaan</button></div>"+
  "<button class='btn primary' id='saveName' style='margin-top:16px'>Opslaan</button></div>");
 }
 function showModal(type){
