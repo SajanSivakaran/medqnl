@@ -958,7 +958,7 @@ function shell(body){
  "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
  "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie · Contentbeheer v2</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
@@ -1160,11 +1160,17 @@ function articleToc(a,prefix){
 }
 function library(){
  var ivtgArticles=[],ivtgSections=[],i,sec,j;
- for(i=0;i<state.articles.length;i++)ivtgArticles.push(state.articles[i]);
- for(i=0;i<state.sections.length;i++)ivtgSections.push(state.sections[i]);
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].library!=="medical")ivtgArticles.push(state.articles[i]);
+ for(i=0;i<state.sections.length;i++){
+   var sectionCandidate=state.sections[i];
+   var hasIvtgArticle=false,k;
+   for(k=0;k<ivtgArticles.length;k++)if(ivtgArticles[k].sectionId===sectionCandidate.id){hasIvtgArticle=true;break}
+   if(sectionCandidate.library!=="medical" && hasIvtgArticle)ivtgSections.push(sectionCandidate);
+ }
  if(!state.ui)state.ui={};
- var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{};
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc=articleToc(a,"mainsec");
  var collapsed=!!state.ui.libNavCollapsed;
+ if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>");
  for(i=0;i<ivtgSections.length;i++){
    sec=ivtgSections[i];
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
