@@ -310,25 +310,60 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
   var form=document.getElementById('accessForm');
   var input=document.getElementById('accessPassword');
   var error=document.getElementById('accessError');
-  function startApp(){
+  var AUTH_STORE='medqnl_auth_v1',authConfig=null,authSession=null,authPanel=null;
+  function readAuthSession(){try{var raw=localStorage.getItem(AUTH_STORE);return raw?JSON.parse(raw):null}catch(e){return null}}
+  function writeAuthSession(s){authSession=s||null;try{if(s)localStorage.setItem(AUTH_STORE,JSON.stringify(s));else localStorage.removeItem(AUTH_STORE)}catch(e){}}
+  async function loadAuthConfig(){
+    var rr=await fetch('/api/supabase-config',{headers:{Accept:'application/json'}});
+    var d=await rr.json().catch(function(){return {}});
+    if(!rr.ok||!d.url||!d.anonKey)throw new Error(d.error||'Supabase-configuratie ontbreekt.');
+    return d;
+  }
+  function showAuth(message,mode){
+    mode=mode||'login';if(authPanel)authPanel.remove();
+    authPanel=document.createElement('div');authPanel.id='supabaseAuthPanel';
+    authPanel.innerHTML="<div style='position:fixed;inset:0;z-index:99990;background:rgba(9,25,40,.62);display:flex;align-items:center;justify-content:center;padding:20px'>"+
+      "<div style='width:min(430px,100%);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 18px 55px rgba(0,0,0,.22)'>"+
+      "<div style='font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px'>MedQNL-account</div>"+
+      "<div class='small muted' style='margin-bottom:18px'>Log in om je persoonlijke mailbox, voortgang en feedback op meerdere apparaten te gebruiken.</div>"+
+      "<div class='field' data-auth-name-field><label>Naam</label><input data-auth-name placeholder='Bijvoorbeeld Student'></div>"+
+      "<div class='field'><label>E-mailadres</label><input data-auth-email type='email' autocomplete='email' placeholder='jij@voorbeeld.nl'></div>"+
+      "<div class='field'><label>Wachtwoord</label><input data-auth-password type='password' autocomplete='current-password' minlength='6'></div>"+
+      "<div data-auth-message class='notice' style='display:"+(message?'block':'none')+";margin-bottom:12px'>"+String(message||'')+"</div>"+
+      "<div style='display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap'><button class='btn secondary' data-auth-mode='login' style='display:"+(mode==='signup'?'inline-block':'none')+"'>Ik heb al een account</button><button class='btn secondary' data-auth-mode='signup' style='display:"+(mode==='login'?'inline-block':'none')+"'>Account maken</button><button class='btn primary' data-auth-submit>"+(mode==='signup'?'Account maken':'Inloggen')+"</button></div>"+
+      "</div></div>";
+    document.body.appendChild(authPanel);
+    var nf=authPanel.querySelector("[data-auth-name-field]");if(nf)nf.style.display=mode==='signup'?'block':'none';
+    authPanel.querySelector("[data-auth-submit]").addEventListener('click',function(){submitAuth(mode)});
+    var toggle=authPanel.querySelector("[data-auth-mode='"+(mode==='login'?'signup':'login')+"']");if(toggle)toggle.addEventListener('click',function(){showAuth('',mode==='login'?'signup':'login')});
+    authPanel.querySelector("[data-auth-password]").addEventListener('keydown',function(e){if(e.key==='Enter')submitAuth(mode)});
+  }
+  async function submitAuth(mode){
+    var email=authPanel.querySelector("[data-auth-email]").value.trim(),password=authPanel.querySelector("[data-auth-password]").value||"",name=authPanel.querySelector("[data-auth-name]").value.trim(),msg=authPanel.querySelector("[data-auth-message]");
+    if(!email||!password||(mode==='signup'&&!name)){msg.style.display='block';msg.textContent=mode==='signup'?'Vul naam, e-mailadres en wachtwoord in.':'Vul e-mailadres en wachtwoord in.';return}
+    if(password.length<6){msg.style.display='block';msg.textContent='Het wachtwoord moet minimaal 6 tekens bevatten.';return}
+    try{
+      var path=mode==='signup'?'/auth/v1/signup':'/auth/v1/token?grant_type=password';
+      var body=mode==='signup'?{email:email,password:password,data:{display_name:name}}:{email:email,password:password};
+      var rr=await fetch(authConfig.url+path,{method:'POST',headers:{'Content-Type':'application/json',apikey:authConfig.anonKey},body:JSON.stringify(body)});
+      var d=await rr.json().catch(function(){return {}});
+      if(!rr.ok){msg.style.display='block';msg.textContent=d.msg||d.error_description||d.error||'Inloggen mislukt.';return}
+      if(mode==='signup'&&!d.access_token){showAuth('Account aangemaakt. Bevestig je e-mailadres als e-mailbevestiging aanstaat en log daarna in.','login');return}
+      writeAuthSession(d);window.__medqnlAuthSession=d;authPanel.remove();authPanel=null;continueBoot();
+    }catch(e){msg.style.display='block';msg.textContent=e&&e.message?e.message:'Verbinding met Supabase mislukt.'}
+  }
+  function logout(){writeAuthSession(null);window.__medqnlAuthSession=null;window.__medqnlAuthRole=null;showAuth('Je bent uitgelogd.','login')}
+  function continueBoot(){
     var tries=0;
-    function bootWhenReady(){
-      tries++;
-      try{
-        if(typeof window.__medqnlBoot==='function'){
-          var app=document.getElementById('app');
-          if(app) app.style.display='block';
-          window.__medqnlBoot();
-          return;
-        }
-      }catch(e){
-        if(error) error.textContent='De website kon niet worden gestart.';
-        return;
-      }
-      if(tries<40)setTimeout(bootWhenReady,25);
-      else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.';
-    }
+    function bootWhenReady(){tries++;try{
+      if(typeof window.__medqnlBoot==='function'){var app=document.getElementById('app');if(app)app.style.display='block';window.__medqnlAuthSession=authSession;window.__medqnlBoot();return}
+    }catch(e){if(error)error.textContent='De website kon niet worden gestart.';return}
+    if(tries<80)setTimeout(bootWhenReady,25);else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.'}
     bootWhenReady();
+  }
+  async function startApp(){
+    try{authConfig=await loadAuthConfig();authSession=readAuthSession();window.__medqnlAuthSession=authSession;if(!authSession)showAuth('', 'login');else continueBoot()}
+    catch(e){if(error)error.textContent=e&&e.message?e.message:'Supabase kon niet worden geladen.'}
   }
   function unlock(){
     try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
@@ -1064,6 +1099,34 @@ function ensureQuestionBankSeeds(x){
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function authToken(){return window.__medqnlAuthSession&&window.__medqnlAuthSession.access_token?window.__medqnlAuthSession.access_token:""}
+async function syncFeedbackFromServer(){
+ var token=authToken();if(!token)return;
+ try{
+  var rr=await fetch('/api/feedback',{headers:{Authorization:"Bearer "+token,Accept:"application/json"}});
+  var d=await rr.json().catch(function(){return {}});
+  if(rr.status===401){logout();return}
+  if(!rr.ok)throw new Error(d.error||"Feedback ophalen mislukt.");
+  state.feedback=Array.isArray(d.feedback)?d.feedback.map(function(f){return {id:f.id,date:f.created_at||"",category:f.category||"Overig",message:f.message||"",questionId:f.question_id||"",questionTitle:f.question_title||"",studentName:f.student_name||"Student",studentEmail:f.student_email||"",status:f.status==="resolved"?"resolved":"open",response:f.response||"",respondedAt:f.responded_at||""}}):[];
+  window.__medqnlAuthRole=d.role||"student";
+  if(d.profile&&d.profile.display_name)state.name=d.profile.display_name;
+  save();
+ }catch(e){console.warn("Feedback sync:",e&&e.message?e.message:e)}
+}
+async function createFeedbackRemote(fb){
+ var token=authToken();if(!token)throw new Error("Je moet ingelogd zijn.");
+ var rr=await fetch('/api/feedback',{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},body:JSON.stringify({questionId:fb.questionId||"",questionTitle:fb.questionTitle||"",category:fb.category||"Overig",message:fb.message||""})});
+ var d=await rr.json().catch(function(){return {}});
+ if(!rr.ok)throw new Error(d.error||"Feedback opslaan mislukt.");
+ return d.feedback;
+}
+async function updateFeedbackRemote(fb){
+ var token=authToken();if(!token)throw new Error("Je moet ingelogd zijn.");
+ var rr=await fetch('/api/feedback',{method:"PATCH",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},body:JSON.stringify({id:fb.id,response:fb.response||"",status:fb.status==="resolved"?"resolved":"open"})});
+ var d=await rr.json().catch(function(){return {}});
+ if(!rr.ok)throw new Error(d.error||"Feedback bijwerken mislukt.");
+ return d.feedback;
+}
 function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
 function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
@@ -1205,10 +1268,10 @@ function shell(body){
  "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
  "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie · Contentbeheer v2</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+nav("mailbox","Mailbox",ICONS.mail)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
- "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
+ (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
 function welcomeMessage(){
@@ -2142,11 +2205,16 @@ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"St
   var resp=document.querySelector("[data-feedback-response='"+fid+"']"),st=document.querySelector("[data-feedback-status='"+fid+"']");
   fbi.response=resp?String(resp.value||"").trim():"";
   fbi.status=st&&st.value==="resolved"?"resolved":"open";
-  fbi.respondedAt=new Date().toLocaleString("nl-NL");
+  fbi.respondedAt=new Date().toISOString();
   fbi.studentName=fbi.studentName||state.name||"Student";
-  save();render();return
+  (async function(){try{var saved=await updateFeedbackRemote(fbi);if(saved){fbi.status=saved.status||fbi.status;fbi.response=saved.response||fbi.response;fbi.respondedAt=saved.responded_at||fbi.respondedAt}save();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden bijgewerkt.")}})();return
 }
-if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:"",studentName:state.name||"Student",status:"open",response:"",respondedAt:""});save();closeModal();return}
+if(t.id==="sendFeedback"){
+ var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}
+ var fq=session?session.questions[session.index]:null;
+ var pending={id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:"",studentName:state.name||"Student",status:"open",response:"",respondedAt:""};
+ (async function(){try{var saved=await createFeedbackRemote(pending);if(saved){pending.id=saved.id||pending.id;pending.date=saved.created_at||pending.date;pending.status=saved.status||"open"}state.feedback.push(pending);save();closeModal();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden opgeslagen.")}})();return
+}
  el=t.closest?t.closest("[data-mark-question]"):null;if(el){toggleQuestionMark(el.getAttribute("data-mark-question"));return}
  if(t.hasAttribute("data-mark-action")){showMarkbar();return}
  if(t.hasAttribute("data-calc")){
@@ -2177,6 +2245,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
+ el=t.closest?t.closest("[data-auth-logout]"):null;if(el){logout();return}
  el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
@@ -2380,6 +2449,7 @@ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null
 
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
+ if(page==="admin"&&window.__medqnlAuthRole!=="admin")page="dashboard";
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
  var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
@@ -2391,8 +2461,9 @@ function showAppError(err){
   var msg=err&&err.message?err.message:String(err||"Onbekende fout");
   root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
 }
-function bootMedQNL(){
+async function bootMedQNL(){
   try{
+    await syncFeedbackFromServer();
     render();
   }catch(err){
     try{
@@ -2408,7 +2479,7 @@ window.__medqnlBoot=bootMedQNL;
 
 var __accessReady=false;
 try{__accessReady=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
-if(__accessReady)bootMedQNL();
+if(__accessReady)startApp();
 })();
 </script>
 </body>
