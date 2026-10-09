@@ -2092,7 +2092,7 @@ function showQuestionRichToolbar(){
  var bar=document.getElementById("questionRichSelectionToolbar"),sel=window.getSelection();
  if(!bar||!sel||!sel.rangeCount)return;
  var range=sel.getRangeAt(0),node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node;
- var ed=el&&el.closest?el.closest(".article-rich-editor,.note-editor"):null;
+ var ed=el&&el.closest?el.closest(".article-rich-editor"):null;
  if(!ed||!ed.contains(sel.focusNode)){
    if(bar.contains(document.activeElement))return;
    hideQuestionRichToolbar();return;
