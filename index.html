@@ -1136,7 +1136,7 @@ function library(){
  for(i=0;i<state.sections.length;i++)ivtgSections.push(state.sections[i]);
  if(!state.ui)state.ui={};
  var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{};
- var collapsed=!!state.ui.libNavCollapsed,toc=articleToc(a,"mainsec");
+ var collapsed=!!state.ui.libNavCollapsed;
  for(i=0;i<ivtgSections.length;i++){
    sec=ivtgSections[i];
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
@@ -1156,7 +1156,7 @@ function medicalLibrary(){
  for(i=0;i<state.articles.length;i++)if(state.articles[i].library==="medical"){if(!a)a=state.articles[i];arts.push(state.articles[i]);}
  if(!a)return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Section III uit First Aid for the USMLE Step 1 2026, inhoudelijk omgezet naar een eigen Nederlandse leeromgeving.</p></div></div><div class='empty'>Nog geen medische bibliotheekinhoud.</div>");
  var active=byId(state.articles,articleId);if(!active||active.library!=="medical")active=a;
- var toc=articleToc(active,"medsec");
+ var toc="";
  for(i=0;i<sections.length;i++){
    sec=sections[i];var isCollapsed=!!sectionCollapsed[sec.id],items="";
    for(j=0;j<arts.length;j++)if(arts[j].sectionId===sec.id)items+="<button data-art-med='"+arts[j].id+"' class='"+(arts[j].id===active.id?"active":"")+"'>"+esc(arts[j].title)+"</button>";
@@ -1183,7 +1183,7 @@ function articleForm(a){
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude. Vet, koppen, lijsten, tabellen én afbeeldingen uit het klembord worden als rijke inhoud meegenomen wanneer de bron dit beschikbaar stelt.</div><button type='button' class='btn secondary' id='pasteRich'>Plakken uit Word / AI</button><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1477,36 +1477,8 @@ document.addEventListener("input",function(ev){
   if(img){var w=parseInt(ev.target.value,10)||180,tg=img.querySelector("img"),widths={};if(tg)tg.style.width=w+"px";if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}widths[id]=w;if(ws)ws.value=JSON.stringify(widths);var lbl=document.getElementById("inlineImageSizeValue");if(lbl)lbl.textContent=w+" px";}
  }
 });
-document.addEventListener("click",async function(ev){
+document.addEventListener("click",function(ev){
  var t=ev.target;
- if(t.id==="pasteRich"){
-  var ed=document.getElementById("articleEditor");if(!ed)return;ed.focus();
-  try{
-   if(!navigator.clipboard||!navigator.clipboard.read)throw new Error("no-read");
-   var items=await navigator.clipboard.read(),html="",txt="",images=[],i,j,types,blob;
-   for(i=0;i<items.length;i++){
-    types=items[i].types||[];
-    for(j=0;j<types.length;j++){
-     if(types[j]==="text/html"){blob=await items[i].getType("text/html");html=await blob.text()}
-     else if(types[j]==="text/plain"){blob=await items[i].getType("text/plain");txt=await blob.text()}
-     else if(types[j].indexOf("image/")===0){blob=await items[i].getType(types[j]);var data=await imageBlobToDataUrl(blob,1800,900000);if(data)images.push(data)}
-    }
-   }
-   var safe=sanitizeRichHtml(html||"");
-   if(images.length){
-    var holder=document.createElement("div");holder.innerHTML=safe;
-    var ims=Array.from(holder.querySelectorAll("img")),assigned=0,src,k;
-    for(k=0;k<ims.length;k++){src=ims[k].getAttribute("src")||"";if(!/^(https?:|data:image\/)/i.test(src)&&images[assigned])ims[k].setAttribute("src",images[assigned++])}
-    safe=holder.innerHTML;
-    if(!ims.length||assigned>0)for(k=assigned;k<images.length;k++)safe+="<p><img src='"+esc(images[k])+"' alt='Afbeelding'></p>";
-   }
-   if(!safe&&txt)safe="<p>"+esc(txt).replace(/\n/g,"<br>")+"</p>";
-   var sel=window.getSelection(),range=(sel&&sel.rangeCount&&ed.contains(sel.anchorNode))?sel.getRangeAt(0):ed._savedRange,box=document.createElement("div");box.innerHTML=safe;
-   if(range){range.deleteContents();var frag=document.createDocumentFragment();while(box.firstChild)frag.appendChild(box.firstChild);range.insertNode(frag);range.collapse(false);sel.removeAllRanges();sel.addRange(range);ed._savedRange=range.cloneRange()}
-   else ed.appendChild(box);
-  }catch(e){alert("Klik in het artikelveld en gebruik Ctrl+V / ⌘V; de rijke import verwerkt daarna de opmaak, tabellen en afbeeldingen van het klembord.")}
-  return;
- }
  if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
  el=t.closest?t.closest("[data-remove-image]"):null;
  if(el){
