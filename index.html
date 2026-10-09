@@ -930,7 +930,7 @@ function shell(body){
  "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
  "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>☰</button><div class='logo'>MedQ<span>NL</span></div></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
