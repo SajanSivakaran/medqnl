@@ -449,7 +449,21 @@ var QBANK_SUBJECTS=[
 "Bewegingsapparaat & Traumatologie",
 "Infectie, Immunologie & Bloed"
 ];
+var QBANK_SUBSECTIONS={
+"Circulatie & Ademhaling (Cardiopulmonaal)":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"],
+"Nieren, Vloeistoffen & Urogenitaal":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"],
+"Spijsvertering & Stofwisseling (Gastro-intestinaal & Endocrinologie)":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"],
+"Zenuwstelsel & Zintuigen (Neuro-Anatomie & Zenuwstelsel)":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"],
+"Bewegingsapparaat & Traumatologie":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"],
+"Infectie, Immunologie & Bloed":["Anatomie & Fysiologie","Pathofysiologie & Ziektebeelden","Diagnostiek & Farmacologie"]
+};
+var QUESTION_MODES=[
+{id:"knowledge",label:"Kennis- & Conceptcheck"},
+{id:"clinical",label:"Klinische Casussen / UWorld-stijl"}
+];
 function isQbankSubject(subject){return has(QBANK_SUBJECTS,String(subject||""))}
+function qbankSubsections(subject){return QBANK_SUBSECTIONS[String(subject||"")]||[]}
+function questionMode(q){return q&&q.mode==="clinical"?"clinical":"knowledge"}
 
 var SECTIONS=[
 {id:"sec1",title:"Metamedica",order:1},
