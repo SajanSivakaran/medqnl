@@ -963,6 +963,11 @@ function load(){
     if(!Array.isArray(x.attempts))x.attempts=[];
     if(!x.notes || typeof x.notes!=="object")x.notes={};
     if(!Array.isArray(x.feedback))x.feedback=[];
+    for(var fi=0;fi<x.feedback.length;fi++){
+      if(!x.feedback[fi].status)x.feedback[fi].status="open";
+      if(typeof x.feedback[fi].response!=="string")x.feedback[fi].response="";
+      if(typeof x.feedback[fi].respondedAt!=="string")x.feedback[fi].respondedAt="";
+    }
     if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
     if(!x.questionMarks || typeof x.questionMarks!=="object")x.questionMarks={};
     if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
@@ -1648,7 +1653,21 @@ function admin(){
  var secs="",arts="",feedback="",i,s,a;
  for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='small muted'>"+(s.library==="medical"?"Medisch":"iVTG")+"</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
- var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span><div class='small muted'>"+esc(fb.message||"")+"</div><div class='small muted'>"+esc(fb.date||"")+"</div></div></div>"}
+ var fbs=state.feedback||[];
+ for(i=0;i<fbs.length;i++){
+  var fb=fbs[i],fbStatus=fb.status==="resolved"?"resolved":"open",fid=fb.id||"";
+  feedback+="<div class='feedback-admin-card' data-feedback-id='"+esc(fid)+"'>"+
+    "<div class='feedback-admin-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span></div>"+
+    "<span class='feedback-status "+fbStatus+"'>"+(fbStatus==="resolved"?"Opgelost":"Open")+"</span></div>"+
+    "<div class='small muted'>"+esc(fb.date||"")+"</div>"+
+    "<div class='feedback-message'>"+esc(fb.message||"")+"</div>"+
+    "<div class='field' style='margin-top:10px'><label>Reactie</label><textarea data-feedback-response='"+esc(fid)+"' style='min-height:90px' placeholder='Schrijf een reactie aan de student...'>"+esc(fb.response||"")+"</textarea></div>"+
+    "<div style='display:flex;gap:8px;align-items:center;flex-wrap:wrap'>"+
+      "<select data-feedback-status='"+esc(fid)+"'><option value='open'"+(fbStatus==="open"?" selected":"")+">Open</option><option value='resolved'"+(fbStatus==="resolved"?" selected":"")+">Opgelost</option></select>"+
+      "<button class='btn primary' data-save-feedback='"+esc(fid)+"'>Reactie opslaan</button>"+
+      (fb.respondedAt?"<span class='small muted'>Laatst bijgewerkt: "+esc(fb.respondedAt)+"</span>":"")+
+    "</div></div>";
+ }
  var qstructSubject=state.ui.adminQbankStructureSubject&&isQbankSubject(state.ui.adminQbankStructureSubject)?state.ui.adminQbankStructureSubject:QBANK_SUBJECTS[0],qstructChapters=qbankSubsections(qstructSubject),qstructOptions="";
  for(i=0;i<QBANK_SUBJECTS.length;i++)qstructOptions+="<option value='"+esc(QBANK_SUBJECTS[i])+"'"+(qstructSubject===QBANK_SUBJECTS[i]?" selected":"")+">"+esc(QBANK_SUBJECTS[i])+"</option>";
  var qstructItems="";for(i=0;i<qstructChapters.length;i++)qstructItems+="<div class='manager-item qbank-structure-item'><span class='small muted'>"+String(i+1).padStart(2,"0")+"</span><strong>"+esc(qstructChapters[i])+"</strong></div>";
@@ -2007,7 +2026,16 @@ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"St
  if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
  el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
  el=t.closest?t.closest("[data-format]"):null;if(el){var fmt=el.getAttribute("data-format"),arg=null;if(fmt.indexOf(":")>0){var parts=fmt.split(":");fmt=parts[0];arg=parts.slice(1).join(":");}if(fmt==="hiliteColor")arg="#fff2a8";if(fmt==="formatBlock")document.execCommand("formatBlock",false,arg);else document.execCommand(fmt,false,arg);updateNotebookStats();return}
- if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
+ if(t.getAttribute&&t.getAttribute("data-save-feedback")){
+  var fid=t.getAttribute("data-save-feedback"),fbi=byId(state.feedback||[],fid);
+  if(!fbi){alert("Feedback niet gevonden.");return}
+  var resp=document.querySelector("[data-feedback-response='"+fid+"']"),st=document.querySelector("[data-feedback-status='"+fid+"']");
+  fbi.response=resp?String(resp.value||"").trim():"";
+  fbi.status=st&&st.value==="resolved"?"resolved":"open";
+  fbi.respondedAt=new Date().toLocaleString("nl-NL");
+  save();render();return
+}
+if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
  el=t.closest?t.closest("[data-mark-question]"):null;if(el){toggleQuestionMark(el.getAttribute("data-mark-question"));return}
  if(t.hasAttribute("data-mark-action")){showMarkbar();return}
  if(t.hasAttribute("data-calc")){
