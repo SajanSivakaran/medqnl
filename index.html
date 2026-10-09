@@ -1221,12 +1221,47 @@ function questionStemEditorHtml(q){
  });
  return html;
 }
+function applyStarBoldHtml(html){
+ var d=new DOMParser().parseFromString(String(html||""),"text/html"),walker=d.createTreeWalker(d.body,NodeFilter.SHOW_TEXT),nodes=[],n,i,m,strong;
+ while(n=walker.nextNode())nodes.push(n);
+ for(i=0;i<nodes.length;i++){
+   n=nodes[i];
+   if(!n.parentElement||n.parentElement.closest("strong,b"))continue;
+   var txt=n.nodeValue||"",rx=/\*([^*\n]+)\*/g,last=0,found=false;
+   while((m=rx.exec(txt))){
+     found=true;
+     if(m.index>last)n.parentNode.insertBefore(d.createTextNode(txt.slice(last,m.index)),n);
+     strong=d.createElement("strong");strong.textContent=m[1];n.parentNode.insertBefore(strong,n);
+     last=m.index+m[0].length;
+   }
+   if(found){if(last<txt.length)n.parentNode.insertBefore(d.createTextNode(txt.slice(last)),n);n.parentNode.removeChild(n)}
+ }
+ return d.body.innerHTML;
+}
+function questionImageTokenHtml(q){
+ var main=q&&q.image||"",images=q&&q.inlineImages||{},widths=q&&q.inlineImageWidths||{},keys=Object.keys(images),src=main,w=0;
+ if(!src&&keys.length){src=images[keys[0]];w=parseInt(widths[keys[0]],10)||0}
+ if(!src)return "<span class='inline-image-live'>[afbeelding]</span>";
+ return "<img class='question-inline-image' src='"+esc(src)+"' alt='Afbeelding'"+(w?" style='width:"+w+"px'":"")+">";
+}
 function renderQuestionRichHtml(q){
  var html=q&&q.stemRichHtml?sanitizeRichHtml(q.stemRichHtml):md(q&&q.stem||""),images=q&&q.inlineImages||{},widths=q&&q.inlineImageWidths||{};
- return html.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
+ html=html.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
    var id=String(rawId).trim(),src=images[id],w=parseInt(widths[id],10)||0;
    return src?"<img class='question-inline-image' src='"+esc(src)+"' alt='Afbeelding'"+(w?" style='width:"+w+"px'":"")+">":"<span class='inline-image-live'>[afbeelding]</span>";
  });
+ html=html.replace(/\[afbeelding\]/gi,function(){return questionImageTokenHtml(q)});
+ return applyStarBoldHtml(html);
+}
+function questionStemEditorHtml(q){
+ var html=q&&q.stemRichHtml?sanitizeRichHtml(q.stemRichHtml):md(q&&q.stem||""),images=q&&q.inlineImages||{},widths=q&&q.inlineImageWidths||{};
+ html=html.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
+   var id=String(rawId).trim(),src=images[id],w=parseInt(widths[id],10)||180;
+   if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(id)+"'>[afbeelding]</span>";
+   return "<span class='inline-image-editor' tabindex='0' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(id)+"' title='Klik voor grootte · sleep om te verplaatsen'><img src='"+esc(src)+"' alt='' style='width:"+w+"px'></span>";
+ });
+ html=html.replace(/\[afbeelding\]/gi,function(){return questionImageTokenHtml(q)});
+ return applyStarBoldHtml(html);
 }
 function richHtmlToText(html){
  var d=new DOMParser().parseFromString(String(html||""),"text/html");
@@ -1335,7 +1370,7 @@ function questionForm(q){
  "<div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div>"+
  "<div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'>"+
  "<div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div>"+
- "<div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Plak een afbeelding direct in de vraag of kies een bestand. Afbeeldingen blijven op de plek staan waar je ze invoegt.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div>"+
+ "<div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst. Je kunt ook direct een afbeelding plakken of kiezen. Afbeeldingen blijven op de plek staan waar je ze invoegt.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div>"+
  "</div>"+
  "<div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div>"+
  "<div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div>"+
@@ -1351,18 +1386,18 @@ function articleForm(a){
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Hoofdstuk</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
-function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
+function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam hoofdstuk</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Hoofdstuk opslaan</button></form>"}
 
 function quickNewSection(){
- var id='sec'+Date.now();state.sections.push({id:id,title:'Nieuwe sectie',order:state.sections.length+1});state.ui.selectedSection=id;save();render();
+ var id='sec'+Date.now();state.sections.push({id:id,title:'Nieuw hoofdstuk',order:state.sections.length+1});state.ui.selectedSection=id;save();render();
 }
 function quickNewArticle(){
  if(!state.sections.length)quickNewSection();
  var sec=(state.ui&&state.ui.selectedSection)||state.sections[0].id,so=byId(state.sections,sec),id='a'+Date.now();
- state.articles.push({id:id,library:(so&&so.library==="medical"?"medical":"ivtg"),sectionId:sec,title:"Nieuw hoofdstuk",body:["Nieuwe inhoud."],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}});save();editArticle(id);
+ state.articles.push({id:id,library:(so&&so.library==="medical"?"medical":"ivtg"),sectionId:sec,title:"Nieuwe sectie",body:["Nieuwe inhoud."],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}});save();editArticle(id);
 }
 function saveDragOrder(){
  var list=document.getElementById('sectionList');if(list){var els=list.querySelectorAll('[data-dragsec]');for(var i=0;i<els.length;i++){var obj=byId(state.sections,els[i].getAttribute('data-dragsec'));if(obj)obj.order=i+1;}}
@@ -1375,7 +1410,7 @@ function removeSection(id){
  if(!section)return;
  var chapterIds=[],i;
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)chapterIds.push(state.articles[i].id);
- if(!confirm("Sectie '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" hoofdstuk(ken) in deze sectie worden ook verwijderd.":"")))return;
+ if(!confirm("Hoofdstuk '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" sectie(s) in dit hoofdstuk worden ook verwijderd.":"")))return;
  removeBy(state.sections,id);
  for(i=state.articles.length-1;i>=0;i--)if(state.articles[i].sectionId===id)state.articles.splice(i,1);
  for(i=0;i<chapterIds.length;i++){delete state.highlights[chapterIds[i]];delete state.chapterTime[chapterIds[i]];}
@@ -1393,11 +1428,11 @@ function admin(){
  var qstructSubject=state.ui.adminQbankStructureSubject&&isQbankSubject(state.ui.adminQbankStructureSubject)?state.ui.adminQbankStructureSubject:QBANK_SUBJECTS[0],qstructChapters=qbankSubsections(qstructSubject),qstructOptions="";
  for(i=0;i<QBANK_SUBJECTS.length;i++)qstructOptions+="<option value='"+esc(QBANK_SUBJECTS[i])+"'"+(qstructSubject===QBANK_SUBJECTS[i]?" selected":"")+">"+esc(QBANK_SUBJECTS[i])+"</option>";
  var qstructItems="";for(i=0;i<qstructChapters.length;i++)qstructItems+="<div class='manager-item qbank-structure-item'><span class='small muted'>"+String(i+1).padStart(2,"0")+"</span><strong>"+esc(qstructChapters[i])+"</strong></div>";
- var sectionsPanel="<div class='content-manager-panel' "+(activeTab==="sections"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div></div>";
- var chaptersPanel="<div class='content-manager-panel' "+(activeTab==="chapters"?"":"hidden")+"><div class='content-manager-grid'><div class='manager-col'><div class='manager-head'>Hoofdstukken <span class='small muted'>Sectie: "+esc(sectionTitle(secId))+"</span><button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'><span>Qbank-structuur</span><select id='adminQbankStructureSubject' class='compact-select'>"+qstructOptions+"</select></div><div class='small muted' style='padding:10px 12px 4px'>Vaste Qbank-hoofdonderwerpen en hoofdstukken.</div><div class='manager-list qbank-structure-list'>"+qstructItems+"</div></div></div></div>";
+ var sectionsPanel="<div class='content-manager-panel' "+(activeTab==="sections"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div></div>";
+ var chaptersPanel="<div class='content-manager-panel' "+(activeTab==="chapters"?"":"hidden")+"><div class='content-manager-grid'><div class='manager-col'><div class='manager-head'>Secties <span class='small muted'>Hoofdstuk: "+esc(sectionTitle(secId))+"</span><button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'><span>Qbank-structuur</span><select id='adminQbankStructureSubject' class='compact-select'>"+qstructOptions+"</select></div><div class='small muted' style='padding:10px 12px 4px'>Vaste Qbank-hoofdonderwerpen en hoofdstukken.</div><div class='manager-list qbank-structure-list'>"+qstructItems+"</div></div></div></div>";
  var questionModule=state.ui.adminQuestionModule==="ivtg"?"ivtg":"qbank";
  var questionsPanel="<div class='content-manager-panel' "+(activeTab==="questions"?"":"hidden")+"><div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><div style='display:flex;gap:6px;align-items:center'><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div><div class='question-manager-tabs'><button class='perf-tab "+(questionModule==="qbank"?"active":"")+"' data-question-module='qbank'>Vragenbank</button><button class='perf-tab "+(questionModule==="ivtg"?"active":"")+"' data-question-module='ivtg'>iVTG Trainer</button></div><div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, onderwerp, diagnose...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle Qbank-onderwerpen</option></select><select id='adminQuestionSubsection' class='search' style='margin:0'><option value=''>Alle hoofdstukken</option></select><select id='adminQuestionTopic' class='search' style='margin:0'><option value=''>Alle subonderwerpen</option></select></div><div class='question-manager-grid' id='adminQuestionList'></div></div></div>";
- return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer je content overzichtelijk via drie aparte onderdelen: secties, hoofdstukken en vragen.</p></div></div><div class='content-manager-tabs' role='tablist' aria-label='Content onderdelen'><button class='content-manager-tab "+(activeTab==="sections"?"active":"")+"' data-admin-tab='sections'>Secties</button><button class='content-manager-tab "+(activeTab==="chapters"?"active":"")+"' data-admin-tab='chapters'>Hoofdstukken</button><button class='content-manager-tab "+(activeTab==="questions"?"active":"")+"' data-admin-tab='questions'>Vragen</button></div><div class='content-manager'>"+sectionsPanel+chaptersPanel+questionsPanel+"</div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
+ return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer je content als hoofdstukken met onderliggende secties en vragen.</p></div></div><div class='content-manager-tabs' role='tablist' aria-label='Content onderdelen'><button class='content-manager-tab "+(activeTab==="sections"?"active":"")+"' data-admin-tab='sections'>Hoofdstukken</button><button class='content-manager-tab "+(activeTab==="chapters"?"active":"")+"' data-admin-tab='chapters'>Secties</button><button class='content-manager-tab "+(activeTab==="questions"?"active":"")+"' data-admin-tab='questions'>Vragen</button></div><div class='content-manager'>"+sectionsPanel+chaptersPanel+questionsPanel+"</div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
 }
 function renderAdminQuestions(){
  var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject"),chapter=document.getElementById("adminQuestionSubsection"),topic=document.getElementById("adminQuestionTopic");
@@ -1587,7 +1622,7 @@ function renderLabs(){
 }
 function closeModal(){var x=document.getElementById("modalRoot");if(x)x.remove()}
 function editQuestion(id){var q=byId(state.questions,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Vraag bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card'>"+questionForm(q)+"</div>";var f=document.getElementById("questionform");if(f)syncQuestionTaxonomyForm(f)}
-function editArticle(id){var a=byId(state.articles,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Artikel bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card'>"+articleForm(a)+"</div>"}
+function editArticle(id){var a=byId(state.articles,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Sectie bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card'>"+articleForm(a)+"</div>"}
 function editSource(id){var s=byId(state.sources,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Bron bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card' style='max-width:650px'>"+sourceForm(s)+"</div>"}
 function editSection(id){var s=byId(state.sections,id);document.querySelector(".main").innerHTML="<div class='pagehead'><div><h1>Sectie bewerken</h1></div><button class='btn secondary' data-page='admin'>Terug</button></div><div class='card' style='max-width:650px'>"+sectionForm(s)+"</div>"}
 function openInlineSource(btn){
@@ -1766,7 +1801,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-new-section-inline]"):null;if(el){quickNewSection();return}
  el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
  el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
- el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
+ el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Sectie verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
@@ -1778,7 +1813,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
 document.addEventListener("input",function(ev){
  if(ev.target.id==="labsearch")renderLabs();
  if(ev.target.id==="globalSearch"){searchGlobal()}
- if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"){renderAdminQuestions()}
+ if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"||ev.target.id==="adminQuestionSubsection"||ev.target.id==="adminQuestionTopic"){renderAdminQuestions()}
  if(ev.target.id==="libsearch"){
  var input=ev.target,q=normalizeSearch(input.value),b=document.querySelectorAll(".lib-side button[data-art]"),i,j,matched={};
  for(i=0;i<b.length;i++){
