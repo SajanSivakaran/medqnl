@@ -1112,6 +1112,52 @@ async function supabaseAuthedFetch(path,options){
  var token=authToken();if(token)headers.Authorization='Bearer '+token;
  opts.headers=headers;return fetch(authConfig.url+path,opts);
 }
+async function fetchQuestionBankRemote(){
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?select=id,question,updated_at&order=updated_at.asc',{method:'GET'});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vragenbank ophalen mislukt.');
+ var dr=await supabaseAuthedFetch('/rest/v1/question_bank_deletions?select=id',{method:'GET'});
+ var dd=await dr.json().catch(function(){return []});
+ if(!dr.ok)throw new Error((dd&&dd.message)||'Verwijderde vragen ophalen mislukt.');
+ return {rows:Array.isArray(d)?d:[],deletedIds:Array.isArray(dd)?dd.map(function(x){return String(x.id)}):[]};
+}
+async function upsertQuestionRemote(question){
+ if(!question||!question.id)return;
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:String(question.id),question:question})});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vraag opslaan op de server mislukt.');
+ await supabaseAuthedFetch('/rest/v1/question_bank_deletions?id=eq.'+encodeURIComponent(String(question.id)),{method:'DELETE'});
+}
+async function deleteQuestionRemote(id){
+ id=String(id||'').trim();if(!id)throw new Error('Ontbrekende vraag-id.');
+ var marker=await supabaseAuthedFetch('/rest/v1/question_bank_deletions?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:id,deleted_at:new Date().toISOString()})});
+ var md=await marker.json().catch(function(){return []});
+ if(!marker.ok)throw new Error((md&&md.message)||'Verwijdermarkering opslaan mislukt.');
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?id=eq.'+encodeURIComponent(id),{method:'DELETE'});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vraag permanent verwijderen mislukt.');
+}
+async function syncQuestionsFromServer(){
+ var remote=await fetchQuestionBankRemote();
+ var syncedKey='medqnl_question_bank_sync_v1';
+ var migrated=false;try{migrated=localStorage.getItem(syncedKey)==='1'}catch(e){}
+ if(!migrated){
+   var localIds={},i,q;
+   for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q&&q.id)localIds[String(q.id)]=true;}
+   var seedIds=['q9','q10','q11','q12','q13'];
+   for(i=0;i<seedIds.length;i++){
+     if(!localIds[seedIds[i]] && remote.deletedIds.indexOf(seedIds[i])<0)await deleteQuestionRemote(seedIds[i]);
+   }
+   for(i=0;i<state.questions.length;i++)if(state.questions[i]&&state.questions[i].id)await upsertQuestionRemote(state.questions[i]);
+   try{localStorage.setItem(syncedKey,'1')}catch(e){}
+   remote=await fetchQuestionBankRemote();
+ }
+ var remoteQuestions=remote.rows.map(function(row){return row&&row.question?row.question:null}).filter(Boolean);
+ var remoteIds={};for(var ri=0;ri<remoteQuestions.length;ri++)remoteIds[String(remoteQuestions[ri].id)]=true;
+ for(var ai=state.answers?Object.keys(state.answers):[],ii=0;ii<ai.length;ii++)if(!remoteIds[ai[ii]])delete state.answers[ai[ii]];
+ state.questions=remoteQuestions;
+ save();
+}
 async function syncFeedbackFromServer(){
  var token=authToken();if(!token)return;
  try{
@@ -1955,13 +2001,20 @@ function saveDragOrder(){
  var al=document.getElementById('articleList');if(al){var aes=al.querySelectorAll('[data-dragart]');for(var j=0;j<aes.length;j++){var art=byId(state.articles,aes[j].getAttribute('data-dragart'));if(art)art.order=j+1;}}
  state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
 }
-function removeQuestion(id){
+async function removeQuestion(id){
  var list=document.getElementById("adminQuestionList"),listTop=list?list.scrollTop:0,scrollY=window.scrollY||0;
- removeBy(state.questions,id);delete state.answers[id];save();render();
- requestAnimationFrame(function(){
-   var next=document.getElementById("adminQuestionList");if(next)next.scrollTop=listTop;
-   window.scrollTo(0,scrollY);
- });
+ try{
+   await deleteQuestionRemote(id);
+   removeBy(state.questions,id);
+   delete state.answers[id];
+   save();render();
+   requestAnimationFrame(function(){
+     var next=document.getElementById("adminQuestionList");if(next)next.scrollTop=listTop;
+     window.scrollTo(0,scrollY);
+   });
+ }catch(err){
+   alert("Vraag verwijderen mislukt: "+(err&&err.message?err.message:String(err)));
+ }
 }
 function removeSection(id){
  var section=byId(state.sections,id);
@@ -2588,6 +2641,7 @@ document.addEventListener("submit",function(ev){
   if(!modQbank&&!modIvtg){alert("Selecteer ten minste één omgeving voor deze vraag.");return}
   obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:qsubject,topic:"",difficulty:f.difficulty.value,caseText:f.caseText.value,stem:stemText,stemRichHtml:stemRich,inlineImages:inlineImages,inlineImageWidths:inlineImageWidths,qbankSubsection:qsub,mode:qmode,type:qType,points:pointValue,modelAnswer:qType==="open"?(f.modelAnswer?f.modelAnswer.value.trim():""):"",rubric:qType==="open"?String(f.rubric?f.rubric.value:"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean):[],options:qType==="open"?["","","",""]:[f.o0?f.o0.value:"",f.o1?f.o1.value:"",f.o2?f.o2.value:"",f.o3?f.o3.value:""],correct:qType==="open"?0:parseInt(f.correct&&f.correct.value||"0",10),explanation:exText,explanationRichHtml:exRich,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||"",modules:{qbank:modQbank,ivtg:modIvtg}};
   ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj
+  persistQuestionRemote(obj);
 }
 else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),richHtml=ed?serializeRichEditor(ed):"",plain=richHtmlToText(richHtml),serialized=plain;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}var selectedSection=byId(state.sections,f.sectionId.value),articleLibrary=(selectedSection&&selectedSection.library==="medical"?"medical":"ivtg");obj={id:f.getAttribute("data-id")||"a"+Date.now(),library:articleLibrary,title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),richHtml:richHtml,sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
@@ -2687,13 +2741,13 @@ function showAppError(err){
 }
 async function bootMedQNL(){
   try{
+    await syncQuestionsFromServer();
     await syncFeedbackFromServer();
     render();
   }catch(err){
     try{
-      localStorage.removeItem(KEY);
-      state=load();
       render();
+      console.warn("Question bank sync:",err&&err.message?err.message:err);
     }catch(retryErr){
       showAppError(retryErr||err);
     }
