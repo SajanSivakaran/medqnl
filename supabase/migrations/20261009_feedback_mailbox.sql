@@ -42,7 +42,8 @@ create index if not exists feedback_updated_at_idx on public.feedback(updated_at
 create or replace function public.touch_feedback_fields()
 returns trigger
 language plpgsql
-as $$
+set search_path = ''
+as $
 begin
   new.updated_at = now();
   new.handled = (new.status = 'resolved');
