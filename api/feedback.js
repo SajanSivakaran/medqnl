@@ -70,7 +70,11 @@ module.exports = async function handler(req, res) {
       }, "");
       const data = await r.json().catch(() => []);
       if (!r.ok) return res.status(r.status).json({error:(data && data.message) || "Feedback ophalen mislukt."});
-      return res.status(200).json({feedback:Array.isArray(data)?data:[]});
+      return res.status(200).json({
+        feedback:Array.isArray(data)?data:[],
+        role:profile.role,
+        profile:{id:profile.id,email:profile.email||user.email||"",display_name:profile.display_name||"Student"}
+      });
     }
 
     if (req.method === "POST") {
