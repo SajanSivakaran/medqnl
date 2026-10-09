@@ -1110,7 +1110,7 @@ function startSession(ivtg,forcedSubject,forcedSubsection,forcedMode,forcedCount
  if(!pool.length){alert(ivtg?"Er zijn nog geen iVTG-vragen beschikbaar voor deze selectie.":"Er zijn nog geen vragen voor deze Qbank-selectie beschikbaar.");return}
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
  session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject,subsection:subsection,mode:mode,elapsedSeconds:0,sessionStartedAt:0};
- if(ivtg)startSessionTimer();
+ startSessionTimer();
  page="question";render();
 }
 function syncQuestionTaxonomyForm(form){
@@ -1402,7 +1402,7 @@ function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongeca
 function medicalLibrary(){
  return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>De medische bibliotheek wordt later opgesteld.</p></div></div><div class='card'><h2>Later beschikbaar</h2><p>De inhoud van de Medische Bibliotheek wordt later opgesteld. Deze pagina is voorlopig gereserveerd voor de toekomstige medische leeromgeving.</p></div>");
 }
-function result(){var n=0,i;if(session&&session.ivtg)stopSessionTimer();for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score,elapsedSeconds:Math.max(0,Number(session.elapsedSeconds)||0)});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
+function result(){var n=0,i;if(session)stopSessionTimer();for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score,elapsedSeconds:Math.max(0,Number(session.elapsedSeconds)||0)});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
 function sourcePicker(ids){
  var h="",i,s;
