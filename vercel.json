@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/grade-open.js": {
+      "maxDuration": 30
+    }
+  }
+}
