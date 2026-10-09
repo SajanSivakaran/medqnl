@@ -21,7 +21,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:var(--blue)}
-.top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}.top-left{display:flex;align-items:center;gap:10px}
 .logo{font-size:22px;font-weight:800;color:var(--navy)}.logo span{color:var(--blue)}
 .top-actions{display:flex;gap:8px;align-items:center}
 .badge{font-size:12px;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--muted)}
@@ -30,7 +30,7 @@ a{color:var(--blue)}
 .navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea5b8;padding:11px}
 .nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0}.nav:hover,.nav.active{background:#1b4b72;color:#fff}
 .ico{width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:9px;stroke:currentColor;fill:none;stroke-width:1.8}
-.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}
+.main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
@@ -50,13 +50,21 @@ a{color:var(--blue)}
 .qwrap{display:flex;gap:13px}.qnav{width:70px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px;height:max-content}.qnum{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);margin-bottom:6px}.qnum.active{background:var(--blue);color:#fff;border-color:var(--blue)}.qnum.done{background:var(--greenbg);color:var(--green)}
 .qcard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}.qtop{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.qbody{padding:22px}.qbody h3{margin:0 0 18px;color:var(--navy);font-size:20px;line-height:1.5}.case{background:var(--bg);border-left:4px solid var(--blue);padding:13px 15px;border-radius:8px;margin-bottom:18px}.case-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);font-weight:800;margin-bottom:5px}
 .answer{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px;margin:8px 0}.answer.selected{background:var(--blue2);border-color:var(--blue)}.answer.correct{background:var(--greenbg);border-color:#9fd3b2}.answer.wrong{background:var(--redbg);border-color:#e7aaa1}
-.explain{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.box{padding:11px;border:1px solid var(--line);border-radius:8px;margin-top:8px}.good{background:var(--greenbg)}
+.explain{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.question-explanation-rich{line-height:1.7}.question-explanation-rich p{margin:10px 0}.question-explanation-rich table{width:100%;border-collapse:collapse;margin:12px 0}.question-explanation-rich th,.question-explanation-rich td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.question-explanation-rich th{background:var(--bg);font-weight:700}.box{padding:11px;border:1px solid var(--line);border-radius:8px;margin-top:8px}.good{background:var(--greenbg)}
 .bottom{background:var(--bg);border-top:1px solid var(--line);padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
-.lib-layout{display:flex;gap:14px}.lib-side{width:270px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;height:max-content;position:sticky;top:84px;max-height:calc(100vh - 105px);overflow:auto}.lib-side button{display:block;width:100%;padding:9px 10px;text-align:left;border:0;background:transparent;color:var(--ink);border-radius:7px}.lib-side button.active{background:var(--blue2);color:var(--blue);font-weight:700}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.lib-layout{display:flex;gap:14px;align-items:flex-start;margin-top:0}.lib-side{width:270px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px;height:max-content;position:sticky;top:0;max-height:calc(100vh - 88px);overflow:auto;box-sizing:border-box}.lib-side button{display:block;width:100%;padding:9px 10px;text-align:left;border:0;background:transparent;color:var(--ink);border-radius:7px}.lib-side button.active{background:var(--blue2);color:var(--blue);font-weight:700}
+.lib-section-toggle{display:flex!important;align-items:center;justify-content:space-between;font-weight:700!important;color:var(--ink)!important;background:transparent!important;border:0;text-align:left}
+.lib-section-toggle:hover{background:var(--blue2)!important}
+.lib-section-items{display:block}
+.lib-section-chevron{font-size:16px;color:var(--muted);margin-left:8px}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.article-rich-editor{min-height:320px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor table,.article-content table{width:100%;border-collapse:collapse;margin:12px 0}.article-rich-editor th,.article-rich-editor td,.article-content th,.article-content td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.article-rich-editor th,.article-content th{background:var(--bg);font-weight:700}.article-rich-editor ul,.article-rich-editor ol,.article-content ul,.article-content ol{padding-left:24px}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px}.inline-image-tools>.small{flex:1 1 100%}.inline-image-sizebar{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--line);border-radius:7px;background:var(--card)}.inline-image-sizebar input{width:170px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:grab;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
+.inline-image-live{display:inline-block;color:var(--blue);font-weight:700}.inline-image-label{display:inline;color:var(--blue);cursor:pointer;text-decoration:underline dotted}.inline-image-live-preview{display:block;margin-top:7px;max-width:420px;max-height:340px;width:auto;height:auto;border-radius:7px;border:1px solid var(--line);cursor:pointer}.inline-image-trigger:hover{opacity:.8}
 .search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
-.floating-mark{position:fixed;z-index:300;display:none;background:#17191c;color:#fff;border-radius:7px;padding:7px 9px;gap:7px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.mark-dot{width:23px;height:23px;border-radius:50%;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
+.floating-mark{position:fixed;z-index:900;display:none;background:#18222b;color:#fff;border-radius:8px;padding:6px 8px;gap:5px;align-items:center;box-shadow:0 7px 18px rgba(0,0,0,.25)}.floating-mark:before{content:"Markeren";font-size:12px;font-weight:700;margin:0 4px 0 2px}.mark-dot{width:22px;height:22px;border-radius:5px;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px}.modal{width:min(850px,100%);max-height:88vh;overflow:auto;background:var(--card);color:var(--ink);border-radius:12px;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .ivtg{min-height:100vh;background:#e3e9f0;color:#102b43}.ivtg.dark-bg{background:#0d1822;color:#eef3f7}.ivtg-top{height:58px;background:#174f7e;color:#fff;display:flex;align-items:center;padding:0 10px;gap:10px}.ivtg-item{background:transparent;border:0;color:#fff;font-size:12px;min-width:70px}.ivtg-item svg{display:block;width:21px;height:21px;margin:0 auto 3px;stroke:currentColor;fill:none;stroke-width:1.8}.ivtg-tools{display:flex;align-items:center;gap:10px;flex:1;justify-content:center}.ivtg-count{font-weight:800;background:#104268;padding:8px 10px}.ivtg-left{position:fixed;left:0;top:58px;bottom:52px;width:110px;background:#fff;border-right:1px solid #c7d1da;overflow:auto}.ivtg-main{margin-left:110px;padding:18px 24px 70px;background:#f0f3f7;min-height:calc(100vh - 110px)}.ivtg-question{max-width:1100px;margin:auto;background:#f8fafc;padding:18px 28px;min-height:calc(100vh - 150px)}.ivtg.dark .ivtg-main{background:#101b26}.ivtg.dark .ivtg-question{background:#14222e;color:#fff}.ivtg.dark .ivtg-left{background:#121f2b;border-color:#33495b}.ivtg.dark .ivtg-question .qcard{background:#15232f;color:#fff;border-color:#33495b}.ivtg.dark .ivtg-question .qbody,.ivtg.dark .ivtg-question .qbody h3,.ivtg.dark .ivtg-question .case{color:#fff}.ivtg.dark .ivtg-question .answer{background:#172835;color:#fff;border-color:#3b5265}.ivtg.dark .ivtg-question .answer.correct{background:#16422c}.ivtg.dark .ivtg-question .answer.wrong{background:#451d1a}.ivtg.dark .ivtg-question .box,.ivtg.dark .ivtg-question .case{background:#0f1d28}.ivtg.dark .ivtg-question .muted{color:#bac8d2}.ivtg-bottom{position:fixed;left:0;right:0;bottom:0;height:52px;background:#174f7e;color:#fff;display:flex;justify-content:flex-end;gap:12px;align-items:center;padding:0 12px;z-index:100}.ivtg-status{height:26px;width:100%;border:0;border-bottom:1px solid #cbd5de;background:#fff}.ivtg-status.active{background:#174f7e;color:#fff}.ivtg-status.done{background:#e2f2e8}
+.tutorial-list{display:grid;gap:10px}.tutorial-step{padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--bg)}.tutorial-step p{margin:5px 0 0;color:var(--muted);line-height:1.5}
+.calculator-modal{width:min(390px,100%);background:var(--card);border-radius:14px;padding:18px;box-shadow:var(--shadow)}.calculator{margin-top:6px}.calculator-display{height:74px;border-radius:10px;background:#111820;color:#fff;font-size:34px;display:flex;justify-content:flex-end;align-items:center;padding:0 16px;overflow:hidden;font-variant-numeric:tabular-nums}.calculator-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.calculator-key{height:58px;border:0;border-radius:10px;background:var(--bg);color:var(--ink);font-size:18px;font-weight:700;cursor:pointer}.calculator-key:hover{filter:brightness(.98)}.calculator-key.operator{background:var(--blue);color:#fff}.calculator-key.utility{background:#e7eaed}.calculator-key:nth-last-child(3){grid-column:span 2}
 .lab-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.lab-tab{border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 10px;border-radius:7px}.lab-tab.active{background:var(--blue);color:#fff}.lab-search{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);margin-bottom:10px}.lab-table{width:100%;border-collapse:collapse}.lab-table th,.lab-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.lab-table th{font-size:12px;color:var(--muted)}
 @media(max-width:1000px){.g4{grid-template-columns:1fr 1fr}.hero{display:block}.mock{width:100%;margin-top:14px}.ivtg-left{width:70px}.ivtg-main{margin-left:70px}}
 @media(max-width:720px){.main{padding:15px}.g2,.g3,.g4{grid-template-columns:1fr}.layout{display:block}.side{width:100%;min-height:0;display:flex;overflow:auto}.navlabel{display:none}.qwrap,.lib-layout{display:block}.qnav,.lib-side{width:100%;position:static;margin-bottom:12px}.qnum{width:40px;margin-right:4px}.ivtg-left{width:44px}.ivtg-main{margin-left:44px;padding:8px}.ivtg-tools{gap:4px}.ivtg-item{min-width:54px;font-size:10px}.ivtg-question{padding:10px}}
@@ -154,6 +162,31 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 
 
 .ico,.nav .ico,.subnav .ico{width:20px;height:20px;display:inline-block;vertical-align:-5px;stroke-width:1.8}
+.nav-search-icon{width:24px!important;height:24px!important;vertical-align:-7px!important;margin-right:4px!important}
+.layout.app-nav-collapsed .side{width:0;padding-left:0;padding-right:0;overflow:visible}
+.layout.app-nav-collapsed .side>*{display:none}.layout.app-nav-collapsed .side>.app-nav-toggle{display:flex!important}
+.note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
+.app-nav-toggle{position:absolute;right:-14px;top:50%;transform:translateY(-50%);width:28px;height:56px;border:1px solid #31536d;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;z-index:120;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:2px 0 10px rgba(0,0,0,.12)}
+.app-nav-toggle-floating{position:fixed;left:0;right:auto;top:110px;transform:none;border-radius:0 9px 9px 0}
+.lib-layout.lib-nav-collapsed .lib-side{display:none}
+.lib-layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:0;min-height:calc(100vh - 170px);background:var(--card);border:1px solid var(--line);border-radius:0;overflow:hidden}
+.lib-side{width:auto;background:#f3f6f9;border:0;border-right:1px solid var(--line);border-radius:0;padding:0;height:calc(100vh - 170px);position:sticky;top:84px;max-height:none;overflow:auto}
+.lib-side button[data-art]{display:block;width:100%;padding:10px 16px;text-align:left;border:0;background:transparent;color:#77848f;border-radius:0;font-size:14px;line-height:1.25}
+.lib-side button[data-art]:hover{background:#e8f0f6;color:var(--ink)}
+.lib-side button[data-art].active{background:#e3eef7;color:#2d6f9f;font-weight:700;border-left:3px solid var(--blue)}
+.lib-article{border:0;border-radius:0;padding:0;background:var(--card);line-height:1.72}
+.lib-library-head{height:66px;background:#f4f6f9;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px;padding:0 16px}
+.lib-library-search{flex:1;max-width:650px;border:1px solid #d7dee5;border-radius:999px;background:#fff;padding:12px 18px;color:var(--ink);outline:0;font-size:15px}
+.lib-library-tools{margin-left:auto;display:flex;gap:8px;align-items:center}.lib-tool{width:34px;height:34px;border:0;background:transparent;color:#5d6d7b;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px}.lib-tool:hover{background:#e9eff4;color:var(--blue)}
+.lib-titlebar{padding:28px 42px 12px;display:flex;align-items:center;justify-content:space-between;gap:20px}.lib-titlebar h2{font-size:30px;font-weight:500;color:var(--ink);margin:0}.lib-action-row{display:flex;gap:16px;align-items:center}.lib-action{border:0;background:transparent;color:var(--blue);font-size:20px}
+.lib-content-wrap{padding:0 42px 60px}.library-toc{margin:8px 0 18px;padding-left:0}.library-toc .toc-link{padding:7px 0;color:#2d5672;font-size:14px}
+.lib-layout.lib-nav-collapsed{grid-template-columns:0 minmax(0,1fr)}
+.lib-layout.lib-nav-collapsed .lib-side{display:none}
+.lib-layout.lib-nav-collapsed .lib-article{width:100%}
+.note-meta{font-size:12px;color:var(--muted);margin-right:auto}
+.note-toolbar .note-sep{width:1px;height:24px;background:var(--line);margin:0 3px}
+.note-toolbar button{font-size:14px}
+@media(max-width:720px){.app-nav-toggle{right:-12px}.app-nav-toggle-floating{position:fixed;left:0;right:auto;top:90px}.lib-layout.lib-nav-collapsed .lib-article{width:100%}}
 .ivtg-item svg{width:20px!important;height:20px!important;min-width:20px}
 .nav,.subnav{display:flex;align-items:center;gap:8px}
 .drawer-backdrop{position:fixed;inset:0;background:rgba(5,18,30,.42);z-index:700}
@@ -183,7 +216,13 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 .note-toolbar button:hover{background:var(--bg)}
 .note-editor{flex:1;padding:24px 32px;outline:0;overflow:auto;line-height:1.7}
 .note-footer{display:flex;justify-content:flex-end;gap:10px;padding:10px 22px;border-top:1px solid var(--line)}
-.content-manager{display:grid;grid-template-columns:220px 1fr 1.2fr 320px;gap:12px}
+.content-manager{display:block}
+.content-manager-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.content-manager-tab{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:9px 13px;font-weight:700}
+.content-manager-tab:hover{background:var(--bg)}
+.content-manager-tab.active{background:var(--blue2);color:var(--blue);border-color:var(--blue)}
+.content-manager-panel{display:block}
+.content-manager-panel[hidden]{display:none!important}
 .manager-col{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0}
 .manager-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:800}
 .manager-list{padding:8px;max-height:68vh;overflow:auto}
@@ -196,8 +235,7 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 .tiny-btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:6px;padding:4px 7px}
 .editor-compact{padding:14px;overflow:auto;max-height:68vh}
 .toc-link{display:block;width:100%;border:0;background:transparent;color:var(--ink);text-align:left;padding:5px 0;font-size:13px}
-@media(max-width:1200px){.content-manager{grid-template-columns:1fr 1fr}}
-@media(max-width:1050px){.content-manager{grid-template-columns:1fr}.manager-list,.editor-compact{max-height:none}.ivtg-drawer{width:96vw}}
+@media(max-width:1050px){.manager-list,.editor-compact{max-height:none}.ivtg-drawer{width:96vw}}
 
 
 /* Gesloten bèta-toegang */
@@ -218,6 +256,14 @@ body.dark #accessGate{background:#0e1822}
 body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-shadow:none}
 body.dark #accessGate h1,#accessGate.dark h1,body.dark #accessGate label{color:#f1f5f8}
 body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
+
+.app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
+.layout.app-nav-collapsed .side{display:none}.layout.app-nav-collapsed .main{max-width:none;width:100%}
+.lib-layout.lib-nav-collapsed{grid-template-columns:minmax(0,1fr)!important}.lib-layout.lib-nav-collapsed .lib-side{display:none}.standalone-library .lib-article{min-width:0}
+.note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
+.ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
+.question-manager-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 10px}.question-manager-tabs .perf-tab{padding:9px 12px}.question-manager-tabs .perf-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="gate-locked">
@@ -249,6 +295,16 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
     try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
     if(input) input.value='';
     if(error) error.textContent='';
+    try{
+      var app=document.getElementById('app');
+      if(app) app.style.display='block';
+      if(typeof window.__medqnlBoot==='function') window.__medqnlBoot();
+      setTimeout(function(){
+        try{
+          if(app && !app.innerHTML.trim() && typeof window.__medqnlBoot==='function') window.__medqnlBoot();
+        }catch(e){}
+      },50);
+    }catch(e){}
   }
   var unlocked=false;
   try{unlocked=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
@@ -271,6 +327,19 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 </div>
 <script>
 (function(){
+var __medqnlFatalShown=false;
+function __medqnlShowFatal(err){
+  if(__medqnlFatalShown)return;
+  __medqnlFatalShown=true;
+  var root=document.getElementById("app");
+  if(!root)return;
+  var msg=err&&err.stack?err.stack:(err&&err.message?err.message:String(err||"Onbekende fout"));
+  root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #e1c5c0;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>Er is een technische fout opgetreden na het openen van de website.</p><pre style='white-space:pre-wrap;font-size:12px;background:#fff6f4;padding:12px;border-radius:8px;overflow:auto'>"+String(msg).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</pre></div></div>";
+  try{console.error(err)}catch(e){}
+}
+window.addEventListener("error",function(e){__medqnlShowFatal(e&&e.error?e.error:e)});
+window.addEventListener("unhandledrejection",function(e){__medqnlShowFatal(e&&e.reason?e.reason:e)});
+
 var KEY="medqnl_v15";
 var page="dashboard",session=null,articleId="a1",labCategory="Chemie";
 
@@ -278,6 +347,7 @@ var ICONS={
 home:'<svg class="ico" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>',
 qbank:'<svg class="ico" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>',
 book:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 4h12a2 2 0 012 2v13H7a2 2 0 01-2-2z"/><path d="M7 4v15M10 8h6M10 12h6"/></svg>',
+search:'<svg class="ico nav-search-icon" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M16 16l4.5 4.5"/></svg>',
 progress:'<svg class="ico" viewBox="0 0 24 24"><path d="M4 18V6M9 18v-5M14 18V8M19 18V4"/></svg>',
 overall:'<svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/></svg>',
 report:'<svg class="ico" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h5M8 17h8"/></svg>',
@@ -286,7 +356,7 @@ prev:'<svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>',
 next:'<svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>',
 tutorial:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M10 9a2 2 0 014 1c0 2-2 2-2 4M12 17h.01"/></svg>',
 lab:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 002-3l-5-9V3"/><path d="M7 15h10"/></svg>',
-note:'<svg viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+note:'<svg class="note-nav-icon" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
 calc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01M8 18h2M12 18h2M16 18h.01"/></svg>',
 feedback:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>',
 end:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
@@ -305,7 +375,6 @@ var SOURCES=[
 {id:"s10",title:"KNMG — Ethische theorieën",url:"https://www.knmg.nl/ik-ben-geneeskundestudent-1/ethische-toolkit/verdiepen/welke-ethische-theorieen-en-stromingen-zijn-er-1"},
 {id:"s11",title:"NCBI — Adult normal reference ranges",url:"https://www.ncbi.nlm.nih.gov/books/NBK613071/"},
 {id:"s12",title:"OpenStax — Adult lab values",url:"https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values"},
-{id:"s13",title:"Harmonised reference intervals",url:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5111244/"},
 {id:"s14",title:"NCBI — Physiology, Male Reproductive System",url:"https://www.ncbi.nlm.nih.gov/books/NBK538429/"},
 {id:"s15",title:"NCBI — Portal Hypertension",url:"https://www.ncbi.nlm.nih.gov/sites/books/NBK507718/"},
 {id:"s16",title:"NCBI — Medical Microbiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK7627/"},
@@ -318,7 +387,8 @@ var SOURCES=[
 {id:"s23",title:"NCBI — Neuronal Action Potentials",url:"https://www.ncbi.nlm.nih.gov/books/NBK538143/"},
 {id:"s24",title:"NCBI — Endocrine Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK279388/"},
 {id:"s25",title:"NCBI — Gastrointestinal Physiology",url:"https://www.ncbi.nlm.nih.gov/books/NBK279394/"},
-{id:"s26",title:"NCBI — Hemostasis",url:"https://www.ncbi.nlm.nih.gov/books/NBK507711/"}
+{id:"s26",title:"NCBI — Hemostasis",url:"https://www.ncbi.nlm.nih.gov/books/NBK507711/"},
+{id:"s27",title:"Soa Aids Nederland — Gonorroe testen & behandelen",url:"https://www.soaaids.nl/nl/professionals/gonorroe-testen-behandelen"}
 ];
 
 var LABS=[
@@ -364,7 +434,11 @@ var QUESTIONS=[
 
 {id:"q1",subject:"Metamedica",topic:"Medische ethiek",difficulty:"Makkelijk",title:"Niet-schaden",caseText:"Een arts overweegt een invasieve ingreep met een zeer kleine kans op voordeel en een reële kans op ernstige complicaties.",stem:"Welk principe is hier het meest direct relevant?",options:["Niet-schaden","Alleen autonomie","Alleen vertrouwelijkheid","Beschrijvende ethiek","Meta-ethiek"],correct:0,explanation:"Het principe van **niet-schaden** vraagt aandacht voor het vermijden van onnodige of disproportionele schade. Ook **proportionaliteit** is relevant.",objective:"Niet-schaden en proportionaliteit toepassen.",sourceIds:["s7"],image:""},
 {id:"q2",subject:"Metamedica",topic:"WGBO",difficulty:"Gemiddeld",title:"13-jarige patiënt",caseText:"Een 13-jarige wilsbekwame patiënt heeft een reguliere medische behandeling nodig. De patiënt en de ouders zijn beiden betrokken bij de beslissing.",stem:"Welke regel past in beginsel bij de WGBO?",options:["Alleen de arts beslist.","Alleen de ouders beslissen.","De jongere en de ouder(s)/voogd hebben in beginsel beide een rol in de toestemming.","De burgemeester beslist.","Niemand hoeft toestemming te geven."],correct:2,explanation:"Tussen **12 en 16 jaar** geldt in beginsel een vorm van dubbele toestemming: de jongere en de ouder(s) of voogd met gezag hebben beide een rol.",objective:"De WGBO-leeftijdsregeling voor 12- tot 16-jarigen kennen.",sourceIds:["s1","s2"],image:""},
-{id:"q3",subject:"Metamedica",topic:"Laboratoriuminterpretatie",difficulty:"Makkelijk",title:"Hyponatriëmie",caseText:"Een 72-jarige patiënt gebruikt een diureticum en is sinds twee dagen misselijk en suf. Het serum-natrium is 124 mmol/L.",stem:"Welke labafwijking is duidelijk aanwezig?",options:["Hypernatriëmie","Hyponatriëmie","Hyperkaliëmie","Hypocalciëmie","Hyperchloremie"],correct:1,explanation:"Een natriumwaarde van **124 mmol/L** ligt onder de gebruikelijke volwassen referentiewaarde en past bij **hyponatriëmie**.",objective:"Elektrolytenafwijkingen herkennen met behulp van een referentietabel.",sourceIds:["s11","s13"],image:""}
+{id:"q3",subject:"Metamedica",topic:"Laboratoriuminterpretatie",difficulty:"Makkelijk",title:"Hyponatriëmie",caseText:"Een 72-jarige patiënt gebruikt een diureticum en is sinds twee dagen misselijk en suf. Het serum-natrium is 124 mmol/L.",stem:"Welke labafwijking is duidelijk aanwezig?",options:["Hypernatriëmie","Hyponatriëmie","Hyperkaliëmie","Hypocalciëmie","Hyperchloremie"],correct:1,explanation:"Een natriumwaarde van **124 mmol/L** ligt onder de gebruikelijke volwassen referentiewaarde en past bij **hyponatriëmie**.",objective:"Elektrolytenafwijkingen herkennen met behulp van een referentietabel.",sourceIds:["s11","s13"],image:""},
+
+{id:"q9",subject:"Infectieziekten",topic:"Acute bacteriële prostatitis",difficulty:"Moeilijk",title:"Vraag 2: Een man met mictieklachten en koorts",caseText:"Een 62-jarige man presenteert zich op de Spoedeisende Hulp met sinds 24 uur bestaande koude rillingen, een temperatuur van 38,9 °C en spierpijn. Tevens vermeldt hij een hevig branderig gevoel bij het plassen en moeite met het uitplassen. Bij lichte palpatie van de prostaat via rectaal toucher geeft patiënt extreme pijn aan. Bloedonderzoek toont een verhoogd CRP (142 mg/L) en een leukocytose.",stem:"Wat is de meest accurate fysiologische onderbouwing voor de keuze van het antibioticum in deze casus?",options:["De patiënt moet behandeld worden met Nitrofurantoïne, omdat dit de hoogste concentratie in het lumen van de blaas bereikt.","De patiënt moet behandeld worden met Ciprofloxacin, omdat dit middel een goede weefselpenetratie heeft in het prostaatweefsel.","De patiënt moet behandeld worden met Fosfomycine, omdat dit bacteriostatisch werkt tegen grampositieve diplokokken.","De patiënt kan afwachtend worden behandeld zonder antibiotica, mits de urinekweek negatief blijft."],correct:1,explanation:"Klinische interpretatie: Deze patiënt heeft een acute bacteriële prostatitis (tekenen van weefselinvasie/gecompliceerde UWI bij een man met koorts en een pijnlijk rectaal toucher).\n\nWaarom B juist is: Bij weefselinvasie (zoals prostatitis of pyelonefritis) is een middel nodig met een hoge weefselpenetratie. Fluorochinolonen zoals Ciprofloxacin dringen uitstekend door in het prostaatweefsel en zijn daardoor de aangewezen orale behandeling.\n\nWaarom de andere opties onjuist zijn:\nA (Nitrofurantoïne): Dringt nauwelijks door in weefsels (nierparenchym/prostaat) en is dus strikt contra-geïndiceerd bij een gecompliceerde UWI/prostatitis.\nC (Fosfomycine): Biedt eveneens onvoldoende weefselspiegels in de prostaat en heeft een ander werkingsspectrum.\nD (Afwachtend): Een acute prostatitis met systemische verschijnselen vereist direct antibiotische behandeling om urosepsis en abcesvorming te voorkomen.",objective:"Het onderscheid tussen een ongecompliceerde lage UWI en een infectie met weefselinvasie herkennen en antibioticakeuze koppelen aan weefselpenetratie.",sourceIds:["s19"],image:""},
+
+{id:"q10",subject:"Infectieziekten",topic:"Gonorroe",difficulty:"Gemiddeld",title:"Vraag 3: Een jonge man met urethrale afscheiding",caseText:"Een 23-jarige man bezoekt het soa-spreekuur met sinds 4 dagen bestaande overvloedige, geel-groene, purulente afscheiding uit de urethra en mictieklachten. Hij geeft aan twee weken geleden onbeschermd seksueel contact te hebben gehad. Microscopisch onderzoek van een grampreparaat van de afscheiding toont gramnegatieve diplokokken binnenin de polymorfnucleaire leukocyten (intracellulair).",stem:"Wat is de meest geschikte initiële behandeling voor deze aandoening volgens de richtlijnen?",options:["Doxycycline 100 mg 2dd p.o. gedurende 7 dagen","Ceftriaxon 500 mg i.m. eenmalig","Metronidazol 2000 mg p.o. eenmalig","Fluconazol 150 mg p.o. eenmalig"],correct:1,explanation:"Klinische interpretatie: Het klinisch beeld van overvloedige purulente afscheiding gecombineerd met de microscopische bevinding van intracellulaire gramnegatieve diplokokken is bewijzend voor een gonorroe-urethritis (Neisseria gonorrhoeae).\n\nWaarom B juist is: De eerste keus behandeling voor een ongecompliceerde gonokokkeninfectie is een eenmalige intramusculaire injectie met Ceftriaxon 500 mg (of 1000 mg afhankelijk van lokaal protocol).\n\nWaarom de andere opties onjuist zijn:\nA (Doxycycline): Is de eerste keus behandeling voor Chlamydia trachomatis, niet voor gonorroe (vanwege hoge resistentiecijfers van N. gonorrhoeae tegen tetracyclines).\nC (Metronidazol): Is de behandeling voor Trichomonas vaginalis en bacteriële vaginose.\nD (Fluconazol): Is een antimycoticum gebruikt voor schimmelinfecties (bijv. Candida).",objective:"Gonorroïsche urethritis herkennen aan het klinische beeld en intracellulaire gramnegatieve diplokokken en de eerste keus antibioticum kennen.",sourceIds:["s27"],image:""}
 ];
 
 var SECTIONS=[
@@ -538,18 +612,211 @@ var ARTICLES=[
 ],sourceIds:["s20","s21","s22","s24"],image:""}
 ];
 
-var state=load();if(!state.ui)state.ui={};
+var MEDICAL_SECTION3_ID="med-sec3";
+var MEDICAL_LIBRARY_VERSION=1;
+var MEDICAL_SECTIONS=[{id:MEDICAL_SECTION3_ID,title:"Section III — High-Yield Organ Systems",order:1,library:"medical"}];
+var MEDICAL_SOURCE={id:"s-fa1-2026",title:"First Aid for the USMLE Step 1 2026 — Section III",url:"https://www.mheducation.com/highered/mhp/product/first-aid-usmle-step-1-2026.html"};
+
+var MEDICAL_ARTICLES=[
+{id:"med-approach",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Aanpak van de orgaansystemen",body:[
+"## Hoe leer je Section III geïntegreerd?",
+"Section III is opgebouwd rond grote orgaansystemen. Per systeem worden embryologie, anatomie, fysiologie, pathologie en farmacologie met elkaar verbonden. Het doel is niet losse feiten leren, maar klinische verbanden herkennen.",
+"## Embryologie en anatomie",
+"Gebruik embryologie om aangeboren afwijkingen te verklaren en koppel anatomie aan beeldvorming, procedures en klinische uitval. Denk steeds: welke structuur is betrokken en waarom geeft dat precies dit klinische beeld?",
+"## Fysiologie",
+"Benader fysiologie als oorzaak-gevolgketen. Begrijp kernrelaties, grafieken en eenvoudige berekeningen en verbind normale fysiologie met de veranderingen die ontstaan bij ziekte.",
+"## Pathologie",
+"Begin bij de normale functie en zoek vervolgens de afwijking. Leer herkenningspunten van belangrijke aandoeningen, typische klinische presentaties en de onderscheidende bevindingen die helpen bij de differentiaaldiagnose.",
+"## Farmacologie",
+"Leer geneesmiddelen vooral via klasse, werkingsmechanisme, klinische toepassing en belangrijke bijwerkingen. Koppel farmacologie steeds terug aan de fysiologie van het betreffende orgaansysteem."
+]},
+{id:"med-cardio",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Cardiovasculair",body:[
+"## Kern en focus",
+"Belangrijke geïntegreerde thema's zijn hartontwikkeling, anatomie, cardiale fysiologie, atherosclerose, hartfalen, ritmestoornissen, kleplijden, ischemische hartziekte en cardiovasculaire farmacologie.",
+"## Embryologie",
+"De hartbuis ondergaat looping en septatie. Neural-crête-cellen dragen bij aan de vorming van de uitstroomtractus; stoornissen hierbij kunnen conotruncale afwijkingen veroorzaken, waaronder transpositie, tetralogie van Fallot en persisterende truncus.",
+"## Anatomie en fysiologie",
+"Ken de kamers, kleppen, coronaircirculatie en het geleidingssysteem. Begrijp de cardiale cyclus, preload, afterload, contractiliteit, de Frank-Starling-relatie en de koppeling tussen ECG en elektrische activiteit.",
+"## Pathologie",
+"Herken verschillen tussen systolische en diastolische dysfunctie. Bestudeer ischemie en infarct, hartfalen, hypertensie, klepafwijkingen en de typische patronen van hartruisen en ritmestoornissen.",
+"## Farmacologie",
+"Verbind antihypertensiva, anti-angineuze middelen, hartfalenbehandeling, anti-aritmica en antistolling aan hun fysiologische aangrijpingspunt. Let bij middelen met hemodynamische effecten vooral op klinisch relevante bijwerkingen."
+]},
+{id:"med-endocrine",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Endocrinologie",body:[
+"## Kern en focus",
+"Begin bij de klier, het hormoon en de feedbacklus. Integreer vervolgens endocriene over- en onderproductie, massaleffecten, laboratoriumpatronen en behandeling.",
+"## Embryologie en anatomie",
+"Belangrijke thema's zijn ontwikkeling van schildklier en hypofyse en de anatomische relaties van endocriene organen. De hypofyse koppelt hypothalamische signalen aan perifere endocriene klieren.",
+"## Fysiologie",
+"Ken de regulatie van schildklierhormonen, cortisol, aldosteron, groeihormoon, prolactine, insuline, glucagon, PTH, vitamine D en de calcium-fosfaathuishouding.",
+"## Pathologie",
+"Herken diabetes mellitus, schildklierstoornissen, hypofyseziekten, bijnieraandoeningen en stoornissen van calciumregulatie. Denk steeds in patronen: hormoon hoog of laag, primaire of secundaire oorzaak en passende feedbackverandering.",
+"## Farmacologie",
+"Ken de belangrijkste geneesmiddelklassen voor diabetes, schildklier, bijnier en bot-mineraalhuishouding. Koppel werkingsmechanisme aan het hormoonsysteem en aan de meest kenmerkende bijwerkingen."
+]},
+{id:"med-gi",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Gastro-intestinaal",body:[
+"## Kern en focus",
+"Integreer ontwikkeling van het maag-darmkanaal, innervatie, bloedvoorziening, absorptie en de belangrijkste inflammatoire, maligne en obstructieve aandoeningen.",
+"## Embryologie",
+"Foregut, midgut en hindgut vormen de basisindeling. De darm ondergaat fysiologische herniatie en rotatie rond de arteriële as; afwijkingen kunnen leiden tot malrotatie, herniatie en andere aangeboren problemen.",
+"## Anatomie en fysiologie",
+"Ken de anatomische segmenten, peritoneale relaties, bloedvoorziening, portale circulatie en enterische regulatie. Begrijp vertering, absorptie, gal- en pancreasfunctie en de rol van het microbioom.",
+"## Pathologie",
+"Belangrijke patronen zijn reflux, ulcusziekte, inflammatoire darmziekten, malabsorptie, appendicitis, diverticulaire ziekte, obstructie, pancreatitis, leverziekte en gastro-intestinale maligniteiten. Leer vooral onderscheidende presentatie en complicaties.",
+"## Farmacologie",
+"Bestudeer middelen tegen zuurproductie, misselijkheid, diarree en obstipatie en de belangrijkste geneesmiddelen voor inflammatoire darmziekten. Koppel farmacologische werking aan het segment of proces waarop het middel aangrijpt."
+]},
+{id:"med-hema",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Hematologie en oncologie",body:[
+"## Kern en focus",
+"Section III benadrukt de samenhang tussen bloedcellen, beenmerg, immunologie en kanker. Besteed extra aandacht aan anemieën, bloeduitstrijkjes, stolling en antikankertherapie.",
+"## Hematopoëse",
+"Foetale erytropoëse verschuift tijdens de ontwikkeling van dooierzak naar lever, milt en uiteindelijk beenmerg. Globinesamenstelling verandert van embryonale naar foetale en volwassen hemoglobine.",
+"## Rode en witte bloedcellen",
+"Orden anemie op MCV en koppel het patroon aan ijzerstatus, reticulocyten, hemolyse en productieproblemen. Herken ook de basale patronen van leukocytenafwijkingen en bloeduitstrijkjes.",
+"## Stolling en oncologie",
+"Begrijp de interactie tussen primaire hemostase, stollingscascade en fibrinolyse. Bij oncologie gaat het om herkenning van hematologische maligniteiten, algemene tumorbiologie en de belangrijkste mechanismen van antikankermiddelen.",
+"## Farmacologie",
+"Ken de belangrijkste antistollings- en antiplateletklassen en de centrale geneesmiddelcategorieën bij hematologische en oncologische aandoeningen. Focus op mechanisme en onderscheidende toxiciteit."
+]},
+{id:"med-musculo",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Bewegingsapparaat, huid en bindweefsel",body:[
+"## Kern en focus",
+"De systematiek combineert bot, gewrichten, spieren, huid en bindweefsel. Koppel anatomie aan bewegingspatronen, huidbevindingen en systemische aandoeningen.",
+"## Anatomie en fysiologie",
+"Ken de basis van botremodellering, kraakbeen, spiercontractie, perifere zenuwvoorziening en gewrichtsstructuren. Gebruik anatomische relaties om letsels en functieverlies te verklaren.",
+"## Reumatologie",
+"Maak onderscheid tussen inflammatoire, degeneratieve en kristalgeïnduceerde gewrichtsziekten. Let op symmetrie, gewrichtsverdeling, duur van klachten, extra-articulaire kenmerken en laboratoriumpatronen.",
+"## Huid en bindweefsel",
+"Herken patronen van inflammatie, infectie, auto-immuniteit en pigment- of keratinisatieproblemen. Bij bindweefselziekten zijn huid, gewrichten en interne organen vaak met elkaar verbonden.",
+"## Farmacologie",
+"Bestudeer analgetica, ontstekingsremmers, DMARD's en belangrijke middelen tegen botverlies en huidziekten vanuit hun werkingsmechanisme en risico's."
+]},
+{id:"med-neuro",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Neurologie en speciale zintuigen",body:[
+"## Kern en focus",
+"Belangrijk zijn motorische en sensibele banen, cerebellum, hersenzenuwen, vaatgebieden, neurodegeneratie, epilepsie, oogheelkunde en otologie.",
+"## Embryologie en anatomie",
+"De neurale plaat vormt de neurale buis en neurale lijst. Dorsale en ventrale delen van het ruggenmerg zijn functioneel gescheiden in sensibele en motorische systemen. Begrijp de regionale ontwikkeling van het brein.",
+"## Neurologische fysiologie",
+"Ken de belangrijkste motorische, sensibele, cerebellaire en visuele banen. Lokaliseer laesies via het patroon van uitval en gebruik dat patroon om onderscheid te maken tussen centrale en perifere aandoeningen.",
+"## Pathologie",
+"Herken beroertepatronen, demyeliniserende ziekten, neurodegeneratieve aandoeningen, perifere neuropathieën, ruggenmergsyndromen en intracraniële processen. Beeldvorming en neuropathologische kenmerken helpen bij herkenning.",
+"## Oog, oor en farmacologie",
+"Speciale zintuigen vragen om anatomische lokalisatie: retina, oogmotoriek, visuele banen, midden- en binnenoor. Bij farmacologie zijn onder andere anti-epileptica, Parkinsonmedicatie, antimigraine-middelen en analgetica belangrijk."
+]},
+{id:"med-psych",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Psychiatrie",body:[
+"## Kern en focus",
+"Psychiatrie koppelt psychologie, psychiatrische diagnostiek, sociologie en psychofarmacologie. Belangrijke groepen zijn psychotische, stemmings-, angst-, eet-, persoonlijkheids-, somatische-symptoom- en middelenstoornissen.",
+"## Psychologie",
+"Ken klassieke en operante conditionering en de basis van leerprocessen. Begrijp ook overdracht, tegenoverdracht en de rol van afweermechanismen bij psychisch functioneren.",
+"## Diagnostiek",
+"Let bij psychiatrische vignetten op symptoomcluster, duur, functionele beperkingen, leeftijd van begin en eventuele middelen of somatische oorzaken. De differentiaaldiagnose wordt vaak door tijdsduur en context bepaald.",
+"## Pathologie",
+"Herken kernpatronen van schizofreniespectrum, depressieve en bipolaire stoornissen, angst- en trauma-gerelateerde stoornissen, eetstoornissen, persoonlijkheidsstoornissen en verslavingsproblematiek.",
+"## Farmacologie",
+"Ken de belangrijkste antidepressiva, antipsychotica, stemmingsstabilisatoren, anxiolytica en middelen bij verslaving. Focus op therapeutisch doel, mechanisme en de karakteristieke bijwerkingen."
+]},
+{id:"med-renal",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Renaal",body:[
+"## Kern en focus",
+"Renale fysiologie is een kernonderdeel van Section III. Belangrijke verbanden zijn glomerulaire functie, tubulaire transportprocessen, zuur-base, elektrolyten, acute en chronische nierschade en diuretica.",
+"## Embryologie",
+"De definitieve nier ontstaat uit interactie tussen ureterknop en metanefrisch mesenchym. Afwijkende ontwikkeling kan nieragenesie, cystische afwijkingen en obstructieve problemen geven.",
+"## Anatomie en fysiologie",
+"Ken glomerulus, proximale tubulus, lis van Henle, distale tubulus en verzamelbuis. Begrijp GFR, filtratie, reabsorptie, secretie, renine-angiotensine-aldosteron en de regeling van water, natrium, kalium en zuur-base.",
+"## Pathologie",
+"Bestudeer glomerulaire syndromen, nierstenen, tubulo-interstitiële aandoeningen, acute nierschade en chronische nierziekte. Urinesediment en cilinders kunnen helpen bij lokalisatie van de afwijking.",
+"## Farmacologie",
+"Ken lis-, thiazide- en kaliumsparende diuretica en de plaats van ACE-remmers en AT1-antagonisten. Koppel de werking aan het nefronsegment en let op elektrolyt- en nierfunctieveranderingen."
+]},
+{id:"med-repro",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Reproductie",body:[
+"## Kern en focus",
+"Orden het onderwerp langs embryologie, anatomie, endocrinologie, zwangerschap, seksuele ontwikkeling en reproductieve oncologie.",
+"## Embryologie",
+"Belangrijke thema's zijn vroege embryonale ontwikkeling, gastrulatie, geslachtsdifferentiatie en de Müller- en Wolff-systemen. Gebruik embryologie om congenitale afwijkingen en verschillen in seksuele ontwikkeling te begrijpen.",
+"## Endocrinologie en fysiologie",
+"Begrijp de hypothalamus-hypofyse-gonade-as, folliculaire ontwikkeling, ovulatie, menstruatie, spermatogenese en hormonale feedback. Koppel zwangerschap aan placentaire hormonen en fysiologische veranderingen.",
+"## Pathologie",
+"Herken patronen van infertiliteit, menstruatiestoornissen, polycysteus-ovariumsyndroom, endometriose, seksueel overdraagbare aandoeningen en afwijkingen van zwangerschap. Bij kanker zijn presentatie, risicofactoren, histologie en tumormarkers belangrijke herkenningspunten.",
+"## Farmacologie",
+"Ken de principes van anticonceptie, fertiliteitsbehandeling, hormoontherapie en middelen die invloed hebben op het urinair of reproductief systeem. Begrijp vooral het hormonale aangrijpingspunt."
+]},
+{id:"med-resp",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Respiratoir",body:[
+"## Kern en focus",
+"Verbind normale ademhalingsfysiologie met obstructieve en restrictieve longziekten, ventilatie-perfusie, gaswisseling, longvolumes en longmaligniteiten.",
+"## Embryologie",
+"De longontwikkeling verloopt via embryonale, pseudoglandulaire, canaliculaire, sacculaire en alveolaire fasen. Timing van pneumocytontwikkeling en surfactantproductie verklaart een deel van de klinische gevolgen van prematuriteit.",
+"## Anatomie en fysiologie",
+"Ken luchtwegboom, alveoli, pleura en pulmonale circulatie. Begrijp ventilatie, perfusie, diffusie, V/Q-verhoudingen, zuurstoftransport, CO2-afvoer, longvolumes en de mechanica van ademhaling.",
+"## Pathologie",
+"Maak onderscheid tussen obstructieve en restrictieve patronen en herken astma, COPD, pneumonie, interstitiële longziekten, pulmonale hypertensie, pleurale aandoeningen en longkanker. Gebruik klachten, beeldvorming en longfunctieonderzoek samen.",
+"## Farmacologie",
+"Ken bronchodilatatoren, inhalatiecorticosteroïden, antimicrobiële behandeling van relevante infecties en middelen voor specifieke longziekten. Koppel effect aan luchtwegspiertonus, inflammatie of infectieuze oorzaak."
+]},
+{id:"med-rapid",library:"medical",sectionId:MEDICAL_SECTION3_ID,title:"Rapid Review — Section III",body:[
+"## Hoe gebruik je Rapid Review?",
+"Gebruik dit hoofdstuk als compacte herhaling nadat de orgaansystemen zijn bestudeerd. Zoek eerst naar het ziektebeeld of de fysiologische relatie en controleer daarna de bijbehorende onderscheidende kenmerken.",
+"## Hoogwaardige verbanden",
+"Cardiovasculair, respiratoir en renaal moeten vaak samen worden geleerd. Endocriene regulatie loopt door in metabole, reproductieve en renale processen. Neurologische lokalisatie vraagt een combinatie van anatomie, fysiologie en pathologie.",
+"## Klinische herkenning",
+"Train jezelf om uit een vignette eerst de dominante klinische patronen te halen: tijdsbeloop, lokalisatie, risicofactoren, kernsymptomen, laboratoriumafwijkingen, beeldvorming en de belangrijkste complicatie.",
+"## Toetsstrategie",
+"Leer de onderscheidende associaties en mechanismen, maar combineer ze altijd met de klinische context. Wanneer twee aandoeningen op elkaar lijken, zoek dan naar één bevinding die het meest specifiek onderscheid maakt."
+]}];
+
+function ensureMedicalLibrary(x){
+ var i,exists=false,srcExists=false;
+ if(!x.medicalLibraryVersion||x.medicalLibraryVersion<MEDICAL_LIBRARY_VERSION){
+   for(i=0;i<MEDICAL_SECTIONS.length;i++)if(!byId(x.sections,MEDICAL_SECTIONS[i].id))x.sections.push(clone(MEDICAL_SECTIONS[i]));
+   if(!byId(x.articles,MEDICAL_ARTICLES[0].id))for(i=0;i<MEDICAL_ARTICLES.length;i++)if(!byId(x.articles,MEDICAL_ARTICLES[i].id))x.articles.push(clone(MEDICAL_ARTICLES[i]));
+   else for(i=1;i<MEDICAL_ARTICLES.length;i++)if(!byId(x.articles,MEDICAL_ARTICLES[i].id))x.articles.push(clone(MEDICAL_ARTICLES[i]));
+   if(!byId(x.sources,MEDICAL_SOURCE.id))x.sources.push(clone(MEDICAL_SOURCE));
+   for(i=0;i<x.articles.length;i++)if(x.articles[i].library==="medical"&&!has(x.articles[i].sourceIds||[],MEDICAL_SOURCE.id))x.articles[i].sourceIds=[MEDICAL_SOURCE.id].concat(x.articles[i].sourceIds||[]);
+   x.medicalLibraryVersion=MEDICAL_LIBRARY_VERSION;
+   saveStateFor(x);
+ }
+}
+function saveStateFor(x){localStorage.setItem(KEY,JSON.stringify(x))}
+function normalizeArticleLibraries(x){
+ var i,a,sec;
+ for(i=0;i<x.articles.length;i++){a=x.articles[i];sec=byId(x.sections,a.sectionId);if(sec&&sec.library==="medical")a.library="medical";else if(!a.library||a.library==="medical")a.library="ivtg"}
+}
+var state=load();if(!state.ui)state.ui={};if(!state.ui.adminTab)state.ui.adminTab="sections";if(!state.ui.adminQuestionModule)state.ui.adminQuestionModule="qbank";
+function purgeHarmonisedLabSource(x){
+ var i,j,sid;
+ for(i=x.sources.length-1;i>=0;i--)if(x.sources[i].id==="s13"||/harmoni[sz]ed reference intervals/i.test(String(x.sources[i].title||""))){
+  sid=x.sources[i].id;x.sources.splice(i,1);
+  for(j=0;j<x.questions.length;j++)x.questions[j].sourceIds=removeId(x.questions[j].sourceIds,sid);
+  for(j=0;j<x.articles.length;j++)x.articles[j].sourceIds=removeId(x.articles[j].sourceIds,sid);
+ }
+}
 function load(){
  try{
   var x=JSON.parse(localStorage.getItem(KEY));
-  if(x && x.questions && x.articles && x.sources && x.sections){
-    if(!x.answers)x.answers={};if(!x.attempts)x.attempts=[];if(!x.notes)x.notes={};if(!x.feedback)x.feedback=[];if(!x.highlights)x.highlights={};if(!x.chapterTime)x.chapterTime={};if(!x.theme)x.theme="light";if(!x.name)x.name="Student";if(!x.benchmark)x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
+  if(x && Array.isArray(x.questions) && Array.isArray(x.articles) && Array.isArray(x.sources) && Array.isArray(x.sections)){
+    if(!x.answers || typeof x.answers!=="object")x.answers={};
+    if(!Array.isArray(x.attempts))x.attempts=[];
+    if(!x.notes || typeof x.notes!=="object")x.notes={};
+    if(!Array.isArray(x.feedback))x.feedback=[];
+    if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
+    if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
+    if(x.theme!=="dark"&&x.theme!=="light")x.theme="light";
+    if(!x.name)x.name="Student";
+    if(!x.benchmark || typeof x.benchmark!=="object")x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
+    if(!x.ui || typeof x.ui!=="object")x.ui={};
     migrateABCD(x);
+    if(ensureQuestionBankSeeds(x))localStorage.setItem(KEY,JSON.stringify(x));
+    ensureMedicalLibrary(x);
+    normalizeArticleLibraries(x);
+    if(migrateInlineImages(x))localStorage.setItem(KEY,JSON.stringify(x));
+    purgeHarmonisedLabSource(x);
     return x;
   }
  }catch(e){}
  var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
  migrateABCD(fresh);
+ fresh.questionSeedVersion=QUESTION_SEED_VERSION;
+ ensureMedicalLibrary(fresh);
+ normalizeArticleLibraries(fresh);
+ migrateInlineImages(fresh);
+ purgeHarmonisedLabSource(fresh);
  localStorage.setItem(KEY,JSON.stringify(fresh));return fresh;
 }
 function migrateABCD(x){
@@ -559,12 +826,82 @@ function migrateABCD(x){
    x.questions[i].options=x.questions[i].options.slice(0,4);
    while(x.questions[i].options.length<4)x.questions[i].options.push("");
    if(x.questions[i].correct>3)x.questions[i].correct=0;
+   if(!x.questions[i].modules||typeof x.questions[i].modules!=="object")x.questions[i].modules={qbank:true,ivtg:true};
+   if(typeof x.questions[i].modules.qbank!=="boolean")x.questions[i].modules.qbank=true;
+   if(typeof x.questions[i].modules.ivtg!=="boolean")x.questions[i].modules.ivtg=true;
  }
+}
+var QUESTION_SEED_VERSION=1;
+function ensureQuestionBankSeeds(x){
+ if((Number(x.questionSeedVersion)||0)>=QUESTION_SEED_VERSION)return false;
+ var changed=false,i,q;
+ for(i=0;i<QUESTIONS.length;i++){
+   q=QUESTIONS[i];
+   if((q.id==="q9"||q.id==="q10")&&!byId(x.questions,q.id)){x.questions.push(clone(q));changed=true;}
+ }
+ if(!byId(x.sources,"s27")){var gonSource=byId(SOURCES,"s27");if(gonSource){x.sources.push(clone(gonSource));changed=true;}}
+ x.questionSeedVersion=QUESTION_SEED_VERSION;
+ return changed;
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
-function md(s){var x=esc(s||"");x=x.replace(/\*([^*]+)\*/g,"<strong class='term'>$1</strong>");return x.replace(/\n/g,"<br>")}
+function migrateInlineImages(x){
+ var changed=false,i,j,text,id,src;
+ for(i=0;i<x.articles.length;i++){
+  var a=x.articles[i];if(!a.inlineImages||typeof a.inlineImages!=="object")a.inlineImages={};
+  text=(a.body||[]).join("\n\n");
+  text=text.replace(/\[(?:image|afbeelding):([^\]]+)\]/gi,function(_,raw){
+    src=String(raw||"").trim();
+    if(src.indexOf("inlineimg:")===0){
+      id=src.slice(10);
+      return "[inlineimg:"+id+"]";
+    }
+    id="img"+Date.now().toString(36)+(i.toString(36))+(Math.random().toString(36).slice(2,7));
+    a.inlineImages[id]=src;
+    changed=true;
+    return "[inlineimg:"+id+"]";
+  });
+  if(text.indexOf("[inlineimg:")>=0){
+    var ids=[],m;
+    var re=/\[inlineimg:([^\]]+)\]/gi;
+    while((m=re.exec(text)))ids.push(m[1]);
+    for(j=0;j<ids.length;j++)if(!a.inlineImages[ids[j]]){ /* leave unresolved token visible in editor */ }
+  }
+  a.body=text.split(/\n\s*\n/);
+ }
+ return changed;
+}
+function renderInlineImages(html){
+ return String(html||"").replace(/\[inlineimg:([^\]]+)\]/gi,function(_,id){
+   return "<span class='inline-image-live' data-inline-live-id='"+esc(String(id).trim())+"' data-inline-live-open='0'><span class='inline-image-label'>[afbeelding]</span></span>";
+ });
+}
+function articleEditorHtml(a){
+ if(a&&a.richHtml)return sanitizeRichHtml(a.richHtml);
+ var text=(a.body||[]).join("\n\n"),images=a.inlineImages||{},widths=a.inlineImageWidths||{};
+ text=esc(text);
+ text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
+  var id=String(rawId).trim(),src=images[id],w=parseInt(widths[id],10)||180;
+  if(!src)return "<span class='inline-image-editor-broken' data-inline-editor-id='"+esc(id)+"'>[afbeelding]</span>";
+  return "<span class='inline-image-editor' tabindex='0' draggable='true' contenteditable='false' data-inline-editor-id='"+esc(id)+"' title='Klik voor grootte · sleep om te verplaatsen'><img src='"+esc(src)+"' alt='' style='width:"+w+"px'></span>";
+ });
+ return text.replace(/\n/g,"<br>");
+}
+function serializeArticleEditor(root){
+ function walk(node){
+   var out="",i;
+   if(node.nodeType===3)return node.nodeValue;
+   if(node.nodeType!==1)return "";
+   if(node.classList&&node.classList.contains("inline-image-editor"))return "[inlineimg:"+node.getAttribute("data-inline-editor-id")+"]";
+   if(node.tagName==="BR")return "\n";
+   for(i=0;i<node.childNodes.length;i++)out+=walk(node.childNodes[i]);
+   if(node.tagName==="DIV"||node.tagName==="P")out+="\n";
+   return out;
+ }
+ return walk(root).replace(/\n{3,}/g,"\n\n").trim();
+}
+function md(s){var x=esc(s||"");x=x.replace(/\*([^*]+)\*/g,"<strong class='term'>$1</strong>");x=x.replace(/\n/g,"<br>");return renderInlineImages(x)}
 function byId(arr,id){var i;for(i=0;i<arr.length;i++)if(arr[i].id===id)return arr[i];return null}
 function idx(arr,id){var i;for(i=0;i<arr.length;i++)if(arr[i].id===id)return i;return -1}
 function removeBy(arr,id){var i;for(i=arr.length-1;i>=0;i--)if(arr[i].id===id)arr.splice(i,1)}
@@ -609,23 +946,24 @@ function stats(){var n=0,c=0,k;for(k in state.answers)if(state.answers.hasOwnPro
 function srcFoot(ids){var h="",i,s;ids=ids||[];for(i=0;i<ids.length;i++){s=byId(state.sources,ids[i]);if(s)h+="<div><span class='sup'>["+(i+1)+"]</span> "+esc(s.title)+" — <a href='"+esc(s.url)+"' target='_blank'>bron openen</a></div>"}return h}
 function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+"' data-page='"+id+"'>"+svg+" "+label+"</button>"}
 function shell(body){
- var s=stats();
- var progressOpen = page.indexOf("performance")===0;
+ var s=stats(),progressOpen=page.indexOf("performance")===0;
+ if(!state.ui)state.ui={};
+ var appNavCollapsed=!!state.ui.appNavCollapsed;
  var qtree="<div class='qnavtree'>"+
  "<button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button>"+
  "<div style='padding-left:12px'>"+
  "<button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button>"+
  "<button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button>"+
  "</div>"+
- "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>⌕ <span>Zoeken</span></button>"+
- "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>□ <span>Notities</span></button>"+
+ "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
+ "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div><div class='layout'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie · Contentbeheer v2</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
- "</aside><main class='main'>"+body+"</main></div>";
+ "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
-
 function welcomeMessage(){
  var name=state.name||"Student";
  var messages=[
@@ -638,30 +976,42 @@ function welcomeMessage(){
  return messages[Math.floor(Math.random()*messages.length)];
 }
 function dashboard(){
- var s=stats(),timeTotal=0,k;
- for(k in state.chapterTime)if(state.chapterTime.hasOwnProperty(k))timeTotal+=state.chapterTime[k]||0;
+ var s=stats();
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
- "<div class='grid g4'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>Studietijd</div><div class='value'>"+formatTime(timeTotal)+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
+ "<div class='grid g3'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
- "<div class='row'><div><strong>Vraagbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
+ "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
  "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
 }
 function qbank(){
- return shell("<div class='pagehead'><div><h1>Vraagbank</h1><p>Selecteer een onderwerp en start een oefenblok.</p></div></div><div class='card'><div class='grid g3'><div class='field'><label>Onderwerp</label><select id='qbs'><option>Alle onderwerpen</option><option>Fysiologie</option><option>Metamedica</option></select></div><div class='field'><label>Aantal</label><select id='qbn'><option>5</option><option>10</option></select></div><div style='padding-top:20px'><button class='btn primary' id='startqb'>Start</button></div></div></div>");
+ var subjects=[],buttons="",i,q;
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-qbank-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen met casusgerichte vragen in dezelfde overzichtelijke startomgeving.</p></div></div>"+
+ "<div class='ivtg-landing'>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • VRAGENBANK</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct met een gemengde sessie of kies een onderwerp.</p></div>"+
+ "<div class='ivtg-start-grid'>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startqb'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
+ "</div>");
 }
-function startSession(ivtg){
+function startSession(ivtg,forcedSubject){
  var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
- var subject=(document.getElementById("qbs")||{}).value||"Alle onderwerpen";for(i=0;i<state.questions.length;i++)if(subject==="Alle onderwerpen"||state.questions[i].subject===subject)pool.push(state.questions[i]);
+ var subject=forcedSubject||((document.getElementById("qbs")||{}).value||"Alle onderwerpen");
+ for(i=0;i<state.questions.length;i++){var qq=state.questions[i],mods=qq.modules||{qbank:true,ivtg:true};if((ivtg?mods.ivtg!==false:mods.qbank!==false)&&(subject==="Alle onderwerpen"||qq.subject===subject))pool.push(qq);}
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
- session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime()};page="question";render();
+ session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject};page="question";render();
 }
 function questionBody(){
  var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",i,nums="",opts="",letters="ABCD";
  for(i=0;i<session.questions.length;i++)nums+="<button class='qnum "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";
  for(i=0;i<4;i++){var c="";if(submitted&&i===q.correct)c=" correct";else if(submitted&&i===picked)c=" wrong";opts+="<button class='answer"+c+"' "+(submitted?"disabled":"")+" data-a='"+i+"'><strong>"+letters.charAt(i)+".</strong> "+md(q.options[i])+"</button>"}
- var expl=submitted?"<div class='explain'><div class='title'>"+(picked===q.correct?"Correct":"Onjuist")+"</div><p>"+md(q.explanation)+"</p><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective)+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
+ var expl=submitted?"<div class='explain'><div class='title'>"+(picked===q.correct?"Correct":"Onjuist")+"</div><div class='question-explanation-rich'>"+(q.explanationRichHtml?renderInlineImages(sanitizeRichHtml(q.explanationRichHtml)):md(q.explanation))+"</div><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective)+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
  var im=q.image?"<img class='image-preview' src='"+q.image+"'>":"";
  return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" • "+esc(q.topic)+"</strong><span class='small muted'>"+esc(q.difficulty)+"</span></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<h3>"+md(q.stem)+"</h3>"+opts+expl+"</div><div class='bottom'><span class='small muted'>Klik direct op A, B, C of D.</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
 }
@@ -671,7 +1021,110 @@ function questionPage(){
  body+="</div><div class='ivtg-main'><div class='ivtg-question'>"+questionBody()+"</div></div><div class='ivtg-bottom'><span class='ivtg-time' id='chapterTimer'>Tijd besteed: "+formatTime(currentChapterSeconds())+"</span><button class='ivtg-item' data-open-library>"+ICONS.book+"<div>iVTG Bibliotheek</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='feedback'>"+ICONS.feedback+"<div>Feedback</div></button><button class='ivtg-item' data-end>"+ICONS.end+"<div>Einde</div></button></div></div>";
  return body;
 }
-function ivtg(){return shell("<div class='pagehead'><div><h1>iVTG Trainer</h1><p>Een aparte toetsomgeving met hulpmiddelen en een eigen bibliotheek.</p></div><button class='btn secondary' data-page='ivtg-library'>Bibliotheek</button></div><div class='hero'><div><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Oefen met casussen en hulpmiddelen.</h2><p>Start een sessie. Een antwoord wordt direct verwerkt; daarna verschijnen uitleg en bronnen.</p><button class='btn primary' id='startivtg'>Start iVTG</button></div><div class='mock'><div class='mockbar'><span>MedQNL</span><span>1 / 5</span></div><strong>Een patiënt heeft een afwijkende labwaarde. Welke interpretatie past het best?</strong><div class='mockopt'>A. Binnen referentie</div><div class='mockopt'>B. Afwijkend</div></div></div>")}
+function ivtg(){
+ var subjects=[],buttons="",i,q;
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>iVTG Trainer</h1><p>Oefen met klinische casussen in de aparte iVTG-omgeving.</p></div></div>"+
+ "<div class='ivtg-landing'>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct of kies eerst een onderwerp.</p></div>"+
+ "<div class='ivtg-start-grid'>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
+ "</div>");
+}
+function sanitizeRichHtml(html){
+ var parser=new DOMParser(),doc=parser.parseFromString(String(html||""),"text/html"),root=doc.body,
+ allowed={P:1,DIV:1,BR:1,H1:1,H2:1,H3:1,H4:1,H5:1,H6:1,STRONG:1,B:1,EM:1,I:1,U:1,UL:1,OL:1,LI:1,TABLE:1,THEAD:1,TBODY:1,TFOOT:1,TR:1,TH:1,TD:1,SPAN:1,A:1,IMG:1};
+ function hasStyle(style,re){return re.test(String(style||""))}
+ function wrapElementChildren(el,tag){var w=document.createElement(tag);while(el.firstChild)w.appendChild(el.firstChild);el.appendChild(w)}
+ function normalizeOfficeFormatting(node){
+  var els=Array.from(node.querySelectorAll("span,div,p,td,th")),i,el,style,fw,italic,underline;
+  for(i=0;i<els.length;i++){
+   el=els[i];style=el.getAttribute("style")||"";if(!style)continue;
+   fw=style.match(/(?:^|;)\s*font-weight\s*:\s*([^;]+)/i);
+   italic=hasStyle(style,/(?:^|;)\s*font-style\s*:\s*(italic|oblique)/i);
+   underline=hasStyle(style,/(?:^|;)\s*text-decoration[^:]*:\s*[^;]*underline/i);
+   if(fw&&(/bold|bolder/i.test(fw[1])||/^[6-9]00$/.test(fw[1].trim()))){
+    if(el.tagName==="SPAN")wrapElementChildren(el,"strong");
+    else{var st=document.createElement("strong");while(el.firstChild)st.appendChild(el.firstChild);el.appendChild(st)}
+   }
+   if(italic){
+    var em=document.createElement("em");
+    if(el.firstElementChild&&el.firstElementChild.tagName==="STRONG"){var st2=el.firstElementChild;while(st2.firstChild)em.appendChild(st2.firstChild);st2.appendChild(em)}
+    else{while(el.firstChild)em.appendChild(el.firstChild);el.appendChild(em)}
+   }
+   if(underline){
+    var u=document.createElement("u");
+    if(el.firstElementChild&&el.firstElementChild.tagName==="STRONG"){var st3=el.firstElementChild;while(st3.firstChild)u.appendChild(st3.firstChild);st3.appendChild(u)}
+    else{while(el.firstChild)u.appendChild(el.firstChild);el.appendChild(u)}
+   }
+   var keep=[],ta=style.match(/(?:^|;)\s*text-align\s*:\s*(left|center|right|justify)/i);
+   if(ta)keep.push("text-align:"+ta[1]);
+   if(el.tagName==="IMG"){var mw=style.match(/(?:^|;)\s*width\s*:\s*([0-9]+)(?:px|pt)?/i);if(mw)keep.push("width:"+mw[1]+"px")}
+   if(el.tagName==="TD"||el.tagName==="TH"){var bg=style.match(/(?:^|;)\s*background(?:-color)?\s*:\s*([^;]+)/i);if(bg)keep.push("background:"+bg[1].trim())}
+   if(keep.length)el.setAttribute("style",keep.join(";"));else el.removeAttribute("style");
+  }
+  var spans=Array.from(node.querySelectorAll("span")),j,sp;
+  for(j=0;j<spans.length;j++){sp=spans[j];if(!sp.getAttribute("style")&&!sp.getAttribute("data-inline-editor-id")){while(sp.firstChild)sp.parentNode.insertBefore(sp.firstChild,sp);sp.remove()}}
+ }
+ normalizeOfficeFormatting(root);
+ function clean(node){
+  var children=Array.from(node.children||[]),i,j,el,tag,attrs,n,v;
+  for(i=0;i<children.length;i++){
+   el=children[i];tag=el.tagName;
+   if(!allowed[tag]){while(el.firstChild)el.parentNode.insertBefore(el.firstChild,el);el.remove();continue}
+   attrs=Array.from(el.attributes);
+   for(j=0;j<attrs.length;j++){
+    n=attrs[j].name;v=attrs[j].value;
+    if(tag==="IMG"&&n==="src"){if(!/^(https?:|data:image\/)/i.test(v))el.removeAttribute(n);continue}
+    if(tag==="IMG"&&n==="alt")continue;
+    if(tag==="A"&&n==="href"){if(!/^(https?:|mailto:)/i.test(v))el.removeAttribute(n);continue}
+    if(tag==="A"&&n==="target"){el.setAttribute("target","_blank");continue}
+    if(tag==="SPAN"&&n==="data-inline-editor-id")continue;
+    if(tag==="IMG"&&n==="style"){var im=v.match(/(?:^|;)\s*width\s*:\s*([0-9]+)px/i);el.setAttribute("style",im?"width:"+im[1]+"px":"");continue}
+    if((tag==="TD"||tag==="TH")&&n==="colspan"){if(!/^\d+$/.test(v))el.removeAttribute(n);continue}
+    if((tag==="TD"||tag==="TH")&&n==="rowspan"){if(!/^\d+$/.test(v))el.removeAttribute(n);continue}
+    if(n!=="href"&&n!=="target"&&n!=="src"&&n!=="style"&&n!=="alt"&&n!=="colspan"&&n!=="rowspan"&&n!=="data-inline-editor-id"&&n!=="class")el.removeAttribute(n);
+   }
+   clean(el);
+  }
+ }
+ clean(root);return root.innerHTML;
+}
+async function imageBlobToDataUrl(file,maxEdge,maxBytes){
+ return new Promise(function(resolve){
+  if(!file||!file.type||file.type.indexOf("image/")!==0){resolve("");return}
+  var rd=new FileReader();rd.onload=function(){
+   var src=rd.result;if(!src){resolve("");return}
+   if(file.size<=maxBytes){resolve(src);return}
+   var img=new Image();img.onload=function(){
+    var ow=img.naturalWidth||img.width||1,oh=img.naturalHeight||img.height||1,scale=Math.min(1,maxEdge/Math.max(ow,oh));
+    var w=Math.max(1,Math.round(ow*scale)),h=Math.max(1,Math.round(oh*scale)),c=document.createElement("canvas");c.width=w;c.height=h;
+    var cx=c.getContext("2d");cx.drawImage(img,0,0,w,h);var out=c.toDataURL("image/jpeg",.82);if(out.length>maxBytes*1.35)out=c.toDataURL("image/jpeg",.68);resolve(out);
+   };img.onerror=function(){resolve(src)};img.src=src;
+  };rd.onerror=function(){resolve("")};rd.readAsDataURL(file);
+ });
+}
+async function clipboardImagesToDataUrls(cd){
+ var items=cd&&cd.items?Array.from(cd.items):[],files=[],i,f;
+ for(i=0;i<items.length;i++)if(items[i].type&&items[i].type.indexOf("image/")===0){f=items[i].getAsFile&&items[i].getAsFile();if(f)files.push(f)}
+ if(cd&&cd.files)for(i=0;i<cd.files.length;i++){f=cd.files[i];if(f&&f.type&&f.type.indexOf("image/")===0&&files.indexOf(f)<0)files.push(f)}
+ var out=[];for(i=0;i<files.length;i++){f=await imageBlobToDataUrl(f,1800,900000);if(f)out.push(f)}return out;
+}
+
+function serializeRichEditor(root){
+ var clone=root.cloneNode(true),imgs=clone.querySelectorAll(".inline-image-editor"),i,id;
+ for(i=0;i<imgs.length;i++){id=imgs[i].getAttribute("data-inline-editor-id");imgs[i].replaceWith(document.createTextNode("[inlineimg:"+id+"]"))}
+ return sanitizeRichHtml(clone.innerHTML);
+}
+function richHtmlToText(html){
+ var d=new DOMParser().parseFromString(String(html||""),"text/html");
+ return (d.body.textContent||"").replace(/\u00a0/g," ").replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+}
 function articleBlocks(a){
  var blocks=[],i,b,lines;
  for(i=0;i<(a.body||[]).length;i++){
@@ -682,6 +1135,11 @@ function articleBlocks(a){
  return blocks;
 }
 function articleHtml(a,prefix){
+ if(a&&a.richHtml){
+  var safe=sanitizeRichHtml(a.richHtml),temp=new DOMParser().parseFromString(safe,"text/html"),heads=temp.body.querySelectorAll("h1,h2,h3,h4,h5,h6"),i;
+  for(i=0;i<heads.length;i++)heads[i].setAttribute("id",(prefix||"sec")+"-rich-"+i);
+  return renderInlineImages(temp.body.innerHTML)+(a.image?"<p><img src='"+esc(a.image)+"' alt='Afbeelding'></p>":"");
+ }
  var bs=articleBlocks(a),out="",i,id;
  for(i=0;i<bs.length;i++){
   if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<h3 id='"+id+"'>"+md(bs[i].title)+"</h3>"+(bs[i].body?"<p>"+md(bs[i].body)+"</p>":"")}
@@ -691,17 +1149,57 @@ function articleHtml(a,prefix){
  return out;
 }
 function articleToc(a,prefix){
- var bs=articleBlocks(a),out="",i,id,found=false;
- for(i=0;i<bs.length;i++)if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<button class='toc-link' data-scrollto='"+id+"'>"+esc(bs[i].title)+"</button>";found=true}
- return found?out:"<div class='small muted'>Geen subsecties toegevoegd.</div>";
+ if(a&&a.richHtml){
+  var safe=sanitizeRichHtml(a.richHtml),d=new DOMParser().parseFromString(safe,"text/html"),heads=d.body.querySelectorAll("h1,h2,h3,h4,h5,h6"),out="",i,t;
+  for(i=0;i<heads.length;i++){t=(heads[i].textContent||"").trim();if(t)out+="<button class='toc-link' data-scrollto='"+(prefix||"sec")+"-rich-"+i+"'>"+esc(t)+"</button>"}
+  return out;
+ }
+ var bs=articleBlocks(a),out2="",j,id;
+ for(j=0;j<bs.length;j++)if(bs[j].type==="h3"){id=(prefix||"sec")+"-"+j;out2+="<button class='toc-link' data-scrollto='"+id+"'>"+esc(bs[j].title)+"</button>"}
+ return out2;
 }
 function library(){
- var a=byId(state.articles,articleId)||state.articles[0],navs="",i,sec,j;
- for(i=0;i<state.sections.length;i++){sec=state.sections[i];navs+="<div class='small muted' style='font-weight:800;padding:10px 8px 4px'>"+esc(sec.title)+"</div>";for(j=0;j<state.articles.length;j++)if(state.articles[j].sectionId===sec.id)navs+="<button data-art='"+state.articles[j].id+"' class='"+(state.articles[j].id===a.id?"active":"")+"'>▧ "+esc(state.articles[j].title)+"</button>"}
- return shell("<div class='pagehead'><div><h1>iVTG Bibliotheek</h1><p>Nederlandse leerstof met bronnen, notities en markeringen.</p></div></div><div class='lib-layout'><aside class='lib-side'><input id='libsearch' class='search' placeholder='Zoek hoofdstuk...'>"+navs+"</aside><article class='lib-article'><div class='drawer-tools'><button class='btn secondary' data-open-notes>Notitie</button></div><div class='small muted'>"+esc(sectionTitle(a.sectionId))+"</div><h2>"+esc(a.title)+"</h2><div style='display:grid;grid-template-columns:180px 1fr;gap:25px'><aside><div class='small muted' style='font-weight:800;margin:6px 0 8px'>Inhoud</div>"+articleToc(a,"mainsec")+"</aside><div id='articleText' class='article-content'>"+(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></article></div>");
+ var ivtgArticles=[],ivtgSections=[],i,sec,j;
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].library!=="medical")ivtgArticles.push(state.articles[i]);
+ for(i=0;i<state.sections.length;i++){
+   var sectionCandidate=state.sections[i];
+   var hasIvtgArticle=false,k;
+   for(k=0;k<ivtgArticles.length;k++)if(ivtgArticles[k].sectionId===sectionCandidate.id){hasIvtgArticle=true;break}
+   if(sectionCandidate.library!=="medical" && hasIvtgArticle)ivtgSections.push(sectionCandidate);
+ }
+ if(!state.ui)state.ui={};
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc=articleToc(a,"mainsec");
+ var collapsed=!!state.ui.libNavCollapsed;
+ if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>");
+ for(i=0;i<ivtgSections.length;i++){
+   sec=ivtgSections[i];
+   var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
+   for(j=0;j<ivtgArticles.length;j++)if(ivtgArticles[j].sectionId===sec.id){
+     hasArticles=true;
+     secArticles+="<button data-art='"+ivtgArticles[j].id+"' class='"+(ivtgArticles[j].id===a.id?"active":"")+"'>"+esc(ivtgArticles[j].title)+"</button>";
+   }
+   navs+="<button class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
+   if(!secCollapsed && hasArticles)navs+="<div class='lib-section-items'>"+secArticles+"</div>";
+ }
+ return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
-function medicalLibrary(){return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Algemene medische naslagomgeving.</p></div><button class='btn primary' data-page='ivtg-library'>Open iVTG Bibliotheek</button></div><div class='empty'>De inhoud van de medische bibliotheek wordt later opgebouwd met jouw eigen Nederlandse hoofdstukken.</div>")}
+function medicalLibrary(){
+ var a=null,navs="",i,j,sec,arts=[],sectionCollapsed=(state.ui&&state.ui.medicalSectionCollapsed)||{},sections=[];
+ for(i=0;i<state.sections.length;i++)if(state.sections[i].library==="medical")sections.push(state.sections[i]);
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].library==="medical"){if(!a)a=state.articles[i];arts.push(state.articles[i]);}
+ if(!a)return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Section III uit First Aid for the USMLE Step 1 2026, inhoudelijk omgezet naar een eigen Nederlandse leeromgeving.</p></div></div><div class='empty'>Nog geen medische bibliotheekinhoud.</div>");
+ var active=byId(state.articles,articleId);if(!active||active.library!=="medical")active=a;
+
+ for(i=0;i<sections.length;i++){
+   sec=sections[i];var isCollapsed=!!sectionCollapsed[sec.id],items="";
+   for(j=0;j<arts.length;j++)if(arts[j].sectionId===sec.id)items+="<button data-art-med='"+arts[j].id+"' class='"+(arts[j].id===active.id?"active":"")+"'>"+esc(arts[j].title)+"</button>";
+   navs+="<button class='lib-section-toggle' data-toggle-med-section='"+esc(sec.id)+"' aria-expanded='"+(!isCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(isCollapsed?"›":"⌄")+"</span></button>";
+   if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
+ }
+ return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
+ "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'><div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
+}
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
 function sourcePicker(ids){
@@ -711,13 +1209,15 @@ function sourcePicker(ids){
 }
 function questionForm(q){
  if(!q)q={id:"",title:"",subject:"Metamedica",topic:"",difficulty:"Gemiddeld",caseText:"",stem:"",options:["","","",""],correct:0,explanation:"",objective:"",sourceIds:[],image:"",source:""};
- return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' required>"+esc(q.explanation)+"</textarea></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title)+"' required></div><div class='grid g2'><div class='field'><label>Onderwerp</label><input name='subject' value='"+esc(q.subject)+"'></div><div class='field'><label>Subonderwerp</label><input name='topic' value='"+esc(q.topic)+"'></div></div><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+((q.modules&&q.modules.qbank)!==false?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+((q.modules&&q.modules.ivtg)!==false?" checked":"")+"> iVTG Trainer</label></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><textarea name='stem' required>"+esc(q.stem)+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='grid g2'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"' required></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"' required></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"' required></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"' required></div></div><div class='grid g2'><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"<div class='small muted'>Maximaal 1,5 MB.</div></div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
- if(!a)a={id:"",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],sourceIds:[],image:""};
- var sec="";
- for(var i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' style='min-height:260px' required>"+esc(a.body.join("\n\n"))+"</textarea><div class='small muted'>Gebruik *term* voor vetgedrukte tekst.</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ if(!a)a={id:"",library:"ivtg",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}};
+ var sec="",i;
+ for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
+ if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
+ var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -727,7 +1227,8 @@ function quickNewSection(){
 }
 function quickNewArticle(){
  if(!state.sections.length)quickNewSection();
- var sec=(state.ui&&state.ui.selectedSection)||state.sections[0].id;var id='a'+Date.now();state.articles.push({id:id,sectionId:sec,title:'Nieuw hoofdstuk',body:['Nieuwe inhoud.'],sourceIds:[],image:''});save();editArticle(id);
+ var sec=(state.ui&&state.ui.selectedSection)||state.sections[0].id,so=byId(state.sections,sec),id='a'+Date.now();
+ state.articles.push({id:id,library:(so&&so.library==="medical"?"medical":"ivtg"),sectionId:sec,title:"Nieuw hoofdstuk",body:["Nieuwe inhoud."],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}});save();editArticle(id);
 }
 function saveDragOrder(){
  var list=document.getElementById('sectionList');if(list){var els=list.querySelectorAll('[data-dragsec]');for(var i=0;i<els.length;i++){var obj=byId(state.sections,els[i].getAttribute('data-dragsec'));if(obj)obj.order=i+1;}}
@@ -735,19 +1236,65 @@ function saveDragOrder(){
  state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
 }
 function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
-
-function admin(){
- if(!REMOTE||!REMOTE.isAdmin)return shell("<div class='pagehead'><div><h1>Geen toegang</h1><p>Contentbeheer is alleen beschikbaar voor beheerders.</p></div></div><div class='card'>Je account heeft geen beheerdersrechten.</div>");
- var secId=(state.ui&&state.ui.selectedSection)||(state.sections[0]&&state.sections[0].id)||"",secs="",arts="",qs="",sources="",feedback="",i,s,a,q,src;
- for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='drag-handle'>⋮⋮</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
- for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><span class='drag-handle'>⋮⋮</span><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
- for(i=0;i<state.questions.length;i++){q=state.questions[i];qs+="<div class='manager-item'><div style='min-width:0;flex:1'><div style='font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis'>"+esc(q.title||q.stem||'Onbenoemde vraag')+"</div><div class='small muted'>"+esc(q.subject||'')+" · "+esc(q.topic||'')+"</div></div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn' data-delq='"+esc(q.id)+"'>×</button></div></div>"}
- for(i=0;i<state.sources.length;i++){src=state.sources[i];sources+="<div class='manager-item'><input class='inline-edit' data-source-title='"+esc(src.id)+"' value='"+esc(src.title)+"'><button class='tiny-btn' data-edits='"+esc(src.id)+"'>Bewerken</button><button class='tiny-btn' data-dels='"+esc(src.id)+"'>×</button></div>"}
- var fbs=REMOTE.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><div><strong>"+esc(fb.question_title||fb.question_id||'Algemeen')+"</strong> <span class='feedback-chip'>"+esc(fb.category||'Overig')+"</span></div><div class='small muted'>"+esc(fb.message)+"</div><div class='small muted'>"+esc(new Date(fb.created_at).toLocaleString('nl-NL'))+"</div></div><button class='tiny-btn' data-feedback-handle='"+fb.id+"'>"+(fb.handled?'Heropenen':'Afhandelen')+"</button></div>"}
- return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Sleep secties en hoofdstukken. Voeg vragen toe en beheer bronnen, afbeeldingen en feedback.</p></div></div><div class='content-manager'><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Vragen <button class='tiny-btn' data-editq='new'>+</button></div><div class='manager-list' id='questionList'>"+(qs||"<div class='empty'>Nog geen vragen.</div>")+"</div></div><div class='manager-col'><div class='manager-head'>Bronnen</div><div class='editor-compact'>"+sources+"<div class='small muted' style='margin-top:12px'>Bronnen kunnen direct vanuit de vraag- en artikel-editor worden toegevoegd.</div></div></div></div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
+function removeSection(id){
+ var section=byId(state.sections,id);
+ if(!section)return;
+ var chapterIds=[],i;
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)chapterIds.push(state.articles[i].id);
+ if(!confirm("Sectie '"+(section.title||"")+"' verwijderen?"+(chapterIds.length?"\n\n"+chapterIds.length+" hoofdstuk(ken) in deze sectie worden ook verwijderd.":"")))return;
+ removeBy(state.sections,id);
+ for(i=state.articles.length-1;i>=0;i--)if(state.articles[i].sectionId===id)state.articles.splice(i,1);
+ for(i=0;i<chapterIds.length;i++){delete state.highlights[chapterIds[i]];delete state.chapterTime[chapterIds[i]];}
+ if(state.ui&&state.ui.selectedSection===id)state.ui.selectedSection=state.sections[0]?state.sections[0].id:"";
+ save();render();
 }
 
-
+function admin(){
+ if(!state.ui)state.ui={};
+ var secId=state.ui.selectedSection||(state.sections[0]&&state.sections[0].id)||"",activeTab=state.ui.adminTab||"sections";
+ var secs="",arts="",feedback="",i,s,a;
+ for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='small muted'>"+(s.library==="medical"?"Medisch":"iVTG")+"</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
+ for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
+ var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span><div class='small muted'>"+esc(fb.message||"")+"</div><div class='small muted'>"+esc(fb.date||"")+"</div></div></div>"}
+ var sectionsPanel="<div class='content-manager-panel' "+(activeTab==="sections"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div></div>";
+ var chaptersPanel="<div class='content-manager-panel' "+(activeTab==="chapters"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Hoofdstukken <span class='small muted'>Sectie: "+esc(sectionTitle(secId))+"</span><button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div></div>";
+ var questionModule=state.ui.adminQuestionModule||"qbank";
+ var questionsPanel="<div class='content-manager-panel' "+(activeTab==="questions"?"":"hidden")+"><div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><div style='display:flex;gap:6px;align-items:center'><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div>"+
+ "<div class='question-manager-tabs'><button class='perf-tab "+(questionModule==="qbank"?"active":"")+"' data-question-module='qbank'>Vragenbank</button><button class='perf-tab "+(questionModule==="ivtg"?"active":"")+"' data-question-module='ivtg'>iVTG Trainer</button></div>"+
+ "<div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, onderwerp, diagnose...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle onderwerpen</option></select></div>"+
+ "<div class='question-manager-grid' id='adminQuestionList'></div></div></div>";
+ return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer je content overzichtelijk via drie aparte onderdelen: secties, hoofdstukken en vragen.</p></div></div>"+
+ "<div class='content-manager-tabs' role='tablist' aria-label='Content onderdelen'>"+
+ "<button class='content-manager-tab "+(activeTab==="sections"?"active":"")+"' data-admin-tab='sections'>Secties</button>"+
+ "<button class='content-manager-tab "+(activeTab==="chapters"?"active":"")+"' data-admin-tab='chapters'>Hoofdstukken</button>"+
+ "<button class='content-manager-tab "+(activeTab==="questions"?"active":"")+"' data-admin-tab='questions'>Vragen</button>"+
+ "</div>"+
+ "<div class='content-manager'>"+sectionsPanel+chaptersPanel+questionsPanel+"</div>"+
+ "<div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
+}
+function renderAdminQuestions(){
+ var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject");
+ if(!box)return;
+ var q=normalizeSearch(search?search.value:""),sub=subject?subject.value:"",module=(state.ui&&state.ui.adminQuestionModule)||"qbank",tokens=q?q.split(" "):[],h="",count=0,subjects=[],i,qq,text,match,mods,j;
+ for(i=0;i<state.questions.length;i++){qq=state.questions[i];if(qq.subject&&!has(subjects,qq.subject))subjects.push(qq.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ if(subject&&subject.options.length===1)for(i=0;i<subjects.length;i++)subject.add(new Option(subjects[i],subjects[i]));
+ if(subject)subject.value=sub||"";
+ for(i=0;i<state.questions.length;i++){
+  qq=state.questions[i];mods=qq.modules||{qbank:true,ivtg:true};
+  if(module==="qbank"&&mods.qbank===false)continue;
+  if(module==="ivtg"&&mods.ivtg===false)continue;
+  if(sub&&qq.subject!==sub)continue;
+  text=questionSearchText(qq);match=!tokens.length;
+  for(j=0;j<tokens.length;j++)if(text.indexOf(tokens[j])<0){match=false;break}
+  if(!match)continue;
+  count++;
+  h+="<article class='question-admin-card'><div class='question-admin-top'><div><span class='question-chip'>"+esc(qq.subject||"Onbekend")+"</span>"+(qq.topic?" <span class='small muted'>"+esc(qq.topic)+"</span>":"")+"</div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(qq.id)+"'>Bewerken</button><button class='tiny-btn danger' data-delq='"+esc(qq.id)+"'>Verwijderen</button></div></div><h3>"+esc(qq.title||qq.stem||"Onbenoemde vraag")+"</h3><p>"+esc(String(qq.stem||"").slice(0,180))+(String(qq.stem||"").length>180?"…":"")+"</p><div class='small muted'>ABCD · "+esc(qq.difficulty||"")+"</div></article>";
+ }
+ box.innerHTML=h||"<div class='empty'>Geen vragen gevonden.</div>";
+ var counter=document.getElementById("questionCount");if(counter)counter.textContent=count+" "+(count===1?"vraag":"vragen");
+ var tabs=document.querySelectorAll(".question-manager-tabs [data-question-module]"),ti;for(ti=0;ti<tabs.length;ti++)tabs[ti].classList.toggle("active",tabs[ti].getAttribute("data-question-module")===module);
+}
 function performanceBenchmark(){
  var b=state.benchmark||{};
  return {
@@ -772,7 +1319,7 @@ function performanceOverall(){
  "<div class='metric-list'><div class='title'>Jouw score</div><div class='row'><span>Totaal correct</span><strong>"+s.c+"</strong></div><div class='row'><span>Totaal incorrect</span><strong>"+Math.max(0,used-s.c)+"</strong></div><div class='row'><span>Overgeslagen</span><strong>0</strong></div></div>"+
  "</div></div>"+
  "<div class='performance-stat-grid' style='margin-top:15px'>"+
- "<div class='card'><div class='title'>Vraagbankgebruik</div><div class='row'><span>Gebruikte vragen</span><strong>"+used+"</strong></div><div class='row'><span>Ongebruikte vragen</span><strong>"+unused+"</strong></div><div class='row'><span>Totaal aantal vragen</span><strong>"+total+"</strong></div></div>"+
+ "<div class='card'><div class='title'>Vragenbankgebruik</div><div class='row'><span>Gebruikte vragen</span><strong>"+used+"</strong></div><div class='row'><span>Ongebruikte vragen</span><strong>"+unused+"</strong></div><div class='row'><span>Totaal aantal vragen</span><strong>"+total+"</strong></div></div>"+
  "<div class='card'><div class='title'>Tests</div><div class='row'><span>Tests aangemaakt</span><strong>"+state.attempts.length+"</strong></div><div class='row'><span>Tests voltooid</span><strong>"+completed+"</strong></div><div class='row'><span>Opgeschorte tests</span><strong>0</strong></div></div>"+
  "</div>"+
  "<div class='card' style='margin-top:15px'><div class='title'>Percentielrang</div><div class='percentile-box'><div class='bellcurve'><svg viewBox='0 0 520 160' preserveAspectRatio='none'><path d='M20 145 C90 145,115 35,260 35 C405 35,430 145,500 145' fill='none' stroke='#7b7b7b' stroke-width='1.4'/><line x1='280' y1='10' x2='280' y2='145' stroke='#2d8de6'/></svg><div class='small muted' style='position:absolute;left:54%;top:2px'>Percentielpositie</div></div><div class='metric-list'><div class='row'><span>Jouw positie</span><strong>"+percentileText+"</strong></div><div class='row'><span>Mediaan score</span><strong>"+medianText+"</strong></div><div class='row'><span>Jouw gemiddelde tijd</span><strong>"+(avgSec?formatTime(avgSec):"Nog niet beschikbaar")+"</strong></div><div class='row'><span>Gemiddelde andere studenten</span><strong>"+otherTimeText+"</strong></div>"+(b.sample?"<div class='small muted' style='margin-top:8px'>Gebaseerd op "+b.sample+" studenten.</div>":"<div class='small muted' style='margin-top:8px'>De relatieve positie wordt pas getoond zodra MedQNL voldoende geanonimiseerde studentgegevens heeft verzameld.</div>")+"</div></div></div></div>");
@@ -812,21 +1359,66 @@ function performancePreviousPlaceholder(){return previousTests()}
 function previousTests(){return shell("<div class='pagehead'><div><h1>Voorgaande tests</h1></div></div><div class='empty'>Deze pagina is uit de hoofd­navigatie verwijderd.</div>");}
 
 function searchPage(){
- return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek vragen en bibliotheekhoofdstukken.</p></div></div><div class='card'><input id='globalSearch' class='search' placeholder='Zoek bijvoorbeeld naar WGBO, meningitis of fysiologie...'><div id='globalResults' class='search-results'></div></div>");
+ return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek uitsluitend in de Medische Bibliotheek en de iVTG Bibliotheek.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek in bibliotheekhoofdstukken, bijvoorbeeld WGBO, intake of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div></div></div>");
+}
+function normalizeSearch(s){
+ return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g," ").replace(/\s+/g," ").trim();
+}
+function articleLibraryLabel(a){
+ return a&&a.library==="medical"?"Medische Bibliotheek":"iVTG Bibliotheek";
+}
+function articleSearchText(a){
+ return normalizeSearch([a.title,(a.body||[]).join(" "),sectionTitle(a.sectionId),articleLibraryLabel(a)].join(" "));
+}
+function questionSearchText(q){
+ return normalizeSearch([q&&q.title,q&&q.stem,q&&q.caseText,q&&q.explanation,q&&q.objective,q&&q.subject,q&&q.topic,(q&&q.options||[]).join(" ")].join(" "));
+}
+function searchGlobal(){
+ var input=document.getElementById("globalSearch"),out=document.getElementById("globalResults");if(!input||!out)return;
+ var query=normalizeSearch(input.value),tokens=query?query.split(" "):[];
+ if(!tokens.length){out.innerHTML="<div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div>";return}
+ var results=[],i,j,text,score;
+ for(i=0;i<state.articles.length;i++){
+   text=articleSearchText(state.articles[i]);score=0;
+   for(j=0;j<tokens.length;j++){if(text.indexOf(tokens[j])>=0)score+=(tokens[j].length>3?2:1)}
+   if(score>0){
+     results.push({
+       type:"Hoofdstuk",
+       title:state.articles[i].title||"Hoofdstuk",
+       meta:articleLibraryLabel(state.articles[i])+" · "+sectionTitle(state.articles[i].sectionId),
+       score:score,
+       action:"data-art-search='"+state.articles[i].id+"'"
+     });
+   }
+ }
+ results.sort(function(a,b){return b.score-a.score||a.title.localeCompare(b.title,"nl")});
+ var h="";
+ for(i=0;i<results.length&&i<30;i++)h+="<button class='result' "+results[i].action+" style='display:block;width:100%;text-align:left;border:0;background:transparent;color:var(--ink);cursor:pointer'><strong>"+esc(results[i].title)+"</strong><div class='small muted'>"+esc(results[i].type)+" · "+esc(results[i].meta)+"</div></button>";
+ out.innerHTML=h||"<div class='empty'>Geen bibliotheekresultaten. Probeer bijvoorbeeld <strong>WGBO</strong> of <strong>intake</strong>.</div>";
 }
 function noteKeys(){var keys=[],k;for(k in state.notes)if(state.notes.hasOwnProperty(k))keys.push(k);keys.sort(function(a,b){return String(state.notes[a].title||"").localeCompare(String(state.notes[b].title||""),"nl")});return keys}
 function noteRecord(key){return key&&state.notes[key]?state.notes[key]:{title:"Nieuwe notitie",body:""}}
+function noteEditorHtml(body){
+ var x=String(body||"");
+ return /<\/?(strong|b|em|i|u|s|ul|ol|li|h2|h3|blockquote|div|p|br|span)(\s|>)/i.test(x)?x:md(x);
+}
+function updateNotebookStats(){
+ var ed=document.getElementById("nbEditor"),st=document.getElementById("nbStats");
+ if(!ed||!st)return;
+ var t=String(ed.innerText||"").trim(),words=t?t.split(/\s+/).length:0,chars=t.length;
+ st.textContent=words+" "+(words===1?"woord":"woorden")+" · "+chars+" tekens";
+}
 function notebookMarkup(key){
  var keys=noteKeys();if(!key)key=keys[0]||"new";var n=noteRecord(key),list="",i,k;
  for(i=0;i<keys.length;i++){k=keys[i];list+="<button class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button>"}
- return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='bold'><strong>B</strong></button><button data-format='italic'><em>I</em></button><button data-format='underline'><u>U</u></button><button data-format='strikeThrough'><s>S</s></button><button data-format='insertUnorderedList'>•</button><button data-format='insertOrderedList'>1.</button><button data-format='justifyLeft'>≡</button><button data-format='justifyCenter'>≡</button><button data-format='justifyRight'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+md(n.body||"")+"</div><div class='note-footer'><button class='btn secondary' data-close-notebook>Annuleren</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
+ return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
 }
-function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root)}
+function openNotebook(key,mode){var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.innerHTML=notebookMarkup(key);document.body.appendChild(root);updateNotebookStats()}
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
-function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerText||"";save();openNotebook(key,"full")}
-function notesPage(){return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek.</p></div><button class='btn primary' id='openNotebookPage'>Nieuw</button></div><div class='card'><div class='empty'>Open het notitieboek om notities te maken, te zoeken en te bewerken.</div></div>")}
-
-
+function saveNotebookNote(key){if(!key||!state.notes[key]){key="note"+Date.now();state.notes[key]={}}state.notes[key].title=document.getElementById("nbTitle").value||"Nieuwe notitie";state.notes[key].body=document.getElementById("nbEditor").innerHTML||"";save();openNotebook(key,"full")}
+function notesPage(){
+ return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Open het notitieboek vanuit de bibliotheek of iVTG-omgeving.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
+}
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
  return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:640px'><div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div><button class='btn primary' id='saveName' style='margin-top:12px'>Opslaan</button></div>");
@@ -834,19 +1426,19 @@ function settings(){
 function showModal(type){
  var root=document.createElement("div"),html="";
  root.className="overlay";root.id="modalRoot";
- if(type==="tutorial")html="<div class='modal'><div class='modal-head'><h2>Hulpmiddelen</h2><button class='btn secondary' data-close>Sluiten</button></div><p>Gebruik de bovenste hulpmiddelen voor Uitleg, Labwaarden, Notities, Rekenhulp en Instellingen. De onderste balk bevat alleen de iVTG Bibliotheek, Notities, Feedback en Einde.</p></div>";
+ if(type==="tutorial")html="<div class='modal' style='max-width:780px'><div class='modal-head'><h2>Uitleg — iVTG-toetsomgeving</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='tutorial-list'><div class='tutorial-step'><strong>Antwoord kiezen</strong><p>Lees de casus en vraag en kies A, B, C of D. Je keuze wordt direct verwerkt. Er is geen aparte knop om het antwoord in te dienen.</p></div><div class='tutorial-step'><strong>Uitleg gebruiken</strong><p>Open Uitleg om te zien waarom het juiste antwoord klopt, welke redenering erbij hoort en welke leerpunten je moet onthouden.</p></div><div class='tutorial-step'><strong>Labwaarden gebruiken</strong><p>Open Labwaarden tijdens de toets en kies de gewenste categorie, zoals Cardiaal, Inflammatie of IJzer. De huidige vraag blijft geopend.</p></div><div class='tutorial-step'><strong>Rekenhulp gebruiken</strong><p>Voer een berekening in met de toetsen. Gebruik = voor het resultaat, C om te wissen en ⌫ om het laatste teken te verwijderen.</p></div><div class='tutorial-step'><strong>iVTG Bibliotheek</strong><p>Open de bibliotheek om secties en hoofdstukken te bekijken. Je kunt daarna verdergaan met dezelfde toets.</p></div><div class='tutorial-step'><strong>Notities</strong><p>Open Notities om tijdens de toets aantekeningen te lezen of te maken.</p></div><div class='tutorial-step'><strong>Einde</strong><p>Gebruik Einde wanneer je klaar bent. Je sessie wordt afgesloten en het resultaat wordt getoond.</p></div></div></div>";
  if(type==="note"){var q=session?session.questions[session.index]:null,key=q?q.id:"general";openNotebook(key,"drawer");return}
  if(type==="feedback"){var fq=session?session.questions[session.index]:null;html="<div class='modal'><div class='modal-head'><h2>Feedback over deze vraag</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='field'><label>Categorie</label><select id='fbcat'><option>Inhoudelijke fout</option><option>Onduidelijke vraag</option><option>Fout in antwoord/uitleg</option><option>Bron ontbreekt</option><option>Technisch probleem</option><option>Overig</option></select></div><div class='field'><label>Bericht</label><textarea id='fbmsg' style='min-height:170px' placeholder='Beschrijf de feedback...'></textarea></div><button class='btn primary' id='sendFeedback'>Versturen</button></div>"}
  if(type==="settings")html="<div class='modal'><div class='modal-head'><h2>Instellingen</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Leesbare donkere interface.</div></div><button class='btn secondary' id='modalTheme'>Wisselen</button></div></div>";
- if(type==="calc")html="<div class='modal'><div class='modal-head'><h2>Rekenhulp</h2><button class='btn secondary' data-close>Sluiten</button></div><input id='calc' readonly style='width:100%;padding:12px;font-size:22px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px'><div class='grid g2' style='margin-top:10px'>"+["7","8","9","/","4","5","6","*","1","2","3","-","0",".","=","+"].map(function(x){return "<button class='btn secondary' data-calc='"+x+"'>"+x+"</button>"}).join("")+"</div><button class='btn secondary' id='calcClear' style='margin-top:8px'>Wissen</button></div>";
+ if(type==="calc")html="<div class='calculator-modal'><div class='modal-head'><h2>Rekenhulp</h2><button class='btn secondary' data-close>Sluiten</button></div><div class='calculator'><div class='calculator-display' id='calc'>0</div><div class='calculator-grid'>"+["C","±","⌫","÷","7","8","9","×","4","5","6","−","1","2","3","+","0",".","="].map(function(x){return "<button class='calculator-key "+((x==="÷"||x==="×"||x==="−"||x==="+"||x==="=")?"operator":"")+" "+(x==="C"||x==="±"||x==="⌫"?"utility":"")+"' data-calc='"+x+"'>"+x+"</button>"}).join("")+"</div></div></div>";
  if(type==="lab")html=labModal();
- root.innerHTML=html;document.body.appendChild(root);if(type==="lab")renderLabs();
+ root.innerHTML=html;document.body.appendChild(root);if(type==="lab"){renderLabs();var labsBtns=root.querySelectorAll(".lab-tab");for(var li=0;li<labsBtns.length;li++)labsBtns[li].onclick=function(e){e.stopPropagation();labCategory=this.getAttribute("data-labcat");renderLabs()}}
 }
 function labModal(){
  var cats=[],i,h="<div class='modal'><div class='modal-head'><h2>Labwaarden</h2><button class='btn secondary' data-close>Sluiten</button></div><input id='labsearch' class='lab-search' placeholder='Zoek labwaarde...'><div class='lab-tabs'>";
  for(i=0;i<LABS.length;i++)if(!has(cats,LABS[i][0]))cats.push(LABS[i][0]);
  for(i=0;i<cats.length;i++)h+="<button class='lab-tab "+(cats[i]===labCategory?"active":"")+"' data-labcat='"+esc(cats[i])+"'>"+esc(cats[i])+"</button>";
- h+="</div><table class='lab-table'><thead><tr><th>Test</th><th>Referentiewaarde</th><th>Eenheid</th><th>Opmerking</th></tr></thead><tbody id='labbody'></tbody></table><div class='footnotes'><strong>Bronnen</strong><div>Educatieve leerkaart. Referentiewaarden verschillen per laboratorium en methode. <a href='https://www.ncbi.nlm.nih.gov/books/NBK613071/' target='_blank'>NCBI</a> • <a href='https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values' target='_blank'>OpenStax</a> • <a href='https://pmc.ncbi.nlm.nih.gov/articles/PMC5111244/' target='_blank'>Geharmoniseerde intervallen</a></div></div></div>";
+ h+="</div><table class='lab-table'><thead><tr><th>Test</th><th>Referentiewaarde</th><th>Eenheid</th><th>Opmerking</th></tr></thead><tbody id='labbody'></tbody></table><div class='footnotes'><strong>Bronnen</strong><div>Educatieve leerkaart. Referentiewaarden verschillen per laboratorium en methode. <a href='https://www.ncbi.nlm.nih.gov/books/NBK613071/' target='_blank'>NCBI</a> • <a href='https://openstax.org/books/fundamentals-nursing/pages/a-adult-lab-values' target='_blank'>OpenStax</a></div></div></div>";
  return h;
 }
 function renderLabs(){
@@ -883,14 +1475,7 @@ function removeSelectedMark(){
 }
 
 function hideMarkbar(){var b=document.getElementById("markbar");b.style.display="none"}
-function applyMark(color){
- var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed){hideMarkbar();return}
- var range=sel.getRangeAt(0),span=document.createElement("mark");
- var colors={yellow:"#ffe93f",green:"#a6ef4b",cyan:"#65e3ea",pink:"#eaa6c8",orange:"#f7ac3f"};
- span.style.background=colors[color]||colors.yellow;
- try{range.surroundContents(span)}catch(e){span.appendChild(range.extractContents());range.insertNode(span)}
- sel.removeAllRanges();hideMarkbar();saveCurrentArticleHighlights();
-}
+function applyMark(color){var sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed){hideMarkbar();return}var range=sel.getRangeAt(0),span=document.createElement("mark");span.style.background="#fff2a8";span.style.color="inherit";try{range.surroundContents(span)}catch(e){span.appendChild(range.extractContents());range.insertNode(span)}sel.removeAllRanges();hideMarkbar();saveCurrentArticleHighlights();}
 function saveCurrentArticleHighlights(){
  var c=document.getElementById("articleText");if(c){state.highlights[articleId]=c.innerHTML;save()}
 }
@@ -900,16 +1485,80 @@ function showMarkbar(){
  var r=sel.getRangeAt(0).getBoundingClientRect(),bar=document.getElementById("markbar");
  bar.style.display="flex";bar.style.left=Math.max(8,r.left+(r.width/2)-90)+"px";bar.style.top=Math.max(8,r.top-48)+"px";
 }
+document.addEventListener("selectionchange",function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return;var node=sel.anchorNode,box=document.getElementById("articleText");if(!box||!box.contains(node))return;showMarkbar()});
+document.addEventListener("keydown",function(ev){
+ var ed=document.getElementById("articleEditor"),sel=window.getSelection();if(!ed||!sel||!sel.rangeCount)return;
+ var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
+ if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){
+  ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+  var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove();
+ }
+});
+document.addEventListener("click",function(ev){
+ var label=ev.target.closest?ev.target.closest("[data-inline-live-id] .inline-image-label"):null;
+ var trigger=ev.target.closest?ev.target.closest("[data-inline-live-id]"):null;
+ if(label&&trigger){
+  var id=trigger.getAttribute("data-inline-live-id"),art=byId(state.articles,articleId),src=art&&art.inlineImages?art.inlineImages[id]:"";
+  if(!src)return;
+  var preview=trigger.querySelector(".inline-image-live-preview");
+  if(preview){preview.remove();trigger.setAttribute("data-inline-live-open","0");}
+  else{
+   var img=document.createElement("img");img.src=src;img.alt="Afbeelding";img.className="inline-image-live-img inline-image-live-preview";
+   var iw=art&&art.inlineImageWidths?parseInt(art.inlineImageWidths[id],10):0;if(iw)img.style.width=iw+"px";
+   trigger.appendChild(img);trigger.setAttribute("data-inline-live-open","1");
+  }
+  return;
+ }
+});
+document.addEventListener("click",function(ev){
+ var img=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+ if(img){
+  var form=img.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}
+  var id=img.getAttribute("data-inline-editor-id"),bar=document.getElementById("inlineImageSizeBar"),slider=document.getElementById("inlineImageSize"),label=document.getElementById("inlineImageSizeValue"),w=parseInt(widths[id],10)||180;
+  if(bar&&slider){slider.value=w;slider.setAttribute("data-image-id",id);if(label)label.textContent=w+" px";bar.style.display="flex";}
+ }
+});
+document.addEventListener("input",function(ev){
+ if(ev.target.id==="inlineImageSize"){
+  var id=ev.target.getAttribute("data-image-id"),ed=document.getElementById("articleEditor"),img=ed&&ed.querySelector("[data-inline-editor-id='"+id+"']"),form=ed&&ed.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']");
+  if(img){var w=parseInt(ev.target.value,10)||180,tg=img.querySelector("img"),widths={};if(tg)tg.style.width=w+"px";if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}widths[id]=w;if(ws)ws.value=JSON.stringify(widths);var lbl=document.getElementById("inlineImageSizeValue");if(lbl)lbl.textContent=w+" px";}
+ }
+});
+document.addEventListener("click",function(ev){
+ var t=ev.target;
+ if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
+ el=t.closest?t.closest("[data-remove-image]"):null;
+ if(el){
+  ev.preventDefault();
+  var form=el.closest("form"),cur=form&&form.querySelector("input[name='currentImage']"),file=form&&form.querySelector("input[name='imageFile']");
+  if(cur)cur.value="";if(file)file.value="";var img=form&&form.querySelector(".image-preview");if(img)img.remove();el.remove();return;
+ }
+});
+document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
+ el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
+ el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
+ el=t.closest?t.closest("[data-art-med]"):null;if(el){articleId=el.getAttribute("data-art-med");page="library";startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-art]"):null;if(el){articleId=el.getAttribute("data-art");startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-modal]"):null;if(el){showModal(el.getAttribute("data-modal"));return}
+ el=t.closest?t.closest("[data-labcat]"):null;if(el){labCategory=el.getAttribute("data-labcat");renderLabs();return}
  el=t.closest?t.closest("[data-close]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-close-notebook]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-scrollto]"):null;if(el){var se=document.getElementById(el.getAttribute("data-scrollto"));if(se)se.scrollIntoView({behavior:"smooth",block:"start"});return}
  if(t.id==="startqb"){startSession(false);return}
- if(t.id==="startivtg"){startSession(true);return}
+ if(t.id==="globalSearchBtn"){searchGlobal();return}
+ el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
+ el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
+ if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
+ if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
+ if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
+ if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
+ el=t.closest?t.closest("[data-ivtg-subject]"):null;if(el){startSession(true,el.getAttribute("data-ivtg-subject"));return}
+ el=t.closest?t.closest("[data-qbank-subject]"):null;if(el){startSession(false,el.getAttribute("data-qbank-subject"));return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
  if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
@@ -917,21 +1566,38 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-a]"):null;if(el&&session){var q=session.questions[session.index],pick=parseInt(el.getAttribute("data-a"),10),ok=pick===q.correct;session.answers[q.id]=pick;if(ok)session.score++;state.answers[q.id]={correct:ok,when:Date.now(),selected:pick};save();render();return}
  el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();page="result";render()}return}
  el=t.closest?t.closest("[data-print]"):null;if(el){window.print();return}
- el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){openIVTGLibraryDrawer();return}
+ el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){stopChapterTimer();page="ivtg-library";render();return}
  el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null;openNotebook(nq?nq.id:"general","drawer");return}
  el=t.closest?t.closest("[data-drawer-art]"):null;if(el){articleId=el.getAttribute("data-drawer-art");var d=document.getElementById("ivtgLibraryDrawer");if(d){d.remove();openIVTGLibraryDrawer()}return}
  el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
  if(t.id==="toggleTheme"){toggleTheme();render();return}
  if(t.id==="modalTheme"){toggleTheme();closeModal();return}
- if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
+ if(t.id==="addInlineImage"){var inp=document.getElementById("inlineImageFile");if(inp){var ed=document.getElementById("articleEditor");if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
+if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
  if(t.id==="openNotebookPage"){openNotebook("","full");return}
  if(t.id==="newNotebookNote"){createNotebookNote();return}
  if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
  el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
- el=t.closest?t.closest("[data-format]"):null;if(el){document.execCommand(el.getAttribute("data-format"),false,null);return}
+ el=t.closest?t.closest("[data-format]"):null;if(el){var fmt=el.getAttribute("data-format"),arg=null;if(fmt.indexOf(":")>0){var parts=fmt.split(":");fmt=parts[0];arg=parts.slice(1).join(":");}if(fmt==="hiliteColor")arg="#fff2a8";if(fmt==="formatBlock")document.execCommand("formatBlock",false,arg);else document.execCommand(fmt,false,arg);updateNotebookStats();return}
  if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
- if(t.hasAttribute("data-calc")){var d=document.getElementById("calc"),v=t.getAttribute("data-calc");if(v==="="){try{d.value=eval(d.value)}catch(e){d.value="Fout"}}else d.value+=v;return}
- if(t.id==="calcClear"){document.getElementById("calc").value="";return}
+ if(t.hasAttribute("data-mark-action")){showMarkbar();return}
+ if(t.hasAttribute("data-calc")){
+  var d=document.getElementById("calc"),v=t.getAttribute("data-calc");
+  if(!d)return;
+  var current=d.getAttribute("data-expression")||"";
+  if(v==="C"){d.setAttribute("data-expression","");d.textContent="0";return}
+  if(v==="⌫"){current=current.slice(0,-1);d.setAttribute("data-expression",current);d.textContent=current||"0";return}
+  if(v==="±"){current=current.charAt(0)==="-"?current.slice(1):"-"+current;d.setAttribute("data-expression",current);d.textContent=current;return}
+  if(v==="÷")v="/";if(v==="×")v="*";if(v==="−")v="-";
+  if(v==="="){
+    try{var safe=current.replace(/[^0-9+\-*/().]/g,"");var result=Function("return ("+safe+")")();d.setAttribute("data-expression",String(result));d.textContent=String(result)}
+    catch(e){d.setAttribute("data-expression","");d.textContent="Fout"}
+  }else{
+    current+=v;d.setAttribute("data-expression",current);d.textContent=current;
+  }
+  return
+}
+if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttribute("data-expression","");cd.textContent="0"}return}
  el=t.closest?t.closest("[data-remove-mark]"):null;if(el){removeSelectedMark();return}
  el=t.closest?t.closest("[data-mark-color]"):null;if(el){applyMark(el.getAttribute("data-mark-color"));return}
  el=t.closest?t.closest("[data-mark-close]"):null;if(el){hideMarkbar();return}
@@ -940,8 +1606,9 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
  el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
  el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
- el=t.closest?t.closest("[data-delsec]"):null;if(el){if(confirm("Sectie verwijderen?")){removeBy(state.sections,el.getAttribute("data-delsec"));save();render()}return}
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
+ el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
+ el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
  el=t.closest?t.closest("[data-edita]"):null;if(el){editArticle(el.getAttribute("data-edita"));return}
@@ -949,14 +1616,57 @@ document.addEventListener("click",function(ev){
 });
 document.addEventListener("input",function(ev){
  if(ev.target.id==="labsearch")renderLabs();
- if(ev.target.id==="libsearch"){var q=ev.target.value.toLowerCase(),b=document.querySelectorAll(".lib-side button[data-art]"),i;for(i=0;i<b.length;i++)b[i].style.display=b[i].textContent.toLowerCase().indexOf(q)>=0?"block":"none"}
+ if(ev.target.id==="globalSearch"){searchGlobal()}
+ if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"){renderAdminQuestions()}
+ if(ev.target.id==="libsearch"){
+ var input=ev.target,q=normalizeSearch(input.value),b=document.querySelectorAll(".lib-side button[data-art]"),i,j,matched={};
+ for(i=0;i<b.length;i++){
+  var aid=b[i].getAttribute("data-art"),art=byId(state.articles,aid),txt=art?normalizeSearch([art.title,(art.body||[]).join(" "),sectionTitle(art.sectionId)].join(" ")):"";
+  var show=!q||q.split(" ").every(function(tok){return txt.indexOf(tok)>=0});
+  b[i].style.display=show?"block":"none";
+  if(show&&art)matched[art.sectionId]=true;
+ }
+ if(q){
+  var changed=false;
+  for(var sid in matched){if(state.ui.libSectionCollapsed&&state.ui.libSectionCollapsed[sid]){state.ui.libSectionCollapsed[sid]=false;changed=true}}
+  if(changed){save();render();setTimeout(function(){var ni=document.getElementById("libsearch");if(ni){ni.focus();ni.value=input.value;ni.dispatchEvent(new Event("input"))}},0);return}
+ }
+ var toggles=document.querySelectorAll(".lib-side [data-toggle-lib-section]");
+ for(j=0;j<toggles.length;j++){var sid2=toggles[j].getAttribute("data-toggle-lib-section");toggles[j].style.display=(!q||matched[sid2])?"flex":"none"}
+}
+ if(ev.target.id==="medlibsearch"){var qmed=normalizeSearch(ev.target.value),bm=document.querySelectorAll(".lib-side button[data-art-med]"),k;for(k=0;k<bm.length;k++)bm[k].style.display=normalizeSearch(bm[k].textContent).indexOf(qmed)>=0?"block":"none"}
  if(ev.target.id==="drawerLibSearch"){var q2=ev.target.value.toLowerCase(),b2=document.querySelectorAll("[data-drawer-art]"),j;for(j=0;j<b2.length;j++)b2[j].style.display=b2[j].textContent.toLowerCase().indexOf(q2)>=0?"block":"none"}
  if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
+ if(ev.target.id==="nbEditor")updateNotebookStats()
+ if(ev.target.id==="questionExplanationEditor"){var qstore=document.getElementById("questionExplanationStore");if(qstore)qstore.value=richHtmlToText(ev.target.innerHTML)}
  if(ev.target.hasAttribute("data-sec-title")){var s=byId(state.sections,ev.target.getAttribute("data-sec-title"));if(s){s.title=ev.target.value;save()}}
  if(ev.target.hasAttribute("data-art-title")){var a=byId(state.articles,ev.target.getAttribute("data-art-title"));if(a){a.title=ev.target.value;save()}}
  if(ev.target.hasAttribute("data-source-title")){var so=byId(state.sources,ev.target.getAttribute("data-source-title"));if(so){so.title=ev.target.value;save()}}
 });
 document.addEventListener("change",function(ev){
+ if(ev.target.id==="inlineImageFile"){
+ var files=Array.from(ev.target.files||[]),ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']"),wstore=form&&form.querySelector("input[name='inlineImageWidths']");
+ if(!files.length||!ed||!store)return;
+ var valid=files.filter(function(f){return f.type.indexOf("image/")===0&&f.size<=3500000});
+ if(valid.length<files.length)alert("Ongeldige of te grote afbeeldingen zijn overgeslagen.");
+ var imgs={};try{imgs=JSON.parse(store.value||"{}")}catch(e){}
+ var widths={};try{widths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}
+ var range=ed._savedRange?ed._savedRange.cloneRange():null;
+ async function addOne(file,index){
+ var data=await imageBlobToDataUrl(file,1800,900000);
+ if(!data){if(index+1<valid.length)await addOne(valid[index+1],index+1);return}
+ var id="img"+Date.now().toString(36)+Math.random().toString(36).slice(2,8),span=document.createElement("span");
+ imgs[id]=data;widths[id]=180;if(store)store.value=JSON.stringify(imgs);if(wstore)wstore.value=JSON.stringify(widths);
+ span.className="inline-image-editor";span.tabIndex=0;span.draggable=true;span.contentEditable="false";span.setAttribute("data-inline-editor-id",id);span.title="Klik voor grootte · sleep om te verplaatsen";
+ var im=document.createElement("img");im.src=data;im.alt="";im.style.width="180px";span.appendChild(im);
+ ed.focus();var sel=window.getSelection();
+ if(range&&ed.contains(range.commonAncestorContainer)){sel.removeAllRanges();sel.addRange(range);range.deleteContents();range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range);range=range.cloneRange()}
+ else{ed.appendChild(span);var rr=document.createRange();rr.selectNodeContents(ed);rr.collapse(false);range=rr}
+ if(index+1<valid.length)await addOne(valid[index+1],index+1);
+ }
+ if(valid.length)addOne(valid[0],0);
+ ev.target.value="";return;
+ }
  if(ev.target.name==="imageFile"){var file=ev.target.files&&ev.target.files[0];if(!file)return;if(file.size>3500000){alert("Gebruik een afbeelding van maximaal 3,5 MB.");ev.target.value="";return}var reader=new FileReader(),input=ev.target;reader.onload=function(){input.setAttribute("data-image-data",reader.result)};reader.readAsDataURL(file)}
 });
 document.addEventListener("submit",function(ev){
@@ -964,8 +1674,8 @@ document.addEventListener("submit",function(ev){
  if(["questionform","articleform","sourceform","sectionform"].indexOf(f.id)<0)return;
  ev.preventDefault();
  function finish(imageData){
-  if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:f.explanation.value,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
-  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:f.body.value.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
+  if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var qex=document.getElementById("questionExplanationEditor"),exRich=qex?sanitizeRichHtml(qex.innerHTML):"",exText=richHtmlToText(exRich),modQbank=!!(f.moduleQbank&&f.moduleQbank.checked),modIvtg=!!(f.moduleIvtg&&f.moduleIvtg.checked);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:exText,explanationRichHtml:exRich,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||"",modules:{qbank:modQbank,ivtg:modIvtg}};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
+  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),richHtml=ed?serializeRichEditor(ed):"",plain=richHtmlToText(richHtml),serialized=plain;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}var selectedSection=byId(state.sections,f.sectionId.value),articleLibrary=(selectedSection&&selectedSection.library==="medical"?"medical":"ivtg");obj={id:f.getAttribute("data-id")||"a"+Date.now(),library:articleLibrary,title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),richHtml:richHtml,sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
   else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
   save();page="admin";render()
@@ -975,18 +1685,104 @@ document.addEventListener("submit",function(ev){
  finish(input?input.getAttribute("data-image-data"):"");
 });
 
-document.addEventListener("dragstart",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
-document.addEventListener("dragover",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()});
-document.addEventListener("drop",function(ev){var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
+document.addEventListener("selectionchange",function(){
+ var ed=document.getElementById("articleEditor"),sel=window.getSelection();
+ if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+});document.addEventListener("paste",async function(ev){
+ var qex=ev.target&&ev.target.closest?ev.target.closest("#questionExplanationEditor"):null;
+ if(qex){
+  var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);
+  if(!html&&!images.length)return;ev.preventDefault();
+  var safe=sanitizeRichHtml(html||"");
+  if(images.length){
+   var holder=document.createElement("div");holder.innerHTML=safe;
+   var ims=Array.from(holder.querySelectorAll("img")),assigned=0,i,src;
+   for(i=0;i<ims.length;i++){src=ims[i].getAttribute("src")||"";if(!/^(https?:|data:image\/)/i.test(src)&&images[assigned])ims[i].setAttribute("src",images[assigned++])}
+   safe=holder.innerHTML;for(i=assigned;i<images.length;i++)safe+="<p><img src='"+esc(images[i])+"' alt='Afbeelding'></p>";
+  }
+  if(!safe&&plain)safe="<p>"+esc(plain).replace(/\n/g,"<br>")+"</p>";
+  var sel=window.getSelection(),range=(sel&&sel.rangeCount&&qex.contains(sel.anchorNode))?sel.getRangeAt(0):qex._savedRange,box=document.createElement("div");box.innerHTML=safe;
+  if(range&&qex.contains(range.commonAncestorContainer)){
+   range.deleteContents();var frag=document.createDocumentFragment();while(box.firstChild)frag.appendChild(box.firstChild);
+   range.insertNode(frag);range.collapse(false);sel.removeAllRanges();sel.addRange(range);qex._savedRange=range.cloneRange();
+  }else qex.appendChild(box);
+  return;
+ }
+ var ed=ev.target&&ev.target.closest?ev.target.closest("#articleEditor"):null;if(!ed)return;
+ var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);
+ if(!html&&!images.length)return;ev.preventDefault();
+ var safe=sanitizeRichHtml(html||"");
+ if(images.length){
+  var holder=document.createElement("div");holder.innerHTML=safe;
+  var ims=Array.from(holder.querySelectorAll("img")),assigned=0,i,src;
+  for(i=0;i<ims.length;i++){src=ims[i].getAttribute("src")||"";if(!/^(https?:|data:image\/)/i.test(src)&&images[assigned])ims[i].setAttribute("src",images[assigned++])}
+  safe=holder.innerHTML;
+  if(!ims.length||assigned>0)for(i=assigned;i<images.length;i++)safe+="<p><img src='"+esc(images[i])+"' alt='Afbeelding'></p>";
+ }
+ if(!safe&&plain)safe="<p>"+esc(plain).replace(/\n/g,"<br>")+"</p>";
+ var sel=window.getSelection(),range=(sel&&sel.rangeCount&&ed.contains(sel.anchorNode))?sel.getRangeAt(0):ed._savedRange,box=document.createElement("div");box.innerHTML=safe;
+ if(range&&ed.contains(range.commonAncestorContainer)){
+  range.deleteContents();var frag=document.createDocumentFragment();while(box.firstChild)frag.appendChild(box.firstChild);
+  range.insertNode(frag);range.collapse(false);sel.removeAllRanges();sel.addRange(range);ed._savedRange=range.cloneRange();
+ }else ed.appendChild(box);
+});
+
+document.addEventListener("dragstart",function(ev){
+ var img=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+ if(img){ev.dataTransfer.setData("text/plain","INLINEIMG:"+img.getAttribute("data-inline-editor-id"));ev.dataTransfer.effectAllowed="move";return}
+ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el){el.style.opacity=".55";ev.dataTransfer.setData("text/plain",el.getAttribute("data-dragsec")||el.getAttribute("data-dragart"))}});
+document.addEventListener("dragover",function(ev){
+ var ed=ev.target.closest?ev.target.closest("#articleEditor"):null;
+ if(ed){ev.preventDefault();ev.dataTransfer.dropEffect="move";return}
+ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(el)ev.preventDefault()
+});
+document.addEventListener("drop",function(ev){
+ var ed=ev.target.closest?ev.target.closest("#articleEditor"):null,inlineData=ev.dataTransfer.getData("text/plain");
+ if(ed&&inlineData.indexOf("INLINEIMG:")===0){
+  ev.preventDefault();var moving=ed.querySelector("[data-inline-editor-id='"+inlineData.slice(10)+"']");if(!moving)return;
+  var target=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
+  if(target&&target!==moving){
+    var rr=target.getBoundingClientRect();
+    if(ev.clientX<rr.left+rr.width/2)target.parentNode.insertBefore(moving,target);else target.parentNode.insertBefore(moving,target.nextSibling);
+  }else{
+    var range=null;
+    if(document.caretRangeFromPoint)range=document.caretRangeFromPoint(ev.clientX,ev.clientY);
+    else if(document.caretPositionFromPoint){var pos=document.caretPositionFromPoint(ev.clientX,ev.clientY);if(pos){range=document.createRange();range.setStart(pos.offsetNode,pos.offset);range.collapse(true)}}
+    if(range&&ed.contains(range.startContainer)){range.insertNode(moving)}
+  }
+  return;
+ }
+var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null;if(!el)return;ev.preventDefault();var srcId=ev.dataTransfer.getData("text/plain"),src=el.parentNode.querySelector("[data-dragsec='"+srcId+"'],[data-dragart='"+srcId+"']");if(src&&src!==el){el.parentNode.insertBefore(src,el);saveDragOrder();render()}});
 
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
  var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
- root.innerHTML=body;
+ root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
-render();
+function showAppError(err){
+  var root=document.getElementById("app");
+  if(!root)return;
+  var msg=err&&err.message?err.message:String(err||"Onbekende fout");
+  root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
+}
+function bootMedQNL(){
+  try{
+    render();
+  }catch(err){
+    try{
+      localStorage.removeItem(KEY);
+      state=load();
+      render();
+    }catch(retryErr){
+      showAppError(retryErr||err);
+    }
+  }
+}
+window.__medqnlBoot=bootMedQNL;
+
+bootMedQNL();
 })();
 </script>
 </body>
