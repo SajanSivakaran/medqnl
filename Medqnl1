@@ -47,7 +47,7 @@ a{color:var(--blue)}
 .term{font-weight:800;color:var(--navy)}.sup{font-size:10px;vertical-align:super;color:var(--blue)}
 .footnotes{border-top:1px solid var(--line);padding-top:14px;margin-top:20px;font-size:12px;color:var(--muted)}
 .empty{text-align:center;border:1px dashed var(--line);border-radius:10px;padding:28px;color:var(--muted)}
-.qwrap{display:flex;gap:13px}.qnav{width:70px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px;height:max-content}.qnum{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);margin-bottom:6px}.qnum.active{background:var(--blue);color:#fff;border-color:var(--blue)}.qnum.done{background:var(--greenbg);color:var(--green)}
+.qwrap{display:flex;gap:13px}.qnav{width:70px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:9px;height:max-content}.qnum{width:100%;height:34px;border:1px solid var(--line);border-radius:7px;background:var(--card);color:var(--ink);margin-bottom:6px}.qnum.active{background:var(--blue);color:#fff;border-color:var(--blue)}.qnum.done{background:var(--greenbg);color:var(--green)}.qnum.marked{box-shadow:inset 4px 0 0 #f3a712;font-weight:800}.qnum.active.marked{box-shadow:inset 4px 0 0 #ffd86b}.ivtg-mark-question.active{font-weight:800;border-color:var(--blue);background:var(--blue2)}
 .qcard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}.qtop{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between}.qbody{padding:22px}.qbody h3{margin:0 0 18px;color:var(--navy);font-size:20px;line-height:1.5}.case{background:var(--bg);border-left:4px solid var(--blue);padding:13px 15px;border-radius:8px;margin-bottom:18px}.case-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--blue);font-weight:800;margin-bottom:5px}
 .answer{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:13px;margin:8px 0}.answer.selected{background:var(--blue2);border-color:var(--blue)}.answer.correct{background:var(--greenbg);border-color:#9fd3b2}.answer.wrong{background:var(--redbg);border-color:#e7aaa1}
 .explain{border-top:1px solid var(--line);margin-top:18px;padding-top:18px}.question-explanation-rich{line-height:1.7}.question-explanation-rich p{margin:10px 0}.question-explanation-rich table{width:100%;border-collapse:collapse;margin:12px 0}.question-explanation-rich th,.question-explanation-rich td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.question-explanation-rich th{background:var(--bg);font-weight:700}.box{padding:11px;border:1px solid var(--line);border-radius:8px;margin-top:8px}.good{background:var(--greenbg)}
@@ -796,6 +796,7 @@ function load(){
     if(!x.notes || typeof x.notes!=="object")x.notes={};
     if(!Array.isArray(x.feedback))x.feedback=[];
     if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
+    if(!x.questionMarks || typeof x.questionMarks!=="object")x.questionMarks={};
     if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
     if(x.theme!=="dark"&&x.theme!=="light")x.theme="light";
     if(!x.name)x.name="Student";
@@ -810,7 +811,7 @@ function load(){
     return x;
   }
  }catch(e){}
- var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
+ var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},questionMarks:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
  migrateABCD(fresh);
  fresh.questionSeedVersion=QUESTION_SEED_VERSION;
  ensureMedicalLibrary(fresh);
@@ -845,6 +846,8 @@ function ensureQuestionBankSeeds(x){
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
+function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
 function migrateInlineImages(x){
  var changed=false,i,j,text,id,src;
@@ -1008,12 +1011,12 @@ function startSession(ivtg,forcedSubject){
  session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject};page="question";render();
 }
 function questionBody(){
- var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",i,nums="",opts="",letters="ABCD";
- for(i=0;i<session.questions.length;i++)nums+="<button class='qnum "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";
+ var q=session.questions[session.index],picked=session.answers[q.id],submitted=typeof picked!=="undefined",marked=isQuestionMarked(q.id),i,nums="",opts="",letters="ABCD";
+ for(i=0;i<session.questions.length;i++)nums+="<button class='qnum "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done ":"")+(isQuestionMarked(session.questions[i].id)?"marked":"")+"' data-q='"+i+"' aria-label='Vraag "+(i+1)+(isQuestionMarked(session.questions[i].id)?" gemarkeerd":"")+"' title='"+(isQuestionMarked(session.questions[i].id)?"Gemarkeerde vraag":"Vraag markeren")+"'>"+(i+1)+"</button>";
  for(i=0;i<4;i++){var c="";if(submitted&&i===q.correct)c=" correct";else if(submitted&&i===picked)c=" wrong";opts+="<button class='answer"+c+"' "+(submitted?"disabled":"")+" data-a='"+i+"'><strong>"+letters.charAt(i)+".</strong> "+md(q.options[i])+"</button>"}
  var expl=submitted?"<div class='explain'><div class='title'>"+(picked===q.correct?"Correct":"Onjuist")+"</div><div class='question-explanation-rich'>"+(q.explanationRichHtml?renderInlineImages(sanitizeRichHtml(q.explanationRichHtml)):md(q.explanation))+"</div><div class='box good'><strong>Leerdoel</strong><div>"+md(q.objective)+"</div></div><div class='footnotes'><strong>Voetnoten en bronnen</strong>"+srcFoot(q.sourceIds||[])+"</div></div>":"";
  var im=q.image?"<img class='image-preview' src='"+q.image+"'>":"";
- return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" • "+esc(q.topic)+"</strong><span class='small muted'>"+esc(q.difficulty)+"</span></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<h3>"+md(q.stem)+"</h3>"+opts+expl+"</div><div class='bottom'><span class='small muted'>Klik direct op A, B, C of D.</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
+ return "<div class='qwrap'><aside class='qnav'>"+nums+"</aside><section class='qcard'><div class='qtop'><strong>"+esc(q.subject)+" • "+esc(q.topic)+"</strong><div style='display:flex;align-items:center;gap:8px'><span class='small muted'>"+esc(q.difficulty)+"</span><button class='btn secondary ivtg-mark-question "+(marked?"active":"")+"' data-mark-question='"+esc(q.id)+"' title='"+(marked?"Markering verwijderen":"Vraag markeren")+"'>"+(marked?"★ Gemarkeerd":"☆ Markeren")+"</button></div></div><div class='qbody'>"+(q.caseText?"<div class='case'><div class='case-label'>Casus</div><div>"+md(q.caseText)+"</div></div>":"")+im+"<h3>"+md(q.stem)+"</h3>"+opts+expl+"</div><div class='bottom'><span class='small muted'>Klik direct op A, B, C of D. Gebruik “Markeren” om deze vraag voor later te markeren.</span>"+(submitted?"<button class='btn primary' id='next'>"+(session.index===session.questions.length-1?"Resultaat":"Volgende")+"</button>":"")+"</div></section></div>";
 }
 function questionPage(){
  var i,body="<div class='ivtg ivtg-shell'><div class='ivtg-top'><div class='ivtg-count'>"+(session.index+1)+" / "+session.questions.length+"</div><div class='ivtg-tools'><button class='ivtg-item' data-prev>"+ICONS.prev+"<div>Vorige</div></button><button class='ivtg-item' data-next>"+ICONS.next+"<div>Volgende</div></button></div><button class='ivtg-item' data-modal='tutorial'>"+ICONS.tutorial+"<div>Uitleg</div></button><button class='ivtg-item' data-modal='lab'>"+ICONS.lab+"<div>Labwaarden</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='calc'>"+ICONS.calc+"<div>Rekenhulp</div></button><button class='ivtg-item' data-modal='settings'>"+ICONS.gear+"<div>Instellingen</div></button></div><div class='ivtg-left'>";
@@ -1185,20 +1188,7 @@ function library(){
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){
- var a=null,navs="",i,j,sec,arts=[],sectionCollapsed=(state.ui&&state.ui.medicalSectionCollapsed)||{},sections=[];
- for(i=0;i<state.sections.length;i++)if(state.sections[i].library==="medical")sections.push(state.sections[i]);
- for(i=0;i<state.articles.length;i++)if(state.articles[i].library==="medical"){if(!a)a=state.articles[i];arts.push(state.articles[i]);}
- if(!a)return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>Section III uit First Aid for the USMLE Step 1 2026, inhoudelijk omgezet naar een eigen Nederlandse leeromgeving.</p></div></div><div class='empty'>Nog geen medische bibliotheekinhoud.</div>");
- var active=byId(state.articles,articleId);if(!active||active.library!=="medical")active=a;
-
- for(i=0;i<sections.length;i++){
-   sec=sections[i];var isCollapsed=!!sectionCollapsed[sec.id],items="";
-   for(j=0;j<arts.length;j++)if(arts[j].sectionId===sec.id)items+="<button data-art-med='"+arts[j].id+"' class='"+(arts[j].id===active.id?"active":"")+"'>"+esc(arts[j].title)+"</button>";
-   navs+="<button class='lib-section-toggle' data-toggle-med-section='"+esc(sec.id)+"' aria-expanded='"+(!isCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(isCollapsed?"›":"⌄")+"</span></button>";
-   if(!isCollapsed)navs+="<div class='lib-section-items'>"+items+"</div>";
- }
- return shell("<div class='pagehead' style='margin-bottom:10px'><div><h1>Medische Bibliotheek</h1><p>Section III — High-Yield Organ Systems, in eigen Nederlandse formulering en netjes per orgaansysteem geordend.</p></div><button class='btn secondary' data-page='ivtg-library'>Naar iVTG Bibliotheek</button></div>"+
- "<div class='lib-layout'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-mednav title='Hoofdstukken tonen/verbergen'>☰</button><input id='medlibsearch' class='lib-library-search' placeholder='Zoek in Medische Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(active.title)+"</h2></div><div class='lib-content-wrap'><div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[active.id]||articleHtml(active,"medsec"))+"</div><div class='footnotes'><strong>Bron</strong>"+srcFoot(active.sourceIds||[])+"</div></div></article></div>");
+ return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>De medische bibliotheek wordt later opgesteld.</p></div></div><div class='card'><h2>Later beschikbaar</h2><p>De inhoud van de Medische Bibliotheek wordt later opgesteld. Deze pagina is voorlopig gereserveerd voor de toekomstige medische leeromgeving.</p></div>");
 }
 function result(){var n=0,i;for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
 
@@ -1580,6 +1570,7 @@ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"St
  el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
  el=t.closest?t.closest("[data-format]"):null;if(el){var fmt=el.getAttribute("data-format"),arg=null;if(fmt.indexOf(":")>0){var parts=fmt.split(":");fmt=parts[0];arg=parts.slice(1).join(":");}if(fmt==="hiliteColor")arg="#fff2a8";if(fmt==="formatBlock")document.execCommand("formatBlock",false,arg);else document.execCommand(fmt,false,arg);updateNotebookStats();return}
  if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
+ el=t.closest?t.closest("[data-mark-question]"):null;if(el){toggleQuestionMark(el.getAttribute("data-mark-question"));return}
  if(t.hasAttribute("data-mark-action")){showMarkbar();return}
  if(t.hasAttribute("data-calc")){
   var d=document.getElementById("calc"),v=t.getAttribute("data-calc");
