@@ -1015,21 +1015,28 @@ function dashboard(){
  "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
 }
 function qbank(){
- var buttons="",i,j,q,count;
+ var subsHtml="",i,j,list;
  for(i=0;i<QBANK_SUBJECTS.length;i++){
-  count=0;
-  for(j=0;j<state.questions.length;j++){q=state.questions[j];if(q.subject===QBANK_SUBJECTS[i]&&((q.modules||{qbank:true}).qbank!==false))count++}
-  buttons+="<button class='ivtg-subject-choice' data-qbank-subject='"+esc(QBANK_SUBJECTS[i])+"' "+(count===0?"disabled":"")+"><span>"+esc(QBANK_SUBJECTS[i])+"</span><span>"+count+" "+(count===1?"vraag":"vragen")+" ›</span></button>";
+  list=qbankSubsections(QBANK_SUBJECTS[i]);
+  subsHtml+="<div class='qbank-topic-block'><div class='qbank-topic-title'>"+esc(QBANK_SUBJECTS[i])+"</div><div class='qbank-subsections'>";
+  for(j=0;j<list.length;j++)subsHtml+="<span class='qbank-subsection'>"+esc(list[j])+"</span>";
+  subsHtml+="</div></div>";
  }
- return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen met casusgerichte vragen binnen de zes vaste Qbank-onderwerpen.</p></div></div>"+
- "<div class='ivtg-landing'>"+
- "<div class='ivtg-welcome'><div class='small'>MEDQNL • VRAGENBANK</div><h2>Kies hoe je wilt oefenen.</h2><p>Deze onderwerpen horen bij de Vragenbank en niet bij de iVTG Trainer.</p></div>"+
- "<div class='ivtg-start-grid'>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde Qbank-oefensessie.</p><button class='btn primary' id='startqb'>Start</button></div>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één van de zes vaste Qbank-onderwerpen.</p></div>"+
- "</div>"+
- "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Qbank-onderwerpen</div>"+buttons+"</div>"+
- "</div>");
+ var firstSubs=qbankSubsections(QBANK_SUBJECTS[0]),subOpts="<option value=''>Alle subsecties</option>";
+ for(i=0;i<firstSubs.length;i++)subOpts+="<option value='"+esc(firstSubs[i])+"'>"+esc(firstSubs[i])+"</option>";
+ var subjectOpts="<option value=''>Alle Qbank-onderwerpen</option>";
+ for(i=0;i<QBANK_SUBJECTS.length;i++)subjectOpts+="<option value='"+esc(QBANK_SUBJECTS[i])+"'>"+esc(QBANK_SUBJECTS[i])+"</option>";
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen binnen de zes hoofdonderwerpen en hun vaste subsecties.</p></div></div>"+
+ "<div class='card qbank-builder'><div class='title'>Test Builder</div><p class='small muted'>Kies onderwerp, subsectie en vraagtype voor je oefentoets.</p>"+
+ "<div class='grid g2'><div class='field'><label>Hoofdonderwerp</label><select id='qbankSubject'>"+subjectOpts+"</select></div>"+
+ "<div class='field'><label>Subsectie</label><select id='qbankSubsection'>"+subOpts+"</select></div></div>"+
+ "<div class='field'><label>Modus</label><div class='qbank-mode-grid'>"+
+ "<label class='qbank-mode-card'><input type='radio' name='qbankMode' value='knowledge'><span><strong>Kennis- &amp; Conceptcheck</strong><small>Directe vragen over anatomie, fysiologie, formules en definities.</small></span></label>"+
+ "<label class='qbank-mode-card'><input type='radio' name='qbankMode' value='clinical'><span><strong>Klinische Casussen / UWorld-stijl</strong><small>Uitgebreide patiëntcasussen met klinisch redeneren.</small></span></label>"+
+ "<label class='qbank-mode-card selected'><input type='radio' name='qbankMode' value='mixed' checked><span><strong>Gemengd (Aanbevolen)</strong><small>Combineert beide vraagtypes.</small></span></label>"+
+ "</div></div>"+
+ "<div style='display:flex;align-items:end;gap:10px;flex-wrap:wrap'><div class='field' style='margin:0;width:130px'><label>Aantal vragen</label><input id='qbankCount' type='number' min='1' max='100' value='10'></div><button class='btn primary' id='startqb'>Genereer oefentoets</button></div></div>"+
+ "<div class='card' style='margin-top:14px'><div class='title'>Hoofdonderwerpen en subsecties</div>"+subsHtml+"</div>");
 }
 function startSession(ivtg,forcedSubject){
  var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
