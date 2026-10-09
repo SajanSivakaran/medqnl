@@ -941,6 +941,10 @@ BLOCK4_QUESTION_BANK.push(
  b4mc("b4r65","Antibiotica","Clavulaanzuur","Variant — functie van clavulaanzuur","Bij een β-lactamcombinatie wordt amoxicilline gecombineerd met clavulaanzuur.","Wat is de belangrijkste functie van clavulaanzuur?",["Het remt bacteriële β-lactamasen en beschermt daardoor het β-lactam","Het voorkomt vorming van de β-lactamring","Het maakt amoxicilline beter smakend","Het verhoogt uitsluitend de opname uit de darm door pH-verandering"],0,"Clavulaanzuur remt β-lactamase-enzymen en beschermt daarmee amoxicilline tegen enzymatische afbraak.","Herken de functie van een β-lactamaseremmer.",2)
 );
 
+
+BLOCK4_QUESTION_BANK.push(
+ b4mc("b4all01","Allergieën & Overgevoeligheid","Type I-overgevoeligheid","Variant — snelle reactie op amoxicilline","Tien minuten na inname van amoxicilline krijgt een patiënt urticaria en benauwdheid.","Welk type overgevoeligheidsreactie past het best bij deze snelle reactie?",["Type I, IgE-gemedieerd","Type II, antilichaam-gemedieerd tegen cellen","Type III, immuuncomplex-gemedieerd","Type IV, T-cel-gemedieerd"],0,"Een snelle urticariële en respiratoire reactie kort na blootstelling past bij een onmiddellijke, IgE-gemedieerde type-I-reactie.","Herken type-I-overgevoeligheid op basis van timing en klinisch beeld.",2)
+);
 var state=load();if(!state.ui)state.ui={};if(!state.ui.adminTab)state.ui.adminTab="sections";if(!state.ui.adminQuestionModule)state.ui.adminQuestionModule="qbank";
 function purgeHarmonisedLabSource(x){
  var i,j,sid;
@@ -1012,12 +1016,12 @@ function migrateABCD(x){
    }
  }
 }
-var QUESTION_SEED_VERSION=6;
+var QUESTION_SEED_VERSION=7;
 function ensureQuestionBankSeeds(x){
  var version=Number(x.questionSeedVersion)||0;
  if(version>=QUESTION_SEED_VERSION)return false;
  var changed=false,i,q;
- if(version<6){
+ if(version<7){
    var kept=[];
    for(i=0;i<x.questions.length;i++){q=x.questions[i];if(!/^b4(?:o|r)\\d+$/.test(String(q.id||"")))kept.push(q);else changed=true;}
    x.questions=kept;
