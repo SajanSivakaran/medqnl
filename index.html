@@ -40,6 +40,24 @@ a{color:var(--blue)}
 .notice{background:var(--blue2);color:var(--ink);border:1px solid var(--line);padding:12px 14px;border-radius:9px}
 .hero{background:linear-gradient(135deg,#102b43,#173e5f);color:#fff;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px}.hero h2{color:#fff;margin:4px 0 8px;font-size:30px}.hero p{color:#dcebf6;max-width:760px;line-height:1.55}
 .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
+.feedback-status{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.feedback-status.open{background:var(--blue2);color:var(--blue)}
+.feedback-status.resolved{background:var(--greenbg);color:var(--green)}
+.feedback-admin-card{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px;background:var(--card)}
+.feedback-admin-card:last-child{margin-bottom:0}
+.feedback-admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.feedback-message{margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:8px;line-height:1.55}
+.mailbox-list{display:grid;gap:10px}
+.mailbox-item{border:1px solid var(--line);border-radius:10px;padding:13px;background:var(--card)}
+.mailbox-item.resolved{background:var(--bg)}
+.mailbox-item-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.mailbox-meta{font-size:12px;color:var(--muted)}
+.mailbox-message{margin-top:10px;padding:11px 12px;border-radius:9px;line-height:1.6}
+.mailbox-message.student{background:var(--bg);border:1px solid var(--line)}
+.mailbox-message.admin{background:var(--blue2);border:1px solid var(--line)}
+.mailbox-message-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;color:var(--muted)}
+.mailbox-empty-icon{font-size:28px;line-height:1;margin-bottom:8px}
+@media(max-width:720px){.mailbox-item-head,.feedback-admin-head{display:block}.mailbox-item-head .feedback-status,.feedback-admin-head .feedback-status{margin-top:8px}}
 .field{margin-bottom:11px}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.field input,.field textarea,.field select{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}.field textarea{min-height:110px;resize:vertical}
 .table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px 7px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}.table th{color:var(--muted);font-size:12px}
 .sourcebox{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:10px;max-height:220px;overflow:auto}.source-row{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:7px;padding:8px;margin-bottom:6px}.source-row input{margin-top:3px}
@@ -263,7 +281,10 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 .note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
 .ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
 .qbank-builder{max-width:1100px}.qbank-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.qbank-mode-card{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:13px;cursor:pointer}.qbank-mode-card.selected{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}.qbank-mode-card input{margin-top:3px}.qbank-mode-card span{display:flex;flex-direction:column;gap:4px}.qbank-mode-card small{color:var(--muted);line-height:1.45}.qbank-topic-block{padding:13px 0;border-bottom:1px solid var(--line)}.qbank-topic-block:last-child{border-bottom:0}.qbank-topic-title{font-weight:800;color:var(--navy);margin-bottom:8px}.qbank-subsections{display:flex;gap:7px;flex-wrap:wrap}.qbank-subsection{padding:5px 9px;border-radius:999px;background:var(--blue2);color:var(--blue);font-size:12px;font-weight:700}@media(max-width:900px){.qbank-mode-grid{grid-template-columns:1fr}}.question-manager-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 10px}.question-manager-tabs .perf-tab{padding:9px 12px}.question-manager-tabs .perf-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
-.content-manager-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:12px}.compact-select{width:48%;min-width:180px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px}.qbank-structure-item{cursor:default}.qbank-structure-item:hover{border-color:var(--blue)}.qbank-structure-list{max-height:68vh}.question-editor-section{padding:12px;border:1px solid var(--line);background:var(--bg);border-radius:10px;margin-bottom:14px}.question-rich-editor{min-height:260px}.question-stem-live{line-height:1.7}.question-stem-live p{margin:10px 0}.question-stem-live img.question-inline-image{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:10px 0}.question-stem-live table{width:100%;border-collapse:collapse;margin:12px 0}.question-stem-live th,.question-stem-live td{border:1px solid var(--line);padding:8px 10px;text-align:left}.question-stem-live ul,.question-stem-live ol{padding-left:24px}.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
+.content-manager-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:12px}.compact-select{width:48%;min-width:180px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px}.qbank-structure-item{cursor:default}.qbank-structure-item:hover{border-color:var(--blue)}.qbank-structure-list{max-height:68vh}.question-editor-section{padding:12px;border:1px solid var(--line);background:var(--bg);border-radius:10px;margin-bottom:14px}.question-rich-editor{min-height:260px}.question-stem-live{line-height:1.7}.question-stem-live p{margin:10px 0}
+.rich-format-toolbar{display:flex;gap:4px;align-items:center;margin:6px 0 6px;padding:5px 6px;border:1px solid var(--line);border-radius:7px;background:var(--bg);width:max-content}
+.rich-format-btn{width:32px;height:30px;border:1px solid transparent;border-radius:5px;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.rich-format-btn:hover,.rich-format-btn.active{background:var(--blue2);border-color:var(--blue);color:var(--blue)}.question-stem-live img.question-inline-image{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:10px 0}.question-stem-live table{width:100%;border-collapse:collapse;margin:12px 0}.question-stem-live th,.question-stem-live td{border:1px solid var(--line);padding:8px 10px;text-align:left}.question-stem-live ul,.question-stem-live ol{padding-left:24px}.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="gate-locked">
@@ -289,25 +310,60 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
   var form=document.getElementById('accessForm');
   var input=document.getElementById('accessPassword');
   var error=document.getElementById('accessError');
-  function startApp(){
+  var AUTH_STORE='medqnl_auth_v1',authConfig=null,authSession=null,authPanel=null;
+  function readAuthSession(){try{var raw=localStorage.getItem(AUTH_STORE);return raw?JSON.parse(raw):null}catch(e){return null}}
+  function writeAuthSession(s){authSession=s||null;try{if(s)localStorage.setItem(AUTH_STORE,JSON.stringify(s));else localStorage.removeItem(AUTH_STORE)}catch(e){}}
+  async function loadAuthConfig(){
+    return {
+      url:'https://lwgbufaxwfrzqlonhmry.supabase.co',
+      anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'
+    };
+  }
+  function showAuth(message,mode){
+    mode=mode||'login';if(authPanel)authPanel.remove();
+    authPanel=document.createElement('div');authPanel.id='supabaseAuthPanel';
+    authPanel.innerHTML="<div style='position:fixed;inset:0;z-index:99990;background:rgba(9,25,40,.62);display:flex;align-items:center;justify-content:center;padding:20px'>"+
+      "<div style='width:min(430px,100%);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 18px 55px rgba(0,0,0,.22)'>"+
+      "<div style='font-size:24px;font-weight:800;color:var(--navy);margin-bottom:6px'>MedQNL-account</div>"+
+      "<div class='small muted' style='margin-bottom:18px'>Log in om je persoonlijke mailbox, voortgang en feedback op meerdere apparaten te gebruiken.</div>"+
+      "<div class='field' data-auth-name-field><label>Naam</label><input data-auth-name placeholder='Bijvoorbeeld Student'></div>"+
+      "<div class='field'><label>E-mailadres</label><input data-auth-email type='email' autocomplete='email' placeholder='jij@voorbeeld.nl'></div>"+
+      "<div class='field'><label>Wachtwoord</label><input data-auth-password type='password' autocomplete='current-password' minlength='6'></div>"+
+      "<div data-auth-message class='notice' style='display:"+(message?'block':'none')+";margin-bottom:12px'>"+String(message||'')+"</div>"+
+      "<div style='display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap'><button class='btn secondary' data-auth-mode='login' style='display:"+(mode==='signup'?'inline-block':'none')+"'>Ik heb al een account</button><button class='btn secondary' data-auth-mode='signup' style='display:"+(mode==='login'?'inline-block':'none')+"'>Account maken</button><button class='btn primary' data-auth-submit>"+(mode==='signup'?'Account maken':'Inloggen')+"</button></div>"+
+      "</div></div>";
+    document.body.appendChild(authPanel);
+    var nf=authPanel.querySelector("[data-auth-name-field]");if(nf)nf.style.display=mode==='signup'?'block':'none';
+    authPanel.querySelector("[data-auth-submit]").addEventListener('click',function(){submitAuth(mode)});
+    var toggle=authPanel.querySelector("[data-auth-mode='"+(mode==='login'?'signup':'login')+"']");if(toggle)toggle.addEventListener('click',function(){showAuth('',mode==='login'?'signup':'login')});
+    authPanel.querySelector("[data-auth-password]").addEventListener('keydown',function(e){if(e.key==='Enter')submitAuth(mode)});
+  }
+  async function submitAuth(mode){
+    var email=authPanel.querySelector("[data-auth-email]").value.trim(),password=authPanel.querySelector("[data-auth-password]").value||"",name=authPanel.querySelector("[data-auth-name]").value.trim(),msg=authPanel.querySelector("[data-auth-message]");
+    if(!email||!password||(mode==='signup'&&!name)){msg.style.display='block';msg.textContent=mode==='signup'?'Vul naam, e-mailadres en wachtwoord in.':'Vul e-mailadres en wachtwoord in.';return}
+    if(password.length<6){msg.style.display='block';msg.textContent='Het wachtwoord moet minimaal 6 tekens bevatten.';return}
+    try{
+      var path=mode==='signup'?'/auth/v1/signup':'/auth/v1/token?grant_type=password';
+      var body=mode==='signup'?{email:email,password:password,data:{name:name}}:{email:email,password:password};
+      var rr=await fetch(authConfig.url+path,{method:'POST',headers:{'Content-Type':'application/json',apikey:authConfig.anonKey},body:JSON.stringify(body)});
+      var d=await rr.json().catch(function(){return {}});
+      if(!rr.ok){msg.style.display='block';msg.textContent=d.msg||d.error_description||d.error||'Inloggen mislukt.';return}
+      if(mode==='signup'&&!d.access_token){showAuth('Account aangemaakt. Bevestig je e-mailadres als e-mailbevestiging aanstaat en log daarna in.','login');return}
+      writeAuthSession(d);window.__medqnlAuthSession=d;authPanel.remove();authPanel=null;continueBoot();
+    }catch(e){msg.style.display='block';msg.textContent=e&&e.message?e.message:'Verbinding met Supabase mislukt.'}
+  }
+  function logout(){writeAuthSession(null);window.__medqnlAuthSession=null;window.__medqnlAuthRole=null;showAuth('Je bent uitgelogd.','login')}
+  function continueBoot(){
     var tries=0;
-    function bootWhenReady(){
-      tries++;
-      try{
-        if(typeof window.__medqnlBoot==='function'){
-          var app=document.getElementById('app');
-          if(app) app.style.display='block';
-          window.__medqnlBoot();
-          return;
-        }
-      }catch(e){
-        if(error) error.textContent='De website kon niet worden gestart.';
-        return;
-      }
-      if(tries<40)setTimeout(bootWhenReady,25);
-      else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.';
-    }
+    function bootWhenReady(){tries++;try{
+      if(typeof window.__medqnlBoot==='function'){var app=document.getElementById('app');if(app)app.style.display='block';window.__medqnlAuthSession=authSession;window.__medqnlBoot();return}
+    }catch(e){if(error)error.textContent='De website kon niet worden gestart.';return}
+    if(tries<80)setTimeout(bootWhenReady,25);else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.'}
     bootWhenReady();
+  }
+  async function startApp(){
+    try{authConfig=await loadAuthConfig();authSession=readAuthSession();window.__medqnlAuthSession=authSession;if(!authSession)showAuth('', 'login');else continueBoot()}
+    catch(e){if(error)error.textContent=e&&e.message?e.message:'Supabase kon niet worden geladen.'}
   }
   function unlock(){
     try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
@@ -370,6 +426,7 @@ lab:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 0
 note:'<svg class="note-nav-icon" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
 calc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01M8 18h2M12 18h2M16 18h.01"/></svg>',
 feedback:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>',
+mail:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M5 7l7 6 7-6M5 17h4M15 17h4"/></svg>',
 end:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
@@ -968,6 +1025,9 @@ function load(){
       if(typeof x.feedback[fi].response!=="string")x.feedback[fi].response="";
       if(typeof x.feedback[fi].respondedAt!=="string")x.feedback[fi].respondedAt="";
     }
+    for(var fii=0;fii<x.feedback.length;fii++){
+      if(typeof x.feedback[fii].studentName!=="string"||!x.feedback[fii].studentName)x.feedback[fii].studentName=x.name||"Student";
+    }
     if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
     if(!x.questionMarks || typeof x.questionMarks!=="object")x.questionMarks={};
     if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
@@ -1039,6 +1099,72 @@ function ensureQuestionBankSeeds(x){
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function authToken(){return window.__medqnlAuthSession&&window.__medqnlAuthSession.access_token?window.__medqnlAuthSession.access_token:""}
+async function supabaseAuthedFetch(path,options){
+ var opts=Object.assign({},options||{}),headers=Object.assign({},opts.headers||{});
+ headers.apikey=authConfig.anonKey;headers.Accept='application/json';
+ var token=authToken();if(token)headers.Authorization='Bearer '+token;
+ opts.headers=headers;return fetch(authConfig.url+path,opts);
+}
+async function syncFeedbackFromServer(){
+ var token=authToken();if(!token)return;
+ try{
+  var pr=await supabaseAuthedFetch('/rest/v1/profiles?id=eq.'+encodeURIComponent(tokenUserId())+'&select=id,email,name,role&limit=1',{method:'GET'});
+  var pd=await pr.json().catch(function(){return []});
+  if(pr.status===401){logout();return}
+  if(!pr.ok)throw new Error((pd&&pd.message)||'Profiel ophalen mislukt.');
+  var profile=Array.isArray(pd)?pd[0]:null;
+  if(!profile)throw new Error('Profiel ontbreekt in Supabase.');
+  window.__medqnlAuthRole=profile.role||'student';
+  if(profile.name)state.name=profile.name;
+  if(profile.email)state.email=profile.email;
+  var path=profile.role==='admin'?'/rest/v1/feedback?select=*&order=updated_at.desc':'/rest/v1/feedback?user_id=eq.'+encodeURIComponent(tokenUserId())+'&select=*&order=updated_at.desc';
+  var rr=await supabaseAuthedFetch(path,{method:'GET'});
+  var d=await rr.json().catch(function(){return []});
+  if(rr.status===401){logout();return}
+  if(!rr.ok)throw new Error((d&&d.message)||'Feedback ophalen mislukt.');
+  state.feedback=Array.isArray(d)?d.map(function(f){return {id:f.id,date:f.created_at||'',category:f.category||'Overig',message:f.message||'',questionId:f.question_id||'',questionTitle:f.question_title||'',studentName:f.student_name||'Student',studentEmail:f.student_email||'',status:f.status==='resolved'||f.handled===true?'resolved':'open',response:f.response||'',respondedAt:f.responded_at||''}}):[];
+  save();
+ }catch(e){console.warn("Feedback sync:",e&&e.message?e.message:e)}
+}
+function tokenUserId(){
+ var s=window.__medqnlAuthSession||authSession||{},id=s.user&&s.user.id?s.user.id:s.user_id;
+ return id||'';
+}
+async function createFeedbackRemote(fb){
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   user_id:tokenUserId(),
+   student_email:(((window.__medqnlAuthSession||authSession||{}).user||{}).email)||state.email||'',
+   student_name:state.name||'Student',
+   question_id:fb.questionId||'',
+   question_title:fb.questionTitle||'',
+   category:fb.category||'Overig',
+   message:fb.message||'',
+   status:'open',
+   handled:false,
+   response:'',
+   responded_at:null
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback opslaan mislukt.');
+ return Array.isArray(d)?d[0]:d;
+}
+async function updateFeedbackRemote(fb){
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var status=fb.status==='resolved'?'resolved':'open';
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback?id=eq.'+encodeURIComponent(fb.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   status:status,
+   handled:status==='resolved',
+   response:fb.response||'',
+   responded_at:new Date().toISOString()
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback bijwerken mislukt.');
+ return Array.isArray(d)?d[0]:d;
+}
 function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
 function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
@@ -1180,10 +1306,10 @@ function shell(body){
  "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
  "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie · Contentbeheer v2</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
- "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+nav("mailbox","Mailbox",ICONS.mail)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
 function welcomeMessage(){
@@ -1197,15 +1323,57 @@ function welcomeMessage(){
  ];
  return messages[Math.floor(Math.random()*messages.length)];
 }
+function feedbackSortedCopy(){
+ var arr=Array.isArray(state.feedback)?state.feedback.slice():[];
+ arr.sort(function(a,b){
+  var ad=Date.parse(String(a.respondedAt||a.date||""))||0,bd=Date.parse(String(b.respondedAt||b.date||""))||0;
+  return bd-ad;
+ });
+ return arr;
+}
+function renderMailboxPreview(limit){
+ var fbs=feedbackSortedCopy(),i,h="",shown=0;
+ for(i=0;i<fbs.length&&shown<limit;i++){
+  var fb=fbs[i],status=fb.status==="resolved"?"resolved":"open",hasResponse=String(fb.response||"").trim()!=="";
+  h+="<div class='mailbox-item "+status+"'>"+
+    "<div class='mailbox-item-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemene feedback")+"</strong><div class='mailbox-meta'>"+esc(fb.category||"Overig")+" · "+esc(fb.date||"")+"</div></div>"+
+    "<span class='feedback-status "+status+"'>"+(status==="resolved"?"Opgelost":(hasResponse?"Nieuwe reactie":"In behandeling"))+"</span></div>"+
+    (hasResponse?"<div class='mailbox-message admin'><div class='mailbox-message-label'>Reactie van admin</div>"+md(fb.response)+"</div>":"<div class='small muted' style='margin-top:10px'>Nog geen reactie van de admin.</div>")+
+    (status==="resolved"?"<div class='small muted' style='margin-top:8px'>Deze feedback is opgelost en staat nog in je geschiedenis.</div>":"")+
+  "</div>";shown++;
+ }
+ return h||"<div class='empty'><div class='mailbox-empty-icon'>✉</div><strong>Je mailbox is nog leeg.</strong><div class='small' style='margin-top:6px'>Reacties van admins op je feedback verschijnen hier.</div></div>";
+}
+function mailbox(){
+ var fbs=feedbackSortedCopy(),i,h="",openCount=0,responseCount=0;
+ for(i=0;i<fbs.length;i++){
+  var fb=fbs[i],status=fb.status==="resolved"?"resolved":"open",hasResponse=String(fb.response||"").trim()!=="";
+  if(status==="open")openCount++;
+  if(hasResponse)responseCount++;
+  h+="<div class='mailbox-item "+status+"'>"+
+    "<div class='mailbox-item-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemene feedback")+"</strong><div class='mailbox-meta'>"+esc(fb.category||"Overig")+" · "+esc(fb.date||"")+"</div></div>"+
+    "<span class='feedback-status "+status+"'>"+(status==="resolved"?"Opgelost":(hasResponse?"Nieuwe reactie":"In behandeling"))+"</span></div>"+
+    "<div class='mailbox-message student'><div class='mailbox-message-label'>Jouw feedback</div>"+md(fb.message||"")+"</div>"+
+    (hasResponse?"<div class='mailbox-message admin'><div class='mailbox-message-label'>Reactie van admin</div>"+md(fb.response)+"</div>":"<div class='small muted' style='margin-top:10px'>Nog geen reactie van de admin.</div>")+
+    (status==="resolved"?"<div class='small muted' style='margin-top:8px'>Opgelost door de admin. De conversatie blijft bewaard in je mailbox.</div>":"")+
+  "</div>";
+ }
+ return shell("<div class='pagehead'><div><h1>Mailbox</h1><p>Hier vind je reacties van admins op je feedback en de status van meldingen.</p></div></div>"+
+ "<div class='grid g3' style='margin-bottom:15px'><div class='card stat'><div class='label'>Open feedback</div><div class='value'>"+openCount+"</div></div><div class='card stat'><div class='label'>Reacties ontvangen</div><div class='value'>"+responseCount+"</div></div><div class='card stat'><div class='label'>Totaal berichten</div><div class='value'>"+fbs.length+"</div></div></div>"+
+ "<div class='card'><div class='title'>Berichten</div><div class='mailbox-list'>"+h+"</div></div>");
+}
 function dashboard(){
- var s=stats();
+ var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
+ for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
  "<div class='grid g3'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
  "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
- "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
+ "<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:10px'><div class='title' style='margin-bottom:0'>Mailbox</div><button class='btn secondary' data-page='mailbox'>Open mailbox</button></div>"+
+ "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
+ "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
 }
 function qbank(){
  var subsHtml="",i,j,list;
@@ -1596,6 +1764,12 @@ function sourcePicker(ids){
  return "<div class='sourcebox'>"+(h||"<div class='small muted'>Nog geen bronnen.</div>")+"</div>";
 }
 
+function richFormatToolbar(editorId){
+ return "<div class='rich-format-toolbar' data-rich-toolbar='"+esc(editorId)+"'>"+
+   "<button type='button' class='rich-format-btn' data-rich-format='bold' data-rich-editor='"+esc(editorId)+"' title='Vet'><strong>B</strong></button>"+
+   "<button type='button' class='rich-format-btn' data-rich-format='italic' data-rich-editor='"+esc(editorId)+"' title='Cursief'><em>I</em></button>"+
+ "</div>";
+}
 function questionForm(q){
  if(!q)q={id:"",title:"",subject:QBANK_SUBJECTS[0],topic:"",difficulty:"Gemiddeld",caseText:"",stem:"",stemRichHtml:"",inlineImages:{},inlineImageWidths:{},type:"mcq",points:1,modelAnswer:"",rubric:[],options:["","","",""],correct:0,explanation:"",objective:"",sourceIds:[],image:"",source:"",modules:{qbank:true,ivtg:false},qbankSubsection:qbankSubsections(QBANK_SUBJECTS[0])[0]||""};
  if(!q.inlineImages||typeof q.inlineImages!=="object")q.inlineImages={};if(!q.inlineImageWidths||typeof q.inlineImageWidths!=="object")q.inlineImageWidths={};
@@ -1607,7 +1781,7 @@ function questionForm(q){
  var inlineJson=JSON.stringify(q.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(q.inlineImageWidths||{}).replace(/</g,"\\u003c"),stemHtml=questionStemEditorHtml(q),newTopicStyle=q.topic&&qTopics.indexOf(q.topic)<0?"block":"none";
  var mcqHtml="<div class='grid g2' data-question-mcq style='display:"+(qType==="open"?"none":"grid")+"'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"'></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"'></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"'></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"'></div><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div></div>";
  var openHtml="<div data-question-open style='display:"+(qType==="open"?"block":"none")+"'><div class='field'><label>Modelantwoord</label><textarea name='modelAnswer' style='min-height:150px'>"+esc(q.modelAnswer||"")+"</textarea></div><div class='field'><label>Beoordelingscriteria (één criterium per regel)</label><textarea name='rubric' style='min-height:140px'>"+esc((Array.isArray(q.rubric)?q.rubric:[]).join("\n"))+"</textarea></div></div>";
- return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp, hoofdstuk en subonderwerp gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Subonderwerp</label><select name='qbankTopic' id='questionQbankTopic'>"+topicHtml+"</select><input name='qbankNewTopic' id='questionQbankNewTopic' value='"+esc((q.topic&&qTopics.indexOf(q.topic)<0)?q.topic:"")+"' placeholder='Nieuw subonderwerp' style='display:"+newTopicStyle+";margin-top:7px'></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'></div><div class='grid g2'><div class='field'><label>Subonderwerp</label><input name='topic' id='questionIvtgTopic' value='"+esc(ivtgChecked?q.topic:"")+"' placeholder='Vrij subonderwerp'></div><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'><div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp, hoofdstuk en subonderwerp gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Subonderwerp</label><select name='qbankTopic' id='questionQbankTopic'>"+topicHtml+"</select><input name='qbankNewTopic' id='questionQbankNewTopic' value='"+esc((q.topic&&qTopics.indexOf(q.topic)<0)?q.topic:"")+"' placeholder='Nieuw subonderwerp' style='display:"+newTopicStyle+";margin-top:7px'></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'></div><div class='grid g2'><div class='field'><label>Subonderwerp</label><input name='topic' id='questionIvtgTopic' value='"+esc(ivtgChecked?q.topic:"")+"' placeholder='Vrij subonderwerp'></div><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'>"+richFormatToolbar("questionStemEditor")+"<div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label>"+richFormatToolbar("questionExplanationEditor")+"<textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
  if(!a)a={id:"",library:"ivtg",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}};
@@ -1615,7 +1789,7 @@ function articleForm(a){
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Hoofdstuk</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Sectie opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Hoofdstuk</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea>"+richFormatToolbar("articleEditor")+"<div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Sectie opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam hoofdstuk</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Hoofdstuk opslaan</button></form>"}
@@ -1633,7 +1807,15 @@ function saveDragOrder(){
  var al=document.getElementById('articleList');if(al){var aes=al.querySelectorAll('[data-dragart]');for(var j=0;j<aes.length;j++){var art=byId(state.articles,aes[j].getAttribute('data-dragart'));if(art)art.order=j+1;}}
  state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
 }
-function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
+function removeQuestion(id){
+ if(!confirm('Vraag verwijderen?'))return;
+ var list=document.getElementById("adminQuestionList"),listTop=list?list.scrollTop:0,scrollY=window.scrollY||0;
+ removeBy(state.questions,id);delete state.answers[id];save();render();
+ requestAnimationFrame(function(){
+   var next=document.getElementById("adminQuestionList");if(next)next.scrollTop=listTop;
+   window.scrollTo(0,scrollY);
+ });
+}
 function removeSection(id){
  var section=byId(state.sections,id);
  if(!section)return;
@@ -1653,14 +1835,21 @@ function admin(){
  var secs="",arts="",feedback="",i,s,a;
  for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='small muted'>"+(s.library==="medical"?"Medisch":"iVTG")+"</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
- var fbs=state.feedback||[];
+ var fbs=state.feedback||[],showResolved=!!(state.ui&&state.ui.showResolvedFeedback),resolvedCount=0,openCount=0;
+ for(i=0;i<fbs.length;i++){
+  var fb0=fbs[i];if(fb0.status==="resolved")resolvedCount++;else openCount++;
+ }
+ feedback="<div class='notice' style='margin-bottom:10px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap'><span>"+openCount+" openstaande feedbackmelding(en)"+(resolvedCount?" · "+resolvedCount+" opgelost":"")+"</span><button class='btn secondary' data-feedback-toggle-resolved>"+(showResolved?"Toon alleen open":"Toon opgeloste feedback")+"</button></div>";
+ var renderedFeedback=0;
  for(i=0;i<fbs.length;i++){
   var fb=fbs[i],fbStatus=fb.status==="resolved"?"resolved":"open",fid=fb.id||"";
+  if(fbStatus==="resolved"&&!showResolved)continue;
+  renderedFeedback++;
   feedback+="<div class='feedback-admin-card' data-feedback-id='"+esc(fid)+"'>"+
-    "<div class='feedback-admin-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span></div>"+
+    "<div class='feedback-admin-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span><div class='small muted'>Student: "+esc(fb.studentName||state.name||"Student")+" · "+esc(fb.date||"")+"</div></div>"+
     "<span class='feedback-status "+fbStatus+"'>"+(fbStatus==="resolved"?"Opgelost":"Open")+"</span></div>"+
-    "<div class='small muted'>"+esc(fb.date||"")+"</div>"+
-    "<div class='feedback-message'>"+esc(fb.message||"")+"</div>"+
+    "<div class='feedback-message'><div class='mailbox-message-label'>Feedback van student</div>"+md(fb.message||"")+"</div>"+
+    (String(fb.response||"").trim()?"<div class='feedback-message' style='background:var(--blue2)'><div class='mailbox-message-label'>Huidige reactie</div>"+md(fb.response)+"</div>":"")+
     "<div class='field' style='margin-top:10px'><label>Reactie</label><textarea data-feedback-response='"+esc(fid)+"' style='min-height:90px' placeholder='Schrijf een reactie aan de student...'>"+esc(fb.response||"")+"</textarea></div>"+
     "<div style='display:flex;gap:8px;align-items:center;flex-wrap:wrap'>"+
       "<select data-feedback-status='"+esc(fid)+"'><option value='open'"+(fbStatus==="open"?" selected":"")+">Open</option><option value='resolved'"+(fbStatus==="resolved"?" selected":"")+">Opgelost</option></select>"+
@@ -1668,6 +1857,8 @@ function admin(){
       (fb.respondedAt?"<span class='small muted'>Laatst bijgewerkt: "+esc(fb.respondedAt)+"</span>":"")+
     "</div></div>";
  }
+ if(!renderedFeedback)feedback+="<div class='empty'>Geen openstaande feedback. Opgeloste feedback blijft bewaard in de geschiedenis.</div>";
+
  var qstructSubject=state.ui.adminQbankStructureSubject&&isQbankSubject(state.ui.adminQbankStructureSubject)?state.ui.adminQbankStructureSubject:QBANK_SUBJECTS[0],qstructChapters=qbankSubsections(qstructSubject),qstructOptions="";
  for(i=0;i<QBANK_SUBJECTS.length;i++)qstructOptions+="<option value='"+esc(QBANK_SUBJECTS[i])+"'"+(qstructSubject===QBANK_SUBJECTS[i]?" selected":"")+">"+esc(QBANK_SUBJECTS[i])+"</option>";
  var qstructItems="";for(i=0;i<qstructChapters.length;i++)qstructItems+="<div class='manager-item qbank-structure-item'><span class='small muted'>"+String(i+1).padStart(2,"0")+"</span><strong>"+esc(qstructChapters[i])+"</strong></div>";
@@ -1931,6 +2122,26 @@ document.addEventListener("keydown",function(ev){
  if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove()}
 });
 document.addEventListener("selectionchange",function(){var ed=document.getElementById("questionStemEditor"),sel=window.getSelection();if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange()});
+function applyRichFormat(editorId,cmd){
+ var ed=document.getElementById(editorId),sel=window.getSelection(),range=ed&&ed._savedRange?ed._savedRange:null;
+ if(!ed)return;
+ ed.focus();
+ if(range&&ed.contains(range.commonAncestorContainer)){
+   try{sel.removeAllRanges();sel.addRange(range)}catch(e){}
+ }
+ try{document.execCommand(cmd,false,null)}catch(e){}
+ var nextSel=window.getSelection();if(nextSel&&nextSel.rangeCount)ed._savedRange=nextSel.getRangeAt(0).cloneRange();
+ ed.dispatchEvent(new Event("input",{bubbles:true}));
+}
+document.addEventListener("mousedown",function(ev){
+ var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
+ if(btn)ev.preventDefault();
+});
+document.addEventListener("click",function(ev){
+ var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
+ if(!btn)return;
+ applyRichFormat(btn.getAttribute("data-rich-editor"),btn.getAttribute("data-rich-format"));
+});
 document.addEventListener("paste",async function(ev){
  var qstem=ev.target&&ev.target.closest?ev.target.closest("#questionStemEditor"):null;if(!qstem)return;
  var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);if(!html&&!images.length)return;ev.preventDefault();
@@ -2032,10 +2243,16 @@ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"St
   var resp=document.querySelector("[data-feedback-response='"+fid+"']"),st=document.querySelector("[data-feedback-status='"+fid+"']");
   fbi.response=resp?String(resp.value||"").trim():"";
   fbi.status=st&&st.value==="resolved"?"resolved":"open";
-  fbi.respondedAt=new Date().toLocaleString("nl-NL");
-  save();render();return
+  fbi.respondedAt=new Date().toISOString();
+  fbi.studentName=fbi.studentName||state.name||"Student";
+  (async function(){try{var saved=await updateFeedbackRemote(fbi);if(saved){fbi.status=saved.status||fbi.status;fbi.response=saved.response||fbi.response;fbi.respondedAt=saved.responded_at||fbi.respondedAt}save();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden bijgewerkt.")}})();return
 }
-if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
+if(t.id==="sendFeedback"){
+ var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}
+ var fq=session?session.questions[session.index]:null;
+ var pending={id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:"",studentName:state.name||"Student",status:"open",response:"",respondedAt:""};
+ (async function(){try{var saved=await createFeedbackRemote(pending);if(saved){pending.id=saved.id||pending.id;pending.date=saved.created_at||pending.date;pending.status=saved.status||"open"}state.feedback.push(pending);save();closeModal();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden opgeslagen.")}})();return
+}
  el=t.closest?t.closest("[data-mark-question]"):null;if(el){toggleQuestionMark(el.getAttribute("data-mark-question"));return}
  if(t.hasAttribute("data-mark-action")){showMarkbar();return}
  if(t.hasAttribute("data-calc")){
@@ -2066,8 +2283,11 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
+ el=t.closest?t.closest("[data-auth-logout]"):null;if(el){logout();return}
+ el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
+ el=t.closest?t.closest("[data-remove-current-question]"):null;if(el){var qform=el.closest("#questionform"),qid=qform?qform.getAttribute("data-id"):"";if(qid)removeQuestion(qid);return}
  el=t.closest?t.closest("[data-edita]"):null;if(el){editArticle(el.getAttribute("data-edita"));return}
  el=t.closest?t.closest("[data-edits]"):null;if(el){editSource(el.getAttribute("data-edits"));return}
 });
@@ -2194,8 +2414,11 @@ else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='s
 });
 
 document.addEventListener("selectionchange",function(){
- var ed=document.getElementById("articleEditor"),sel=window.getSelection();
- if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+ var sel=window.getSelection();if(!sel||!sel.rangeCount)return;
+ var editors=document.querySelectorAll(".article-rich-editor"),i,ed;
+ for(i=0;i<editors.length;i++){
+  ed=editors[i];if(ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+ }
 });document.addEventListener("paste",async function(ev){
  var qex=ev.target&&ev.target.closest?ev.target.closest("#questionExplanationEditor"):null;
  if(qex){
@@ -2264,9 +2487,10 @@ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null
 
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
+ if(page==="admin"&&window.__medqnlAuthRole!=="admin")page="dashboard";
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
- var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
+ var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
 function showAppError(err){
@@ -2275,8 +2499,9 @@ function showAppError(err){
   var msg=err&&err.message?err.message:String(err||"Onbekende fout");
   root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
 }
-function bootMedQNL(){
+async function bootMedQNL(){
   try{
+    await syncFeedbackFromServer();
     render();
   }catch(err){
     try{
@@ -2292,7 +2517,7 @@ window.__medqnlBoot=bootMedQNL;
 
 var __accessReady=false;
 try{__accessReady=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
-if(__accessReady)bootMedQNL();
+if(__accessReady)startApp();
 })();
 </script>
 </body>
