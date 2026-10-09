@@ -849,6 +849,8 @@ function load(){
     if(!x.name)x.name="Student";
     if(!x.benchmark || typeof x.benchmark!=="object")x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
     if(!x.ui || typeof x.ui!=="object")x.ui={};
+    if(!x.ai || typeof x.ai!=="object")x.ai={endpoint:"/api/grade-open"};
+    if(typeof x.ai.endpoint!=="string")x.ai.endpoint="/api/grade-open";
     migrateABCD(x);
     if(ensureQuestionBankSeeds(x))localStorage.setItem(KEY,JSON.stringify(x));
     ensureMedicalLibrary(x);
@@ -858,7 +860,7 @@ function load(){
     return x;
   }
  }catch(e){}
- var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},questionMarks:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0}};
+ var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},questionMarks:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0},ai:{endpoint:"/api/grade-open"}};
  migrateABCD(fresh);
  fresh.questionSeedVersion=QUESTION_SEED_VERSION;
  ensureMedicalLibrary(fresh);
@@ -879,6 +881,10 @@ function migrateABCD(x){
    if(typeof x.questions[i].modules.ivtg!=="boolean")x.questions[i].modules.ivtg=true;
    if(!x.questions[i].inlineImages||typeof x.questions[i].inlineImages!=="object")x.questions[i].inlineImages={};
    if(!x.questions[i].inlineImageWidths||typeof x.questions[i].inlineImageWidths!=="object")x.questions[i].inlineImageWidths={};
+   if(x.questions[i].type!=="open")x.questions[i].type="mcq";
+   if(!x.questions[i].points||Number(x.questions[i].points)<=0)x.questions[i].points=1;
+   if(!Array.isArray(x.questions[i].rubric))x.questions[i].rubric=[];
+   if(typeof x.questions[i].modelAnswer!=="string")x.questions[i].modelAnswer="";
    if(!x.questions[i].mode)x.questions[i].mode=x.questions[i].caseText?"clinical":"knowledge";
    if(isQbankSubject(x.questions[i].subject)){
      x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false;
