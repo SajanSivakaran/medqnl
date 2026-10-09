@@ -841,7 +841,7 @@ function migrateABCD(x){
    if(typeof x.questions[i].modules.qbank!=="boolean")x.questions[i].modules.qbank=true;
    if(typeof x.questions[i].modules.ivtg!=="boolean")x.questions[i].modules.ivtg=true;
    if(isQbankSubject(x.questions[i].subject)){x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false}
-   if(x.questions[i].id==="q9"||x.questions[i].id==="q10"){x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false}
+   if(x.questions[i].id==="q9"||x.questions[i].id==="q10"){x.questions[i].subject="Infectie, Immunologie & Bloed";x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false}
  }
 }
 var QUESTION_SEED_VERSION=1;
@@ -1263,7 +1263,7 @@ function admin(){
  var fbs=state.feedback||[];for(i=0;i<fbs.length;i++){var fb=fbs[i];feedback+="<div class='row'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span><div class='small muted'>"+esc(fb.message||"")+"</div><div class='small muted'>"+esc(fb.date||"")+"</div></div></div>"}
  var sectionsPanel="<div class='content-manager-panel' "+(activeTab==="sections"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Secties <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div></div>";
  var chaptersPanel="<div class='content-manager-panel' "+(activeTab==="chapters"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Hoofdstukken <span class='small muted'>Sectie: "+esc(sectionTitle(secId))+"</span><button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen hoofdstukken in deze sectie.</div>")+"</div></div></div>";
- var questionModule=state.ui.adminQuestionModule||"qbank";
+ var questionModule=state.ui.adminQuestionModule==="ivtg"?"ivtg":"qbank";
  var questionsPanel="<div class='content-manager-panel' "+(activeTab==="questions"?"":"hidden")+"><div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><div style='display:flex;gap:6px;align-items:center'><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div>"+
  "<div class='question-manager-tabs'><button class='perf-tab "+(questionModule==="qbank"?"active":"")+"' data-question-module='qbank'>Vragenbank</button><button class='perf-tab "+(questionModule==="ivtg"?"active":"")+"' data-question-module='ivtg'>iVTG Trainer</button></div>"+
  "<div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, onderwerp, diagnose...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle onderwerpen</option></select></div>"+
