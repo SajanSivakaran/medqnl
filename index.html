@@ -1484,7 +1484,8 @@ document.addEventListener("click",async function(ev){
     var holder=document.createElement("div");holder.innerHTML=safe;
     var ims=Array.from(holder.querySelectorAll("img")),assigned=0,src,k;
     for(k=0;k<ims.length;k++){src=ims[k].getAttribute("src")||"";if(!/^(https?:|data:image\/)/i.test(src)&&images[assigned])ims[k].setAttribute("src",images[assigned++])}
-    safe=holder.innerHTML;for(k=assigned;k<images.length;k++)safe+="<p><img src='"+esc(images[k])+"' alt='Afbeelding'></p>";
+    safe=holder.innerHTML;
+    if(!ims.length||assigned>0)for(k=assigned;k<images.length;k++)safe+="<p><img src='"+esc(images[k])+"' alt='Afbeelding'></p>";
    }
    if(!safe&&txt)safe="<p>"+esc(txt).replace(/\n/g,"<br>")+"</p>";
    var sel=window.getSelection(),range=(sel&&sel.rangeCount&&ed.contains(sel.anchorNode))?sel.getRangeAt(0):ed._savedRange,box=document.createElement("div");box.innerHTML=safe;
@@ -1660,7 +1661,8 @@ document.addEventListener("selectionchange",function(){
   var holder=document.createElement("div");holder.innerHTML=safe;
   var ims=Array.from(holder.querySelectorAll("img")),assigned=0,i,src;
   for(i=0;i<ims.length;i++){src=ims[i].getAttribute("src")||"";if(!/^(https?:|data:image\/)/i.test(src)&&images[assigned])ims[i].setAttribute("src",images[assigned++])}
-  safe=holder.innerHTML;for(i=assigned;i<images.length;i++)safe+="<p><img src='"+esc(images[i])+"' alt='Afbeelding'></p>";
+  safe=holder.innerHTML;
+  if(!ims.length||assigned>0)for(i=assigned;i<images.length;i++)safe+="<p><img src='"+esc(images[i])+"' alt='Afbeelding'></p>";
  }
  if(!safe&&plain)safe="<p>"+esc(plain).replace(/\n/g,"<br>")+"</p>";
  var sel=window.getSelection(),range=(sel&&sel.rangeCount&&ed.contains(sel.anchorNode))?sel.getRangeAt(0):ed._savedRange,box=document.createElement("div");box.innerHTML=safe;
