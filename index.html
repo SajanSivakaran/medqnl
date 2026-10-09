@@ -1452,7 +1452,15 @@ function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongeca
 function medicalLibrary(){
  return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>De medische bibliotheek wordt later opgesteld.</p></div></div><div class='card'><h2>Later beschikbaar</h2><p>De inhoud van de Medische Bibliotheek wordt later opgesteld. Deze pagina is voorlopig gereserveerd voor de toekomstige medische leeromgeving.</p></div>");
 }
-function result(){var n=0,i;if(session)stopSessionTimer();for(i=0;i<session.questions.length;i++)if(typeof session.answers[session.questions[i].id]!=="undefined")n++;state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score,elapsedSeconds:Math.max(0,Number(session.elapsedSeconds)||0)});save();return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g3'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+session.score+"</div></div></div>")}
+function result(){
+ var n=0,i;
+ if(session)stopSessionTimer();
+ recalcSessionTotals();
+ for(i=0;i<session.questions.length;i++)if(questionAnswered(session.questions[i]))n++;
+ state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score,pointsEarned:Math.max(0,Number(session.pointsEarned)||0),maxPoints:Math.max(0,Number(session.maxPoints)||0),elapsedSeconds:Math.max(0,Number(session.elapsedSeconds)||0)});
+ save();
+ return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div><div class='grid g4'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Volledig correct</div><div class='value'>"+session.score+"</div></div><div class='card stat'><div class='label'>Punten</div><div class='value'>"+Math.round((Number(session.pointsEarned)||0)*100)/100+" / "+Math.round((Number(session.maxPoints)||0)*100)/100+"</div></div><div class='card stat'><div class='label'>Tijd</div><div class='value' style='font-size:22px'>"+formatTime(currentSessionSeconds())+"</div></div></div>");
+}
 
 function sourcePicker(ids){
  var h="",i,s;
@@ -1686,7 +1694,14 @@ function notesPage(){
 }
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
- return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:640px'><div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div><div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div><button class='btn primary' id='saveName' style='margin-top:12px'>Opslaan</button></div>");
+ var ai=state.ai||{endpoint:"/api/grade-open"};
+ return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen en AI-nakijken.</p></div></div><div class='card' style='max-width:720px'>"+
+ "<div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div>"+
+ "<div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div>"+
+ "<div style='margin-top:18px;padding-top:16px;border-top:1px solid var(--line)'><div class='title'>AI-nakijken voor open vragen</div><div class='notice' style='margin-bottom:12px'>AI gebruikt alleen de ingestelde endpoint. Bewaar de OpenAI-sleutel uitsluitend server-side en zet geen sleutel in deze site of repository.</div>"+
+ "<div class='field'><label>AI-endpoint</label><input id='aiEndpointInput' value='"+esc(ai.endpoint||"/api/grade-open")+"' placeholder='/api/grade-open'></div>"+
+ "<button class='btn primary' id='saveAI'>AI-instellingen opslaan</button></div>"+
+ "<button class='btn primary' id='saveName' style='margin-top:16px'>Opslaan</button></div>");
 }
 function showModal(type){
  var root=document.createElement("div"),html="";
@@ -1760,6 +1775,7 @@ document.addEventListener("keydown",function(ev){
  }
 });
 document.addEventListener("click",function(ev){
+ if(ev.target&&ev.target.id==="saveAI"){if(!state.ai)state.ai={endpoint:"/api/grade-open"};state.ai.endpoint=String((document.getElementById("aiEndpointInput")||{}).value||"").trim()||"/api/grade-open";save();alert("AI-instellingen opgeslagen.");return;}
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
  if(t.closest&&t.closest("[data-add-question-inline-image]")){var inp=document.getElementById("questionInlineImageFile"),ed=document.getElementById("questionStemEditor");if(inp){if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
  if(qimg){var form=qimg.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}var id=qimg.getAttribute("data-inline-editor-id"),bar=document.getElementById("questionInlineImageSizeBar"),slider=document.getElementById("questionInlineImageSize"),label=document.getElementById("questionInlineImageSizeValue"),w=parseInt(widths[id],10)||180;if(bar&&slider){slider.value=w;slider.setAttribute("data-image-id",id);if(label)label.textContent=w+" px";bar.style.display="flex"}}
@@ -1851,7 +1867,8 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
  if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();stopSessionTimer();page="result";render()}else{session.index++;render()}return}
  el=t.closest?t.closest("[data-q]"):null;if(el&&session){session.index=parseInt(el.getAttribute("data-q"),10);render();return}
- el=t.closest?t.closest("[data-a]"):null;if(el&&session){var q=session.questions[session.index],pick=parseInt(el.getAttribute("data-a"),10),ok=pick===q.correct;session.answers[q.id]=pick;if(ok)session.score++;state.answers[q.id]={correct:ok,when:Date.now(),selected:pick};save();render();return}
+ el=t.closest?t.closest("[data-a]"):null;if(el&&session){var q=session.questions[session.index],pick=parseInt(el.getAttribute("data-a"),10),ok=pick===q.correct;session.answers[q.id]=pick;state.answers[q.id]={correct:ok,when:Date.now(),selected:pick,points:ok?(Number(q.points)||1):0};recalcSessionTotals();save();render();return}
+ el=t.closest?t.closest("[data-grade-open]"):null;if(el&&session){gradeOpenAnswer(el.getAttribute("data-grade-open"));return}
  el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();stopSessionTimer();page="result";render()}return}
  el=t.closest?t.closest("[data-print]"):null;if(el){window.print();return}
  el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){stopChapterTimer();stopSessionTimer();page="ivtg-library";render();return}
@@ -1928,6 +1945,7 @@ document.addEventListener("input",function(ev){
  if(ev.target.id==="noteSearch"){var q3=ev.target.value.toLowerCase(),b3=document.querySelectorAll("#noteList button[data-note-key]"),k;for(k=0;k<b3.length;k++)b3[k].style.display=b3[k].textContent.toLowerCase().indexOf(q3)>=0?"block":"none"}
  if(ev.target.id==="nbEditor")updateNotebookStats()
  if(ev.target.id==="questionStemEditor"){var qf=ev.target.closest("#questionform");if(qf)replaceQuestionImageTokens(qf)}
+ if(ev.target.hasAttribute("data-open-answer")&&session){var oq=byId(session.questions,ev.target.getAttribute("data-open-answer"));if(oq&&oq.type==="open"){var oa=session.answers[oq.id]||{graded:false};if(!oa.graded)oa.text=ev.target.value;session.answers[oq.id]=oa;}}
  if(ev.target.id==="questionExplanationEditor"){var qstore=document.getElementById("questionExplanationStore");if(qstore)qstore.value=richHtmlToText(applyStarBoldHtml(ev.target.innerHTML))}
  if(ev.target.hasAttribute("data-sec-title")){var s=byId(state.sections,ev.target.getAttribute("data-sec-title"));if(s){s.title=ev.target.value;save()}}
  if(ev.target.hasAttribute("data-art-title")){var a=byId(state.articles,ev.target.getAttribute("data-art-title"));if(a){a.title=ev.target.value;save()}}
@@ -1962,6 +1980,7 @@ document.addEventListener("change",function(ev){
  if(ev.target.id==="adminQuestionSubsection"||ev.target.id==="adminQuestionTopic"){renderAdminQuestions();return}
 });
 document.addEventListener("change",function(ev){
+ if(ev.target.name==="questionType"){var qf=ev.target.closest("#questionform");if(qf){var open=ev.target.value==="open",mc=qf.querySelector("[data-question-mcq]"),op=qf.querySelector("[data-question-open]");if(mc)mc.style.display=open?"none":"grid";if(op)op.style.display=open?"block":"none";}return;}
  if(ev.target.id==="qbankSubject"){updateQbankSubsections();return}
  if(ev.target.name==="qbankMode"){
   var cards=document.querySelectorAll(".qbank-mode-card"),ci;
