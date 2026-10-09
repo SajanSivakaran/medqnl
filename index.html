@@ -359,6 +359,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   });
 })();
 </script>
+<div id='questionRichSelectionToolbar' class='question-rich-selection-toolbar' aria-label='Tekstopmaak'><button type='button' data-question-rich-format='bold' title='Dikgedrukt'><strong>B</strong></button><button type='button' data-question-rich-format='italic' title='Cursief'><em>I</em></button></div>
 <div id="markbar" class="floating-mark">
 <button class="mark-dot yellow" data-mark-color="yellow" title="Geel"></button>
 <button class="mark-dot green" data-mark-color="green" title="Groen"></button>
@@ -1755,7 +1756,7 @@ function questionForm(q){
  var inlineJson=JSON.stringify(q.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(q.inlineImageWidths||{}).replace(/</g,"\\u003c"),stemHtml=questionStemEditorHtml(q),newTopicStyle=q.topic&&qTopics.indexOf(q.topic)<0?"block":"none";
  var mcqHtml="<div class='grid g2' data-question-mcq style='display:"+(qType==="open"?"none":"grid")+"'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"'></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"'></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"'></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"'></div><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div></div>";
  var openHtml="<div data-question-open style='display:"+(qType==="open"?"block":"none")+"'><div class='field'><label>Modelantwoord (verplicht voor AI-nakijken)</label><textarea name='modelAnswer' style='min-height:150px'>"+esc(q.modelAnswer||"")+"</textarea></div><div class='field'><label>Beoordelingscriteria (één criterium per regel)</label><textarea name='rubric' style='min-height:140px'>"+esc((Array.isArray(q.rubric)?q.rubric:[]).join("\n"))+"</textarea></div></div>";
- return "<div id='questionRichSelectionToolbar' class='question-rich-selection-toolbar' aria-label='Tekstopmaak'><button type='button' data-question-rich-format='bold' title='Dikgedrukt'><strong>B</strong></button><button type='button' data-question-rich-format='italic' title='Cursief'><em>I</em></button></div><form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp en hoofdstuk gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'><div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp en hoofdstuk gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'><div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
  if(!a)a={id:"",library:"ivtg",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}};
@@ -2083,28 +2084,33 @@ document.addEventListener("keydown",function(ev){
  if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove()}
 });
 function hideQuestionRichToolbar(){
- var bar=document.getElementById("questionRichSelectionToolbar");if(bar)bar.style.display="none";
+ var bar=document.getElementById("questionRichSelectionToolbar");
+ if(bar)bar.style.display="none";
  window.__questionRichSelection=null;
 }
 function showQuestionRichToolbar(){
  var bar=document.getElementById("questionRichSelectionToolbar"),sel=window.getSelection();
- if(!bar||!sel||!sel.rangeCount||sel.isCollapsed){hideQuestionRichToolbar();return}
- var editors=["questionStemEditor","questionExplanationEditor"],i,ed,range=sel.getRangeAt(0);
- for(i=0;i<editors.length;i++){
-   ed=document.getElementById(editors[i]);
-   if(ed&&ed.contains(sel.anchorNode)&&ed.contains(sel.focusNode)){
-     ed._savedRange=range.cloneRange();
-     window.__questionRichSelection={editorId:editors[i],range:range.cloneRange()};
-     var rect=range.getBoundingClientRect(),left=rect.left+(rect.width/2)-42,top=rect.top-46;
-     if(top<8)top=Math.min(window.innerHeight-48,rect.bottom+8);
-     left=Math.max(8,Math.min(window.innerWidth-92,left));
-     bar.style.left=left+"px";bar.style.top=top+"px";bar.style.display="flex";
-     return;
-   }
+ if(!bar||!sel||!sel.rangeCount)return;
+ var range=sel.getRangeAt(0),node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node;
+ var ed=el&&el.closest?el.closest(".article-rich-editor,.note-editor"):null;
+ if(!ed||!ed.contains(sel.focusNode)){
+   if(bar.contains(document.activeElement))return;
+   hideQuestionRichToolbar();return;
  }
- hideQuestionRichToolbar();
+ if(sel.isCollapsed){
+   if(bar.style.display!=="none")return;
+   hideQuestionRichToolbar();return;
+ }
+ ed._savedRange=range.cloneRange();
+ window.__questionRichSelection={editorId:ed.id,range:range.cloneRange()};
+ var rect=range.getBoundingClientRect(),left=rect.left+(rect.width/2)-42,top=rect.top-46;
+ if(top<8)top=Math.min(window.innerHeight-48,rect.bottom+8);
+ left=Math.max(8,Math.min(window.innerWidth-92,left));
+ bar.style.left=left+"px";
+ bar.style.top=Math.max(8,top)+"px";
+ bar.style.display="flex";
 }
-document.addEventListener("selectionchange",showQuestionRichToolbar);
+document.addEventListener("selectionchange",function(){window.requestAnimationFrame(function(){showQuestionRichToolbar()})});
 function applyRichFormat(editorId,cmd){
  var ed=document.getElementById(editorId),sel=window.getSelection(),range=ed&&ed._savedRange?ed._savedRange:null;
  if(!ed)return;
@@ -2113,11 +2119,19 @@ function applyRichFormat(editorId,cmd){
    try{sel.removeAllRanges();sel.addRange(range)}catch(e){}
  }
  try{document.execCommand(cmd,false,null)}catch(e){}
- var nextSel=window.getSelection();if(nextSel&&nextSel.rangeCount)ed._savedRange=nextSel.getRangeAt(0).cloneRange();
+ var nextSel=window.getSelection();if(nextSel&&nextSel.rangeCount){
+   ed._savedRange=nextSel.getRangeAt(0).cloneRange();
+   window.__questionRichSelection={editorId:ed.id,range:ed._savedRange.cloneRange()};
+ }
  ed.dispatchEvent(new Event("input",{bubbles:true}));
 }
 document.addEventListener("mousedown",function(ev){
- var btn=ev.target.closest?ev.target.closest("[data-rich-format],[data-question-rich-format]"):null;
+ var qbtn=ev.target.closest?ev.target.closest("[data-question-rich-format]"):null;
+ if(qbtn){
+   ev.preventDefault();
+   return;
+ }
+ var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
  if(btn)ev.preventDefault();
 });
 document.addEventListener("click",function(ev){
@@ -2125,19 +2139,20 @@ document.addEventListener("click",function(ev){
  if(qbtn){
    var stored=window.__questionRichSelection;
    if(stored&&stored.editorId)applyRichFormat(stored.editorId,qbtn.getAttribute("data-question-rich-format"));
-   hideQuestionRichToolbar();
    return;
  }
  var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
  if(!btn)return;
  applyRichFormat(btn.getAttribute("data-rich-editor"),btn.getAttribute("data-rich-format"));
 });
-document.addEventListener("click",function(ev){
+document.addEventListener("mousedown",function(ev){
  var bar=document.getElementById("questionRichSelectionToolbar");
- if(bar&&bar.style.display!=="none"&&!(ev.target.closest&&ev.target.closest("#questionRichSelectionToolbar")))hideQuestionRichToolbar();
+ if(!bar||bar.style.display==="none")return;
+ if(bar.contains(ev.target))return;
+ var ed=ev.target&&ev.target.closest?ev.target.closest(".article-rich-editor,.note-editor"):null;
+ if(!ed)hideQuestionRichToolbar();
 });
 window.addEventListener("resize",hideQuestionRichToolbar);
-window.addEventListener("scroll",hideQuestionRichToolbar,true);
 document.addEventListener("paste",async function(ev){
  var qstem=ev.target&&ev.target.closest?ev.target.closest("#questionStemEditor"):null;if(!qstem)return;
  var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);if(!html&&!images.length)return;ev.preventDefault();
