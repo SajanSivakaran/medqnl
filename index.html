@@ -21,7 +21,7 @@ html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;backgr
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:var(--blue)}
-.top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}
+.top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}.top-left{display:flex;align-items:center;gap:10px}
 .logo{font-size:22px;font-weight:800;color:var(--navy)}.logo span{color:var(--blue)}
 .top-actions{display:flex;gap:8px;align-items:center}
 .badge{font-size:12px;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--muted)}
@@ -57,7 +57,7 @@ a{color:var(--blue)}
 .lib-section-toggle:hover{background:var(--blue2)!important}
 .lib-section-items{display:block}
 .lib-section-chevron{font-size:16px;color:var(--muted);margin-left:8px}.lib-article{flex:1;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:25px;line-height:1.75;min-width:0}.lib-article h2{color:var(--navy);margin:0}.article-toolbar{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.article-content p{margin:10px 0}.article-content img{max-width:100%;border-radius:8px;border:1px solid var(--line)}
-.article-rich-editor{min-height:260px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px}.inline-image-tools>.small{flex:1 1 100%}.inline-image-sizebar{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--line);border-radius:7px;background:var(--card)}.inline-image-sizebar input{width:170px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:grab;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
+.article-rich-editor{min-height:320px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:12px;line-height:1.7;overflow:auto}.article-rich-editor table,.article-content table{width:100%;border-collapse:collapse;margin:12px 0}.article-rich-editor th,.article-rich-editor td,.article-content th,.article-content td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}.article-rich-editor th,.article-content th{background:var(--bg);font-weight:700}.article-rich-editor ul,.article-rich-editor ol,.article-content ul,.article-content ol{padding-left:24px}.article-rich-editor:focus{outline:2px solid var(--blue);outline-offset:-2px}.inline-image-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;padding:10px;background:var(--bg);border:1px solid var(--line);border-radius:8px}.inline-image-tools>.small{flex:1 1 100%}.inline-image-sizebar{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--line);border-radius:7px;background:var(--card)}.inline-image-sizebar input{width:170px}.inline-image-editor{display:inline-flex;vertical-align:middle;align-items:center;gap:3px;margin:2px 3px;padding:2px;border:1px solid var(--line);border-radius:7px;background:var(--bg);cursor:grab;user-select:none}.inline-image-editor img{display:block;max-width:180px;max-height:130px;border-radius:5px;pointer-events:none}.inline-image-editor-broken{color:var(--red);font-weight:700}
 .inline-image-live{display:inline-block;color:var(--blue);font-weight:700}.inline-image-label{display:inline;color:var(--blue);cursor:pointer;text-decoration:underline dotted}.inline-image-live-preview{display:block;margin-top:7px;max-width:420px;max-height:340px;width:auto;height:auto;border-radius:7px;border:1px solid var(--line);cursor:pointer}.inline-image-trigger:hover{opacity:.8}
 .search{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:10px;margin:9px 0}
 .floating-mark{position:fixed;z-index:900;display:none;background:#18222b;color:#fff;border-radius:8px;padding:6px 8px;gap:5px;align-items:center;box-shadow:0 7px 18px rgba(0,0,0,.25)}.floating-mark:before{content:"Markeren";font-size:12px;font-weight:700;margin:0 4px 0 2px}.mark-dot{width:22px;height:22px;border-radius:5px;border:0}.mark-remove{background:#2b2f33;color:#fff;border:0}.yellow{background:#ffe93f}.green{background:#a6ef4b}.cyan{background:#65e3ea}.pink{background:#eaa6c8}.orange{background:#f7ac3f}
@@ -844,6 +844,7 @@ function renderInlineImages(html){
  });
 }
 function articleEditorHtml(a){
+ if(a&&a.richHtml)return sanitizeRichHtml(a.richHtml);
  var text=(a.body||[]).join("\n\n"),images=a.inlineImages||{},widths=a.inlineImageWidths||{};
  text=esc(text);
  text=text.replace(/\[inlineimg:([^\]]+)\]/gi,function(_,rawId){
@@ -923,7 +924,7 @@ function shell(body){
  "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
  "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
  "</div>";
- return "<div class='top'><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>☰</button><div class='logo'>MedQ<span>NL</span></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
@@ -988,6 +989,44 @@ function ivtg(){
  (open?"<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>":"")+
  "</div>");
 }
+function sanitizeRichHtml(html){
+ var parser=new DOMParser(),doc=parser.parseFromString(String(html||""),"text/html"),root=doc.body,allowed={P:1,DIV:1,BR:1,H1:1,H2:1,H3:1,H4:1,H5:1,H6:1,STRONG:1,B:1,EM:1,I:1,U:1,UL:1,OL:1,LI:1,TABLE:1,THEAD:1,TBODY:1,TFOOT:1,TR:1,TH:1,TD:1,SPAN:1,A:1,IMG:1};
+ function clean(node){
+  var children=Array.from(node.children||[]),i,j,tag,attrs;
+  for(i=0;i<children.length;i++){
+   var el=children[i];tag=el.tagName;
+   if(!allowed[tag]){while(el.firstChild)el.parentNode.insertBefore(el.firstChild,el);el.remove();continue}
+   attrs=Array.from(el.attributes);
+   for(j=0;j<attrs.length;j++){
+    var n=attrs[j].name,v=attrs[j].value;
+    if(tag==="IMG"&&n==="src"){
+     if(!/^(https?:|data:image\/)/i.test(v))el.removeAttribute(n);
+     continue;
+    }
+    if(tag==="A"&&(n==="href")){if(!/^(https?:|mailto:)/i.test(v))el.removeAttribute(n);continue}
+    if(tag==="A"&&n==="target"){el.setAttribute("target","_blank");continue}
+    if(tag==="SPAN"&&n==="data-inline-editor-id"){continue}
+    if(tag==="IMG"&&n==="style"){var m=v.match(/(?:^|;)\s*width\s*:\s*([0-9]+)px/i);el.setAttribute("style",m?"width:"+m[1]+"px":"");continue}
+    if(tag==="SPAN"&&n==="style"){el.removeAttribute("style");continue}
+    if((tag==="TD"||tag==="TH")&&n==="colspan"){if(!/^\d+$/.test(v))el.removeAttribute(n);continue}
+    if((tag==="TD"||tag==="TH")&&n==="rowspan"){if(!/^\d+$/.test(v))el.removeAttribute(n);continue}
+    if(n!=="href"&&n!=="target"&&n!=="src"&&n!=="style"&&n!=="colspan"&&n!=="rowspan"&&n!=="data-inline-editor-id"&&n!=="class")el.removeAttribute(n);
+   }
+   clean(el);
+  }
+ }
+ clean(root);
+ return root.innerHTML;
+}
+function serializeRichEditor(root){
+ var clone=root.cloneNode(true),imgs=clone.querySelectorAll(".inline-image-editor"),i,id;
+ for(i=0;i<imgs.length;i++){id=imgs[i].getAttribute("data-inline-editor-id");imgs[i].replaceWith(document.createTextNode("[inlineimg:"+id+"]"))}
+ return sanitizeRichHtml(clone.innerHTML);
+}
+function richHtmlToText(html){
+ var d=new DOMParser().parseFromString(String(html||""),"text/html");
+ return (d.body.textContent||"").replace(/\u00a0/g," ").replace(/[ \t]+\n/g,"\n").replace(/\n{3,}/g,"\n\n").trim();
+}
 function articleBlocks(a){
  var blocks=[],i,b,lines;
  for(i=0;i<(a.body||[]).length;i++){
@@ -998,6 +1037,11 @@ function articleBlocks(a){
  return blocks;
 }
 function articleHtml(a,prefix){
+ if(a&&a.richHtml){
+  var safe=sanitizeRichHtml(a.richHtml),temp=new DOMParser().parseFromString(safe,"text/html"),heads=temp.body.querySelectorAll("h1,h2,h3,h4,h5,h6"),i;
+  for(i=0;i<heads.length;i++)heads[i].setAttribute("id",(prefix||"sec")+"-rich-"+i);
+  return renderInlineImages(temp.body.innerHTML)+(a.image?"<p><img src='"+esc(a.image)+"' alt='Afbeelding'></p>":"");
+ }
  var bs=articleBlocks(a),out="",i,id;
  for(i=0;i<bs.length;i++){
   if(bs[i].type==="h3"){id=(prefix||"sec")+"-"+i;out+="<h3 id='"+id+"'>"+md(bs[i].title)+"</h3>"+(bs[i].body?"<p>"+md(bs[i].body)+"</p>":"")}
@@ -1064,7 +1108,7 @@ function articleForm(a){
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Kies meerdere bestanden tegelijk. Klik een afbeelding om de grootte aan te passen en sleep haar naar een andere plek in de tekst.</div><button type='button' class='btn secondary' id='addInlineImage'>Bestanden kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Sectie</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Je kunt tekst rechtstreeks uit ChatGPT of Word plakken. Vet, koppen, lijsten en tabellen blijven behouden. Meerdere afbeeldingen toevoegen, slepen en per stuk verkleinen kan ook.</div><button type='button' class='btn secondary' id='addInlineImage'>Bestanden kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Artikel opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam sectie</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Sectie opslaan</button></form>"}
@@ -1504,7 +1548,7 @@ document.addEventListener("submit",function(ev){
  ev.preventDefault();
  function finish(imageData){
   if(f.id==="questionform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:f.subject.value,topic:f.topic.value,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:f.stem.value,options:[f.o0.value,f.o1.value,f.o2.value,f.o3.value],correct:parseInt(f.correct.value,10),explanation:f.explanation.value,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||""};ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj}
-  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),serialized=ed?serializeArticleEditor(ed):f.body.value;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
+  else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),richHtml=ed?serializeRichEditor(ed):"",plain=richHtmlToText(richHtml),serialized=plain;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}obj={id:f.getAttribute("data-id")||"a"+Date.now(),title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),richHtml:richHtml,sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
   else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
   save();page="admin";render()
@@ -1517,7 +1561,21 @@ document.addEventListener("submit",function(ev){
 document.addEventListener("selectionchange",function(){
  var ed=document.getElementById("articleEditor"),sel=window.getSelection();
  if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+});document.addEventListener("paste",function(ev){
+ var ed=ev.target&&ev.target.closest?ev.target.closest("#articleEditor"):null;
+ if(!ed)return;
+ var html=ev.clipboardData&&ev.clipboardData.getData("text/html"),text=ev.clipboardData&&ev.clipboardData.getData("text/plain");
+ if(!html){return}
+ ev.preventDefault();
+ var safe=sanitizeRichHtml(html);
+ var range=null,sel=window.getSelection();
+ if(sel&&sel.rangeCount&&ed.contains(sel.anchorNode))range=sel.getRangeAt(0);
+ if(!range&&ed._savedRange)range=ed._savedRange.cloneRange();
+ var holder=document.createElement("div");holder.innerHTML=safe;
+ if(range&&ed.contains(range.commonAncestorContainer)){range.deleteContents();var frag=document.createDocumentFragment();while(holder.firstChild)frag.appendChild(holder.firstChild);range.insertNode(frag);range.collapse(false);sel.removeAllRanges();sel.addRange(range);ed._savedRange=range.cloneRange();}
+ else ed.appendChild(holder);
 });
+
 document.addEventListener("dragstart",function(ev){
  var img=ev.target.closest?ev.target.closest(".inline-image-editor"):null;
  if(img){ev.dataTransfer.setData("text/plain","INLINEIMG:"+img.getAttribute("data-inline-editor-id"));ev.dataTransfer.effectAllowed="move";return}
