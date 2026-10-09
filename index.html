@@ -1137,6 +1137,11 @@ async function deleteQuestionRemote(id){
  var d=await rr.json().catch(function(){return []});
  if(!rr.ok)throw new Error((d&&d.message)||'Vraag permanent verwijderen mislukt.');
 }
+function persistQuestionRemote(question){
+ upsertQuestionRemote(question).catch(function(err){
+   alert("Vraag is lokaal opgeslagen, maar kon niet permanent worden opgeslagen: "+(err&&err.message?err.message:String(err)));
+ });
+}
 async function syncQuestionsFromServer(){
  var remote=await fetchQuestionBankRemote();
  var syncedKey='medqnl_question_bank_sync_v1';
