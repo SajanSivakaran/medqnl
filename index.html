@@ -321,7 +321,7 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
     if(gate)gate.style.display="none";
     if(input)input.value="";
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
-    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();
+    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
 
   var alreadyUnlocked=false;
