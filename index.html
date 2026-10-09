@@ -976,6 +976,32 @@ function formatTime(sec){
  return (h?String(h).padStart(2,"0")+":":"")+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 }
 var activeChapterId=null,activeChapterStarted=0,chapterTimerHandle=null;
+var sessionTimerStarted=0,sessionTimerHandle=null;
+function startSessionTimer(){
+ if(sessionTimerHandle)clearInterval(sessionTimerHandle);
+ sessionTimerStarted=new Date().getTime();
+ if(session)session.sessionStartedAt=sessionTimerStarted;
+ sessionTimerHandle=setInterval(function(){
+   var e=document.getElementById("chapterTimer");
+   if(e&&session)e.innerHTML="Tijd besteed: "+formatTime(currentSessionSeconds());
+ },1000);
+}
+function flushSessionTimer(){
+ if(!session||!sessionTimerStarted)return;
+ var sec=Math.floor((new Date().getTime()-sessionTimerStarted)/1000);
+ session.elapsedSeconds=Math.max(0,sec);
+}
+function stopSessionTimer(){
+ flushSessionTimer();
+ if(sessionTimerHandle)clearInterval(sessionTimerHandle);
+ sessionTimerHandle=null;sessionTimerStarted=0;
+}
+function currentSessionSeconds(){
+ if(!session)return 0;
+ var base=Math.max(0,Number(session.elapsedSeconds)||0);
+ if(sessionTimerStarted)base=Math.max(base,Math.floor((new Date().getTime()-sessionTimerStarted)/1000));
+ return base;
+}
 function startChapterTimer(id){
  flushChapterTimer();
  activeChapterId=id;
@@ -1083,7 +1109,8 @@ function startSession(ivtg,forcedSubject,forcedSubsection,forcedMode,forcedCount
  }
  if(!pool.length){alert(ivtg?"Er zijn nog geen iVTG-vragen beschikbaar voor deze selectie.":"Er zijn nog geen vragen voor deze Qbank-selectie beschikbaar.");return}
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
- session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject,subsection:subsection,mode:mode};
+ session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject,subsection:subsection,mode:mode,elapsedSeconds:0,sessionStartedAt:0};
+ if(ivtg)startSessionTimer();
  page="question";render();
 }
 function syncQuestionTaxonomyForm(form){
@@ -1126,7 +1153,7 @@ function questionBody(){
 function questionPage(){
  var i,body="<div class='ivtg ivtg-shell'><div class='ivtg-top'><div class='ivtg-count'>"+(session.index+1)+" / "+session.questions.length+"</div><div class='ivtg-tools'><button class='ivtg-item' data-prev>"+ICONS.prev+"<div>Vorige</div></button><button class='ivtg-item' data-next>"+ICONS.next+"<div>Volgende</div></button></div><button class='ivtg-item' data-modal='tutorial'>"+ICONS.tutorial+"<div>Uitleg</div></button><button class='ivtg-item' data-modal='lab'>"+ICONS.lab+"<div>Labwaarden</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='calc'>"+ICONS.calc+"<div>Rekenhulp</div></button><button class='ivtg-item' data-modal='settings'>"+ICONS.gear+"<div>Instellingen</div></button></div><div class='ivtg-left'>";
  for(i=0;i<session.questions.length;i++)body+="<button class='ivtg-status "+(i===session.index?"active ":"")+(typeof session.answers[session.questions[i].id]!=="undefined"?"done":"")+"' data-q='"+i+"'>"+(i+1)+"</button>";
- body+="</div><div class='ivtg-main'><div class='ivtg-question'>"+questionBody()+"</div></div><div class='ivtg-bottom'><span class='ivtg-time' id='chapterTimer'>Tijd besteed: "+formatTime(currentChapterSeconds())+"</span><button class='ivtg-item' data-open-library>"+ICONS.book+"<div>iVTG Bibliotheek</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='feedback'>"+ICONS.feedback+"<div>Feedback</div></button><button class='ivtg-item' data-end>"+ICONS.end+"<div>Einde</div></button></div></div>";
+ body+="</div><div class='ivtg-main'><div class='ivtg-question'>"+questionBody()+"</div></div><div class='ivtg-bottom'><span class='ivtg-time' id='chapterTimer'>Tijd besteed: "+formatTime(session?currentSessionSeconds():currentChapterSeconds())+"</span><button class='ivtg-item' data-open-library>"+ICONS.book+"<div>iVTG Bibliotheek</div></button><button class='ivtg-item' data-open-notes>"+ICONS.note+"<div>Notities</div></button><button class='ivtg-item' data-modal='feedback'>"+ICONS.feedback+"<div>Feedback</div></button><button class='ivtg-item' data-end>"+ICONS.end+"<div>Einde</div></button></div></div>";
  return body;
 }
 function ivtg(){
@@ -1778,7 +1805,7 @@ document.addEventListener("click",function(ev){
 document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
- el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
  el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
@@ -1802,12 +1829,12 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-qbank-subject]"):null;if(el){var qs=document.getElementById("qbankSubject");if(qs){qs.value=el.getAttribute("data-qbank-subject");updateQbankSubsections();qs.scrollIntoView({behavior:"smooth",block:"center"})}return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
- if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
+ if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();stopSessionTimer();page="result";render()}else{session.index++;render()}return}
  el=t.closest?t.closest("[data-q]"):null;if(el&&session){session.index=parseInt(el.getAttribute("data-q"),10);render();return}
  el=t.closest?t.closest("[data-a]"):null;if(el&&session){var q=session.questions[session.index],pick=parseInt(el.getAttribute("data-a"),10),ok=pick===q.correct;session.answers[q.id]=pick;if(ok)session.score++;state.answers[q.id]={correct:ok,when:Date.now(),selected:pick};save();render();return}
- el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();page="result";render()}return}
+ el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();stopSessionTimer();page="result";render()}return}
  el=t.closest?t.closest("[data-print]"):null;if(el){window.print();return}
- el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){stopChapterTimer();page="ivtg-library";render();return}
+ el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){stopChapterTimer();stopSessionTimer();page="ivtg-library";render();return}
  el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null;openNotebook(nq?nq.id:"general","drawer");return}
  el=t.closest?t.closest("[data-drawer-art]"):null;if(el){articleId=el.getAttribute("data-drawer-art");var d=document.getElementById("ivtgLibraryDrawer");if(d){d.remove();openIVTGLibraryDrawer()}return}
  el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
