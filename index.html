@@ -315,6 +315,9 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
   function startApp(){
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
+    window.__medqnlAuthRole="admin";
+    window.__medqnlAuthSession=null;
+    try{localStorage.removeItem("medqnl_auth_v1")}catch(e){}
     if(gate)gate.style.display="none";
     if(input)input.value="";
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
@@ -2229,7 +2232,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
- el=t.closest?t.closest("[data-auth-logout]"):null;if(el){logout();return}
+ el=t.closest?t.closest("[data-auth-logout]"):null;if(el){try{sessionStorage.removeItem("medqnl_access")}catch(e){}location.reload();return}
  el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
