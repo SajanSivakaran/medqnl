@@ -1014,8 +1014,14 @@ function migrateABCD(x){
 }
 var QUESTION_SEED_VERSION=6;
 function ensureQuestionBankSeeds(x){
- if((Number(x.questionSeedVersion)||0)>=QUESTION_SEED_VERSION)return false;
+ var version=Number(x.questionSeedVersion)||0;
+ if(version>=QUESTION_SEED_VERSION)return false;
  var changed=false,i,q;
+ if(version<6){
+   var kept=[];
+   for(i=0;i<x.questions.length;i++){q=x.questions[i];if(!/^b4(?:o|r)\\d+$/.test(String(q.id||"")))kept.push(q);else changed=true;}
+   x.questions=kept;
+ }
  for(i=0;i<QUESTIONS.length;i++){q=QUESTIONS[i];if(!byId(x.questions,q.id)){x.questions.push(clone(q));changed=true;}}
  for(i=0;i<BLOCK4_QUESTION_BANK.length;i++){q=BLOCK4_QUESTION_BANK[i];if(!byId(x.questions,q.id)){x.questions.push(clone(q));changed=true;}}
  for(i=0;i<SOURCES.length;i++){q=SOURCES[i];if((q.id==="s27"||q.id==="s28")&&!byId(x.sources,q.id)){x.sources.push(clone(q));changed=true;}}
