@@ -2051,7 +2051,6 @@ document.addEventListener("keydown",function(ev){
  }
 });
 document.addEventListener("click",function(ev){
- if(ev.target&&ev.target.id==="saveAI"){if(!state.ai)state.ai={endpoint:"/api/grade-open"};state.ai.endpoint=String((document.getElementById("aiEndpointInput")||{}).value||"").trim()||"/api/grade-open";save();alert("AI-instellingen opgeslagen.");return;}
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
  if(t.closest&&t.closest("[data-add-question-inline-image]")){var inp=document.getElementById("questionInlineImageFile"),ed=document.getElementById("questionStemEditor");if(inp){if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
  if(qimg){var form=qimg.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}var id=qimg.getAttribute("data-inline-editor-id"),bar=document.getElementById("questionInlineImageSizeBar"),slider=document.getElementById("questionInlineImageSize"),label=document.getElementById("questionInlineImageSizeValue"),w=parseInt(widths[id],10)||180;if(bar&&slider){slider.value=w;slider.setAttribute("data-image-id",id);if(label)label.textContent=w+" px";bar.style.display="flex"}}
