@@ -1117,6 +1117,7 @@ async function syncFeedbackFromServer(){
   if(!profile)throw new Error('Profiel ontbreekt in Supabase.');
   window.__medqnlAuthRole=profile.role||'student';
   if(profile.name)state.name=profile.name;
+  if(profile.email)state.email=profile.email;
   var path=profile.role==='admin'?'/rest/v1/feedback?select=*&order=updated_at.desc':'/rest/v1/feedback?user_id=eq.'+encodeURIComponent(tokenUserId())+'&select=*&order=updated_at.desc';
   var rr=await supabaseAuthedFetch(path,{method:'GET'});
   var d=await rr.json().catch(function(){return []});
@@ -1133,7 +1134,7 @@ async function createFeedbackRemote(fb){
  if(!authToken())throw new Error('Je moet ingelogd zijn.');
  var rr=await supabaseAuthedFetch('/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
    user_id:tokenUserId(),
-   student_email:state.email||'',
+   student_email:(((window.__medqnlAuthSession||authSession||{}).user||{}).email)||state.email||'',
    student_name:state.name||'Student',
    question_id:fb.questionId||'',
    question_title:fb.questionTitle||'',
