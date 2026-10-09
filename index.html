@@ -33,6 +33,30 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
+.daily-puzzle-card{margin-top:2px;overflow:hidden}
+.daily-puzzle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.daily-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--blue)}
+.daily-puzzle-card h2{margin:5px 0 5px;font-size:25px;color:var(--navy)}
+.daily-puzzle-card p{margin:0;color:var(--muted);line-height:1.5}
+.daily-streak{min-width:96px;text-align:right;display:flex;flex-direction:column}
+.daily-streak strong{font-size:23px;color:var(--navy)}
+.daily-streak span{font-size:11px;color:var(--muted)}
+.daily-puzzle-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;margin-top:20px}
+.daily-hints{display:grid;gap:8px}
+.daily-hint{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;line-height:1.5}
+.daily-hint span{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue2);color:var(--blue);font-size:11px;font-weight:800}
+.daily-guess-form{padding:14px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.daily-guess-form label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:var(--navy)}
+.daily-guess-form input{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:11px 12px;outline:none}
+.daily-guess-form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
+.daily-guess-form button{width:100%;margin-top:9px}
+.daily-puzzle-footer{display:flex;justify-content:space-between;gap:12px;padding-top:13px;margin-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.daily-puzzle-complete .daily-result{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.daily-result>div,.daily-knowledge{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:12px}
+.daily-result-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px}
+.daily-result strong{font-size:18px;color:var(--navy)}
+.daily-knowledge{margin-top:10px}
+@media(max-width:850px){.daily-puzzle-body{grid-template-columns:1fr}.daily-puzzle-footer,.daily-puzzle-head{flex-direction:column}.daily-streak{text-align:left}.daily-puzzle-complete .daily-result{grid-template-columns:1fr}}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
 .grid{display:grid;gap:15px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}.danger{background:var(--redbg);color:var(--red);border:1px solid #e8bbb3}
@@ -1344,11 +1368,120 @@ function mailbox(){
  "<div class='grid g3' style='margin-bottom:15px'><div class='card stat'><div class='label'>Open feedback</div><div class='value'>"+openCount+"</div></div><div class='card stat'><div class='label'>Reacties ontvangen</div><div class='value'>"+responseCount+"</div></div><div class='card stat'><div class='label'>Totaal berichten</div><div class='value'>"+fbs.length+"</div></div></div>"+
  "<div class='card'><div class='title'>Berichten</div><div class='mailbox-list'>"+h+"</div></div>");
 }
+var MEDQNL_DAILY_PUZZLES=[
+{name:"Apixaban",aliases:["apixaban"],className:"DOAC · directe factor-Xa-remmer",mechanism:"Remt selectief en direct factor Xa, waardoor de trombinevorming afneemt.",indication:"Preventie van beroerte bij atriumfibrilleren en behandeling/preventie van veneuze trombo-embolie.",sideEffect:"Bloeding is de belangrijkste bijwerking.",pearl:"Dit is geen vitamine-K-antagonist; denk aan directe factor-Xa-remming.",category:"Antistolling"},
+{name:"Metformine",aliases:["metformine","metformin"],className:"Biguanide",mechanism:"Verlaagt vooral de hepatische glucoseproductie en verbetert de insulinegevoeligheid.",indication:"Veelgebruikt als eerstekeusmedicatie bij type 2-diabetes.",sideEffect:"Maag-darmklachten zijn frequent; bij ernstig nierfalen is lactaatacidose een belangrijk risico.",pearl:"Bij verslechterende nierfunctie moet het gebruik opnieuw worden beoordeeld.",category:"Diabetes"},
+{name:"Ramipril",aliases:["ramipril"],className:"ACE-remmer",mechanism:"Remt ACE en verlaagt daardoor de vorming van angiotensine II en aldosteron.",indication:"Onder andere hypertensie, hartfalen en cardiovasculaire risicoreductie.",sideEffect:"Droge hoest, hyperkaliëmie en zelden angio-oedeem.",pearl:"ACE-remmers zijn gecontra-indiceerd tijdens de zwangerschap.",category:"Cardiovasculair"},
+{name:"Furosemide",aliases:["furosemide"],className:"Lisdiureticum",mechanism:"Remt de Na-K-2Cl-cotransporter in de dikke opstijgende lis van Henle.",indication:"Behandeling van overvulling en oedeem, onder andere bij hartfalen.",sideEffect:"Hypokaliëmie, dehydratie en hypotensie.",pearl:"Denk bij sterke diurese aan volumestatus en elektrolyten.",category:"Diureticum"},
+{name:"Salbutamol",aliases:["salbutamol"],className:"Kortwerkende bèta-2-agonist",mechanism:"Stimuleert bèta-2-receptoren en veroorzaakt bronchodilatatie.",indication:"Snelle verlichting van bronchusobstructie, bijvoorbeeld bij astma.",sideEffect:"Tremor, palpitaties en tachycardie.",pearl:"Dit is vooral een luchtwegverwijder voor snelle symptoomverlichting.",category:"Luchtwegen"},
+{name:"Omeprazol",aliases:["omeprazol"],className:"Protonpompremmer",mechanism:"Remt de H+/K+-ATPase in de pariëtale maagcel en verlaagt zo de zuursecretie.",indication:"Onder andere refluxklachten, ulcuslijden en gastroprotectie in geselecteerde situaties.",sideEffect:"Maag-darmklachten en bij langdurig gebruik onder andere risico op vitamine-B12-tekort.",pearl:"Het aangrijpingspunt zit bij de protonpomp van de maagwand.",category:"Maagzuurremmer"},
+{name:"Levothyroxine",aliases:["levothyroxine","thyroxine"],className:"Synthetisch schildklierhormoon T4",mechanism:"Vervangt thyroxine en wordt in weefsels deels omgezet naar het actieve T3.",indication:"Behandeling van hypothyreoïdie.",sideEffect:"Een te hoge dosering kan klachten van hyperthyreoïdie geven.",pearl:"TSH is belangrijk voor het controleren van de substitutiedosering.",category:"Endocrinologie"},
+{name:"Atorvastatine",aliases:["atorvastatine","atorvastatin"],className:"Statine",mechanism:"Remt HMG-CoA-reductase en verlaagt daarmee vooral het LDL-cholesterol.",indication:"Reductie van cardiovasculair risico bij dyslipidemie en secundaire preventie.",sideEffect:"Spierklachten; ernstige spierbeschadiging is zeldzaam.",pearl:"De kern van de behandeling is LDL-verlaging en risicoreductie.",category:"Lipidologie"},
+{name:"Sertraline",aliases:["sertraline"],className:"SSRI",mechanism:"Remt selectief de heropname van serotonine.",indication:"Onder andere depressie, paniekstoornis, PTSS en OCD.",sideEffect:"Misselijkheid, slaapverandering en seksuele disfunctie.",pearl:"Het therapeutische effect ontstaat geleidelijk, terwijl bijwerkingen eerder kunnen optreden.",category:"Psychiatrie"},
+{name:"Nitrofurantoine",aliases:["nitrofurantoine","nitrofurantoïne"],className:"Urinair antibioticum",mechanism:"Wordt in bacteriën omgezet in reactieve metabolieten die meerdere bacteriële processen beschadigen.",indication:"Veelgebruikt bij een ongecompliceerde cystitis als het volgens de richtlijn passend is.",sideEffect:"Misselijkheid; zeldzame pulmonale en hepatische bijwerkingen.",pearl:"Denk aan hoge concentraties in de urine bij blaasinfecties.",category:"Urologie"},
+{name:"Tamsulosine",aliases:["tamsulosine"],className:"Selectieve alfa-1A-blokker",mechanism:"Ontspant glad spierweefsel in prostaat en blaashals door alfa-1-blokkade.",indication:"Verlichting van mictieklachten bij benigne prostaathyperplasie.",sideEffect:"Duizeligheid en orthostatische klachten; ejaculatiestoornissen kunnen voorkomen.",pearl:"Het verbetert de urinestroom maar verkleint de prostaat niet.",category:"Urologie"},
+{name:"Warfarine",aliases:["warfarine"],className:"Vitamine-K-antagonist",mechanism:"Remt vitamine-K-epoxidereductase en verlaagt de aanmaak van vitamine-K-afhankelijke stollingsfactoren.",indication:"Orale antistolling in specifieke indicaties.",sideEffect:"Bloeding en veel interacties met geneesmiddelen en voeding.",pearl:"Denk aan INR-controle en een smalle therapeutische breedte.",category:"Antistolling"},
+{name:"Spironolacton",aliases:["spironolacton","spironolactone"],className:"Aldosteronantagonist",mechanism:"Blokkeert de mineralocorticoïdreceptor in de distale nefron.",indication:"Onder andere hartfalen en hyperaldosteronisme; soms bij ascites.",sideEffect:"Hyperkaliëmie en gynaecomastie.",pearl:"Kalium is de klassieke laboratoriumwaarde om bij dit middel te bewaken.",category:"Diureticum"},
+{name:"Prednisolon",aliases:["prednisolon","prednisolone"],className:"Systemisch glucocorticoïd",mechanism:"Activeert de glucocorticoïdreceptor en beïnvloedt genexpressie met sterke anti-inflammatoire effecten.",indication:"Tal van inflammatoire en auto-immuunziekten.",sideEffect:"Hyperglykemie, vochtretentie en bij langdurig gebruik onder andere osteoporose.",pearl:"Bij langdurig gebruik niet abrupt stoppen vanwege bijnierschorssuppressie.",category:"Corticosteroïd"},
+{name:"Semaglutide",aliases:["semaglutide"],className:"GLP-1-receptoragonist",mechanism:"Activeert de GLP-1-receptor en beïnvloedt glucoseafhankelijke insulinesecretie, verzadiging en maaglediging.",indication:"Type 2-diabetes en, afhankelijk van product en indicatie, gewichtsbehandeling.",sideEffect:"Misselijkheid, braken en diarree.",pearl:"De combinatie van glucose-effect en verminderde eetlust is kenmerkend.",category:"Diabetes"},
+{name:"Ceftriaxon",aliases:["ceftriaxon","ceftriaxone"],className:"Derde generatie cefalosporine",mechanism:"Remt bacteriële celwandsynthese via penicillinebindende eiwitten.",indication:"Diverse ernstige bacteriële infecties en specifieke infectieziekten.",sideEffect:"Allergische reacties en diarree; galblaassludge kan voorkomen.",pearl:"Een breedspectrumcefalosporine dat vaak parenteraal wordt gebruikt.",category:"Antibioticum"},
+{name:"Doxycycline",aliases:["doxycycline"],className:"Tetracycline-antibioticum",mechanism:"Remt bacteriële eiwitsynthese via de 30S-ribosomale subunit.",indication:"Onder andere bepaalde respiratoire infecties en soa's, afhankelijk van de verwekker.",sideEffect:"Fotosensitiviteit en maag-darmklachten; oesofagitis bij verkeerd innemen.",pearl:"Neem met voldoende water in en ga niet direct liggen.",category:"Antibioticum"},
+{name:"Clopidogrel",aliases:["clopidogrel"],className:"P2Y12-remmer",mechanism:"Remt irreversibel de ADP-gemedieerde activatie van bloedplaatjes via P2Y12.",indication:"Secundaire preventie van atherotrombotische events, onder andere na bepaalde PCI's.",sideEffect:"Bloeding.",pearl:"Dit is plaatjesremming en geen directe anticoagulatie.",category:"Antitromboticum"},
+{name:"Bisoprolol",aliases:["bisoprolol"],className:"Selectieve bèta-1-blokker",mechanism:"Blokkeert vooral bèta-1-receptoren en verlaagt hartfrequentie en contractiliteit.",indication:"Onder andere hypertensie, angina pectoris en hartfalen.",sideEffect:"Bradycardie, vermoeidheid en koude extremiteiten.",pearl:"Controleer vooral hartfrequentie en bloeddruk.",category:"Cardiovasculair"},
+{name:"Amlodipine",aliases:["amlodipine"],className:"Dihydropyridine-calciumantagonist",mechanism:"Blokkeert L-type calciumkanalen in vasculaire gladde spier en veroorzaakt vasodilatatie.",indication:"Hypertensie en angina pectoris.",sideEffect:"Perifeer oedeem en hoofdpijn.",pearl:"Enkeloedeem door vasodilatatie is een klassiek herkenningspunt.",category:"Cardiovasculair"},
+{name:"Losartan",aliases:["losartan"],className:"Angiotensine-II-receptorblokker (ARB)",mechanism:"Blokkeert de AT1-receptor van angiotensine II.",indication:"Onder andere hypertensie en geselecteerde vormen van nier- en hartfalen.",sideEffect:"Hyperkaliëmie en hypotensie.",pearl:"Een ARB geeft veel minder vaak droge hoest dan een ACE-remmer.",category:"Cardiovasculair"},
+{name:"Digoxine",aliases:["digoxine","digoxin"],className:"Hartglycoside",mechanism:"Remt Na+/K+-ATPase en verhoogt indirect intracellulair calcium; verhoogt ook de vagale tonus.",indication:"In geselecteerde situaties bij hartfalen en frequentiecontrole bij atriumfibrilleren.",sideEffect:"Misselijkheid, bradycardie en visusstoornissen bij toxiciteit.",pearl:"Nierfunctie en elektrolyten zijn belangrijk bij het risico op toxiciteit.",category:"Cardiovasculair"},
+{name:"Paracetamol",aliases:["paracetamol","acetaminophen"],className:"Analgeticum en antipyreticum",mechanism:"Werkt centraal pijn- en koortsremmend; het exacte mechanisme is niet volledig opgehelderd.",indication:"Milde tot matige pijn en koorts.",sideEffect:"Bij overdosering kan ernstige leverbeschadiging optreden.",pearl:"Let op de totale dagdosering, ook wanneer het middel in combinatiepreparaten zit.",category:"Pijnstilling"},
+{name:"Morfine",aliases:["morfine","morphine"],className:"Sterk opioïd",mechanism:"Activeert vooral µ-opioïdreceptoren in het centrale zenuwstelsel.",indication:"Ernstige pijn, inclusief palliatieve symptoombestrijding.",sideEffect:"Ademhalingsdepressie, obstipatie, misselijkheid en sufheid.",pearl:"Bij opioïden horen pijnstilling en risico op respiratoire depressie bij elkaar.",category:"Pijnstilling"},
+{name:"Vancomycine",aliases:["vancomycine","vancomycin"],className:"Glycopeptide-antibioticum",mechanism:"Remt bacteriële celwandsynthese door binding aan D-Ala-D-Ala-structuren.",indication:"Ernstige infecties met Gram-positieve bacteriën, waaronder MRSA, afhankelijk van de situatie.",sideEffect:"Nefrotoxiciteit en infusiereactie zoals het red-man-syndroom.",pearl:"Bij systemisch gebruik is therapeutic drug monitoring in relevante situaties belangrijk.",category:"Antibioticum"},
+{name:"Flucloxacilline",aliases:["flucloxacilline","flucloxacillin"],className:"Penicillinase-resistente penicilline",mechanism:"Remt de bacteriële celwandsynthese en is stabieler tegen stafylokokkenpenicillinase.",indication:"Met name infecties veroorzaakt door methicillinegevoelige stafylokokken.",sideEffect:"Maag-darmklachten en allergische reacties; leverproblemen zijn zeldzamer.",pearl:"Denk aan stafylokokken en betalactamase-resistentie.",category:"Antibioticum"}
+];
+
+var MEDQNL_DAILY_KEY="medqnl_daily_puzzle_v1",medqnlDailyTimer=null;
+function medqnlDailyDate(){
+ try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Amsterdam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+ catch(e){var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return d.getFullYear()+"-"+m+"-"+day}
+}
+function medqnlDayNumber(dateKey){
+ var parts=String(dateKey).split("-").map(Number),base=Date.UTC(2026,0,1),cur=Date.UTC(parts[0],parts[1]-1,parts[2]);
+ return Math.floor((cur-base)/86400000);
+}
+function medqnlDailyTarget(){
+ var date=medqnlDailyDate(),idx=((medqnlDayNumber(date)%MEDQNL_DAILY_PUZZLES.length)+MEDQNL_DAILY_PUZZLES.length)%MEDQNL_DAILY_PUZZLES.length;
+ return {date:date,index:idx,puzzle:MEDQNL_DAILY_PUZZLES[idx]};
+}
+function medqnlDailyState(){
+ try{
+  var raw=localStorage.getItem(MEDQNL_DAILY_KEY),x=raw?JSON.parse(raw):{};
+  if(!x||typeof x!=="object")x={};
+  if(typeof x.streak!=="number")x.streak=0;
+  if(typeof x.bestStreak!=="number")x.bestStreak=x.streak;
+  if(!x.results||typeof x.results!=="object")x.results={};
+  return x;
+ }catch(e){return {streak:0,bestStreak:0,results:{}}}
+}
+function saveMedqnlDailyState(x){try{localStorage.setItem(MEDQNL_DAILY_KEY,JSON.stringify(x))}catch(e){}}
+function medqnlNormalizeGuess(value){
+ return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+}
+function medqnlDailyComplete(solved,attempts){
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),today=t.date,p=today.split("-").map(Number),prevDate=new Date(Date.UTC(p[0],p[1]-1,p[2]-1)),prev=prevDate.getUTCFullYear()+"-"+String(prevDate.getUTCMonth()+1).padStart(2,"0")+"-"+String(prevDate.getUTCDate()).padStart(2,"0"),previous=!!(st.results[prev]&&st.results[prev].completed);
+ st.streak=solved?(previous?(st.streak||0)+1:1):0;
+ st.bestStreak=Math.max(st.bestStreak||0,st.streak);
+ st.results[today]={completed:true,solved:!!solved,attempts:attempts||0,score:solved?Math.max(1,6-(attempts||1)):0,finishedAt:Date.now()};
+ saveMedqnlDailyState(st);return st;
+}
+function medqnlDailySubmit(){
+ var target=medqnlDailyTarget(),st=medqnlDailyState(),existing=st.results[target.date];
+ if(existing&&existing.completed)return;
+ var input=document.getElementById("dailyPuzzleGuess"),status=document.getElementById("dailyPuzzleStatus"),guess=String(input&&input.value||"").trim();
+ if(!guess){if(status)status.textContent="Vul een geneesmiddel in.";return}
+ var temp=st.results[target.date]&&typeof st.results[target.date]==="object"?st.results[target.date]:{},attempts=Number(temp.attempts)||0;
+ attempts++;
+ var normalized=medqnlNormalizeGuess(guess),answers=(target.puzzle.aliases||[]).map(medqnlNormalizeGuess);
+ if(answers.indexOf(normalized)>=0){medqnlDailyComplete(true,attempts);render();return}
+ if(!st.results[target.date])st.results[target.date]={attempts:attempts,wrongGuesses:[]};
+ else st.results[target.date].attempts=attempts;
+ st.results[target.date].wrongGuesses=Array.isArray(st.results[target.date].wrongGuesses)?st.results[target.date].wrongGuesses:[];
+ st.results[target.date].wrongGuesses.push(guess);
+ if(attempts>=5){medqnlDailyComplete(false,attempts);render();return}
+ saveMedqnlDailyState(st);render();
+}
+function medqnlDailyCountdown(){
+ var now=new Date(),tom=new Date(now.getTime()+24*60*60*1000);
+ tom.setHours(0,0,0,0);
+ var sec=Math.max(0,Math.floor((tom-now)/1000)),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+ return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function medqnlStartDailyTimer(){
+ if(medqnlDailyTimer)clearInterval(medqnlDailyTimer);
+ medqnlDailyTimer=setInterval(function(){var el=document.getElementById("dailyPuzzleCountdown");if(el)el.textContent=medqnlDailyCountdown()},1000);
+}
+function medqnlDailyCard(){
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),today=st.results[t.date],p=t.puzzle;
+ if(today&&today.completed){
+  var score=today.solved?Math.max(1,6-(Number(today.attempts)||1)):0;
+  return "<div class='card daily-puzzle-card daily-puzzle-complete'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY</span><h2>"+(today.solved?"Goed gedaan":"Dagafsluiting")+"</h2><p>"+(today.solved?"Je hebt <strong>"+esc(p.name)+"</strong> gevonden in "+esc(String(today.attempts))+" poging(en).":"Vandaag niet gevonden. Het antwoord was <strong>"+esc(p.name)+"</strong>.")+"</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div><div class='daily-result'><div><span class='daily-result-label'>Dagscore</span><strong>"+score+" / 5</strong></div><div><span class='daily-result-label'>Beste streak</span><strong>"+esc(String(st.bestStreak))+" dagen</strong></div><div><span class='daily-result-label'>Nieuwe puzzel</span><strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></div></div><div class='daily-knowledge'><strong>MedQNL-kenniskaart</strong><div class='small muted'>"+esc(p.className)+" · "+esc(p.pearl)+"</div></div></div>";
+ }
+ var wrong=today&&Array.isArray(today.wrongGuesses)?today.wrongGuesses:[],visible=Math.min(1+wrong.length,5),hints=[
+ "Geneesmiddelengroep: "+p.className+".",
+ "Werkingsmechanisme: "+p.mechanism,
+ "Typische toepassing: "+p.indication,
+ "Belangrijke bijwerking: "+p.sideEffect,
+ "MedQNL-kenniskaart: "+p.pearl
+ ],hintHtml="",i,options="";
+ for(i=0;i<visible;i++)hintHtml+="<div class='daily-hint'><span>"+(i+1)+"</span><div>"+hints[i]+"</div></div>";
+ for(i=0;i<MEDQNL_DAILY_PUZZLES.length;i++)options+="<option value='"+esc(MEDQNL_DAILY_PUZZLES[i].name)+"'>";
+ return "<div class='card daily-puzzle-card'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY · #"+esc(String(t.index+1))+"</span><h2>Welk geneesmiddel is dit?</h2><p>Eén medicijn per dag. Gebruik de klinische hints en houd je streak in leven.</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div><div class='daily-puzzle-body'><div class='daily-hints'>"+hintHtml+"</div><form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><label for='dailyPuzzleGuess'>Jouw gok</label><input id='dailyPuzzleGuess' list='dailyMedicineChoices' placeholder='Typ een geneesmiddel…' autocomplete='off'><datalist id='dailyMedicineChoices'>"+options+"</datalist><button class='btn primary' type='submit'>Doe gok</button><div id='dailyPuzzleStatus' class='small muted'>Nog "+Math.max(0,5-wrong.length)+" poging(en).</div></form></div><div class='daily-puzzle-footer'><span>Categorie: "+esc(p.category)+"</span><span>Nieuwe puzzel over <strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></span></div></div>";
+}
 function dashboard(){
  var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
  for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
+ var daily=medqnlDailyCard();
+ setTimeout(medqnlStartDailyTimer,0);
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
- "<div class='grid g3'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
+ daily+
+ "<div class='grid g3' style='margin-top:15px'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
  "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
@@ -1357,6 +1490,7 @@ function dashboard(){
  "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
  "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
 }
+
 function qbank(){
  var subsHtml="",i,j,list;
  for(i=0;i<QBANK_SUBJECTS.length;i++){
@@ -2398,6 +2532,7 @@ document.addEventListener("change",function(ev){
 });
 document.addEventListener("submit",function(ev){
  var f=ev.target,i,nodes,checked,obj,ix,input,file;
+ if(f.id==="dailyPuzzleForm"){ev.preventDefault();medqnlDailySubmit();return}
  if(["questionform","articleform","sourceform","sectionform"].indexOf(f.id)<0)return;
  ev.preventDefault();
  function finish(imageData){
