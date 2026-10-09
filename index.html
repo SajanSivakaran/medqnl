@@ -441,6 +441,16 @@ var QUESTIONS=[
 {id:"q10",subject:"Infectieziekten",topic:"Gonorroe",difficulty:"Gemiddeld",title:"Vraag 3: Een jonge man met urethrale afscheiding",caseText:"Een 23-jarige man bezoekt het soa-spreekuur met sinds 4 dagen bestaande overvloedige, geel-groene, purulente afscheiding uit de urethra en mictieklachten. Hij geeft aan twee weken geleden onbeschermd seksueel contact te hebben gehad. Microscopisch onderzoek van een grampreparaat van de afscheiding toont gramnegatieve diplokokken binnenin de polymorfnucleaire leukocyten (intracellulair).",stem:"Wat is de meest geschikte initiële behandeling voor deze aandoening volgens de richtlijnen?",options:["Doxycycline 100 mg 2dd p.o. gedurende 7 dagen","Ceftriaxon 500 mg i.m. eenmalig","Metronidazol 2000 mg p.o. eenmalig","Fluconazol 150 mg p.o. eenmalig"],correct:1,explanation:"Klinische interpretatie: Het klinisch beeld van overvloedige purulente afscheiding gecombineerd met de microscopische bevinding van intracellulaire gramnegatieve diplokokken is bewijzend voor een gonorroe-urethritis (Neisseria gonorrhoeae).\n\nWaarom B juist is: De eerste keus behandeling voor een ongecompliceerde gonokokkeninfectie is een eenmalige intramusculaire injectie met Ceftriaxon 500 mg (of 1000 mg afhankelijk van lokaal protocol).\n\nWaarom de andere opties onjuist zijn:\nA (Doxycycline): Is de eerste keus behandeling voor Chlamydia trachomatis, niet voor gonorroe (vanwege hoge resistentiecijfers van N. gonorrhoeae tegen tetracyclines).\nC (Metronidazol): Is de behandeling voor Trichomonas vaginalis en bacteriële vaginose.\nD (Fluconazol): Is een antimycoticum gebruikt voor schimmelinfecties (bijv. Candida).",objective:"Gonorroïsche urethritis herkennen aan het klinische beeld en intracellulaire gramnegatieve diplokokken en de eerste keus antibioticum kennen.",sourceIds:["s27"],image:""}
 ];
 
+var QBANK_SUBJECTS=[
+"Circulatie & Ademhaling (Cardiopulmonaal)",
+"Nieren, Vloeistoffen & Urogenitaal",
+"Spijsvertering & Stofwisseling (Gastro-intestinaal & Endocrinologie)",
+"Zenuwstelsel & Zintuigen (Neuro-Anatomie & Zenuwstelsel)",
+"Bewegingsapparaat & Traumatologie",
+"Infectie, Immunologie & Bloed"
+];
+function isQbankSubject(subject){return has(QBANK_SUBJECTS,String(subject||""))}
+
 var SECTIONS=[
 {id:"sec1",title:"Metamedica",order:1},
 {id:"sec2",title:"Laboratoriumwaarden",order:2},
@@ -827,7 +837,11 @@ function migrateABCD(x){
    x.questions[i].options=x.questions[i].options.slice(0,4);
    while(x.questions[i].options.length<4)x.questions[i].options.push("");
    if(x.questions[i].correct>3)x.questions[i].correct=0;
-   x.questions[i].modules={qbank:true,ivtg:true};
+   if(!x.questions[i].modules||typeof x.questions[i].modules!=="object")x.questions[i].modules={qbank:true,ivtg:true};
+   if(typeof x.questions[i].modules.qbank!=="boolean")x.questions[i].modules.qbank=true;
+   if(typeof x.questions[i].modules.ivtg!=="boolean")x.questions[i].modules.ivtg=true;
+   if(isQbankSubject(x.questions[i].subject)){x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false}
+   if(x.questions[i].id==="q9"||x.questions[i].id==="q10"){x.questions[i].modules.qbank=true;x.questions[i].modules.ivtg=false}
  }
 }
 var QUESTION_SEED_VERSION=1;
@@ -987,24 +1001,27 @@ function dashboard(){
  "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
 }
 function qbank(){
- var subjects=[],buttons="",i,q;
- for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
- subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
- for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-qbank-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
- return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen met casusgerichte vragen in dezelfde overzichtelijke startomgeving.</p></div></div>"+
+ var buttons="",i,j,q,count;
+ for(i=0;i<QBANK_SUBJECTS.length;i++){
+  count=0;
+  for(j=0;j<state.questions.length;j++){q=state.questions[j];if(q.subject===QBANK_SUBJECTS[i]&&((q.modules||{qbank:true}).qbank!==false))count++}
+  buttons+="<button class='ivtg-subject-choice' data-qbank-subject='"+esc(QBANK_SUBJECTS[i])+"' "+(count===0?"disabled":"")+"><span>"+esc(QBANK_SUBJECTS[i])+"</span><span>"+count+" "+(count===1?"vraag":"vragen")+" ›</span></button>";
+ }
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen met casusgerichte vragen binnen de zes vaste Qbank-onderwerpen.</p></div></div>"+
  "<div class='ivtg-landing'>"+
- "<div class='ivtg-welcome'><div class='small'>MEDQNL • VRAGENBANK</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct met een gemengde sessie of kies een onderwerp.</p></div>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • VRAGENBANK</div><h2>Kies hoe je wilt oefenen.</h2><p>Deze onderwerpen horen bij de Vragenbank en niet bij de iVTG Trainer.</p></div>"+
  "<div class='ivtg-start-grid'>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startqb'>Start</button></div>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde Qbank-oefensessie.</p><button class='btn primary' id='startqb'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één van de zes vaste Qbank-onderwerpen.</p></div>"+
  "</div>"+
- "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Qbank-onderwerpen</div>"+buttons+"</div>"+
  "</div>");
 }
 function startSession(ivtg,forcedSubject){
  var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
  var subject=forcedSubject||((document.getElementById("qbs")||{}).value||"Alle onderwerpen");
- for(i=0;i<state.questions.length;i++){var qq=state.questions[i],mods=qq.modules||{qbank:true,ivtg:true};if((ivtg?mods.ivtg!==false:mods.qbank!==false)&&(subject==="Alle onderwerpen"||qq.subject===subject))pool.push(qq);}
+ for(i=0;i<state.questions.length;i++){var qq=state.questions[i],mods=qq.modules||{qbank:true,ivtg:true};if((ivtg?mods.ivtg!==false:mods.qbank!==false)&&(subject==="Alle onderwerpen"||(ivtg&&qq.subject===subject)||(!ivtg&&isQbankSubject(subject)&&qq.subject===subject)))pool.push(qq);}
+ if(!pool.length){alert(ivtg?"Er zijn nog geen iVTG-vragen beschikbaar.":"Er zijn nog geen vragen voor dit Qbank-onderwerp beschikbaar.");return}
  for(i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=pool[i];pool[i]=pool[j];pool[j]=tmp}
  session={ivtg:ivtg,index:0,questions:pool.slice(0,n),answers:{},score:0,id:"sess"+new Date().getTime(),subject:subject};page="question";render();
 }
@@ -1024,17 +1041,17 @@ function questionPage(){
 }
 function ivtg(){
  var subjects=[],buttons="",i,q;
- for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!isQbankSubject(q.subject)&&((q.modules||{qbank:true,ivtg:true}).ivtg!==false)&&!has(subjects,q.subject))subjects.push(q.subject)}
  subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
  for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
  return shell("<div class='pagehead ivtg-landing-head'><div><h1>iVTG Trainer</h1><p>Oefen met klinische casussen in de aparte iVTG-omgeving.</p></div></div>"+
  "<div class='ivtg-landing'>"+
- "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct of kies eerst een onderwerp.</p></div>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>De iVTG Trainer heeft een eigen onderwerpenset, los van de Qbank.</p></div>"+
  "<div class='ivtg-start-grid'>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde iVTG-sessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één iVTG-onderwerp.</p></div>"+
  "</div>"+
- "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>iVTG-onderwerpen</div>"+(buttons||"<div class='empty'>Nog geen iVTG-onderwerpen beschikbaar.</div>")+"</div>"+
  "</div>");
 }
 function sanitizeRichHtml(html){
