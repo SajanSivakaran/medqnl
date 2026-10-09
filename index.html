@@ -314,10 +314,10 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
   function readAuthSession(){try{var raw=localStorage.getItem(AUTH_STORE);return raw?JSON.parse(raw):null}catch(e){return null}}
   function writeAuthSession(s){authSession=s||null;try{if(s)localStorage.setItem(AUTH_STORE,JSON.stringify(s));else localStorage.removeItem(AUTH_STORE)}catch(e){}}
   async function loadAuthConfig(){
-    var rr=await fetch('/api/supabase-config',{headers:{Accept:'application/json'}});
-    var d=await rr.json().catch(function(){return {}});
-    if(!rr.ok||!d.url||!d.anonKey)throw new Error(d.error||'Supabase-configuratie ontbreekt.');
-    return d;
+    return {
+      url:'https://lwgbufaxwfrzqlonhmry.supabase.co',
+      anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'
+    };
   }
   function showAuth(message,mode){
     mode=mode||'login';if(authPanel)authPanel.remove();
@@ -344,7 +344,7 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
     if(password.length<6){msg.style.display='block';msg.textContent='Het wachtwoord moet minimaal 6 tekens bevatten.';return}
     try{
       var path=mode==='signup'?'/auth/v1/signup':'/auth/v1/token?grant_type=password';
-      var body=mode==='signup'?{email:email,password:password,data:{display_name:name}}:{email:email,password:password};
+      var body=mode==='signup'?{email:email,password:password,data:{name:name}}:{email:email,password:password};
       var rr=await fetch(authConfig.url+path,{method:'POST',headers:{'Content-Type':'application/json',apikey:authConfig.anonKey},body:JSON.stringify(body)});
       var d=await rr.json().catch(function(){return {}});
       if(!rr.ok){msg.style.display='block';msg.textContent=d.msg||d.error_description||d.error||'Inloggen mislukt.';return}
@@ -1100,32 +1100,68 @@ function ensureQuestionBankSeeds(x){
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
 function authToken(){return window.__medqnlAuthSession&&window.__medqnlAuthSession.access_token?window.__medqnlAuthSession.access_token:""}
+async function supabaseAuthedFetch(path,options){
+ var opts=Object.assign({},options||{}),headers=Object.assign({},opts.headers||{});
+ headers.apikey=authConfig.anonKey;headers.Accept='application/json';
+ var token=authToken();if(token)headers.Authorization='Bearer '+token;
+ opts.headers=headers;return fetch(authConfig.url+path,opts);
+}
 async function syncFeedbackFromServer(){
  var token=authToken();if(!token)return;
  try{
-  var rr=await fetch('/api/feedback',{headers:{Authorization:"Bearer "+token,Accept:"application/json"}});
-  var d=await rr.json().catch(function(){return {}});
+  var pr=await supabaseAuthedFetch('/rest/v1/profiles?id=eq.'+encodeURIComponent(tokenUserId())+'&select=id,email,name,role&limit=1',{method:'GET'});
+  var pd=await pr.json().catch(function(){return []});
+  if(pr.status===401){logout();return}
+  if(!pr.ok)throw new Error((pd&&pd.message)||'Profiel ophalen mislukt.');
+  var profile=Array.isArray(pd)?pd[0]:null;
+  if(!profile)throw new Error('Profiel ontbreekt in Supabase.');
+  window.__medqnlAuthRole=profile.role||'student';
+  if(profile.name)state.name=profile.name;
+  var path=profile.role==='admin'?'/rest/v1/feedback?select=*&order=updated_at.desc':'/rest/v1/feedback?user_id=eq.'+encodeURIComponent(tokenUserId())+'&select=*&order=updated_at.desc';
+  var rr=await supabaseAuthedFetch(path,{method:'GET'});
+  var d=await rr.json().catch(function(){return []});
   if(rr.status===401){logout();return}
-  if(!rr.ok)throw new Error(d.error||"Feedback ophalen mislukt.");
-  state.feedback=Array.isArray(d.feedback)?d.feedback.map(function(f){return {id:f.id,date:f.created_at||"",category:f.category||"Overig",message:f.message||"",questionId:f.question_id||"",questionTitle:f.question_title||"",studentName:f.student_name||"Student",studentEmail:f.student_email||"",status:f.status==="resolved"?"resolved":"open",response:f.response||"",respondedAt:f.responded_at||""}}):[];
-  window.__medqnlAuthRole=d.role||"student";
-  if(d.profile&&d.profile.display_name)state.name=d.profile.display_name;
+  if(!rr.ok)throw new Error((d&&d.message)||'Feedback ophalen mislukt.');
+  state.feedback=Array.isArray(d)?d.map(function(f){return {id:f.id,date:f.created_at||'',category:f.category||'Overig',message:f.message||'',questionId:f.question_id||'',questionTitle:f.question_title||'',studentName:f.student_name||'Student',studentEmail:f.student_email||'',status:f.status==='resolved'||f.handled===true?'resolved':'open',response:f.response||'',respondedAt:f.responded_at||''}}):[];
   save();
- }catch(e){console.warn("Feedback sync:",e&&e.message?e.message:e)}
+}
+function tokenUserId(){
+ var s=window.__medqnlAuthSession||authSession||{},id=s.user&&s.user.id?s.user.id:s.user_id;
+ return id||'';
 }
 async function createFeedbackRemote(fb){
- var token=authToken();if(!token)throw new Error("Je moet ingelogd zijn.");
- var rr=await fetch('/api/feedback',{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},body:JSON.stringify({questionId:fb.questionId||"",questionTitle:fb.questionTitle||"",category:fb.category||"Overig",message:fb.message||""})});
- var d=await rr.json().catch(function(){return {}});
- if(!rr.ok)throw new Error(d.error||"Feedback opslaan mislukt.");
- return d.feedback;
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   user_id:tokenUserId(),
+   student_email:state.email||'',
+   student_name:state.name||'Student',
+   question_id:fb.questionId||'',
+   question_title:fb.questionTitle||'',
+   category:fb.category||'Overig',
+   message:fb.message||'',
+   status:'open',
+   handled:false,
+   response:'',
+   responded_at:null
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback opslaan mislukt.');
+ return Array.isArray(d)?d[0]:d;
 }
 async function updateFeedbackRemote(fb){
- var token=authToken();if(!token)throw new Error("Je moet ingelogd zijn.");
- var rr=await fetch('/api/feedback',{method:"PATCH",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token},body:JSON.stringify({id:fb.id,response:fb.response||"",status:fb.status==="resolved"?"resolved":"open"})});
- var d=await rr.json().catch(function(){return {}});
- if(!rr.ok)throw new Error(d.error||"Feedback bijwerken mislukt.");
- return d.feedback;
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var status=fb.status==='resolved'?'resolved':'open';
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback?id=eq.'+encodeURIComponent(fb.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   status:status,
+   handled:status==='resolved',
+   response:fb.response||'',
+   responded_at:new Date().toISOString()
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback bijwerken mislukt.');
+ return Array.isArray(d)?d[0]:d;
 }
 function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
 function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
