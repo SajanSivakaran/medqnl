@@ -1,3 +1,6 @@
+const SUPABASE_URL = "https://lwgbufaxwfrzqlonhmry.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3";
+
 module.exports = async function handler(req, res) {
   if (req.method === "OPTIONS") {
     res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || "*");
@@ -6,12 +9,7 @@ module.exports = async function handler(req, res) {
     return res.status(204).end();
   }
   if (req.method !== "GET") return res.status(405).json({error:"Method not allowed"});
-  const url = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
-  const anonKey = String(process.env.SUPABASE_ANON_KEY || "");
-  if (!url || !anonKey) {
-    return res.status(500).json({error:"SUPABASE_URL en SUPABASE_ANON_KEY ontbreken op de server."});
-  }
   res.setHeader("Access-Control-Allow-Origin", process.env.ALLOWED_ORIGIN || "*");
   res.setHeader("Content-Type", "application/json; charset=utf-8");
-  return res.status(200).json({url, anonKey});
+  return res.status(200).json({url:SUPABASE_URL,anonKey:SUPABASE_PUBLISHABLE_KEY});
 };
