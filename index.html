@@ -1027,13 +1027,13 @@ function qbank(){
  for(i=0;i<firstSubs.length;i++)subOpts+="<option value='"+esc(firstSubs[i])+"'>"+esc(firstSubs[i])+"</option>";
  var subjectOpts="<option value=''>Alle Qbank-onderwerpen</option>";
  for(i=0;i<QBANK_SUBJECTS.length;i++)subjectOpts+="<option value='"+esc(QBANK_SUBJECTS[i])+"'>"+esc(QBANK_SUBJECTS[i])+"</option>";
- return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen binnen de zes hoofdonderwerpen en hun vaste subsecties.</p></div></div>"+
- "<div class='card qbank-builder'><div class='title'>Test Builder</div><p class='small muted'>Kies onderwerp, subsectie en vraagtype voor je oefentoets.</p>"+
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen binnen de zes hoofdonderwerpen en hun hoofdstukken.</p></div></div>"+
+ "<div class='card qbank-builder'><div class='title'>Test Builder</div><p class='small muted'>Kies onderwerp, hoofdstuk en vraagtype voor je oefentoets.</p>"+
  "<div class='grid g2'><div class='field'><label>Hoofdonderwerp</label><select id='qbankSubject'>"+subjectOpts+"</select></div>"+
- "<div class='field'><label>Subsectie</label><select id='qbankSubsection'>"+subOpts+"</select></div></div>"+
+ "<div class='field'><label>Hoofdstuk</label><select id='qbankSubsection'>"+subOpts+"</select></div></div>"+
  "<div class='field'><label>Modus</label><div class='qbank-mode-grid'>"+
  "<label class='qbank-mode-card'><input type='radio' name='qbankMode' value='knowledge'><span><strong>Kennis- &amp; Conceptcheck</strong><small>Directe vragen over anatomie, fysiologie, formules en definities.</small></span></label>"+
- "<label class='qbank-mode-card'><input type='radio' name='qbankMode' value='clinical'><span><strong>Klinische Casussen / UWorld-stijl</strong><small>Uitgebreide patiëntcasussen met klinisch redeneren.</small></span></label>"+
+ "<label class='qbank-mode-card'><input type='radio' name='qbankMode' value='clinical'><span><strong>Klinische Casussen</strong><small>Uitgebreide patiëntcasussen met klinisch redeneren.</small></span></label>"+
  "<label class='qbank-mode-card selected'><input type='radio' name='qbankMode' value='mixed' checked><span><strong>Gemengd (Aanbevolen)</strong><small>Combineert beide vraagtypes.</small></span></label>"+
  "</div></div>"+
  "<div style='display:flex;align-items:end;gap:10px;flex-wrap:wrap'><div class='field' style='margin:0;width:130px'><label>Aantal vragen</label><input id='qbankCount' type='number' min='1' max='100' value='10'></div><button class='btn primary' id='startqb'>Genereer oefentoets</button></div></div>"+
@@ -1062,7 +1062,7 @@ function startQbankSession(){
 }
 function updateQbankSubsections(){
  var s=document.getElementById("qbankSubject"),sub=document.getElementById("qbankSubsection");if(!s||!sub)return;
- var list=qbankSubsections(s.value),html="<option value=''>Alle subsecties</option>",i;
+ var list=qbankSubsections(s.value),html="<option value=''>Alle hoofdstukken</option>",i;
  for(i=0;i<list.length;i++)html+="<option value='"+esc(list[i])+"'>"+esc(list[i])+"</option>";
  sub.innerHTML=html;
 }
