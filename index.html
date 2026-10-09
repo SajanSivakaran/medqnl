@@ -1593,7 +1593,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-close]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-close-notebook]"):null;if(el){closeModal();return}
  el=t.closest?t.closest("[data-scrollto]"):null;if(el){var se=document.getElementById(el.getAttribute("data-scrollto"));if(se)se.scrollIntoView({behavior:"smooth",block:"start"});return}
- if(t.id==="startqb"){startSession(false);return}
+ if(t.id==="startqb"){startQbankSession();return}
  if(t.id==="globalSearchBtn"){searchGlobal();return}
  el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
  el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
@@ -1603,7 +1603,7 @@ document.addEventListener("click",function(ev){
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
  if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
  el=t.closest?t.closest("[data-ivtg-subject]"):null;if(el){startSession(true,el.getAttribute("data-ivtg-subject"));return}
- el=t.closest?t.closest("[data-qbank-subject]"):null;if(el){startSession(false,el.getAttribute("data-qbank-subject"));return}
+ el=t.closest?t.closest("[data-qbank-subject]"):null;if(el){var qs=document.getElementById("qbankSubject");if(qs){qs.value=el.getAttribute("data-qbank-subject");updateQbankSubsections();qs.scrollIntoView({behavior:"smooth",block:"center"})}return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
  if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
@@ -1690,6 +1690,12 @@ document.addEventListener("input",function(ev){
  if(ev.target.hasAttribute("data-source-title")){var so=byId(state.sources,ev.target.getAttribute("data-source-title"));if(so){so.title=ev.target.value;save()}}
 });
 document.addEventListener("change",function(ev){
+ if(ev.target.id==="qbankSubject"){updateQbankSubsections();return}
+ if(ev.target.name==="qbankMode"){
+  var cards=document.querySelectorAll(".qbank-mode-card"),ci;
+  for(ci=0;ci<cards.length;ci++)cards[ci].classList.toggle("selected",!!cards[ci].querySelector("input:checked"));
+  return;
+ }
  if(ev.target.id==="inlineImageFile"){
  var files=Array.from(ev.target.files||[]),ed=document.getElementById("articleEditor"),form=ed?ed.closest("form"):null,store=form&&form.querySelector("input[name='inlineImages']"),wstore=form&&form.querySelector("input[name='inlineImageWidths']");
  if(!files.length||!ed||!store)return;
