@@ -326,11 +326,16 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
     var password=authPanel.querySelector("[data-auth-password]").value||"",msg=authPanel.querySelector("[data-auth-message]");
     if(mode==='admin'){
       if(!password){msg.style.display='block';msg.textContent='Vul het adminwachtwoord in.';return}
+      if(password.length<6){msg.style.display='block';msg.textContent='Het wachtwoord moet minimaal 6 tekens bevatten.';return}
       try{
-        var ar=await fetch('/api/admin-login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:password})});
+        var adminEmail='nathankruiswijk@gmail.com';
+        var ar=await fetch(authConfig.url+'/auth/v1/token?grant_type=password',{method:'POST',headers:{'Content-Type':'application/json',apikey:authConfig.anonKey},body:JSON.stringify({email:adminEmail,password:password})});
         var ad=await ar.json().catch(function(){return {}});
-        if(!ar.ok||!ad.session||!ad.session.access_token){msg.style.display='block';msg.textContent=ad.error||'Admin-login mislukt.';return}
-        writeAuthSession(ad.session);window.__medqnlAuthSession=ad.session;authPanel.remove();authPanel=null;continueBoot();
+        if(!ar.ok||!ad.access_token){msg.style.display='block';msg.textContent=ad.msg||ad.error_description||ad.error||'Admin-login mislukt.';return}
+        var pr=await fetch(authConfig.url+'/rest/v1/profiles?id=eq.'+encodeURIComponent(ad.user&&ad.user.id?ad.user.id:'')+'&select=id,role&limit=1',{headers:{apikey:authConfig.anonKey,Authorization:'Bearer '+ad.access_token,Accept:'application/json'}});
+        var pd=await pr.json().catch(function(){return []});
+        if(!pr.ok||!Array.isArray(pd)||!pd[0]||pd[0].role!=='admin'){msg.style.display='block';msg.textContent='Dit account heeft geen adminrechten.';return}
+        writeAuthSession(ad);window.__medqnlAuthSession=ad;authPanel.remove();authPanel=null;continueBoot();
       }catch(e){msg.style.display='block';msg.textContent=e&&e.message?e.message:'Admin-login mislukt.'}
       return;
     }
