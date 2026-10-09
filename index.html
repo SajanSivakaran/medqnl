@@ -932,7 +932,7 @@ function shell(body){
  "</div>";
  return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vraagbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
@@ -952,13 +952,25 @@ function dashboard(){
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
  "<div class='grid g3'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
- "<div class='row'><div><strong>Vraagbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
+ "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
  "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
 }
 function qbank(){
- return shell("<div class='pagehead'><div><h1>Vraagbank</h1><p>Selecteer een onderwerp en start een oefenblok.</p></div></div><div class='card'><div class='grid g3'><div class='field'><label>Onderwerp</label><select id='qbs'><option>Alle onderwerpen</option><option>Fysiologie</option><option>Metamedica</option></select></div><div class='field'><label>Aantal</label><select id='qbn'><option>5</option><option>10</option></select></div><div style='padding-top:20px'><button class='btn primary' id='startqb'>Start</button></div></div></div>");
+ var subjects=[],buttons="",i,q;
+ for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
+ subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
+ for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-qbank-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
+ return shell("<div class='pagehead ivtg-landing-head'><div><h1>Vragenbank</h1><p>Oefen met casusgerichte vragen in dezelfde overzichtelijke startomgeving.</p></div></div>"+
+ "<div class='ivtg-landing'>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • VRAGENBANK</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct met een gemengde sessie of kies een onderwerp.</p></div>"+
+ "<div class='ivtg-start-grid'>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startqb'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
+ "</div>");
 }
 function startSession(ivtg,forcedSubject){
  var pool=[],i,n=5,e=document.getElementById("qbn");if(e)n=parseInt(e.value,10)||5;
@@ -982,17 +994,18 @@ function questionPage(){
  return body;
 }
 function ivtg(){
- if(!state.ui)state.ui={};
- var open=!!state.ui.ivtgTopicOpen,subjects=[],buttons="",i,q;
+ var subjects=[],buttons="",i,q;
  for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!has(subjects,q.subject))subjects.push(q.subject)}
  subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
  for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
  return shell("<div class='pagehead ivtg-landing-head'><div><h1>iVTG Trainer</h1><p>Oefen met klinische casussen in de aparte iVTG-omgeving.</p></div></div>"+
  "<div class='ivtg-landing'>"+
  "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>Start direct of kies eerst een onderwerp.</p></div>"+
- "<div class='ivtg-start-grid'><div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
- "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p><button class='btn secondary' data-ivtg-subject-toggle>"+(open?"Onderwerpen verbergen":"Onderwerpen kiezen")+"</button></div></div>"+
- (open?"<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>":"")+
+ "<div class='ivtg-start-grid'>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde oefensessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
+ "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één onderwerp en oefen alleen die vragen.</p></div>"+
+ "</div>"+
+ "<div class='ivtg-subject-panel'><div class='small muted' style='margin-bottom:8px'>Kies een onderwerp</div>"+(buttons||"<div class='empty'>Nog geen onderwerpen beschikbaar.</div>")+"</div>"+
  "</div>");
 }
 function sanitizeRichHtml(html){
@@ -1259,7 +1272,7 @@ function performanceOverall(){
  "<div class='metric-list'><div class='title'>Jouw score</div><div class='row'><span>Totaal correct</span><strong>"+s.c+"</strong></div><div class='row'><span>Totaal incorrect</span><strong>"+Math.max(0,used-s.c)+"</strong></div><div class='row'><span>Overgeslagen</span><strong>0</strong></div></div>"+
  "</div></div>"+
  "<div class='performance-stat-grid' style='margin-top:15px'>"+
- "<div class='card'><div class='title'>Vraagbankgebruik</div><div class='row'><span>Gebruikte vragen</span><strong>"+used+"</strong></div><div class='row'><span>Ongebruikte vragen</span><strong>"+unused+"</strong></div><div class='row'><span>Totaal aantal vragen</span><strong>"+total+"</strong></div></div>"+
+ "<div class='card'><div class='title'>Vragenbankgebruik</div><div class='row'><span>Gebruikte vragen</span><strong>"+used+"</strong></div><div class='row'><span>Ongebruikte vragen</span><strong>"+unused+"</strong></div><div class='row'><span>Totaal aantal vragen</span><strong>"+total+"</strong></div></div>"+
  "<div class='card'><div class='title'>Tests</div><div class='row'><span>Tests aangemaakt</span><strong>"+state.attempts.length+"</strong></div><div class='row'><span>Tests voltooid</span><strong>"+completed+"</strong></div><div class='row'><span>Opgeschorte tests</span><strong>0</strong></div></div>"+
  "</div>"+
  "<div class='card' style='margin-top:15px'><div class='title'>Percentielrang</div><div class='percentile-box'><div class='bellcurve'><svg viewBox='0 0 520 160' preserveAspectRatio='none'><path d='M20 145 C90 145,115 35,260 35 C405 35,430 145,500 145' fill='none' stroke='#7b7b7b' stroke-width='1.4'/><line x1='280' y1='10' x2='280' y2='145' stroke='#2d8de6'/></svg><div class='small muted' style='position:absolute;left:54%;top:2px'>Percentielpositie</div></div><div class='metric-list'><div class='row'><span>Jouw positie</span><strong>"+percentileText+"</strong></div><div class='row'><span>Mediaan score</span><strong>"+medianText+"</strong></div><div class='row'><span>Jouw gemiddelde tijd</span><strong>"+(avgSec?formatTime(avgSec):"Nog niet beschikbaar")+"</strong></div><div class='row'><span>Gemiddelde andere studenten</span><strong>"+otherTimeText+"</strong></div>"+(b.sample?"<div class='small muted' style='margin-top:8px'>Gebaseerd op "+b.sample+" studenten.</div>":"<div class='small muted' style='margin-top:8px'>De relatieve positie wordt pas getoond zodra MedQNL voldoende geanonimiseerde studentgegevens heeft verzameld.</div>")+"</div></div></div></div>");
@@ -1524,8 +1537,9 @@ document.addEventListener("click",function(ev){
  if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
- if(t.hasAttribute("data-ivtg-subject-toggle")){if(!state.ui)state.ui={};state.ui.ivtgTopicOpen=!state.ui.ivtgTopicOpen;save();render();return}
+ if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
  el=t.closest?t.closest("[data-ivtg-subject]"):null;if(el){startSession(true,el.getAttribute("data-ivtg-subject"));return}
+ el=t.closest?t.closest("[data-qbank-subject]"):null;if(el){startSession(false,el.getAttribute("data-qbank-subject"));return}
  el=t.closest?t.closest("[data-prev]"):null;if(el&&session){if(session.index>0)session.index--;render();return}
  el=t.closest?t.closest("[data-next]"):null;if(el&&session){if(session.index<session.questions.length-1)session.index++;render();return}
  if(t.id==="next"&&session){if(session.index===session.questions.length-1){stopChapterTimer();page="result";render()}else{session.index++;render()}return}
