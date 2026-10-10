@@ -853,6 +853,22 @@ function normalizeArticleLibraries(x){
  var i,a,sec;
  for(i=0;i<x.articles.length;i++){a=x.articles[i];sec=byId(x.sections,a.sectionId);if(sec&&sec.library==="medical")a.library="medical";else if(!a.library||a.library==="medical")a.library="ivtg"}
 }
+function ensureIVTGLibrary(x){
+ var changed=false,i,art,sec;
+ if(!x||!Array.isArray(x.articles)||!Array.isArray(x.sections))return false;
+ for(i=0;i<ARTICLES.length;i++){
+  art=ARTICLES[i];
+  if(art&&art.library!=="medical"&&!byId(x.articles,art.id)){x.articles.push(clone(art));changed=true;}
+ }
+ for(i=0;i<SECTIONS.length;i++){
+  sec=SECTIONS[i];
+  if(sec&&sec.library!=="medical"&&!byId(x.sections,sec.id)){x.sections.push(clone(sec));changed=true;}
+ }
+ normalizeArticleLibraries(x);
+ if(changed)saveStateFor(x);
+ return changed;
+}
+
 
 var BLOCK4_QUESTION_BANK=[];
 function b4mc(id,chapter,topic,title,caseText,stem,options,correct,explanation,objective,points){
@@ -1973,6 +1989,7 @@ function articleToc(a,prefix){
  return out2;
 }
 function library(){
+ ensureIVTGLibrary(state);
  var ivtgArticles=[],ivtgSections=[],i,sec,j;
  for(i=0;i<state.articles.length;i++)if(state.articles[i].library!=="medical")ivtgArticles.push(state.articles[i]);
  for(i=0;i<state.sections.length;i++){
@@ -1982,9 +1999,11 @@ function library(){
    if(sectionCandidate.library!=="medical" && hasIvtgArticle)ivtgSections.push(sectionCandidate);
  }
  if(!state.ui)state.ui={};
- var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc=articleToc(a,"mainsec");
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="";
+ if(a){try{toc=articleToc(a,"mainsec")||""}catch(e){toc=""}}
  var collapsed=!!state.ui.libNavCollapsed;
  if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>");
+ articleId=a.id;
  for(i=0;i<ivtgSections.length;i++){
    sec=ivtgSections[i];
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
