@@ -1558,8 +1558,6 @@ function recalcSessionTotals(){
  session.score=score;session.pointsEarned=points;session.maxPoints=max;
  if(session.ivtg){var sa=0;for(i=0;i<session.questions.length;i++){q=session.questions[i];a=session.answers[q.id];if(session.pretestIds&&session.pretestIds[String(q.id)])continue;if(typeof a!=="undefined")sa++;}session.scoredAnswered=sa;}
 }
-
-}
 function questionAnswered(q){
  if(!q||!session)return false;
  var a=session.answers[q.id];
