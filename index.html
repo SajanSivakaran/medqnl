@@ -1484,18 +1484,14 @@ var MEDQNL_DAILY_CASES={
 "Flucloxacilline":{patient:"Een 58-jarige vrouw heeft een forse huid- en wekedeleninfectie waarbij een methicillinegevoelige stafylokok waarschijnlijk is. De arts kiest daarom een penicillinase-resistente penicilline.",story:"Flucloxacilline remt de bacteriële celwandsynthese en is relatief stabiel tegen penicillinasen van stafylokokken. Daardoor is het gericht bruikbaar bij infecties door gevoelige stafylokokken. Allergische reacties en maag-darmklachten kunnen optreden; levergerelateerde bijwerkingen zijn zeldzamer maar klinisch relevant. De keuze voor dit middel hangt altijd af van de vermoedelijke of aangetoonde verwekker en de lokale antibioticakeuzes."}
 };
 
-var MEDQNL_DAILY_KEY="medqnl_daily_puzzle_v1",medqnlDailyTimer=null;
-function medqnlDailyDate(){
- try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Amsterdam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
- catch(e){var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return d.getFullYear()+"-"+m+"-"+day}
-}
-function medqnlDayNumber(dateKey){
- var parts=String(dateKey).split("-").map(Number),base=Date.UTC(2026,0,1),cur=Date.UTC(parts[0],parts[1]-1,parts[2]);
- return Math.floor((cur-base)/86400000);
+var MEDQNL_DAILY_KEY="medqnl_daily_puzzle_v2",medqnlDailyTimer=null,MEDQNL_DAILY_EPOCH=Date.UTC(2026,9,10,19,0,0),MEDQNL_DAILY_OFFSET=24,MEDQNL_DAILY_SLOT_MS=12*60*60*1000;
+function medqnlDailySlot(){
+ var raw=Math.floor((Date.now()-MEDQNL_DAILY_EPOCH)/MEDQNL_DAILY_SLOT_MS);
+ return raw<0?0:raw;
 }
 function medqnlDailyTarget(){
- var date=medqnlDailyDate(),idx=((medqnlDayNumber(date)%MEDQNL_DAILY_PUZZLES.length)+MEDQNL_DAILY_PUZZLES.length)%MEDQNL_DAILY_PUZZLES.length,puzzle=MEDQNL_DAILY_PUZZLES[idx],info=MEDQNL_DAILY_CASES[puzzle.name]||{};
- return {date:date,index:idx,puzzle:Object.assign({},puzzle,info)};
+ var slot=medqnlDailySlot(),idx=((slot+MEDQNL_DAILY_OFFSET)%MEDQNL_DAILY_PUZZLES.length+MEDQNL_DAILY_PUZZLES.length)%MEDQNL_DAILY_PUZZLES.length,puzzle=MEDQNL_DAILY_PUZZLES[idx],info=MEDQNL_DAILY_CASES[puzzle.name]||{};
+ return {slot:slot,index:idx,puzzle:Object.assign({},puzzle,info)};
 }
 function medqnlDailyState(){
  try{
@@ -1512,51 +1508,54 @@ function medqnlNormalizeGuess(value){
  return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
 }
 function medqnlDailyComplete(solved,attempts){
- var t=medqnlDailyTarget(),st=medqnlDailyState(),today=t.date,p=today.split("-").map(Number),prevDate=new Date(Date.UTC(p[0],p[1]-1,p[2]-1)),prev=prevDate.getUTCFullYear()+"-"+String(prevDate.getUTCMonth()+1).padStart(2,"0")+"-"+String(prevDate.getUTCDate()).padStart(2,"0"),previous=!!(st.results[prev]&&st.results[prev].completed);
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),slotKey=String(t.slot),previous=!!(st.results[String(t.slot-1)]&&st.results[String(t.slot-1)].completed);
  st.streak=solved?(previous?(st.streak||0)+1:1):0;
  st.bestStreak=Math.max(st.bestStreak||0,st.streak);
- st.results[today]={completed:true,solved:!!solved,attempts:attempts||0,score:solved?Math.max(1,6-(attempts||1)):0,finishedAt:Date.now()};
+ st.results[slotKey]={completed:true,solved:!!solved,attempts:attempts||0,score:solved?Math.max(1,6-(attempts||1)):0,finishedAt:Date.now()};
  saveMedqnlDailyState(st);return st;
 }
 function medqnlDailySubmit(){
- var target=medqnlDailyTarget(),st=medqnlDailyState(),existing=st.results[target.date];
+ var target=medqnlDailyTarget(),st=medqnlDailyState(),slotKey=String(target.slot),existing=st.results[slotKey];
  if(existing&&existing.completed)return;
  var input=document.getElementById("dailyPuzzleGuess"),status=document.getElementById("dailyPuzzleStatus"),guess=String(input&&input.value||"").trim();
  if(!guess){if(status)status.textContent="Vul een geneesmiddel in.";return}
- var temp=st.results[target.date]&&typeof st.results[target.date]==="object"?st.results[target.date]:{},attempts=Number(temp.attempts)||0;
+ var temp=st.results[slotKey]&&typeof st.results[slotKey]==="object"?st.results[slotKey]:{},attempts=Number(temp.attempts)||0;
  attempts++;
  var normalized=medqnlNormalizeGuess(guess),answers=(target.puzzle.aliases||[]).map(medqnlNormalizeGuess);
  if(answers.indexOf(normalized)>=0){medqnlDailyComplete(true,attempts);render();return}
- if(!st.results[target.date])st.results[target.date]={attempts:attempts,wrongGuesses:[]};
- else st.results[target.date].attempts=attempts;
- st.results[target.date].wrongGuesses=Array.isArray(st.results[target.date].wrongGuesses)?st.results[target.date].wrongGuesses:[];
- st.results[target.date].wrongGuesses.push(guess);
+ if(!st.results[slotKey])st.results[slotKey]={attempts:attempts,wrongGuesses:[]};
+ else st.results[slotKey].attempts=attempts;
+ st.results[slotKey].wrongGuesses=Array.isArray(st.results[slotKey].wrongGuesses)?st.results[slotKey].wrongGuesses:[];
+ st.results[slotKey].wrongGuesses.push(guess);
  if(attempts>=5){medqnlDailyComplete(false,attempts);render();return}
  saveMedqnlDailyState(st);render();
 }
 function medqnlDailyCountdown(){
- var now=new Date(),tom=new Date(now.getTime()+24*60*60*1000);
- tom.setHours(0,0,0,0);
- var sec=Math.max(0,Math.floor((tom-now)/1000)),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+ var next=MEDQNL_DAILY_EPOCH+(medqnlDailySlot()+1)*MEDQNL_DAILY_SLOT_MS,sec=Math.max(0,Math.floor((next-Date.now())/1000)),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
  return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
 }
 function medqnlStartDailyTimer(){
  if(medqnlDailyTimer)clearInterval(medqnlDailyTimer);
- medqnlDailyTimer=setInterval(function(){var el=document.getElementById("dailyPuzzleCountdown");if(el)el.textContent=medqnlDailyCountdown()},1000);
+ medqnlDailyTimer=setInterval(function(){
+  var el=document.getElementById("dailyPuzzleCountdown");if(!el)return;
+  var next=MEDQNL_DAILY_EPOCH+(medqnlDailySlot()+1)*MEDQNL_DAILY_SLOT_MS;
+  if(Date.now()>=next){render();return}
+  el.textContent=medqnlDailyCountdown();
+ },1000);
 }
 function medqnlDailyCard(){
- var t=medqnlDailyTarget(),st=medqnlDailyState(),today=st.results[t.date],p=t.puzzle;
- if(today&&today.completed){
-  var score=today.solved?Math.max(1,6-(Number(today.attempts)||1)):0;
-  return "<div class='card daily-puzzle-card daily-puzzle-complete'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY · #"+esc(String(t.index+1))+"</span><h2>"+(today.solved?"Goed gedaan":"Dagafsluiting")+"</h2><p>"+(today.solved?"Je hebt <strong>"+esc(p.name)+"</strong> gevonden in "+esc(String(today.attempts))+" poging(en).":"Vandaag niet gevonden. Het antwoord was <strong>"+esc(p.name)+"</strong>.")+"</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div>"+
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),slotKey=String(t.slot),current=st.results[slotKey],p=t.puzzle;
+ if(current&&current.completed){
+  var score=current.solved?Math.max(1,6-(Number(current.attempts)||1)):0;
+  return "<div class='card daily-puzzle-card daily-puzzle-complete'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL PUZZEL · #"+esc(String(t.index+1))+"</span><h2>"+(current.solved?"Goed gedaan":"Ronde afgerond")+"</h2><p>"+(current.solved?"Je hebt <strong>"+esc(p.name)+"</strong> gevonden in "+esc(String(current.attempts))+" poging(en).":"Deze ronde niet gevonden. Het antwoord was <strong>"+esc(p.name)+"</strong>.")+"</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>rondes streak</span></div></div>"+
   "<div class='daily-story'>"+
   "<div class='daily-patient-case'><div class='daily-patient-label'>De patiënt achter de puzzel</div><strong>"+esc(p.patient||"Een patiënt gebruikt dit geneesmiddel vanwege een passende klinische indicatie.")+"</strong></div>"+
   "<div class='daily-story-section'><strong>Waarom kreeg deze patiënt dit middel?</strong><p>"+esc(p.story||"Dit geneesmiddel is gekozen vanwege de beschreven klinische indicatie.")+"</p></div>"+
   "<div class='daily-story-grid'><div class='daily-story-section'><strong>Geneesmiddelengroep &amp; werking</strong><p>"+esc(p.className)+". "+esc(p.mechanism)+"</p></div><div class='daily-story-section'><strong>Waar let je op in de praktijk?</strong><p>"+esc(p.indication)+" Belangrijk aandachtspunt: "+esc(p.sideEffect)+"</p></div></div>"+
   "<div class='daily-story-section'><strong>MedQNL-kenniskaart</strong><p>"+esc(p.pearl)+"</p></div></div>"+
-  "<div class='daily-result'><div><span class='daily-result-label'>Dagscore</span><strong>"+score+" / 5</strong></div><div><span class='daily-result-label'>Beste streak</span><strong>"+esc(String(st.bestStreak))+" dagen</strong></div><div><span class='daily-result-label'>Nieuwe puzzel</span><strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></div></div></div>";
+  "<div class='daily-result'><div><span class='daily-result-label'>Rondescore</span><strong>"+score+" / 5</strong></div><div><span class='daily-result-label'>Beste streak</span><strong>"+esc(String(st.bestStreak))+" rondes</strong></div><div><span class='daily-result-label'>Nieuwe puzzel</span><strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></div></div></div>";
  }
- var wrong=today&&Array.isArray(today.wrongGuesses)?today.wrongGuesses:[],visible=Math.min(1+wrong.length,5),hints=[
+ var wrong=current&&Array.isArray(current.wrongGuesses)?current.wrongGuesses:[],visible=Math.min(1+wrong.length,5),hints=[
  "Patiëntcasus: "+(p.patient||"Een patiënt gebruikt dit middel vanwege een klinische reden die je uit de context kunt afleiden."),
  "Geneesmiddelengroep: "+p.className+".",
  "Werkingsmechanisme: "+p.mechanism,
@@ -1567,9 +1566,8 @@ function medqnlDailyCard(){
   if(i===0)hintHtml+="<div class='daily-patient-case'><div class='daily-patient-label'>Casus</div><strong>"+esc(p.patient||hints[0].replace("Patiëntcasus: ",""))+"</strong></div>";
   else hintHtml+="<div class='daily-hint'><span>"+i+"</span><div>"+hints[i]+"</div></div>";
  }
- return "<div class='card daily-puzzle-card'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY · #"+esc(String(t.index+1))+"</span><h2>Welk geneesmiddel gebruikt deze patiënt?</h2><p>Lees de casus, maak een klinische inschatting en gebruik maximaal vijf pogingen. Bij een foute gok komt de volgende clue vrij.</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div><div class='daily-puzzle-body'><div class='daily-hints'>"+hintHtml+"</div><form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><label for='dailyPuzzleGuess'>Jouw gok</label><input id='dailyPuzzleGuess' placeholder='Typ een geneesmiddel…' autocomplete='off' spellcheck='false'><button class='btn primary' type='submit'>Doe gok</button><div id='dailyPuzzleStatus' class='small muted'>Nog "+Math.max(0,5-wrong.length)+" poging(en).</div></form></div><div class='daily-puzzle-footer'><span>Klinische casus · verborgen geneesmiddel</span><span>Nieuwe puzzel over <strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></span></div></div>";
+ return "<div class='card daily-puzzle-card'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL PUZZEL · #"+esc(String(t.index+1))+"</span><h2>Welk geneesmiddel gebruikt deze patiënt?</h2><p>Lees de casus, maak een klinische inschatting en gebruik maximaal vijf pogingen. Bij een foute gok komt de volgende clue vrij. Elke ronde duurt 12 uur.</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>rondes streak</span></div></div><div class='daily-puzzle-body'><div class='daily-hints'>"+hintHtml+"</div><form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><label for='dailyPuzzleGuess'>Jouw gok</label><input id='dailyPuzzleGuess' placeholder='Typ een geneesmiddel…' autocomplete='off' spellcheck='false'><button class='btn primary' type='submit'>Doe gok</button><div id='dailyPuzzleStatus' class='small muted'>Nog "+Math.max(0,5-wrong.length)+" poging(en).</div></form></div><div class='daily-puzzle-footer'><span>Klinische casus · verborgen geneesmiddel</span><span>Nieuwe puzzel over <strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></span></div></div>";
 }
-
 
 function dashboard(){
  var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
