@@ -3356,158 +3356,74 @@ async function bootMedQNL(){
 })();
 
 
-/* MedQNL Geneesmiddel Dle */
+/* MedQNL Druggie — progressive clinical guessing game */
 (function(){
-  var FARMA_DLE_KEY="medqnl_geneesmiddel_dle_v2",MAX_GUESSES=6;
-
-  function dleDateKey(){
-    var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
-    return d.getFullYear()+"-"+m+"-"+day;
-  }
-  function dleHash(s){
-    var h=2166136261,i;s=String(s||"");
-    for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}
-    return h>>>0;
-  }
-  function dlePool(st){
-    var pool=FARMA_TRAINER_DRUGS||[];
-    if(st.groupId&&st.groupId!=="all")pool=pool.filter(function(x){return x.groupId===st.groupId});
-    return pool;
-  }
-  function dleState(){
-    var raw=null,x=null,today=dleDateKey();
-    try{raw=localStorage.getItem(FARMA_DLE_KEY);if(raw)x=JSON.parse(raw)}catch(e){}
-    if(!x||typeof x!=="object"||x.date!==today){
-      x={date:today,mode:"daily",groupId:"all",dailyTarget:"",target:"",guesses:[],finished:false,won:false,freeRound:0};
-    }
-    if(x.mode!=="daily"&&x.mode!=="free")x.mode="daily";
-    if(!x.groupId)x.groupId="all";
-    if(!Array.isArray(x.guesses))x.guesses=[];
-    if(typeof x.finished!=="boolean")x.finished=false;
-    if(typeof x.won!=="boolean")x.won=false;
-    if(typeof x.freeRound!=="number")x.freeRound=0;
-    if(typeof x.dailyTarget!=="string")x.dailyTarget="";
-    if(typeof x.target!=="string")x.target="";
-    return x;
-  }
+  var FARMA_DLE_KEY="medqnl_druggie_v3",MAX_GUESSES=4;
+  var DLE_CLUES=[
+    {key:"indication",label:"Klinische casus",title:"Indicatie"},
+    {key:"adverse",label:"Nieuwe aanwijzing",title:"Bijwerking"},
+    {key:"interaction",label:"Nieuwe aanwijzing",title:"Interactie / waarschuwing"},
+    {key:"class",label:"Laatste aanwijzing",title:"Farmacologische klasse"}
+  ];
+  function dleDateKey(){var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return d.getFullYear()+"-"+m+"-"+day}
+  function dleHash(s){var h=2166136261,i;s=String(s||"");for(i=0;i<s.length;i++){h^=s.charCodeAt(i);h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24)}return h>>>0}
+  function dlePool(st){var pool=FARMA_TRAINER_DRUGS||[];if(st.groupId&&st.groupId!=="all")pool=pool.filter(function(x){return x.groupId===st.groupId});return pool}
+  function dleState(){var raw=null,x=null,today=dleDateKey();try{raw=localStorage.getItem(FARMA_DLE_KEY);if(raw)x=JSON.parse(raw)}catch(e){}if(!x||typeof x!=="object"||x.date!==today)x={date:today,mode:"daily",groupId:"all",dailyTarget:"",target:"",guesses:[],finished:false,won:false,freeRound:0};if(x.mode!=="daily"&&x.mode!=="free")x.mode="daily";if(!x.groupId)x.groupId="all";if(!Array.isArray(x.guesses))x.guesses=[];if(typeof x.finished!=="boolean")x.finished=false;if(typeof x.won!=="boolean")x.won=false;if(typeof x.freeRound!=="number")x.freeRound=0;if(typeof x.dailyTarget!=="string")x.dailyTarget="";if(typeof x.target!=="string")x.target="";return x}
   function dleSave(x){try{localStorage.setItem(FARMA_DLE_KEY,JSON.stringify(x))}catch(e){}}
-  function dleDaily(st){
-    var pool=dlePool(st),idx;
-    if(!pool.length)return null;
-    idx=dleHash(st.date+":"+st.groupId)%pool.length;
-    return pool[idx]||pool[0];
-  }
-  function dleTarget(st){
-    var pool=dlePool(st);
-    if(!pool.length)return null;
-    if(st.mode==="daily"){
-      if(!st.dailyTarget)st.dailyTarget=(dleDaily(st)||{}).name||"";
-      return medqnlFarmaByName(st.dailyTarget)||dleDaily(st);
-    }
-    if(!st.target)st.target=(pool[dleHash(st.date+":"+st.groupId+":"+st.freeRound)%pool.length]||{}).name||"";
-    return medqnlFarmaByName(st.target);
-  }
-  function dleNames(st){
-    var pool=dlePool(st),a=[],i;
-    for(i=0;i<pool.length;i++)a.push(pool[i].name);
-    return a;
-  }
+  function dleDaily(st){var pool=dlePool(st),idx;if(!pool.length)return null;idx=dleHash(st.date+":"+st.groupId)%pool.length;return pool[idx]||pool[0]}
+  function dleTarget(st){var pool=dlePool(st);if(!pool.length)return null;if(st.mode==="daily"){if(!st.dailyTarget)st.dailyTarget=(dleDaily(st)||{}).name||"";return medqnlFarmaByName(st.dailyTarget)||dleDaily(st)}if(!st.target)st.target=(pool[dleHash(st.date+":"+st.groupId+":"+st.freeRound)%pool.length]||{}).name||"";return medqnlFarmaByName(st.target)}
+  function dleNames(st){var pool=dlePool(st),a=[],i;for(i=0;i<pool.length;i++)a.push(pool[i].name);return a}
   function dleNorm(s){return String(s||"").toLowerCase().replace(/\s+/g," ").trim()}
-  function dleTokens(s){
-    var raw=dleNorm(s).replace(/[^a-z0-9äöüéëïàèìòùç\- ]/gi," ").split(/\s+/);
-    var out=[],seen={},stop={de:1,het:1,een:1,en:1,of:1,bij:1,met:1,voor:1,van:1,op:1,in:1,tot:1,te:1,die:1,dat:1,kan:1,wordt:1,worden:1,is:1,zijn:1,als:1,door:1,zoals:1,onder:1,ook:1,meer:1,minder:1};
-    var i,t;
-    for(i=0;i<raw.length;i++){t=raw[i];if(!t||t.length<4||stop[t]||seen[t])continue;seen[t]=1;out.push(t)}
-    return out;
-  }
-  function dleOverlap(a,b){
-    var aa=dleTokens(a),bb=dleTokens(b),i,j;
-    for(i=0;i<aa.length;i++)for(j=0;j<bb.length;j++)if(aa[i]===bb[j]||aa[i].indexOf(bb[j])>=0||bb[j].indexOf(aa[i])>=0)return true;
-    return false;
-  }
-  function dleStatus(g,t,key){
-    var gf=g.facts||{},tf=t.facts||{},gv,tv;
-    if(key==="group")return g.group===t.group?"exact":"none";
-    if(key==="class")return dleNorm(gf.c)&&dleNorm(tf.c)&&dleNorm(gf.c)===dleNorm(tf.c)?"exact":"none";
-    gv=gf[key]||"";tv=tf[key]||"";
-    if(!gv||!tv)return "none";
-    return dleNorm(gv)===dleNorm(tv)?"exact":(dleOverlap(gv,tv)?"partial":"none");
-  }
-  function dleShort(s,max){s=String(s||"");return s.length>max?s.slice(0,max-1)+"…":s}
-  function dleCell(label,value,status){
-    return "<div class='dle-cell "+status+"'><div class='dle-cell-label'>"+esc(label)+"</div><div class='dle-cell-value'>"+esc(value||"—")+"</div><div class='dle-cell-state'>"+(status==="exact"?"MATCH":status==="partial"?"DEELS":"GEEN MATCH")+"</div></div>";
-  }
-  function dleRow(g,t){
-    var f=g.facts||{};
-    return "<div class='dle-guess-row'><div class='dle-guess-name'><strong>"+esc(g.name)+"</strong><span>"+esc(g.group)+"</span></div>"+
-      dleCell("Groep",g.group,dleStatus(g,t,"group"))+
-      dleCell("Klasse",f.c,dleStatus(g,t,"class"))+
-      dleCell("Indicatie",dleShort(f.i,72),dleStatus(g,t,"i"))+
-      dleCell("Bijwerking",dleShort(f.b,72),dleStatus(g,t,"b"))+
-      dleCell("Interactie",dleShort(f.x,72),dleStatus(g,t,"x"))+
-    "</div>";
-  }
-  function dleReset(st){
-    st.guesses=[];st.finished=false;st.won=false;
-    if(st.mode==="daily")st.target=st.dailyTarget;
-    else{st.freeRound=(Number(st.freeRound)||0)+1;st.target=""}
-  }
-  function dleNewFree(st){
-    st.mode="free";st.guesses=[];st.finished=false;st.won=false;
-    st.freeRound=(Number(st.freeRound)||0)+1;st.target="";
-  }
-  function dleChangeGroup(st,groupId){
-    st.groupId=groupId||"all";st.dailyTarget="";st.target="";
-    st.guesses=[];st.finished=false;st.won=false;
-  }
-  function dleGuess(st,name){
-    var t=dleTarget(st),g=medqnlFarmaByName(name),i;
-    if(!t||!g||st.finished)return false;
-    for(i=0;i<st.guesses.length;i++)if(dleNorm(st.guesses[i])===dleNorm(g.name))return false;
-    st.guesses.push(g.name);
-    if(dleNorm(g.name)===dleNorm(t.name)){st.won=true;st.finished=true}
-    else if(st.guesses.length>=MAX_GUESSES){st.finished=true;st.won=false}
-    return true;
-  }
-
+  function dleReset(st){st.guesses=[];st.finished=false;st.won=false;if(st.mode==="daily"){st.dailyTarget="";st.target=""}else{st.freeRound=(Number(st.freeRound)||0)+1;st.target=""}}
+  function dleNewFree(st){st.mode="free";st.guesses=[];st.finished=false;st.won=false;st.freeRound=(Number(st.freeRound)||0)+1;st.target=""}
+  function dleChangeGroup(st,groupId){st.groupId=groupId||"all";st.dailyTarget="";st.target="";st.guesses=[];st.finished=false;st.won=false}
+  function dleGuess(st,name){var t=dleTarget(st),g=medqnlFarmaByName(name),i;if(!t||!g||st.finished)return false;for(i=0;i<st.guesses.length;i++)if(dleNorm(st.guesses[i])===dleNorm(g.name))return false;st.guesses.push(g.name);if(dleNorm(g.name)===dleNorm(t.name)){st.won=true;st.finished=true}else if(st.guesses.length>=MAX_GUESSES){st.finished=true;st.won=false}return true}
+  function dleCaseText(t){var f=t.facts||{};if(f.case)return f.case;if(f.i)return "Een patiënt presenteert zich met een indicatie waarvoor dit geneesmiddel volgens de reader wordt gebruikt: "+String(f.i)+". Welk geneesmiddel past het best bij deze casus?";return "Een patiënt heeft een klinische indicatie waarvoor een geneesmiddel uit deze groep wordt overwogen. Welk geneesmiddel zoek je?"}
+  function dleClueText(t,index){var f=t.facts||{};if(index===0)return dleCaseText(t);if(index===1)return f.b||"De relevante bijwerking is niet apart vastgelegd in de readerdata.";if(index===2)return f.x||"De relevante interactie/waarschuwing is niet apart vastgelegd in de readerdata.";return f.c||"De farmacologische klasse is niet apart vastgelegd in de readerdata."}
+  function dleClueValue(t,index){var f=t.facts||{};if(index===0)return f.i||"Indicatie niet apart vastgelegd.";if(index===1)return f.b||"Bijwerking niet apart vastgelegd.";if(index===2)return f.x||"Interactie/waarschuwing niet apart vastgelegd.";return f.c||"Klasse niet apart vastgelegd."}
+  function dleGuessLine(name,target){var g=medqnlFarmaByName(name),tf=target.facts||{},gf=g&&g.facts||{},bits=[];if(!g)return "";bits.push(g.group===target.group?"<span class='dle-chip match'>"+esc(g.group)+"</span>":"<span class='dle-chip'>"+esc(g.group)+"</span>");if(gf.c&&tf.c&&dleNorm(gf.c)===dleNorm(tf.c))bits.push("<span class='dle-chip match'>"+esc(gf.c)+"</span>");return "<div class='dle-guess-line'><strong>"+esc(g.name)+"</strong><span class='dle-guess-meta'>"+bits.join("")+"</span></div>"}
   druggiePage=function(){
-    var st=dleState(),t=dleTarget(st),names=dleNames(st),rows="",i,g,guess;
-    dleSave(st);
-    if(!t)return shell("<div class='empty'>Geen geneesmiddelen beschikbaar in deze groep.</div>");
-    for(i=0;i<st.guesses.length;i++){guess=medqnlFarmaByName(st.guesses[i]);if(guess)rows+=dleRow(guess,t)}
-    var groups=FARMA_TRAINER_GROUPS||[],groupButtons="",groupOptions="<option value='all'"+(st.groupId==="all"?" selected":"")+">Alle groepen</option>";
-    for(i=0;i<groups.length;i++){
-      g=groups[i];
-      groupOptions+="<option value='"+esc(g.id)+"'"+(st.groupId===g.id?" selected":"")+">"+esc(g.label)+"</option>";
-      groupButtons+="<button type='button' class='dle-group-chip "+(st.groupId===g.id?"active":"")+"' data-dle-group='"+esc(g.id)+"'>"+esc(g.label)+"</button>";
+    var st=dleState(),target=dleTarget(st),groups=FARMA_TRAINER_GROUPS||[],i,g,groupOptions="<option value='all'"+(st.groupId==="all"?" selected":"")+">Alle groepen</option>",chips="",history="";
+    if(!target)return shell("<div class='empty'>Geen geneesmiddelen beschikbaar in deze groep.</div>");
+    for(i=0;i<groups.length;i++){g=groups[i];groupOptions+="<option value='"+esc(g.id)+"'"+(st.groupId===g.id?" selected":"")+">"+esc(g.label)+"</option>";chips+="<button type='button' class='dle-group-chip "+(st.groupId===g.id?"active":"")+"' data-dle-group='"+esc(g.id)+"'>"+esc(g.label)+"</button>"}
+    for(i=0;i<st.guesses.length;i++)history+="<div class='dle-history-item'><span>Poging "+(i+1)+"</span>"+dleGuessLine(st.guesses[i],target)+"</div>";
+    var stage=Math.min(st.guesses.length,MAX_GUESSES-1),activeClue=DLE_CLUES[stage],finished=st.finished,modeLabel=st.mode==="daily"?"Dagelijkse Druggie":"Vrij spelen",clues="";
+    for(i=0;i<DLE_CLUES.length;i++){
+      var revealed=finished||i<=st.guesses.length,active=!finished&&i===stage,locked=!finished&&i>st.guesses.length;
+      clues+="<div class='dle-clue "+(revealed?"revealed ":"")+(active?"active ":"")+(locked?"locked":"")+"'>";
+      clues+="<div class='dle-clue-head'><span>"+(i+1)+"</span><div><strong>"+esc(DLE_CLUES[i].title)+"</strong><small>"+esc(DLE_CLUES[i].label)+"</small></div>";
+      if(revealed)clues+="<b>OPEN</b>";else clues+="<b>VERBORGEN</b>";
+      clues+="</div>";
+      if(revealed)clues+="<div class='dle-clue-body'>"+esc(dleClueText(target,i))+"</div>";
+      else clues+="<div class='dle-clue-body dle-clue-locked'>Deze aanwijzing krijg je na een foute poging.</div>";
+      clues+="</div>";
     }
-    var modeLabel=st.mode==="daily"?"Dagelijkse uitdaging":"Vrij spelen";
-    var result=st.finished?(st.won
-      ?"<div class='dle-result good'><strong>Goed gevonden.</strong> Je vond het geneesmiddel in "+st.guesses.length+" poging"+(st.guesses.length===1?"":"en")+".</div>"
-      :"<div class='dle-result bad'><strong>Ronde voorbij.</strong> Het geneesmiddel was <strong>"+esc(t.name)+"</strong>.</div>"
-    ):"<div class='dle-progress'><span style='width:"+Math.min(100,Math.round(st.guesses.length/MAX_GUESSES*100))+"%'></span></div>";
+    var result=finished
+      ?(st.won?"<div class='dle-result good'><strong>Goed gevonden.</strong> Je vond het geneesmiddel in "+st.guesses.length+" poging"+(st.guesses.length===1?"":"en")+".</div>":"<div class='dle-result bad'><strong>Geen juiste gok meer.</strong> Het geneesmiddel was <strong>"+esc(target.name)+"</strong>.</div>")
+      :"<div class='dle-progress'><span style='width:"+Math.round(st.guesses.length/MAX_GUESSES*100)+"%'></span></div>";
+    var answer=finished?"<div class='card dle-answer-card'><div class='title'>Uitwerking</div><div class='dle-answer-drug'><strong>"+esc(target.name)+"</strong><span>"+esc(target.group)+"</span></div><div class='dle-answer-facts'>"+(target.facts&&target.facts.m?"<div><strong>Werking:</strong> "+esc(target.facts.m)+"</div>":"")+(target.facts&&target.facts.i?"<div><strong>Indicatie:</strong> "+esc(target.facts.i)+"</div>":"")+(target.facts&&target.facts.b?"<div><strong>Belangrijke bijwerking:</strong> "+esc(target.facts.b)+"</div>":"")+(target.facts&&target.facts.x?"<div><strong>Interactie / waarschuwing:</strong> "+esc(target.facts.x)+"</div>":"")+"</div></div>":"";
     return shell(
-      "<div class='pagehead'><div><h1>Druggie</h1><p>Een Wordle-achtige geneesmiddelenpuzzel op basis van de Farmacotherapie Reader. Raad het geneesmiddel en gebruik groep, klasse, indicatie, bijwerking en interactie als aanwijzingen.</p></div></div>"+
+      "<div class='pagehead'><div><h1>Druggie</h1><p>Zoals een dokterspel: eerst krijg je alleen de klinische casus en de indicatie. Na een foute poging wordt steeds één nieuwe aanwijzing vrijgegeven.</p></div></div>"+
       "<div class='card dle-card'>"+
-        "<div class='dle-head'><div><div class='dle-kicker'>"+esc(modeLabel.toUpperCase())+" · FARMACOTHERAPIE READER</div><h2>Welk geneesmiddel zoek je?</h2><p>"+st.guesses.length+" / "+MAX_GUESSES+" pogingen</p></div>"+
-        "<div class='dle-head-actions'><button type='button' class='btn "+(st.mode==="daily"?"primary":"secondary")+"' data-dle-daily>Dagelijks</button><button type='button' class='btn "+(st.mode==="free"?"primary":"secondary")+"' data-dle-free>Vrij spelen</button></div></div>"+
-        "<div class='dle-group-picker'><label>Speel per groep<select id='dleGroup'>"+groupOptions+"</select></label><div class='dle-group-chips'>"+groupButtons+"</div></div>"+
-        "<div class='dle-input-wrap'><input id='dleGuessInput' list='dleDrugList' autocomplete='off' placeholder='Typ een geneesmiddel'><datalist id='dleDrugList'>"+names.map(function(n){return "<option value='"+esc(n)+"'>"}).join("")+"</datalist><button type='button' class='btn primary' data-dle-submit>Raad</button></div>"+
-        "<div class='dle-hint'><strong>Zo werkt het:</strong> groen = exact overeenkomst, geel = gedeeltelijke overeenkomst, grijs = geen overeenkomst.</div>"+
+        "<div class='dle-head'><div><div class='dle-kicker'>"+esc(modeLabel.toUpperCase())+" · 4 POGINGEN</div><h2>Welk geneesmiddel denk je dat het is?</h2><p>"+(finished?"Ronde afgelopen":"Poging "+(Math.min(st.guesses.length+1,MAX_GUESSES))+" van "+MAX_GUESSES)+".</p></div><div class='dle-head-actions'><button type='button' class='btn "+(st.mode==="daily"?"primary":"secondary")+"' data-dle-daily>Dagelijks</button><button type='button' class='btn "+(st.mode==="free"?"primary":"secondary")+"' data-dle-free>Vrij spelen</button></div></div>"+
+        "<div class='dle-group-picker'><label>Speel per geneesmiddelengroep<select id='dleGroup'>"+groupOptions+"</select></label><div class='dle-group-chips'>"+chips+"</div></div>"+
+        "<div class='dle-clues'>"+clues+"</div>"+
+        "<div class='dle-guess-area'>"+
+          "<label for='dleGuessInput'>Jouw poging</label>"+
+          "<div class='dle-input-wrap'><input id='dleGuessInput' list='dleDrugList' autocomplete='off' placeholder='Typ de naam van een geneesmiddel' "+(finished?"disabled":"")+"><datalist id='dleDrugList'>"+dleNames(st).map(function(n){return "<option value='"+esc(n)+"'>"}).join("")+"</datalist><button type='button' class='btn primary' data-dle-submit "+(finished?"disabled":"")+">Dien poging in</button></div>"+
+          "<div class='small muted'>Je krijgt pas na een fout antwoord de volgende aanwijzing.</div>"+
+        "</div>"+
+        (history?"<div class='dle-history'><div class='title'>Jouw pogingen</div>"+history+"</div>":"")+
         result+
-        (rows?"<div class='dle-grid-wrap'><div class='dle-grid-head'><span>Jouw gok</span><span>Groep</span><span>Klasse</span><span>Indicatie</span><span>Bijwerking</span><span>Interactie</span></div>"+rows+"</div>":"<div class='dle-empty'>Je eerste gok verschijnt hier met de aanwijzingen.</div>")+
-        "<div class='dle-footer'><div><strong>Basis:</strong> de getoetste geneesmiddelen uit het hoofdstuk ‘Overige geneesmiddelen’.</div><button type='button' class='btn secondary' data-dle-reset>"+(st.finished?"Nieuwe ronde":"Reset ronde")+"</button></div>"+
-      "</div>"+
-      (st.finished?"<div class='card dle-answer-card'><div class='title'>Antwoord</div><div class='dle-answer-drug'><strong>"+esc(t.name)+"</strong><span>"+esc(t.group)+"</span></div><div class='dle-answer-facts'>"+(t.facts&&t.facts.m?"<div><strong>Werking:</strong> "+esc(t.facts.m)+"</div>":"")+(t.facts&&t.facts.i?"<div><strong>Indicatie:</strong> "+esc(t.facts.i)+"</div>":"")+(t.facts&&t.facts.b?"<div><strong>Belangrijke bijwerking:</strong> "+esc(t.facts.b)+"</div>":"")+(t.facts&&t.facts.x?"<div><strong>Interactie / waarschuwing:</strong> "+esc(t.facts.x)+"</div>":"")+"</div></div>":"")
+        "<div class='dle-footer'><div><strong>Basis:</strong> de geneesmiddelen en relevante kenmerken uit de Farmacotherapie Reader.</div><button type='button' class='btn secondary' data-dle-reset>"+(finished?"Nieuwe ronde":"Reset ronde")+"</button></div>"+
+      "</div>"+answer
     );
   };
-
   if(!document.getElementById("farmaDleStyle")){
     var s=document.createElement("style");s.id="farmaDleStyle";
-    s.textContent=".dle-card{max-width:1180px;margin:0 auto}.dle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.dle-kicker{font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--blue)}.dle-head h2{margin:5px 0;font-size:28px;color:var(--navy)}.dle-head p{margin:0;color:var(--muted)}.dle-head-actions{display:flex;gap:8px}.dle-group-picker{margin-top:16px;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:9px}.dle-group-picker label{display:block;font-size:12px;font-weight:800;color:var(--navy)}.dle-group-picker select{display:block;width:100%;margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.dle-group-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.dle-group-chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 10px;font-size:11px}.dle-group-chip.active{border-color:var(--blue);background:var(--blue2)}.dle-input-wrap{display:grid;grid-template-columns:1fr auto;gap:10px;margin-top:14px}.dle-input-wrap input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);outline:none}.dle-input-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}.dle-hint{margin-top:10px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);font-size:12px;color:var(--muted)}.dle-progress{height:6px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:16px}.dle-progress span{display:block;height:100%;background:var(--blue);border-radius:99px}.dle-grid-wrap{margin-top:18px;display:grid;gap:8px;overflow-x:auto}.dle-grid-head,.dle-guess-row{display:grid;grid-template-columns:180px 120px 180px 1fr 1fr 1fr;gap:8px;min-width:980px}.dle-grid-head{padding:0 2px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:800}.dle-guess-row{align-items:stretch}.dle-guess-name,.dle-cell{border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--card);min-height:92px}.dle-guess-name{display:flex;flex-direction:column;justify-content:center}.dle-guess-name span{font-size:11px;color:var(--muted);margin-top:4px}.dle-cell{display:flex;flex-direction:column;justify-content:space-between}.dle-cell-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);font-weight:800}.dle-cell-value{font-size:12px;line-height:1.4;margin:8px 0}.dle-cell-state{font-size:9px;font-weight:800;letter-spacing:.7px}.dle-cell.exact{background:var(--greenbg);border-color:#9fd3b2;color:var(--green)}.dle-cell.partial{background:#fff8dd;border-color:#edd789;color:#886b00}.dle-cell.none{background:var(--bg);color:var(--muted)}.dle-empty{margin-top:18px;padding:28px;border:1px dashed var(--line);border-radius:10px;text-align:center;color:var(--muted)}.dle-result{margin-top:16px;padding:12px 14px;border-radius:9px;border:1px solid var(--line)}.dle-result.good{background:var(--greenbg)}.dle-result.bad{background:var(--redbg)}.dle-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:18px;font-size:11px;color:var(--muted)}.dle-answer-card{max-width:1180px;margin:15px auto 0}.dle-answer-drug{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 15px;background:var(--blue2);border:1px solid var(--line);border-radius:9px}.dle-answer-drug span{font-size:12px;color:var(--muted)}.dle-answer-facts{margin-top:12px;display:grid;gap:7px;line-height:1.55}@media(max-width:720px){.dle-head{display:block}.dle-head-actions{margin-top:12px}.dle-input-wrap{grid-template-columns:1fr}.dle-footer{display:block}.dle-footer button{width:100%;margin-top:9px}.dle-group-chips{display:none}}";
+    s.textContent=".dle-card{max-width:1050px;margin:0 auto}.dle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.dle-kicker{font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--blue)}.dle-head h2{margin:5px 0;font-size:28px;color:var(--navy)}.dle-head p{margin:0;color:var(--muted)}.dle-head-actions{display:flex;gap:8px}.dle-group-picker{margin-top:16px;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:9px}.dle-group-picker label{display:block;font-size:12px;font-weight:800;color:var(--navy)}.dle-group-picker select{display:block;width:100%;margin-top:6px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.dle-group-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}.dle-group-chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:7px 10px;font-size:11px}.dle-group-chip.active{border-color:var(--blue);background:var(--blue2)}.dle-clues{display:grid;gap:10px;margin-top:18px}.dle-clue{border:1px solid var(--line);border-radius:10px;background:var(--bg);overflow:hidden}.dle-clue-head{display:flex;align-items:center;gap:10px;padding:11px 13px}.dle-clue-head>span{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--line);font-weight:800;color:var(--muted);flex:none}.dle-clue-head div{flex:1;display:flex;flex-direction:column}.dle-clue-head strong{color:var(--navy)}.dle-clue-head small{font-size:10px;color:var(--muted);margin-top:2px}.dle-clue-head b{font-size:9px;color:var(--muted);letter-spacing:.6px}.dle-clue.active{border-color:var(--blue);background:var(--blue2)}.dle-clue.active .dle-clue-head>span{background:var(--blue);color:#fff}.dle-clue.revealed .dle-clue-head>span{background:var(--greenbg);color:var(--green)}.dle-clue-body{padding:13px 15px;border-top:1px solid var(--line);line-height:1.65;color:var(--ink);background:var(--card)}.dle-clue-locked{color:var(--muted);font-style:italic}.dle-guess-area{margin-top:18px;padding:15px;background:var(--blue2);border:1px solid var(--line);border-radius:10px}.dle-guess-area label{display:block;font-size:12px;font-weight:800;color:var(--navy);margin-bottom:7px}.dle-input-wrap{display:grid;grid-template-columns:1fr auto;gap:10px}.dle-input-wrap input{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);outline:none}.dle-input-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}.dle-history{margin-top:18px}.dle-history-item{padding:11px 0;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center}.dle-history-item>span{font-size:11px;color:var(--muted);min-width:70px}.dle-guess-line{flex:1;display:flex;align-items:center;gap:8px;justify-content:space-between}.dle-guess-meta{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}.dle-chip{font-size:10px;padding:4px 7px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--muted)}.dle-chip.match{background:var(--greenbg);border-color:#9fd3b2;color:var(--green)}.dle-progress{height:6px;background:var(--bg);border-radius:99px;overflow:hidden;margin-top:18px}.dle-progress span{display:block;height:100%;background:var(--blue);border-radius:99px}.dle-result{margin-top:16px;padding:12px 14px;border-radius:9px;border:1px solid var(--line)}.dle-result.good{background:var(--greenbg)}.dle-result.bad{background:var(--redbg)}.dle-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:14px;margin-top:18px;font-size:11px;color:var(--muted)}.dle-answer-card{max-width:1050px;margin:15px auto 0}.dle-answer-drug{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 15px;background:var(--blue2);border:1px solid var(--line);border-radius:9px}.dle-answer-drug span{font-size:12px;color:var(--muted)}.dle-answer-facts{margin-top:12px;display:grid;gap:7px;line-height:1.55}@media(max-width:720px){.dle-head{display:block}.dle-head-actions{margin-top:12px}.dle-input-wrap{grid-template-columns:1fr}.dle-footer{display:block}.dle-footer button{width:100%;margin-top:9px}.dle-group-chips{display:none}.dle-history-item{display:block}.dle-history-item>span{display:block;margin-bottom:5px}.dle-guess-line{display:block}.dle-guess-meta{justify-content:flex-start;margin-top:6px}}";
     document.head.appendChild(s);
   }
-
   document.addEventListener("click",function(ev){
     if(page!=="druggie")return;
     var el=ev.target.closest?ev.target.closest("[data-dle-submit]"):null;
@@ -3527,24 +3443,15 @@ async function bootMedQNL(){
     el=ev.target.closest?ev.target.closest("[data-dle-group]"):null;
     if(el){ev.preventDefault();ev.stopImmediatePropagation();var sg=dleState();dleChangeGroup(sg,el.getAttribute("data-dle-group")||"all");dleSave(sg);render();return}
   },true);
-
   document.addEventListener("change",function(ev){
     if(page!=="druggie")return;
-    if(ev.target.id==="dleGroup"){
-      ev.stopImmediatePropagation();
-      var st=dleState();dleChangeGroup(st,ev.target.value||"all");dleSave(st);render();return;
-    }
+    if(ev.target.id==="dleGroup"){ev.stopImmediatePropagation();var st=dleState();dleChangeGroup(st,ev.target.value||"all");dleSave(st);render();return}
   },true);
-
   document.addEventListener("keydown",function(ev){
     if(page!=="druggie")return;
-    if(ev.key==="Enter"&&ev.target&&ev.target.id==="dleGuessInput"){
-      ev.preventDefault();
-      var b=document.querySelector("[data-dle-submit]");if(b)b.click();
-    }
+    if(ev.key==="Enter"&&ev.target&&ev.target.id==="dleGuessInput"){ev.preventDefault();var b=document.querySelector("[data-dle-submit]");if(b&&!b.disabled)b.click()}
   },true);
 })();
-
 window.__medqnlBoot=bootMedQNL;
 
 })();
