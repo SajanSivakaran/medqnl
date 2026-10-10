@@ -33,7 +33,7 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
-.title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}
+.title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.farma-trainer-card{max-width:980px;margin:0 auto}.farma-trainer-top{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}.farma-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--blue)}.farma-question-number{font-size:28px;font-weight:800;color:var(--navy);margin-top:4px}.farma-stats{text-align:right}.farma-stats strong{display:block;font-size:22px;color:var(--navy)}.farma-stats span,.farma-stats small{display:block;color:var(--muted);font-size:12px}.farma-controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.farma-controls label{font-size:12px;font-weight:700;color:var(--muted)}.farma-controls select{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.farma-prompt{margin-top:20px;padding:22px;background:var(--blue2);border:1px solid var(--line);border-radius:11px;text-align:center}.farma-prompt-label{font-size:12px;font-weight:700;color:var(--muted)}.farma-prompt h2{margin:8px 0 4px;font-size:28px;color:var(--navy)}.farma-prompt p{margin:0;color:var(--muted)}.farma-options{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.farma-option{padding:14px 16px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);text-align:left;font-weight:700;min-height:58px}.farma-option:hover:not(:disabled){border-color:var(--blue);background:var(--blue2)}.farma-option.correct{background:var(--greenbg);border-color:#9fd3b2;color:var(--green)}.farma-option.wrong{background:var(--redbg);border-color:#e7aaa1;color:var(--red)}.farma-feedback{margin-top:13px;padding:12px 14px;border-radius:9px;border:1px solid var(--line);line-height:1.5}.farma-feedback.good{background:var(--greenbg)}.farma-feedback.bad{background:var(--redbg)}.farma-next{margin-top:10px;width:100%}.farma-groups-card{max-width:980px;margin:15px auto 0}.farma-group-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.farma-group-chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:9px;padding:11px;text-align:left}.farma-group-chip strong,.farma-group-chip span{display:block}.farma-group-chip span{margin-top:3px;font-size:11px;color:var(--muted)}.farma-group-chip.active{border-color:var(--blue);background:var(--blue2)}@media(max-width:720px){.farma-controls,.farma-options{grid-template-columns:1fr}.farma-group-grid{grid-template-columns:1fr 1fr}.farma-trainer-top{display:block}.farma-stats{text-align:left;margin-top:10px}}
 .library-edit-head{display:flex;gap:10px;align-items:center;margin-bottom:12px}.library-edit-title{flex:1;font-size:22px;font-weight:800;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.library-article-editor{min-height:520px;padding:18px;border:1px solid var(--line);border-radius:9px;background:var(--card);line-height:1.7}.library-article-editor:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
 @media(max-width:720px){.library-edit-head{display:block}.library-edit-head button{width:100%;margin-top:8px}.library-edit-title{width:100%;box-sizing:border-box}}.small{font-size:12px}.muted{color:var(--muted)}
 .grid{display:grid;gap:15px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
@@ -1349,7 +1349,7 @@ function shell(body){
  "</div>";
  return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("farma-trainer","Farmacie Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
  (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
@@ -1403,6 +1403,69 @@ function mailbox(){
  "<div class='grid g3' style='margin-bottom:15px'><div class='card stat'><div class='label'>Open feedback</div><div class='value'>"+openCount+"</div></div><div class='card stat'><div class='label'>Reacties ontvangen</div><div class='value'>"+responseCount+"</div></div><div class='card stat'><div class='label'>Totaal berichten</div><div class='value'>"+fbs.length+"</div></div></div>"+
  "<div class='card'><div class='title'>Berichten</div><div class='mailbox-list'>"+h+"</div></div>");
 }
+
+var FARMA_TRAINER_GROUPS=[
+{id:"pain",label:"Pijnmedicatie",drugs:["Paracetamol","Diclofenac","Naproxen","Ibuprofen","Morfine","Fentanyl","Tramadol","Oxycodon","Codeïne","Naloxon","Omeprazol","Macrogol","Lactulose","Fosfaatclysma"]},
+{id:"anticoag",label:"Antistolling",drugs:["Acetylsalicylzuur","Clopidogrel","Dipyridamol","Ticagrelor","Acenocoumarol","Fenprocoumon","Heparine","Nadroparine","Protamine","Dabigatran","Apixaban","Rivaroxaban","Edoxaban","Vitamine K","Andexanet Alfa","Idarucizumab","Vierfactorenconcentraat"]},
+{id:"cardio",label:"Cardiovasculaire middelen",drugs:["Chloortalidon","Hydrochloorthiazide","Furosemide","Spironolacton","Triamtereen","Metoprolol","Sotalol","Propranolol","Atenolol","Bisoprolol","Carvedilol","Tamsulosine","Nifedipine","Amlodipine","Diltiazem","Verapamil","Enalapril","Lisinopril","Losartan","Digoxine","Isosorbide-dinitraat","Isosorbide-mononitraat","Natriumpolystyreensulfonaat","KCl-drank"]},
+{id:"diabetes",label:"Antidiabetica",drugs:["Metformine","Tolbutamide","Glimepiride","Gliclazide","Insuline (humuline regular)","Insuline (aspart)","Insuline (glargine)","Glucagon","Dapagliflozine"]},
+{id:"antidepressants",label:"Antidepressiva",drugs:["Amitriptyline","Nortriptyline","Fluoxetine","Paroxetine","Citalopram"]},
+{id:"benzo",label:"Benzodiazepines",drugs:["Diazepam","Oxazepam","Temazepam","Flumazenil"]},
+{id:"antibiotics",label:"Antibiotica",drugs:["Penicilline","Amoxicilline","Amoxicilline/clavulaanzuur","Piperacilline","Piperacilline-tazobactam","Ceftriaxon","Cefazoline","Cefuroxim","Ceftazidime","Meropenem","Doxycycline","Gentamicine","Azitromycine","Claritromycine","Trimethoprim/co-trimoxazol","Ciprofloxacine","Nitrofurantoine","Fosfomycine","Metronidazol"]}
+];
+var FARMA_TRAINER_DRUGS=[],i,j,g;
+for(i=0;i<FARMA_TRAINER_GROUPS.length;i++){g=FARMA_TRAINER_GROUPS[i];for(j=0;j<g.drugs.length;j++)FARMA_TRAINER_DRUGS.push({name:g.drugs[j],groupId:g.id,group:g.label})}
+var FARMA_TRAINER_KEY="medqnl_farma_trainer_v1";
+function medqnlFarmaState(){
+ try{
+  var raw=localStorage.getItem(FARMA_TRAINER_KEY),x=raw?JSON.parse(raw):{};
+  if(!x||typeof x!=="object")x={};
+  if(!x.groupId)x.groupId="all";
+  if(x.mode!=="recall")x.mode="recognition";
+  if(!x.seen||typeof x.seen!=="object")x.seen={};
+  if(typeof x.attempts!=="number")x.attempts=0;
+  if(typeof x.correct!=="number")x.correct=0;
+  if(typeof x.currentId!=="string")x.currentId="";
+  if(typeof x.answered!=="boolean")x.answered=false;
+  if(typeof x.lastCorrect!=="boolean")x.lastCorrect=false;
+  if(typeof x.lastAnswer!=="string")x.lastAnswer="";
+  return x;
+ }catch(e){return {groupId:"all",mode:"recognition",seen:{},attempts:0,correct:0,currentId:"",answered:false,lastCorrect:false,lastAnswer:""}}
+}
+function saveMedqnlFarmaState(x){try{localStorage.setItem(FARMA_TRAINER_KEY,JSON.stringify(x))}catch(e){}}
+function medqnlFarmaPool(groupId){
+ if(groupId==="all")return FARMA_TRAINER_DRUGS.slice();
+ var out=[],i;for(i=0;i<FARMA_TRAINER_DRUGS.length;i++)if(FARMA_TRAINER_DRUGS[i].groupId===groupId)out.push(FARMA_TRAINER_DRUGS[i]);return out;
+}
+function medqnlFarmaPick(groupId,avoidId){
+ var pool=medqnlFarmaPool(groupId),candidates=pool.filter(function(x){return x.name!==avoidId});
+ if(!candidates.length)candidates=pool;
+ return candidates[Math.floor(Math.random()*candidates.length)]||pool[0]||FARMA_TRAINER_DRUGS[0];
+}
+function medqnlFarmaByName(name){var i;for(i=0;i<FARMA_TRAINER_DRUGS.length;i++)if(FARMA_TRAINER_DRUGS[i].name===name)return FARMA_TRAINER_DRUGS[i];return null}
+function medqnlFarmaOptions(target,mode){
+ var out=[],i,pool;
+ if(mode==="recognition"){
+  out=[target.group];
+  for(i=0;i<FARMA_TRAINER_GROUPS.length&&out.length<4;i++)if(FARMA_TRAINER_GROUPS[i].label!==target.group)out.push(FARMA_TRAINER_GROUPS[i].label);
+ }else{
+  out=[target.name];pool=FARMA_TRAINER_DRUGS.filter(function(x){return x.groupId!==target.groupId&&x.name!==target.name});
+  while(out.length<4&&pool.length){i=Math.floor(Math.random()*pool.length);out.push(pool[i].name);pool.splice(i,1)}
+ }
+ for(i=out.length-1;i>0;i--){var k=Math.floor(Math.random()*(i+1)),tmp=out[i];out[i]=out[k];out[k]=tmp}
+ return out;
+}
+function medqnlFarmaTrainer(){
+ var st=medqnlFarmaState(),seenCount=Object.keys(st.seen).length,target;
+ if(!st.currentId||!medqnlFarmaByName(st.currentId)){target=medqnlFarmaPick(st.groupId,"");st.currentId=target?target.name:"";saveMedqnlFarmaState(st)}
+ target=medqnlFarmaByName(st.currentId)||FARMA_TRAINER_DRUGS[0];
+ if(st.groupId!=="all"&&target.groupId!==st.groupId){target=medqnlFarmaPick(st.groupId,"");st.currentId=target.name;st.answered=false;saveMedqnlFarmaState(st)}
+ var options=medqnlFarmaOptions(target,st.mode),groupsHtml="",i,g;
+ for(i=0;i<FARMA_TRAINER_GROUPS.length;i++){g=FARMA_TRAINER_GROUPS[i];groupsHtml+="<button type='button' class='farma-group-chip "+(st.groupId===g.id?"active":"")+"' data-farma-group='"+g.id+"'><strong>"+esc(g.label)+"</strong><span>"+g.drugs.length+" middelen</span></button>"}
+ var questionText=st.mode==="recognition"?"Tot welke groep hoort dit geneesmiddel in de Farmacotherapie Reader?":"Welk geneesmiddel staat in de reader binnen de gekozen farmacotherapiegroep?";
+ return shell("<div class='pagehead'><div><h1>Farmacie Trainer</h1><p>Oefen de essentiële geneesmiddelen uit de Farmacotherapie Reader, versie april 2026.</p></div></div><div class='card farma-trainer-card'><div class='farma-trainer-top'><div><span class='farma-eyebrow'>ESSENTIËLE GENEESMIDDELEN</span><div class='farma-question-number'>"+esc(String(st.attempts+1))+"</div></div><div class='farma-stats'><strong>"+esc(String(st.correct))+" / "+esc(String(st.attempts))+"</strong><span>correct</span><small>"+seenCount+" / "+FARMA_TRAINER_DRUGS.length+" geneesmiddelen geoefend</small></div></div><div class='farma-controls'><label>Onderwerp<select id='farmaGroup'><option value='all'"+(st.groupId==="all"?" selected":"")+">Alle groepen</option>"+FARMA_TRAINER_GROUPS.map(function(x){return "<option value='"+x.id+"'"+(st.groupId===x.id?" selected":"")+">"+esc(x.label)+"</option>"}).join("")+"</select></label><label>Oefenmodus<select id='farmaMode'><option value='recognition'"+(st.mode==="recognition"?" selected":"")+">Geneesmiddel → groep</option><option value='recall'"+(st.mode==="recall"?" selected":"")+">Groep → geneesmiddel</option></select></label></div><div class='farma-prompt'><div class='farma-prompt-label'>"+esc(questionText)+"</div><h2>"+esc(st.mode==="recognition"?target.name:target.group)+"</h2><p>"+(st.mode==="recognition"?"Herken de plaats van dit middel binnen het overzicht van de reader.":"Kies het geneesmiddel dat in deze groep is opgenomen.")+"</p></div><div class='farma-options'>"+options.map(function(opt){var correct=st.mode==="recognition"?opt===target.group:opt===target.name;return "<button type='button' class='farma-option "+(st.answered?(correct?"correct":(opt===st.lastAnswer?"wrong":"")):"")+"' data-farma-answer='"+esc(opt)+"' "+(st.answered?"disabled":"")+">"+esc(opt)+"</button>"}).join("")+"</div>"+(st.answered?"<div class='farma-feedback "+(st.lastCorrect?"good":"bad")+"'>"+(st.lastCorrect?"Dit middel staat in de reader onder <strong>"+esc(target.group)+"</strong>.":"Het juiste antwoord is <strong>"+esc(target.group)+"</strong>; dit middel staat in de reader onder deze groep.")+"</div><button type='button' class='btn primary farma-next' data-farma-next>Volgend geneesmiddel</button>":"")+"</div><div class='card farma-groups-card'><div class='title'>Overzicht essentiële geneesmiddelen</div><p class='small muted'>De groepen en middelen volgen het overzicht van de reader.</p><div class='farma-group-grid'>"+groupsHtml+"</div></div>");
+}
+
 function dashboard(){
  var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
  for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
@@ -2827,7 +2890,7 @@ function render(){
  if(page==="admin"&&window.__medqnlAuthRole!=="admin")page="dashboard";
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
- var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
+ var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="farma-trainer"?medqnlFarmaTrainer():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
 function showAppError(err){
