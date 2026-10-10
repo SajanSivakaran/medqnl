@@ -2279,6 +2279,31 @@ function applyRichFormat(editorId,cmd){
  }
  ed.dispatchEvent(new Event("input",{bubbles:true}));
 }
+document.addEventListener("click",function(ev){
+ var t=ev.target,el;
+ el=t.closest?t.closest("[data-farma-group]"):null;
+ if(el){
+  var fs=medqnlFarmaState();fs.groupId=el.getAttribute("data-farma-group");fs.currentId="";fs.answered=false;fs.lastAnswer="";saveMedqnlFarmaState(fs);render();return;
+ }
+ el=t.closest?t.closest("[data-farma-answer]"):null;
+ if(el){
+  var fs2=medqnlFarmaState();if(fs2.answered)return;
+  var faTarget=medqnlFarmaByName(fs2.currentId);if(!faTarget)return;
+  var answer=el.getAttribute("data-farma-answer"),isCorrect=fs2.mode==="recognition"?answer===faTarget.group:answer===faTarget.name;
+  fs2.attempts++;if(isCorrect)fs2.correct++;fs2.seen[faTarget.name]=true;fs2.answered=true;fs2.lastCorrect=isCorrect;fs2.lastAnswer=answer;saveMedqnlFarmaState(fs2);render();return;
+ }
+ el=t.closest?t.closest("[data-farma-next]"):null;
+ if(el){
+  var fs3=medqnlFarmaState(),next=medqnlFarmaPick(fs3.groupId,fs3.currentId);fs3.currentId=next?next.name:"";fs3.answered=false;fs3.lastCorrect=false;fs3.lastAnswer="";saveMedqnlFarmaState(fs3);render();return;
+ }
+});
+document.addEventListener("change",function(ev){
+ if(ev.target.id==="farmaGroup"||ev.target.id==="farmaMode"){
+  var fs=medqnlFarmaState();
+  if(ev.target.id==="farmaGroup")fs.groupId=ev.target.value;else fs.mode=ev.target.value;
+  fs.currentId="";fs.answered=false;fs.lastAnswer="";saveMedqnlFarmaState(fs);render();return;
+ }
+});
 document.addEventListener("mousedown",function(ev){
  var qbtn=ev.target.closest?ev.target.closest("[data-question-rich-format]"):null;
  if(qbtn){
