@@ -1457,7 +1457,45 @@ function ivtgPretestPlan(pool){var marked=[],fallback=[],i,q;for(i=0;i<pool.leng
 function ivtgMakePretestPositions(total,preCount){if(!preCount)return {};var positions=[],used={},guard=0;while(positions.length<preCount&&guard<5000){guard++;var p=7+Math.floor(Math.random()*Math.max(1,total-6));if(p<=total&&!used[p]){used[p]=true;positions.push(p);}}positions.sort(function(a,b){return a-b;});var map={};for(var i=0;i<positions.length;i++)map[positions[i]]=true;return map;}
 function ivtgDisciplineShares(pool){var disciplines=[],seen={},i,d;for(i=0;i<pool.length;i++){d=ivtgDiscipline(pool[i]);if(!seen[d]){seen[d]=1;disciplines.push(d);}}var shares={},custom=state.ivtgBlueprint&&Object.keys(state.ivtgBlueprint).length?state.ivtgBlueprint:null;if(custom){for(d in custom)if(Number(custom[d])>0)shares[d]=Number(custom[d]);}else if(disciplines.length){var equal=1/disciplines.length;for(i=0;i<disciplines.length;i++)shares[disciplines[i]]=equal;}return shares;}
 function ivtgChooseNext(pool,session){var used=ivtgUsedIds(session),available=[],i,q;for(i=0;i<pool.length;i++){q=pool[i];if(used.indexOf(String(q.id))>=0||q.pretest===true||ivtgEnemyConflict(q,used))continue;available.push(q);}if(!available.length)return null;var shares=ivtgDisciplineShares(available),seen={},scored=0,d;for(i=0;i<session.questions.length;i++){q=session.questions[i];if(session.pretestIds&&session.pretestIds[String(q.id)])continue;d=ivtgDiscipline(q);seen[d]=(seen[d]||0)+1;scored++;}var bestDef=-Infinity,wanted=[];for(d in shares){var deficit=shares[d]*(scored+1)-(seen[d]||0);if(deficit>bestDef){bestDef=deficit;wanted=[d];}else if(Math.abs(deficit-bestDef)<1e-9)wanted.push(d);}var wantedDiscipline=wanted.length?wanted[Math.floor(Math.random()*wanted.length)]:null;var theta=isFinite(Number(session.theta))?Number(session.theta):IVTG_CONFIG.startTheta;var filtered=available.filter(function(x){return !wantedDiscipline||ivtgDiscipline(x)===wantedDiscipline;});if(!filtered.length)filtered=available;var bestDist=Infinity,ties=[];for(i=0;i<filtered.length;i++){var dist=Math.abs(ivtgBeta(filtered[i])-theta);if(dist<bestDist-1e-9){bestDist=dist;ties=[filtered[i]];}else if(Math.abs(dist-bestDist)<1e-9)ties.push(filtered[i]);}return ties[Math.floor(Math.random()*ties.length)];}
-function ivtgWLE(session){var items=[],responses=[],i,q,a;if(!session)return {theta:IVTG_CONFIG.startTheta,sem:null,information:0};for(i=0;i<session.questions.length;i++){q=session.questions[i];if(session.pretestIds&&session.pretestIds[String(q.id)])continue;a=session.answers[q.id];if(typeof a==="undefined"||q.type==="open")continue;items.push(ivtgBeta(q));responses.push(a===q.correct?1:0);}if(!items.length)return {theta:IVTG_CONFIG.startTheta,sem:null,information:0};var theta=isFinite(Number(session.theta))?Number(session.theta):IVTG_CONFIG.startTheta;theta=Math.max(IVTG_CONFIG.thetaMin,Math.min(IVTG_CONFIG.thetaMax,theta));var eps=1e-10,oldStep=1,I=0;for(var iter=0;iter<80;iter++){var U=0,I0=0,Iprime=0,Isecond=0;for(i=0;i<items.length;i++){var p=1/(1+Math.exp(Math.max(-40,Math.min(40,items[i]-theta)))),v=p*(1-p);U+=responses[i]-p;I0+=v;Iprime+=v*(1-2*p);Isecond+=v*(1-6*p+6*p*p);}if(I0<eps)break;var f=U-0.5*(Iprime/I0),df=-I0-0.5*((Isecond*I0-Iprime*Iprime)/(I0*I0+eps));if(!isFinite(f)||!isFinite(df)||Math.abs(df)<eps)break;var step=-f/df,maxStep=Math.min(1.25,Math.max(0.25,oldStep*1.4));if(Math.abs(step)>maxStep)step=(step<0?-1:1)*maxStep;var next=theta+step;if(next<IVTG_CONFIG.thetaMin)next=IVTG_CONFIG.thetaMin;if(next>IVTG_CONFIG.thetaMax)next=IVTG_CONFIG.thetaMax;if(Math.abs(next-theta)<0.0005){theta=next;break;}theta=next;oldStep=Math.abs(step)||oldStep;}for(i=0;i<items.length;i++){var ep=1/(1+Math.exp(Math.max(-40,Math.min(40,items[i]-theta))));I+=ep*(1-ep);}return {theta:Math.round(theta*10000)/10000,sem:I>eps?1/Math.sqrt(I):null,information:I};}
+function ivtgWLE(session){
+ var items=[],responses=[],i,q,a;
+ if(!session)return {theta:IVTG_CONFIG.startTheta,sem:null,information:0};
+ for(i=0;i<session.questions.length;i++){
+  q=session.questions[i];
+  if(session.pretestIds&&session.pretestIds[String(q.id)])continue;
+  a=session.answers[q.id];
+  if(typeof a==="undefined"||q.type==="open")continue;
+  items.push(ivtgBeta(q));responses.push(a===q.correct?1:0);
+ }
+ if(!items.length)return {theta:IVTG_CONFIG.startTheta,sem:null,information:0};
+ function scoreEquation(theta){
+  var U=0,I0=0,Iprime=0;
+  for(var j=0;j<items.length;j++){
+   var p=1/(1+Math.exp(Math.max(-40,Math.min(40,items[j]-theta)))),v=p*(1-p);
+   U+=responses[j]-p;I0+=v;Iprime+=v*(1-2*p);
+  }
+  return I0>1e-10?U-0.5*(Iprime/I0):U;
+ }
+ var lo=IVTG_CONFIG.thetaMin,hi=IVTG_CONFIG.thetaMax,fl=scoreEquation(lo),fh=scoreEquation(hi),theta;
+ if(fl===0)theta=lo;
+ else if(fh===0)theta=hi;
+ else if(fl>0&&fh>0)theta=hi;
+ else if(fl<0&&fh<0)theta=lo;
+ else{
+  for(var iter=0;iter<90;iter++){
+   var mid=(lo+hi)/2,fm=scoreEquation(mid);
+   if(Math.abs(fm)<1e-8){lo=hi=mid;break;}
+   if((fl<0&&fm>0)||(fl>0&&fm<0)){hi=mid;fh=fm;}else{lo=mid;fl=fm;}
+  }
+  theta=(lo+hi)/2;
+ }
+ var I=0;
+ for(i=0;i<items.length;i++){
+  var ep=1/(1+Math.exp(Math.max(-40,Math.min(40,items[i]-theta))));
+  I+=ep*(1-ep);
+ }
+ return {theta:Math.round(theta*10000)/10000,sem:I>1e-10?1/Math.sqrt(I):null,information:I};
+}
 function ivtgUpdateAbility(session){var est=ivtgWLE(session);session.theta=est.theta;session.sem=est.sem;session.information=est.information;return est;}
 function ivtgBuildSession(subject,mode,pool){var pretests=ivtgPretestPlan(pool),pretestIds={},i;for(i=0;i<pretests.length;i++)pretestIds[String(pretests[i].id)]=true;var scoredPool=pool.filter(function(q){return !pretestIds[String(q.id)]&&q.pretest!==true;});var start=ivtgPickStartItems(scoredPool,Math.min(IVTG_CONFIG.startItems,scoredPool.length));if(start.length<IVTG_CONFIG.startItems)return null;var targetTotal=IVTG_CONFIG.targetScoredItems+pretests.length;return {ivtg:true,index:0,questions:start.slice(),answers:{},score:0,pointsEarned:0,maxPoints:0,id:"sess"+Date.now(),subject:subject,mode:mode,elapsedSeconds:0,sessionStartedAt:0,theta:IVTG_CONFIG.startTheta,sem:null,information:0,targetScoredItems:IVTG_CONFIG.targetScoredItems,scoredAnswered:0,totalTarget:targetTotal,pretestIds:pretestIds,pretestQuestions:pretests.slice(),pretestPositions:ivtgMakePretestPositions(targetTotal,pretests.length),scoredCount:start.length,meetmoment:1};}
 function ivtgAppendNextQuestion(session,pool){var pos=session.questions.length+1,chosen=null;if(session.pretestPositions[pos]){while(session.pretestQuestions.length){var pq=session.pretestQuestions.shift();if(ivtgUsedIds(session).indexOf(String(pq.id))<0){chosen=pq;break;}}}else chosen=ivtgChooseNext(pool,session);if(!chosen)return false;session.questions.push(chosen);if(!session.pretestIds[String(chosen.id)])session.scoredCount=(session.scoredCount||0)+1;return true;}
@@ -1821,7 +1859,7 @@ function result(){
  state.attempts.push({id:session.id,ivtg:session.ivtg,total:session.questions.length,answered:n,score:session.score,pointsEarned:Math.max(0,Number(session.pointsEarned)||0),maxPoints:Math.max(0,Number(session.maxPoints)||0),elapsedSeconds:Math.max(0,Number(session.elapsedSeconds)||0),theta:session.ivtg?Number(session.theta)||0:null,toetsprestatie:session.ivtg?Number(session.toetsprestatie)||0:null,sem:session.ivtg&&session.sem!==null?Number(session.sem):null});
  save();
  if(session&&session.ivtg){ivtgFinalPerformance(session);}
- return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div>"+(session&&session.ivtg?"<div class='grid g4'><div class='card stat'><div class='label'>Toetsprestatie</div><div class='value'>"+esc(String(session.toetsprestatie))+"</div></div><div class='card stat'><div class='label'>Eind-theta</div><div class='value'>"+esc(String(session.theta))+"</div></div><div class='card stat'><div class='label'>SEM</div><div class='value'>"+(session.sem===null?"-":esc(String(Math.round(session.sem*1000)/1000)))+"</div></div><div class='card stat'><div class='label'>Meetellen</div><div class='value' style='font-size:20px'>"+esc(String(session.targetScoredItems))+" / "+esc(String(session.scoredAnswered))+"</div></div></div><div class='notice' style='margin-top:15px'>De transformatie gebruikt target_mean 35, target_sd 15, mean_pop 0.0 en sd_pop 0.35. De bron specificeert geen cesuren per meetmoment in deze trainer, dus Onvoldoende/Voldoende/Goed wordt hier niet automatisch toegekend.</div>":"")+"<div class='grid g4'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Volledig correct</div><div class='value'>"+session.score+"</div></div><div class='card stat'><div class='label'>Punten</div><div class='value'>"+Math.round((Number(session.pointsEarned)||0)*100)/100+" / "+Math.round((Number(session.maxPoints)||0)*100)/100+"</div></div><div class='card stat'><div class='label'>Tijd</div><div class='value' style='font-size:22px'>"+formatTime(currentSessionSeconds())+"</div></div></div>");
+ return shell("<div class='pagehead'><div><h1>Resultaat</h1><p>Sessie opgeslagen.</p></div><button class='btn primary' data-page='ivtg'>Nieuwe sessie</button></div>"+(session&&session.ivtg?"<div class='grid g4'><div class='card stat'><div class='label'>Toetsprestatie</div><div class='value'>"+esc(String(session.toetsprestatie))+"</div></div><div class='card stat'><div class='label'>Eind-theta</div><div class='value'>"+esc(String(session.theta))+"</div></div><div class='card stat'><div class='label'>SEM</div><div class='value'>"+(session.sem===null?"-":esc(String(Math.round(session.sem*1000)/1000)))+"</div></div><div class='card stat'><div class='label'>Meetellen</div><div class='value' style='font-size:20px'>"+esc(String(session.targetScoredItems))+" / "+esc(String(session.scoredAnswered))+"</div></div></div><div class='notice' style='margin-top:15px'>De transformatie gebruikt target_mean 35, target_sd 15, mean_pop 0.0 en sd_pop 0.35. De beoordeling gebruikt zelfgekozen oefen-cesuren per meetmoment; dit zijn geen officiële Maastricht-cesuren.</div>":"")+"<div class='grid g4'><div class='card stat'><div class='label'>Beantwoord</div><div class='value'>"+n+"</div></div><div class='card stat'><div class='label'>Volledig correct</div><div class='value'>"+session.score+"</div></div><div class='card stat'><div class='label'>Punten</div><div class='value'>"+Math.round((Number(session.pointsEarned)||0)*100)/100+" / "+Math.round((Number(session.maxPoints)||0)*100)/100+"</div></div><div class='card stat'><div class='label'>Tijd</div><div class='value' style='font-size:22px'>"+formatTime(currentSessionSeconds())+"</div></div></div>");
 }
 
 function sourcePicker(ids){
