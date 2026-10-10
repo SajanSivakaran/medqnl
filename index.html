@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="medqnl-build" content="2026-10-10-farma-hotfix-3">
 <title>MedQNL</title>
 <style>
 :root{
@@ -3152,6 +3152,17 @@ async function bootMedQNL(){
     indication:"Indicatie uit de casus",
     adverse:"Bijwerking in de casus",
     interaction:"Interactie in de casus"
+  };
+  // Compatibility fallback: v3 keeps its labels inside its own IIFE, so v4 must
+  // never depend on that private variable when the browser has an older cached build.
+  var FARMA_V3_LABELS={
+    recognition:"Klinische herkenning",
+    mechanism:"Werking in de casus",
+    indication:"Indicatie uit de casus",
+    adverse:"Bijwerking in de casus",
+    interaction:"Interactie in de casus",
+    class:"Geneesmiddelengroep",
+    case:"Klinische casus"
   };
 
   function f4State(){
