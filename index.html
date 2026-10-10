@@ -397,8 +397,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 </div>
 <script>
 (function(){
-var authConfig={url:'https://lwgbufaxwfrzqlonhmry.supabase.co',anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'};
-var __medqnlFatalShown=false;
+var authConfig={url:'https://lwgbufaxwfrzqlonhmry.supabase.co',anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'};var __medqnlFatalShown=false;
 function __medqnlShowFatal(err){
   if(__medqnlFatalShown)return;
   __medqnlFatalShown=true;
@@ -797,8 +796,7 @@ var MEDICAL_ARTICLES=[
 "Belangrijk zijn motorische en sensibele banen, cerebellum, hersenzenuwen, vaatgebieden, neurodegeneratie, epilepsie, oogheelkunde en otologie.",
 "## Embryologie en anatomie",
 "De neurale plaat vormt de neurale buis en neurale lijst. Dorsale en ventrale delen van het ruggenmerg zijn functioneel gescheiden in sensibele en motorische systemen. Begrijp de regionale ontwikkeling van het brein.",
-"## Neurologische fysiologie",
-"Ken de belangrijkste motorische, sensibele, cerebellaire en visuele banen. Lokaliseer laesies via het patroon van uitval en gebruik dat patroon om onderscheid te maken tussen centrale en perifere aandoeningen.",
+"## Neurologische fysiologie","Ken de belangrijkste motorische, sensibele, cerebellaire en visuele banen. Lokaliseer laesies via het patroon van uitval en gebruik dat patroon om onderscheid te maken tussen centrale en perifere aandoeningen.",
 "## Pathologie",
 "Herken beroertepatronen, demyeliniserende ziekten, neurodegeneratieve aandoeningen, perifere neuropathieën, ruggenmergsyndromen en intracraniële processen. Beeldvorming en neuropathologische kenmerken helpen bij herkenning.",
 "## Oog, oor en farmacologie",
@@ -1197,8 +1195,7 @@ function tokenUserId(){
 async function createFeedbackRemote(fb){
  if(!authToken())throw new Error('Je moet ingelogd zijn.');
  var rr=await supabaseAuthedFetch('/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
-   user_id:tokenUserId(),
-   student_email:(((window.__medqnlAuthSession||authSession||{}).user||{}).email)||state.email||'',
+   user_id:tokenUserId(),   student_email:(((window.__medqnlAuthSession||authSession||{}).user||{}).email)||state.email||'',
    student_name:state.name||'Student',
    question_id:fb.questionId||'',
    question_title:fb.questionTitle||'',
@@ -1597,8 +1594,7 @@ function dashboard(){
  "<div class='grid g3' style='margin-top:15px'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
  "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
- "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
- "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
+ "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+ "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
  "<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:10px'><div class='title' style='margin-bottom:0'>Mailbox</div><button class='btn secondary' data-page='mailbox'>Open mailbox</button></div>"+
  "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
  "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
@@ -1997,8 +1993,7 @@ function library(){
  var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="",canEdit=window.__medqnlAuthRole==="admin";
  if(a){try{toc=articleToc(a,"mainsec")||""}catch(e){toc=""}}
  var collapsed=!!state.ui.libNavCollapsed;
- if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>");
- articleId=a.id;
+ if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>"); articleId=a.id;
  for(i=0;i<ivtgSections.length;i++){
    sec=ivtgSections[i];
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
@@ -2397,8 +2392,7 @@ document.addEventListener("input",function(ev){
  if(ev.target.id==="questionInlineImageSize"){var id=ev.target.getAttribute("data-image-id"),ed=document.getElementById("questionStemEditor"),img=ed&&ed.querySelector("[data-inline-editor-id='"+id+"']"),form=ed&&ed.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(img){var w=parseInt(ev.target.value,10)||180,tg=img.querySelector("img");if(tg)tg.style.width=w+"px";if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}widths[id]=w;if(ws)ws.value=JSON.stringify(widths);var lbl=document.getElementById("questionInlineImageSizeValue");if(lbl)lbl.textContent=w+" px"}}
 });
 document.addEventListener("keydown",function(ev){
- var ed=document.getElementById("questionStemEditor"),sel=window.getSelection();if(!ed||!sel||!sel.rangeCount)return;
- var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
+ var ed=document.getElementById("questionStemEditor"),sel=window.getSelection();if(!ed||!sel||!sel.rangeCount)return; var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
  if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove()}
 });
 function hideQuestionRichToolbar(){
@@ -2797,8 +2791,7 @@ document.addEventListener("selectionchange",function(){
    range.insertNode(frag);range.collapse(false);sel.removeAllRanges();sel.addRange(range);qex._savedRange=range.cloneRange();
   }else qex.appendChild(box);
   return;
- }
- var ed=ev.target&&ev.target.closest?ev.target.closest("#articleEditor"):null;if(!ed)return;
+ } var ed=ev.target&&ev.target.closest?ev.target.closest("#articleEditor"):null;if(!ed)return;
  var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);
  if(!html&&!images.length)return;ev.preventDefault();
  var safe=sanitizeRichHtml(html||"");
@@ -2877,6 +2870,284 @@ async function bootMedQNL(){
     render();
   }
 }
+
+/* MedQNL Farma Trainer v3 Reader 2026 */
+(function(){
+  var FARMA_V3_KEY="medqnl_farma_trainer_v3_reader2026";
+  var FARMA_V3_STEPS=["class","mechanism","indication","adverse","interaction","case"];
+  var FARMA_V3_LABELS={
+    class:"Geneesmiddelengroep",
+    mechanism:"Werkingsmechanisme",
+    indication:"Indicatie",
+    adverse:"Belangrijkste bijwerking",
+    interaction:"Interactie / waarschuwing",
+    case:"Klinische casus"
+  };
+  var FARMA_READER_PAGES={
+    pain:"12-19",
+    anticoag:"20-31",
+    cardio:"32-44",
+    diabetes:"45-50",
+    antidepressants:"51-55",
+    benzo:"56-58",
+    antibiotics:"59-67"
+  };
+
+  function farmaV3State(){
+    var raw=null,x=null;
+    try{raw=localStorage.getItem(FARMA_V3_KEY);if(raw)x=JSON.parse(raw)}catch(e){}
+    if(!x||typeof x!=="object")x={};
+    if(!x.groupId)x.groupId="all";
+    if(typeof x.currentId!=="string")x.currentId="";
+    if(!Array.isArray(x.steps))x.steps=[];
+    if(typeof x.stepIndex!=="number")x.stepIndex=0;
+    if(typeof x.answered!=="boolean")x.answered=false;
+    if(typeof x.lastCorrect!=="boolean")x.lastCorrect=false;
+    if(typeof x.lastAnswer!=="string")x.lastAnswer="";
+    if(typeof x.attempts!=="number")x.attempts=0;
+    if(typeof x.correct!=="number")x.correct=0;
+    if(!x.mastery||typeof x.mastery!=="object")x.mastery={};
+    if(!x.missed||typeof x.missed!=="object")x.missed={};
+    if(!x.started||typeof x.started!=="object")x.started={};
+    if(typeof x.focus!=="string")x.focus="all";
+    return x;
+  }
+  function saveFarmaV3(x){try{localStorage.setItem(FARMA_V3_KEY,JSON.stringify(x))}catch(e){}}
+  function farmaV3Pool(groupId){
+    if(groupId==="all")return FARMA_TRAINER_DRUGS.slice();
+    return FARMA_TRAINER_DRUGS.filter(function(d){return d.groupId===groupId});
+  }
+  function farmaV3StepsFor(target,focus){
+    var f=target&&target.facts||{},all=["class","mechanism","indication","adverse","interaction"];
+    if(f.case)all.push("case");
+    if(focus&&focus!=="all"&&all.indexOf(focus)>=0)return [focus];
+    return all;
+  }
+  function farmaV3PickDrug(st,avoidId){
+    var pool=farmaV3Pool(st.groupId),filtered=[],i,d,best=Infinity;
+    for(i=0;i<pool.length;i++){
+      d=pool[i];
+      if(d.name===avoidId)continue;
+      if(st.focus==="case"&&!(d.facts&&d.facts.case))continue;
+      if(st.focus!=="all"&&st.focus!=="case"&&!(d.facts&&d.facts[st.focus==="class"?"c":st.focus==="mechanism"?"m":st.focus==="indication"?"i":st.focus==="adverse"?"b":"x"]))continue;
+      filtered.push(d);
+    }
+    if(!filtered.length)filtered=pool.filter(function(d){return d.name!==avoidId});
+    if(!filtered.length)filtered=pool.slice();
+    for(i=0;i<filtered.length;i++){
+      var n=Number(st.mastery[filtered[i].name])||0;
+      if(n<best)best=n;
+    }
+    filtered=filtered.filter(function(d){return (Number(st.mastery[d.name])||0)===best});
+    return filtered[Math.floor(Math.random()*filtered.length)]||pool[0]||null;
+  }
+  function farmaV3Target(st){return medqnlFarmaByName(st.currentId)}
+  function farmaV3StartDrug(st,avoidId){
+    var target=farmaV3PickDrug(st,avoidId);
+    if(!target)return null;
+    st.currentId=target.name;
+    st.steps=farmaV3StepsFor(target,st.focus);
+    st.stepIndex=0;
+    st.answered=false;
+    st.lastCorrect=false;
+    st.lastAnswer="";
+    st.started[target.name]=(Number(st.started[target.name])||0)+1;
+    return target;
+  }
+  function farmaV3FactKey(type){
+    return type==="class"?"c":type==="mechanism"?"m":type==="indication"?"i":type==="adverse"?"b":"x";
+  }
+  function farmaV3CorrectValue(target,type){
+    return type==="case"?target.name:(target.facts||{})[farmaV3FactKey(type)]||"";
+  }
+  function farmaV3UniqueOptions(values){
+    var out=[],seen={},i,v,k;
+    for(i=0;i<values.length;i++){
+      v=String(values[i]||"").trim();k=v.toLowerCase();
+      if(v&&!seen[k]){seen[k]=true;out.push(v)}
+    }
+    return out;
+  }
+  function farmaV3Options(target,type){
+    var correct=farmaV3CorrectValue(target,type),pool=farmaV3Pool(target.groupId),values=[correct],i,arr,candidates=[];
+    if(type==="case"){
+      for(i=0;i<pool.length;i++)if(pool[i].name!==target.name&&pool[i].facts&&pool[i].facts.case)candidates.push(pool[i].name);
+      if(candidates.length<3){
+        var all=FARMA_TRAINER_DRUGS;
+        for(i=0;i<all.length;i++)if(all[i].name!==target.name&&all[i].facts&&all[i].facts.case)candidates.push(all[i].name);
+      }
+    }else{
+      var key=farmaV3FactKey(type);
+      for(i=0;i<pool.length;i++)if(pool[i].name!==target.name&&pool[i].facts&&pool[i].facts[key]&&pool[i].facts[key]!==correct)candidates.push(pool[i].facts[key]);
+      if(candidates.length<3){
+        for(i=0;i<FARMA_TRAINER_DRUGS.length;i++)if(FARMA_TRAINER_DRUGS[i].name!==target.name&&FARMA_TRAINER_DRUGS[i].facts&&FARMA_TRAINER_DRUGS[i].facts[key]&&FARMA_TRAINER_DRUGS[i].facts[key]!==correct)candidates.push(FARMA_TRAINER_DRUGS[i].facts[key]);
+      }
+    }
+    candidates=farmaV3UniqueOptions(candidates);
+    while(values.length<4&&candidates.length){
+      var idx=Math.floor(Math.random()*candidates.length);
+      values.push(candidates.splice(idx,1)[0]);
+    }
+    while(values.length<4)values.push("Niet opgenomen in de Farmacotherapie Reader.");
+    for(i=values.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),tmp=values[i];values[i]=values[j];values[j]=tmp}
+    return values;
+  }
+  function farmaV3Question(target,type){
+    if(type==="class")return "Tot welke farmacologische groep hoort "+target.name+"?";
+    if(type==="mechanism")return "Hoe werkt "+target.name+"?";
+    if(type==="indication")return "Waarvoor gebruik je "+target.name+"?";
+    if(type==="adverse")return "Welke belangrijke bijwerking past bij "+target.name+"?";
+    if(type==="interaction")return "Welke belangrijke interactie of waarschuwing hoort bij "+target.name+"?";
+    return target.facts&&target.facts.case?target.facts.case:"Welke geneesmiddelkeuze past bij deze casus?";
+  }
+  function farmaV3Progress(target,st){
+    var total=st.steps.length||1,step=Math.min(total,Math.max(1,st.stepIndex+1));
+    return Math.round(step/total*100);
+  }
+  function farmaV3CompletedCount(st,pool){
+    var n=0,i,name;
+    for(i=0;i<pool.length;i++){name=pool[i].name;if((Number(st.mastery[name])||0)>0)n++}
+    return n;
+  }
+  function farmaV3CaseExplanation(target){
+    var f=target.facts||{};
+    var h="";
+    if(f.i)h+="<div><strong>Waarom passend:</strong> "+esc(f.i)+"</div>";
+    if(f.m)h+="<div style='margin-top:6px'><strong>Mechanisme:</strong> "+esc(f.m)+"</div>";
+    if(f.x)h+="<div style='margin-top:6px'><strong>Let op:</strong> "+esc(f.x)+"</div>";
+    return h||"<div>Raadpleeg de Farmacotherapie Reader voor de onderbouwing.</div>";
+  }
+
+  if(!document.getElementById("farmaV3Style")){
+    var style=document.createElement("style");
+    style.id="farmaV3Style";
+    style.textContent=
+      ".farma-v3-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}"+
+      ".farma-v3-kicker{font-size:11px;font-weight:800;letter-spacing:1.2px;color:var(--blue)}"+
+      ".farma-v3-meta{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}"+
+      ".farma-v3-meta label{font-size:12px;font-weight:700;color:var(--muted)}"+
+      ".farma-v3-meta select{display:block;width:100%;margin-top:5px;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}"+
+      ".farma-v3-progress{margin-top:14px;height:8px;border-radius:99px;background:var(--bg);border:1px solid var(--line);overflow:hidden}"+
+      ".farma-v3-progress span{display:block;height:100%;background:var(--blue);border-radius:99px}"+
+      ".farma-v3-aspects{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}"+
+      ".farma-v3-aspect{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:5px 8px;color:var(--muted);background:var(--card)}"+
+      ".farma-v3-aspect.current{color:var(--blue);border-color:var(--blue);background:var(--blue2);font-weight:700}"+
+      ".farma-v3-summary{margin-top:13px;padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);line-height:1.6}"+
+      ".farma-v3-summary strong{color:var(--navy)}"+
+      ".farma-v3-drugstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}"+
+      ".farma-v3-stat{border:1px solid var(--line);border-radius:9px;padding:10px;background:var(--bg)}"+
+      ".farma-v3-stat span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}"+
+      ".farma-v3-stat strong{font-size:17px;color:var(--navy)}"+
+      "@media(max-width:720px){.farma-v3-meta{grid-template-columns:1fr}.farma-v3-drugstats{grid-template-columns:1fr}.farma-v3-head{display:block}}";
+    document.head.appendChild(style);
+  }
+
+  medqnlFarmaTrainer=function(){
+    var st=farmaV3State(),target=farmaV3Target(st),pool=farmaV3Pool(st.groupId),i,g,steps,type,options,correctValue,answered;
+    if(!target||target.groupId!==st.groupId&&st.groupId!=="all"){
+      target=farmaV3StartDrug(st,"");
+      saveFarmaV3(st);
+    }
+    if(target){
+      steps=farmaV3StepsFor(target,st.focus);
+      if(st.steps.length!==steps.length||steps[st.stepIndex]!==st.steps[st.stepIndex]){st.steps=steps;if(st.stepIndex>=steps.length)st.stepIndex=0}
+      type=st.steps[st.stepIndex]||"mechanism";
+      options=farmaV3Options(target,type);
+      correctValue=farmaV3CorrectValue(target,type);
+      answered=!!st.answered;
+    }else{
+      type="mechanism";options=[];correctValue="";answered=false;
+    }
+    var pagePct=target?farmaV3Progress(target,st):0;
+    var completed=farmaV3CompletedCount(st,pool),started=Object.keys(st.started).length;
+    var groupsHtml="";
+    for(i=0;i<FARMA_TRAINER_GROUPS.length;i++){
+      g=FARMA_TRAINER_GROUPS[i];
+      groupsHtml+="<button type='button' class='farma-group-chip "+(st.groupId===g.id?"active":"")+"'><strong>"+esc(g.label)+"</strong><span>"+g.drugs.length+" middelen</span></button>";
+    }
+    var focusOptions=[
+      ["all","Volledige geneesmiddeltraining"],
+      ["case","Alleen klinische casussen"],
+      ["mechanism","Werkingsmechanisme"],
+      ["indication","Indicatie"],
+      ["adverse","Belangrijkste bijwerkingen"],
+      ["interaction","Interacties / waarschuwingen"],
+      ["class","Geneesmiddelengroep"]
+    ];
+    var focusHtml="",fo;
+    for(i=0;i<focusOptions.length;i++){fo=focusOptions[i];focusHtml+="<option value='"+fo[0]+"'"+(st.focus===fo[0]?" selected":"")+">"+fo[1]+"</option>"}
+    var groupSelect="<option value='all'"+(st.groupId==="all"?" selected":"")+">Alle geneesmiddelen</option>";
+    for(i=0;i<FARMA_TRAINER_GROUPS.length;i++)groupSelect+="<option value='"+FARMA_TRAINER_GROUPS[i].id+"'"+(st.groupId===FARMA_TRAINER_GROUPS[i].id?" selected":"")+">"+esc(FARMA_TRAINER_GROUPS[i].label)+"</option>";
+    var currentDrugLabel=type==="case"?"Klinische casus":"Geneesmiddel: "+(target?target.name:"-");
+    var factKey=farmaV3FactKey(type),shownFact=target&&type!=="case"&&target.facts?target.facts[factKey]:"";
+    var missed=target&&st.missed[target.name]?st.missed[target.name]:[];
+    var missedLabel=missed.length?missed.map(function(x){return FARMA_V3_LABELS[x]||x}).join(", "):"geen";
+    var explanation=answered?(type==="case"?farmaV3CaseExplanation(target):"<div><strong>Juiste antwoord:</strong> "+esc(correctValue)+"</div><div style='margin-top:6px'><strong>Wat je moet onthouden:</strong> "+esc(shownFact||"Zie de reader voor de details.")+"</div>"):"";
+    var completionNotice=answered&&st.stepIndex===st.steps.length-1
+      ?"<div class='farma-v3-summary'><strong>Geneesmiddel afgerond.</strong> Je hebt alle beschikbare aspecten voor "+(target?esc(target.name):"dit middel")+" doorlopen. Gemist: "+esc(missedLabel)+".</div>":"";
+    return shell(
+      "<div class='pagehead'><div><h1>Farmacotherapie Trainer</h1><p>Oefen elk geneesmiddel systematisch op groep, werking, indicatie, belangrijkste bijwerkingen, interacties en klinische toepassing.</p></div></div>"+
+      "<div class='card farma-trainer-card'>"+
+        "<div class='farma-v3-head'><div><div class='farma-v3-kicker'>FARMACOTHERAPIE READER · APRIL 2026</div><div class='farma-question-number'>"+(target?("Aspect "+(st.stepIndex+1)+" / "+st.steps.length):"-")+"</div></div><div class='farma-stats'><strong>"+esc(String(st.correct))+" / "+esc(String(st.attempts))+"</strong><span>correct</span><small>"+completed+" / "+pool.length+" geneesmiddelen doorlopen · "+started+" gestart</small></div></div>"+
+        "<div class='farma-v3-progress'><span style='width:"+pagePct+"%'></span></div>"+
+        "<div class='farma-v3-meta'>"+
+          "<label>Geneesmiddelengroep<select id='farmaV3Group'>"+groupSelect+"</select></label>"+
+          "<label>Oefenmodus<select id='farmaV3Focus'>"+focusHtml+"</select></label>"+
+        "</div>"+
+        "<div class='farma-v3-aspects'>"+st.steps.map(function(s,idx){return "<span class='farma-v3-aspect "+(idx===st.stepIndex?"current":"")+"'>"+(idx+1)+". "+esc(FARMA_V3_LABELS[s])+"</span>"}).join("")+"</div>"+
+        "<div class='farma-prompt'><div class='farma-prompt-label'>"+esc(FARMA_V3_LABELS[type])+" · "+esc(currentDrugLabel)+"</div><h2>"+esc(target?farmaV3Question(target,type):"Geen geneesmiddel beschikbaar")+"</h2></div>"+
+        "<div class='farma-options'>"+options.map(function(opt){var good=opt===correctValue,cls=answered?(good?"correct":(opt===st.lastAnswer?"wrong":"")):"";return "<button type='button' class='farma-option "+cls+"' data-farma-v3-answer='"+esc(opt)+"' "+(answered?"disabled":"")+">"+esc(opt)+"</button>"}).join("")+"</div>"+
+        (answered?"<div class='farma-feedback "+(st.lastCorrect?"good":"bad")+"'><strong>"+(st.lastCorrect?"Goed.":"Niet goed.")+"</strong> "+(st.lastCorrect?"":"Het juiste antwoord is: "+esc(correctValue))+"</div><div class='farma-explanation'>"+explanation+"</div>"+completionNotice+"<button type='button' class='btn primary farma-next' data-farma-v3-next>"+(st.stepIndex===st.steps.length-1?"Volgend geneesmiddel":"Volgend onderdeel")+"</button>":"<div class='small muted' style='margin-top:12px'>Kies het beste antwoord. Na je keuze krijg je direct de kernuitleg en ga je door naar het volgende aspect.</div>")+
+        (target?"<div class='farma-v3-drugstats'><div class='farma-v3-stat'><span>Geneesmiddel</span><strong>"+esc(target.name)+"</strong></div><div class='farma-v3-stat'><span>Reader</span><strong>p. "+esc(FARMA_READER_PAGES[target.groupId]||"-")+"</strong></div><div class='farma-v3-stat'><span>Gemist in deze ronde</span><strong>"+esc(missedLabel)+"</strong></div></div>":"")+
+      "</div>"+
+      "<div class='card farma-groups-card'><div class='title'>Getoetste geneesmiddelen</div><p class='small muted'>De lijst volgt het overzicht van de Farmacotherapie Reader april 2026. De reader benadrukt actieve kennis voor veilig voorschrijven: indicaties, relevante bijwerkingen, patiëntfactoren/comedicatie en wat je doet als schade optreedt.</p><div class='farma-group-grid'>"+groupsHtml+"</div><div class='footnotes'><strong>Bron</strong><div>Farmacotherapie Reader, versie april 2026 · getoetste geneesmiddelen p. 96-98.</div></div></div>"
+    );
+  };
+
+  document.addEventListener("click",function(ev){
+    if(page!=="farma-trainer")return;
+    var answer=ev.target.closest?ev.target.closest("[data-farma-v3-answer]"):null;
+    if(answer){
+      ev.preventDefault();ev.stopImmediatePropagation();
+      var st=farmaV3State();if(st.answered)return;
+      var target=farmaV3Target(st);if(!target)return;
+      var type=st.steps[st.stepIndex]||"mechanism",picked=answer.getAttribute("data-farma-v3-answer"),correct=farmaV3CorrectValue(target,type),ok=picked===correct;
+      st.attempts++;if(ok)st.correct++;st.answered=true;st.lastCorrect=ok;st.lastAnswer=picked;
+      if(!ok){
+        if(!Array.isArray(st.missed[target.name]))st.missed[target.name]=[];
+        if(st.missed[target.name].indexOf(type)<0)st.missed[target.name].push(type);
+      }
+      saveFarmaV3(st);render();return;
+    }
+    var next=ev.target.closest?ev.target.closest("[data-farma-v3-next]"):null;
+    if(next){
+      ev.preventDefault();ev.stopImmediatePropagation();
+      var st2=farmaV3State();if(!st2.answered)return;
+      var t2=farmaV3Target(st2);
+      if(!t2)return;
+      if(st2.stepIndex<st2.steps.length-1){st2.stepIndex++;st2.answered=false;st2.lastCorrect=false;st2.lastAnswer="";saveFarmaV3(st2);render();return}
+      st2.mastery[t2.name]=(Number(st2.mastery[t2.name])||0)+1;
+      var old=t2.name;
+      farmaV3StartDrug(st2,old);
+      saveFarmaV3(st2);render();return;
+    }
+  },true);
+
+  document.addEventListener("change",function(ev){
+    if(page!=="farma-trainer")return;
+    if(ev.target.id==="farmaV3Group"){
+      ev.stopImmediatePropagation();
+      var st=farmaV3State();st.groupId=ev.target.value||"all";st.currentId="";st.steps=[];st.stepIndex=0;st.answered=false;st.lastAnswer="";var t=farmaV3StartDrug(st,"");saveFarmaV3(st);render();return;
+    }
+    if(ev.target.id==="farmaV3Focus"){
+      ev.stopImmediatePropagation();
+      var st2=farmaV3State();st2.focus=ev.target.value||"all";st2.currentId="";st2.steps=[];st2.stepIndex=0;st2.answered=false;st2.lastAnswer="";farmaV3StartDrug(st2,"");saveFarmaV3(st2);render();return;
+    }
+  },true);
+
+  var _oldMedQnlFarmaNav=function(){};
+})();
+
 window.__medqnlBoot=bootMedQNL;
 
 })();
