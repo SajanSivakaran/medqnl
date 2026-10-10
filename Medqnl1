@@ -368,7 +368,6 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 <button class="mark-dot orange" data-mark-color="orange" title="Oranje"></button>
 <button class="btn secondary" data-remove-mark title="Markering verwijderen">×</button>
 </div>
-<script src='ivtg-synthetic-bank.js'></script>
 <script>
 (function(){
 var authConfig={url:'https://lwgbufaxwfrzqlonhmry.supabase.co',anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'};
@@ -1460,6 +1459,9 @@ function qbank(){
 }
 
 // iVTG adaptive algorithm
+var IVTG_MAIN_SUBJECTS=["01 Ademhalingsstelsel","02 Spier- en skeletstelsel","03 Geestelijke gezondheidszorg","04 Voortplantingsstelsel","05 Bloed-, lymf- en vaatstelsel, hart","06 Hormonen en metabolisme","07 Huid en bindweefsel","08 Persoonl., maatschappel. aspecten, preventie","09 Spijsverteringsstelsel","10 Nieren en urinewegen","11 Zenuwstelsel en zintuigen","12 Kennis over vaardigheden"];
+function ivtgMainSubjectOptionsHtml(selected){var html="",i,found=false,current=String(selected||"");for(i=0;i<IVTG_MAIN_SUBJECTS.length;i++){var v=IVTG_MAIN_SUBJECTS[i];if(v===current)found=true;html+="<option value=\""+esc(v)+"\""+(v===current?" selected":"")+">"+esc(v)+"</option>"}if(current&&!found)html+="<option value=\""+esc(current)+"\" selected>Bestaand: "+esc(current)+"</option>";return html;}
+function ivtgSubjectsWithLegacy(){var out=IVTG_MAIN_SUBJECTS.slice(),i,q,mods;for(i=0;i<state.questions.length;i++){q=state.questions[i];mods=q.modules||{qbank:true,ivtg:true};if(mods.ivtg===false||isQbankSubject(q.subject))continue;if(q.subject&&!has(out,q.subject))out.push(q.subject)}return out;}
 var IVTG_CONFIG={targetScoredItems:120,startItems:6,pretestItems:15,thetaMin:-5,thetaMax:5,startTheta:0,startMeanBeta:0,targetMean:35,targetSd:15,populationMean:0,populationSd:0.35,autoBetaJitter:0.28,disciplineTolerance:2};
 var IVTG_CUTS=[
  {insufficient:-10.38,good:11.72},{insufficient:-4.01,good:16.50},{insufficient:1.61,good:20.79},{insufficient:6.56,good:24.64},
@@ -1630,13 +1632,15 @@ function questionPage(){
  return body;
 }
 function ivtg(){
- var subjects=[],buttons="",i,q;
- for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q.subject&&!isQbankSubject(q.subject)&&((q.modules||{qbank:true,ivtg:true}).ivtg!==false)&&!has(subjects,q.subject))subjects.push(q.subject)}
- subjects.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
- for(i=0;i<subjects.length;i++)buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subjects[i])+"'><span>"+esc(subjects[i])+"</span><span>›</span></button>";
+ var buttons="",i,j,q;
+ for(i=0;i<IVTG_MAIN_SUBJECTS.length;i++){
+  var subject=IVTG_MAIN_SUBJECTS[i],count=0;
+  for(j=0;j<state.questions.length;j++){q=state.questions[j];if(q.subject===subject&&((q.modules||{qbank:true,ivtg:true}).ivtg!==false)&&!isQbankSubject(q.subject))count++}
+  buttons+="<button class='ivtg-subject-choice' data-ivtg-subject='"+esc(subject)+"'"+(count?"":" disabled")+" title='"+esc(count?("Beschikbare vragen: "+count):"Nog geen vragen gekoppeld")+"'><span>"+esc(subject)+"</span><span>"+(count?"›":"—")+"</span></button>";
+ }
  return shell("<div class='pagehead ivtg-landing-head'><div><h1>iVTG Trainer</h1><p>Oefen met klinische casussen in de aparte iVTG-omgeving.</p></div></div>"+
  "<div class='ivtg-landing'>"+
- "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>De iVTG Trainer heeft een eigen onderwerpenset, los van de Qbank.</p></div>+<div class='card' style='margin-top:12px'><div class='small muted' style='margin-bottom:7px'>Meetmoment</div><select id='ivtgMeetmoment' class='search' style='max-width:280px'><option value='1'>Meetmoment 1</option><option value='2'>Meetmoment 2</option><option value='3'>Meetmoment 3</option><option value='4'>Meetmoment 4</option><option value='5'>Meetmoment 5</option><option value='6'>Meetmoment 6</option><option value='7'>Meetmoment 7</option><option value='8'>Meetmoment 8</option><option value='9'>Meetmoment 9</option><option value='10'>Meetmoment 10</option><option value='11'>Meetmoment 11</option><option value='12'>Meetmoment 12</option><option value='13'>Meetmoment 13</option><option value='14'>Meetmoment 14</option><option value='15'>Meetmoment 15</option><option value='16'>Meetmoment 16</option><option value='17'>Meetmoment 17</option><option value='18'>Meetmoment 18</option><option value='19'>Meetmoment 19</option><option value='20'>Meetmoment 20</option><option value='21'>Meetmoment 21</option><option value='22'>Meetmoment 22</option><option value='23'>Meetmoment 23</option><option value='24'>Meetmoment 24</option></select><div class='small muted' style='margin-top:7px'>De trainer gebruikt zelfgekozen oefen-cesuren; dit zijn geen officiële Maastricht-cesuren.</div></div>"+
+ "<div class='ivtg-welcome'><div class='small'>MEDQNL • IVTG TRAINER</div><h2>Kies hoe je wilt oefenen.</h2><p>De iVTG Trainer heeft een eigen onderwerpenset, los van de Qbank.</p></div>"+
  "<div class='ivtg-start-grid'>"+
  "<div class='ivtg-start-card'><div class='ivtg-card-icon'>▶</div><h3>Start</h3><p>Start een gemengde iVTG-sessie.</p><button class='btn primary' id='startivtg'>Start</button></div>"+
  "<div class='ivtg-start-card'><div class='ivtg-card-icon'>≡</div><h3>Per onderwerp</h3><p>Kies één iVTG-onderwerp.</p></div>"+
@@ -2006,7 +2010,7 @@ function renderAdminQuestions(){
  if(!box)return;
  var module=(state.ui&&state.ui.adminQuestionModule)||"qbank",oldSubject=subject?subject.value:"",oldChapter=chapter?chapter.value:"";
  var subjectOptions=[],i,q,mods,text,match,j,tokens=normalizeSearch(search?search.value:"").split(" ").filter(Boolean);
- if(module==="qbank")subjectOptions=QBANK_SUBJECTS.slice();else for(i=0;i<state.questions.length;i++){q=state.questions[i];mods=q.modules||{qbank:true,ivtg:true};if(mods.ivtg!==false&&!isQbankSubject(q.subject)&&q.subject&&!has(subjectOptions,q.subject))subjectOptions.push(q.subject)}
+ if(module==="qbank")subjectOptions=QBANK_SUBJECTS.slice();else subjectOptions=ivtgSubjectsWithLegacy();
  subjectOptions.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
  var validSubject=subjectOptions.indexOf(oldSubject)>=0?oldSubject:"";
  if(subject){subject.innerHTML="<option value=''>"+(module==="qbank"?"Alle Qbank-onderwerpen":"Alle iVTG-onderwerpen")+"</option>";for(i=0;i<subjectOptions.length;i++)subject.innerHTML+="<option value='"+esc(subjectOptions[i])+"'"+(validSubject===subjectOptions[i]?" selected":"")+">"+esc(subjectOptions[i])+"</option>"}
@@ -2103,7 +2107,7 @@ function articleSearchText(a){
  return normalizeSearch([a.title,(a.body||[]).join(" "),sectionTitle(a.sectionId),articleLibraryLabel(a)].join(" "));
 }
 function questionSearchText(q){
- return normalizeSearch([q&&q.title,q&&q.stem,q&&q.caseText,q&&q.explanation,q&&q.objective,q&&q.subject,q&&q.topic,(q&&q.options||[]).join(" ")].join(" "));
+ return normalizeSearch([q&&q.title,q&&q.stem,q&&q.caseText,q&&q.explanation,q&&q.objective,q&&q.subject,q&&q.ivtgMainSubject,q&&q.discipline,q&&q.topic,q&&q.qbankSubsection,(q&&q.options||[]).join(" ")].join(" "));
 }
 function searchGlobal(){
  var input=document.getElementById("globalSearch"),out=document.getElementById("globalResults");if(!input||!out)return;
@@ -2229,7 +2233,7 @@ document.addEventListener("keydown",function(ev){
   var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove();
  }
 });
-document.addEventListener("click",function(ev){ el=t.closest?t.closest("#adminQuestionSearchBtn"):null;if(el){renderAdminQuestions();var si=document.getElementById("adminQuestionSearch");if(si)si.focus();return}
+document.addEventListener("click",function(ev){ var t=ev.target,el=t.closest?t.closest("#adminQuestionSearchBtn"):null;if(el){renderAdminQuestions();var si=document.getElementById("adminQuestionSearch");if(si)si.focus();return}
 
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
  if(t.closest&&t.closest("[data-add-question-inline-image]")){var inp=document.getElementById("questionInlineImageFile"),ed=document.getElementById("questionStemEditor");if(inp){if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
