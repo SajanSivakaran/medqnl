@@ -368,6 +368,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 <button class="mark-dot orange" data-mark-color="orange" title="Oranje"></button>
 <button class="btn secondary" data-remove-mark title="Markering verwijderen">×</button>
 </div>
+<script src='ivtg-synthetic-bank.js'></script>
 <script>
 (function(){
 var authConfig={url:'https://lwgbufaxwfrzqlonhmry.supabase.co',anonKey:'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'};
@@ -983,6 +984,22 @@ function purgeHarmonisedLabSource(x){
   for(j=0;j<x.articles.length;j++)x.articles[j].sourceIds=removeId(x.articles[j].sourceIds,sid);
  }
 }
+function ensureIVTGSimulationData(x){
+ if(!x||!Array.isArray(x.questions))return false;
+ var bank=window.MEDQNL_IVTG_SYNTHETIC_BANK||[],existing={},changed=false,i,q,base,spread,added=[];
+ for(i=0;i<x.questions.length;i++)if(x.questions[i]&&x.questions[i].id)existing[String(x.questions[i].id)]=true;
+ for(i=0;i<bank.length;i++){q=clone(bank[i]);if(!existing[String(q.id)]){base=q.difficulty==="Makkelijk"?-1.25:(q.difficulty==="Moeilijk"?1.25:0);spread=((ivtgHash(q.id)%17)-8)/20;q.beta=Math.max(-4.5,Math.min(4.5,Math.round((base+spread)*100)/100));q.discipline=q.subject;q.pretest=false;q.pretestBucket=null;x.questions.push(q);existing[String(q.id)]=true;added.push(q);changed=true;}}
+ var needPre=added.filter(function(z){return z&&z.modules&&z.modules.ivtg===true;});
+ var marked=needPre.filter(function(z){return z.pretest===true;});
+ if(marked.length<15){
+   var onePer={},seenSubjects={};
+   for(i=0;i<needPre.length&&marked.length<15;i++){q=needPre[i];if(!seenSubjects[q.subject]){seenSubjects[q.subject]=1;q.pretest=true;q.pretestBucket=((Object.keys(seenSubjects).length-1)%14)+1;marked.push(q);changed=true;}}
+   for(i=0;i<needPre.length&&marked.length<15;i++){q=needPre[i];if(q.pretest!==true){q.pretest=true;q.pretestBucket=((marked.length-1)%14)+1;marked.push(q);changed=true;}}
+ }
+ var bp={"01 Ademhalingsstelsel":0.0637,"02 Spier- en skeletstelsel":0.0785,"03 Geestelijke gezondheidszorg":0.0770,"04 Voortplantingsstelsel":0.0474,"05 Bloed-, lymf- en vaatstelsel, hart":0.1363,"06 Hormonen en metabolisme":0.0696,"07 Huid en bindweefsel":0.0593,"08 Persoonl., maatschappel. aspecten, preventie":0.0904,"09 Spijsverteringsstelsel":0.0830,"10 Nieren en urinewegen":0.0830,"11 Zenuwstelsel en zintuigen":0.0859,"12 Kennis over vaardigheden":0.1259};
+ if(!x.ivtgBlueprint||typeof x.ivtgBlueprint!=="object"||!Object.keys(x.ivtgBlueprint).length){x.ivtgBlueprint=bp;changed=true;}
+ return changed;
+}
 function load(){
  try{
   var x=JSON.parse(localStorage.getItem(KEY));
@@ -1016,6 +1033,7 @@ function load(){
     normalizeArticleLibraries(x);
     if(migrateInlineImages(x))localStorage.setItem(KEY,JSON.stringify(x));
     purgeHarmonisedLabSource(x);
+    ensureIVTGSimulationData(x);
     return x;
   }
  }catch(e){}
@@ -1026,6 +1044,7 @@ function load(){
  normalizeArticleLibraries(fresh);
  migrateInlineImages(fresh);
  purgeHarmonisedLabSource(fresh);
+ ensureIVTGSimulationData(fresh);
  localStorage.setItem(KEY,JSON.stringify(fresh));return fresh;
 }
 function migrateABCD(x){
@@ -1141,6 +1160,7 @@ async function syncQuestionsFromServer(){
  var remoteIds={};for(var ri=0;ri<remoteQuestions.length;ri++)remoteIds[String(remoteQuestions[ri].id)]=true;
  for(var ai=state.answers?Object.keys(state.answers):[],ii=0;ii<ai.length;ii++)if(!remoteIds[ai[ii]])delete state.answers[ai[ii]];
  state.questions=remoteQuestions;
+ ensureIVTGSimulationData(state);
  save();
 }
 async function syncFeedbackFromServer(){
@@ -1440,7 +1460,7 @@ function qbank(){
 }
 
 // iVTG adaptive algorithm
-var IVTG_CONFIG={targetScoredItems:120,startItems:6,pretestItems:15,thetaMin:-5,thetaMax:5,startTheta:0,startMeanBeta:0,targetMean:35,targetSd:15,populationMean:0,populationSd:0.35,autoBetaJitter:0.28};
+var IVTG_CONFIG={targetScoredItems:120,startItems:6,pretestItems:15,thetaMin:-5,thetaMax:5,startTheta:0,startMeanBeta:0,targetMean:35,targetSd:15,populationMean:0,populationSd:0.35,autoBetaJitter:0.28,disciplineTolerance:2};
 var IVTG_CUTS=[
  {insufficient:-10.38,good:11.72},{insufficient:-4.01,good:16.50},{insufficient:1.61,good:20.79},{insufficient:6.56,good:24.64},
  {insufficient:10.93,good:28.09},{insufficient:14.78,good:31.18},{insufficient:18.18,good:33.95},{insufficient:21.17,good:36.44},
@@ -1461,8 +1481,8 @@ function ivtgEligiblePool(subject,mode){var out=[],i,q,mods;for(i=0;i<state.ques
 function ivtgPickStartItems(pool,count){var best=null,bestErr=Infinity;for(var attempt=0;attempt<220;attempt++){var cands=ivtgShuffle(pool.slice()),chosen=[],used=[],sum=0,i,q;for(i=0;i<cands.length&&chosen.length<count;i++){q=cands[i];if(used.indexOf(String(q.id))>=0||q.pretest===true||ivtgEnemyConflict(q,used))continue;chosen.push(q);used.push(String(q.id));sum+=ivtgBeta(q);}if(chosen.length!==count)continue;var mean=sum/chosen.length,err=Math.abs(mean-IVTG_CONFIG.startMeanBeta);if(err<bestErr){best=chosen.slice();bestErr=err;}if(bestErr<0.02)break;}if(!best)best=ivtgShuffle(pool.filter(function(q){return q.pretest!==true;})).slice(0,count);ivtgShuffle(best);return best;}
 function ivtgPretestPlan(pool){var marked=[],fallback=[],i,q;for(i=0;i<pool.length;i++){q=pool[i];if(q.type==="open")continue;if(q.pretest===true)marked.push(q);else fallback.push(q);}ivtgShuffle(marked);ivtgShuffle(fallback);var selected=marked.slice(0,IVTG_CONFIG.pretestItems);if(selected.length<IVTG_CONFIG.pretestItems){var bySubject={},subjects=[];for(i=0;i<fallback.length;i++){var d=ivtgDiscipline(fallback[i]);if(!bySubject[d]){bySubject[d]=[];subjects.push(d);}bySubject[d].push(fallback[i]);}ivtgShuffle(subjects);for(i=0;i<subjects.length&&selected.length<IVTG_CONFIG.pretestItems;i++){var one=ivtgShuffle(bySubject[subjects[i]].slice());if(one.length)selected.push(one[0]);}var rest=fallback.filter(function(x){return selected.indexOf(x)<0;});ivtgShuffle(rest);selected=selected.concat(rest.slice(0,Math.max(0,IVTG_CONFIG.pretestItems-selected.length)));}return selected.slice(0,IVTG_CONFIG.pretestItems);}
 function ivtgMakePretestPositions(total,preCount){if(!preCount)return {};var positions=[],used={},guard=0;while(positions.length<preCount&&guard<5000){guard++;var p=7+Math.floor(Math.random()*Math.max(1,total-6));if(p<=total&&!used[p]){used[p]=true;positions.push(p);}}positions.sort(function(a,b){return a-b;});var map={};for(var i=0;i<positions.length;i++)map[positions[i]]=true;return map;}
-function ivtgDisciplineShares(pool){var disciplines=[],seen={},i,d;for(i=0;i<pool.length;i++){d=ivtgDiscipline(pool[i]);if(!seen[d]){seen[d]=1;disciplines.push(d);}}var shares={},custom=state.ivtgBlueprint&&Object.keys(state.ivtgBlueprint).length?state.ivtgBlueprint:null;if(custom){for(d in custom)if(Number(custom[d])>0)shares[d]=Number(custom[d]);}else if(disciplines.length){var equal=1/disciplines.length;for(i=0;i<disciplines.length;i++)shares[disciplines[i]]=equal;}return shares;}
-function ivtgChooseNext(pool,session){var used=ivtgUsedIds(session),available=[],i,q;for(i=0;i<pool.length;i++){q=pool[i];if(used.indexOf(String(q.id))>=0||q.pretest===true||ivtgEnemyConflict(q,used))continue;available.push(q);}if(!available.length)return null;var shares=ivtgDisciplineShares(available),seen={},scored=0,d;for(i=0;i<session.questions.length;i++){q=session.questions[i];if(session.pretestIds&&session.pretestIds[String(q.id)])continue;d=ivtgDiscipline(q);seen[d]=(seen[d]||0)+1;scored++;}var bestDef=-Infinity,wanted=[];for(d in shares){var deficit=shares[d]*(scored+1)-(seen[d]||0);if(deficit>bestDef){bestDef=deficit;wanted=[d];}else if(Math.abs(deficit-bestDef)<1e-9)wanted.push(d);}var wantedDiscipline=wanted.length?wanted[Math.floor(Math.random()*wanted.length)]:null;var theta=isFinite(Number(session.theta))?Number(session.theta):IVTG_CONFIG.startTheta;var filtered=available.filter(function(x){return !wantedDiscipline||ivtgDiscipline(x)===wantedDiscipline;});if(!filtered.length)filtered=available;var bestDist=Infinity,ties=[];for(i=0;i<filtered.length;i++){var dist=Math.abs(ivtgBeta(filtered[i])-theta);if(dist<bestDist-1e-9){bestDist=dist;ties=[filtered[i]];}else if(Math.abs(dist-bestDist)<1e-9)ties.push(filtered[i]);}return ties[Math.floor(Math.random()*ties.length)];}
+function ivtgDisciplineShares(pool){var disciplines=[],seen={},i,d;for(i=0;i<pool.length;i++){d=ivtgDiscipline(pool[i]);if(!seen[d]){seen[d]=1;disciplines.push(d);}}var shares={},custom=state.ivtgBlueprint&&Object.keys(state.ivtgBlueprint).length?state.ivtgBlueprint:null;if(custom){for(d in custom)if(Number(custom[d])>0)shares[d]=Number(custom[d]);}else if(disciplines.length){var fallback={{"01 Ademhalingsstelsel":0.0637,"02 Spier- en skeletstelsel":0.0785,"03 Geestelijke gezondheidszorg":0.0770,"04 Voortplantingsstelsel":0.0474,"05 Bloed-, lymf- en vaatstelsel, hart":0.1363,"06 Hormonen en metabolisme":0.0696,"07 Huid en bindweefsel":0.0593,"08 Persoonl., maatschappel. aspecten, preventie":0.0904,"09 Spijsverteringsstelsel":0.0830,"10 Nieren en urinewegen":0.0830,"11 Zenuwstelsel en zintuigen":0.0859,"12 Kennis over vaardigheden":0.1259}},sum=0;if(Object.keys(fallback).length){for(d in fallback)sum+=Number(fallback[d])||0;for(i=0;i<disciplines.length;i++)if(Number(fallback[disciplines[i]])>0)shares[disciplines[i]]=(Number(fallback[disciplines[i]])||0)/Math.max(0.0001,sum);}if(!Object.keys(shares).length){var equal=1/disciplines.length;for(i=0;i<disciplines.length;i++)shares[disciplines[i]]=equal;}}return shares;}
+function ivtgChooseNext(pool,session){var used=ivtgUsedIds(session),available=[],i,q;for(i=0;i<pool.length;i++){q=pool[i];if(used.indexOf(String(q.id))>=0||q.pretest===true||ivtgEnemyConflict(q,used))continue;available.push(q);}if(!available.length)return null;var shares=ivtgDisciplineShares(available),seen={},scored=0,d;for(i=0;i<session.questions.length;i++){q=session.questions[i];if(session.pretestIds&&session.pretestIds[String(q.id)])continue;d=ivtgDiscipline(q);seen[d]=(seen[d]||0)+1;scored++;}var doms=[],totalWeight=0;for(d in shares){var cur=seen[d]||0,target=shares[d]*session.targetScoredItems,deficit=target-cur+0.5;var hasItem=available.some(function(x){return ivtgDiscipline(x)===d;});if(hasItem&&cur<target+IVTG_CONFIG.disciplineTolerance){var weight=Math.max(0.1,deficit+IVTG_CONFIG.disciplineTolerance);doms.push({d:d,w:weight});totalWeight+=weight;}}if(!doms.length){for(d in shares){if(available.some(function(x){return ivtgDiscipline(x)===d;})){doms.push({d:d,w:1});totalWeight+=1;}}}var pick=Math.random()*Math.max(0.0001,totalWeight),wantedDiscipline=null;for(i=0;i<doms.length;i++){pick-=doms[i].w;if(pick<=0){wantedDiscipline=doms[i].d;break;}}if(!wantedDiscipline&&doms.length)wantedDiscipline=doms[doms.length-1].d;var theta=isFinite(Number(session.theta))?Number(session.theta):IVTG_CONFIG.startTheta;var filtered=available.filter(function(x){return !wantedDiscipline||ivtgDiscipline(x)===wantedDiscipline;});if(!filtered.length)filtered=available;var bestDist=Infinity,ties=[];for(i=0;i<filtered.length;i++){var dist=Math.abs(ivtgBeta(filtered[i])-theta);if(dist<bestDist-1e-9){bestDist=dist;ties=[filtered[i]];}else if(Math.abs(dist-bestDist)<1e-9)ties.push(filtered[i]);}return ties[Math.floor(Math.random()*ties.length)];}
 function ivtgWLE(session){
  var items=[],responses=[],i,q,a;
  if(!session)return {theta:IVTG_CONFIG.startTheta,sem:null,information:0};
