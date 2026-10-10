@@ -28,7 +28,7 @@ a{color:var(--blue)}
 .layout{display:flex;min-height:calc(100vh - 62px)}
 .side{width:232px;background:#102b43;color:#e2edf6;padding:14px 10px;flex:none}
 .navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#8ea5b8;padding:11px}
-.nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.nav:hover,.nav.active{background:#1b4b72;color:#fff}.nav:hover{transform:translateY(-4px) scale(1.01);box-shadow:0 7px 16px rgba(0,0,0,.18)}
+.nav{width:100%;border:0;background:transparent;color:#e1edf6;border-radius:8px;padding:11px 12px;text-align:left;margin:2px 0;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.nav:hover,.nav.active{background:#1b4b72;color:#fff}.nav:hover{transform:translateY(-3px) scale(1.008);box-shadow:0 6px 14px rgba(0,0,0,.16)}
 .ico{width:16px;height:16px;display:inline-block;vertical-align:-3px;margin-right:9px;stroke:currentColor;fill:none;stroke-width:1.8}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
@@ -1106,12 +1106,15 @@ async function upsertQuestionRemote(question){
 }
 async function deleteQuestionRemote(id){
  id=String(id||'').trim();if(!id)throw new Error('Ontbrekende vraag-id.');
- var rr=await supabaseAuthedFetch('/rest/v1/question_bank?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{Prefer:'return=minimal'}});
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?id=eq.'+encodeURIComponent(id),{method:'DELETE',headers:{Prefer:'return=representation'}});
  var d=await rr.json().catch(function(){return []});
  if(!rr.ok)throw new Error((d&&d.message)||'Vraag permanent verwijderen mislukt.');
+ var deletedRows=Array.isArray(d)?d:(d&&d.id?[d]:[]);
+ if(!deletedRows.length)throw new Error('Vraag is niet verwijderd op de server.');
  try{
-   await supabaseAuthedFetch('/rest/v1/question_bank_deletions?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:id,deleted_at:new Date().toISOString()})});
- }catch(e){}
+   var mr=await supabaseAuthedFetch('/rest/v1/question_bank_deletions?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:id,deleted_at:new Date().toISOString()})});
+   if(!mr.ok){var md=await mr.json().catch(function(){return []});console.warn('Verwijdermarkering kon niet worden opgeslagen:',md&&md.message?md.message:md)}
+ }catch(e){console.warn('Verwijdermarkering kon niet worden opgeslagen:',e)}
 }
 function persistQuestionRemote(question){
  upsertQuestionRemote(question).catch(function(err){
@@ -1133,7 +1136,8 @@ async function syncQuestionsFromServer(){
    try{localStorage.setItem(syncedKey,'1')}catch(e){}
    remote=await fetchQuestionBankRemote();
  }
- var remoteQuestions=remote.rows.map(function(row){return row&&row.question?row.question:null}).filter(Boolean);
+ var deletedSet={};for(var di=0;di<remote.deletedIds.length;di++)deletedSet[String(remote.deletedIds[di])]=true;
+ var remoteQuestions=remote.rows.map(function(row){return row&&row.question?row.question:null}).filter(function(q){return q&&q.id&&!deletedSet[String(q.id)]});
  var remoteIds={};for(var ri=0;ri<remoteQuestions.length;ri++)remoteIds[String(remoteQuestions[ri].id)]=true;
  for(var ai=state.answers?Object.keys(state.answers):[],ii=0;ii<ai.length;ii++)if(!remoteIds[ai[ii]])delete state.answers[ai[ii]];
  state.questions=remoteQuestions;
