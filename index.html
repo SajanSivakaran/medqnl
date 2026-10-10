@@ -2621,16 +2621,21 @@ function showAppError(err){
 }
 async function bootMedQNL(){
   try{
-    await syncQuestionsFromServer();
-    await syncFeedbackFromServer();
+    render();
+  }catch(renderErr){
+    showAppError(renderErr);
+    return;
+  }
+  try{
+    await Promise.race([
+      syncQuestionsFromServer(),
+      new Promise(function(_,reject){setTimeout(function(){reject(new Error("Vragenbank synchronisatie duurt te lang; de app blijft beschikbaar met lokaal geladen content."));},8000);})
+    ]);
+    try{await syncFeedbackFromServer();}catch(feedbackErr){console.warn("Feedback sync:",feedbackErr&&feedbackErr.message?feedbackErr.message:feedbackErr);}
     render();
   }catch(err){
-    try{
-      render();
-      console.warn("Question bank sync:",err&&err.message?err.message:err);
-    }catch(retryErr){
-      showAppError(retryErr||err);
-    }
+    console.warn("Question bank sync:",err&&err.message?err.message:err);
+    render();
   }
 }
 window.__medqnlBoot=bootMedQNL;
