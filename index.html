@@ -1366,9 +1366,9 @@ function shell(body){
  "</div>";
  return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("farma-trainer","Farmacie Trainer",ICONS.book)+nav("druggie","Druggie",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("farma-trainer","Farmacie Trainer",ICONS.book)+nav("druggie","Druggie",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+
  (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
- "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
+ "</aside><main class='main "+((page==="ivtg-library")?"library-main":"")+"'>"+body+"</main></div>";
 }
 function welcomeMessage(){
  var name=state.name||"Student";
@@ -2020,9 +2020,6 @@ function library(){
  return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap+"</article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
-function medicalLibrary(){
- return shell("<div class='pagehead'><div><h1>Medische Bibliotheek</h1><p>De medische bibliotheek wordt later opgesteld.</p></div></div><div class='card'><h2>Later beschikbaar</h2><p>De inhoud van de Medische Bibliotheek wordt later opgesteld. Deze pagina is voorlopig gereserveerd voor de toekomstige medische leeromgeving.</p></div>");
-}
 function result(){
  var n=0,i;
  if(session)stopSessionTimer();
@@ -2239,13 +2236,13 @@ function performancePreviousPlaceholder(){return previousTests()}
 function previousTests(){return shell("<div class='pagehead'><div><h1>Voorgaande tests</h1></div></div><div class='empty'>Deze pagina is uit de hoofd­navigatie verwijderd.</div>");}
 
 function searchPage(){
- return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek uitsluitend in de Medische Bibliotheek en de iVTG Bibliotheek.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek in bibliotheekhoofdstukken, bijvoorbeeld WGBO, intake of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div></div></div>");
+ return shell("<div class='pagehead'><div><h1>Zoeken</h1><p>Zoek in de iVTG Bibliotheek.</p></div></div><div class='card'><div style='display:flex;gap:10px;align-items:center'><input id='globalSearch' class='search' style='margin:0' placeholder='Zoek in bibliotheekhoofdstukken, bijvoorbeeld WGBO, intake of fysiologie...'><button class='btn primary' id='globalSearchBtn'>Zoeken</button></div><div id='globalResults' class='search-results' style='margin-top:12px'><div class='empty'>Voer een zoekterm in om bibliotheekresultaten te bekijken.</div></div></div>");
 }
 function normalizeSearch(s){
  return String(s==null?"":s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9\s-]/g," ").replace(/\s+/g," ").trim();
 }
 function articleLibraryLabel(a){
- return a&&a.library==="medical"?"Medische Bibliotheek":"iVTG Bibliotheek";
+ return "iVTG Bibliotheek";
 }
 function articleSearchText(a){
  return normalizeSearch([a.title,(a.body||[]).join(" "),sectionTitle(a.sectionId),articleLibraryLabel(a)].join(" "));
@@ -2835,7 +2832,7 @@ function render(){
  if(page==="admin"&&window.__medqnlAuthRole!=="admin")page="dashboard";
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
- var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="farma-trainer"?medqnlFarmaTrainer():page==="druggie"?druggiePage():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
+ var body=page==="dashboard"?dashboard():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="farma-trainer"?medqnlFarmaTrainer():page==="druggie"?druggiePage():page==="ivtg-library"?library():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
 function showAppError(err){
@@ -3478,7 +3475,7 @@ async function bootMedQNL(){
     dleSave(st);
     if(!t)return shell("<div class='empty'>Geen geneesmiddelen beschikbaar in deze groep.</div>");
     for(i=0;i<st.guesses.length;i++){guess=medqnlFarmaByName(st.guesses[i]);if(guess)rows+=dleRow(guess,t)}
-    var groups=dleGroups||function(){return FARMA_TRAINER_GROUPS||[]}(),groupButtons="",groupOptions="<option value='all'"+(st.groupId==="all"?" selected":"")+">Alle groepen</option>";
+    var groups=FARMA_TRAINER_GROUPS||[],groupButtons="",groupOptions="<option value='all'"+(st.groupId==="all"?" selected":"")+">Alle groepen</option>";
     for(i=0;i<groups.length;i++){
       g=groups[i];
       groupOptions+="<option value='"+esc(g.id)+"'"+(st.groupId===g.id?" selected":"")+">"+esc(g.label)+"</option>";
