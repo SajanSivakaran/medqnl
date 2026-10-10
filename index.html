@@ -3265,7 +3265,14 @@ async function bootMedQNL(){
   }
   function f4MissedLabel(st,d){
     var m=st.missed[d.name]||[];
-    return m.length?m.map(function(x){return FARMA_V3_LABELS[x]||FARMA_V4_LABELS[x]||x}).join(", "):"geen";
+    var labels={
+      recognition:"Klinische herkenning",
+      mechanism:"Werking in de casus",
+      indication:"Indicatie uit de casus",
+      adverse:"Bijwerking in de casus",
+      interaction:"Interactie in de casus"
+    };
+    return m.length?m.map(function(x){return labels[x]||x}).join(", "):"geen";
   }
   function f4Completed(st,pool){
     var n=0,i;if(!pool.length)return 0;
