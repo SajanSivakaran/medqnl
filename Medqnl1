@@ -853,23 +853,6 @@ function normalizeArticleLibraries(x){
  var i,a,sec;
  for(i=0;i<x.articles.length;i++){a=x.articles[i];sec=byId(x.sections,a.sectionId);if(sec&&sec.library==="medical")a.library="medical";else if(!a.library||a.library==="medical")a.library="ivtg"}
 }
-function ensureIVTGLibrary(x){
- var changed=false,i,art,sec;
- if(!x||!Array.isArray(x.articles)||!Array.isArray(x.sections))return false;
- for(i=0;i<ARTICLES.length;i++){
-  art=ARTICLES[i];
-  if(art&&art.library!=="medical"&&!byId(x.articles,art.id)){x.articles.push(clone(art));changed=true;}
- }
- for(i=0;i<SECTIONS.length;i++){
-  sec=SECTIONS[i];
-  if(sec&&sec.library!=="medical"&&!byId(x.sections,sec.id)){x.sections.push(clone(sec));changed=true;}
- }
- normalizeArticleLibraries(x);
- if(changed)saveStateFor(x);
- return changed;
-}
-
-
 var BLOCK4_QUESTION_BANK=[];
 function b4mc(id,chapter,topic,title,caseText,stem,options,correct,explanation,objective,points){
  return {id:id,title:title,subject:"Infectie, Immunologie & Bloed",topic:topic,qbankSubsection:chapter,mode:"clinical",difficulty:"Gemiddeld",caseText:caseText,stem:stem,options:options,correct:correct,type:"mcq",points:points||2,modelAnswer:"",rubric:[],explanation:explanation||"",explanationRichHtml:"",objective:objective||"",source:"Blok 4 - herschreven variant",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{},modules:{qbank:true,ivtg:false}};
@@ -1989,7 +1972,6 @@ function articleToc(a,prefix){
  return out2;
 }
 function library(){
- ensureIVTGLibrary(state);
  var ivtgArticles=[],ivtgSections=[],i,sec,j;
  for(i=0;i<state.articles.length;i++)if(state.articles[i].library!=="medical")ivtgArticles.push(state.articles[i]);
  for(i=0;i<state.sections.length;i++){
@@ -2597,7 +2579,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-new-section-inline]"):null;if(el){quickNewSection();return}
  el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
  el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
- el=t.closest?t.closest("[data-dela]"):null;if(el){if(confirm("Sectie verwijderen?")){removeBy(state.articles,el.getAttribute("data-dela"));save();render()}return}
+ el=t.closest?t.closest("[data-dela]"):null;if(el){var deleteArticleId=el.getAttribute("data-dela"),deleteArticle=byId(state.articles,deleteArticleId);if(deleteArticle&&confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,deleteArticleId);delete state.highlights[deleteArticleId];delete state.chapterTime[deleteArticleId];if(articleId===deleteArticleId)articleId=state.articles[0]?state.articles[0].id:"";save();render()}return}
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
