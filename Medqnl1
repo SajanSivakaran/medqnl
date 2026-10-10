@@ -33,6 +33,31 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
+.daily-puzzle-card{margin-top:2px;overflow:hidden}
+.daily-puzzle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
+.daily-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--blue)}
+.daily-puzzle-card h2{margin:5px 0 5px;font-size:25px;color:var(--navy)}
+.daily-puzzle-card p{margin:0;color:var(--muted);line-height:1.5}
+.daily-streak{min-width:96px;text-align:right;display:flex;flex-direction:column}
+.daily-streak strong{font-size:23px;color:var(--navy)}
+.daily-streak span{font-size:11px;color:var(--muted)}
+.daily-puzzle-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;margin-top:20px}
+.daily-hints{display:grid;gap:8px}
+.daily-hint{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;line-height:1.5}
+.daily-hint span{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue2);color:var(--blue);font-size:11px;font-weight:800}
+.daily-patient-case{padding:14px 16px;background:var(--blue2);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;line-height:1.65}.daily-patient-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:var(--blue);margin-bottom:6px}.daily-patient-case strong{color:var(--navy)}.daily-story{margin-top:10px}.daily-story-section{padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);margin-top:8px;line-height:1.65}.daily-story-section strong{color:var(--navy)}.daily-story-section p{margin:6px 0}.daily-story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.daily-story-grid .daily-story-section{margin-top:0}@media(max-width:720px){.daily-story-grid{grid-template-columns:1fr}}
+.daily-guess-form{padding:14px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
+.daily-guess-form label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:var(--navy)}
+.daily-guess-form input{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:11px 12px;outline:none}
+.daily-guess-form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
+.daily-guess-form button{width:100%;margin-top:9px}
+.daily-puzzle-footer{display:flex;justify-content:space-between;gap:12px;padding-top:13px;margin-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+.daily-puzzle-complete .daily-result{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
+.daily-result>div,.daily-knowledge{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:12px}
+.daily-result-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px}
+.daily-result strong{font-size:18px;color:var(--navy)}
+.daily-knowledge{margin-top:10px}
+@media(max-width:850px){.daily-puzzle-body{grid-template-columns:1fr}.daily-puzzle-footer,.daily-puzzle-head{flex-direction:column}.daily-streak{text-align:left}.daily-puzzle-complete .daily-result{grid-template-columns:1fr}}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
 .grid{display:grid;gap:15px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}.danger{background:var(--redbg);color:var(--red);border:1px solid #e8bbb3}
@@ -40,6 +65,24 @@ a{color:var(--blue)}
 .notice{background:var(--blue2);color:var(--ink);border:1px solid var(--line);padding:12px 14px;border-radius:9px}
 .hero{background:linear-gradient(135deg,#102b43,#173e5f);color:#fff;border-radius:14px;padding:24px;display:flex;justify-content:space-between;gap:20px}.hero h2{color:#fff;margin:4px 0 8px;font-size:30px}.hero p{color:#dcebf6;max-width:760px;line-height:1.55}
 .row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}
+.feedback-status{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:800}
+.feedback-status.open{background:var(--blue2);color:var(--blue)}
+.feedback-status.resolved{background:var(--greenbg);color:var(--green)}
+.feedback-admin-card{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px;background:var(--card)}
+.feedback-admin-card:last-child{margin-bottom:0}
+.feedback-admin-head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.feedback-message{margin-top:8px;padding:10px 12px;background:var(--bg);border-radius:8px;line-height:1.55}
+.mailbox-list{display:grid;gap:10px}
+.mailbox-item{border:1px solid var(--line);border-radius:10px;padding:13px;background:var(--card)}
+.mailbox-item.resolved{background:var(--bg)}
+.mailbox-item-head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.mailbox-meta{font-size:12px;color:var(--muted)}
+.mailbox-message{margin-top:10px;padding:11px 12px;border-radius:9px;line-height:1.6}
+.mailbox-message.student{background:var(--bg);border:1px solid var(--line)}
+.mailbox-message.admin{background:var(--blue2);border:1px solid var(--line)}
+.mailbox-message-label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;color:var(--muted)}
+.mailbox-empty-icon{font-size:28px;line-height:1;margin-bottom:8px}
+@media(max-width:720px){.mailbox-item-head,.feedback-admin-head{display:block}.mailbox-item-head .feedback-status,.feedback-admin-head .feedback-status{margin-top:8px}}
 .field{margin-bottom:11px}.field label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.field input,.field textarea,.field select{width:100%;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:10px}.field textarea{min-height:110px;resize:vertical}
 .table{width:100%;border-collapse:collapse}.table th,.table td{padding:10px 7px;border-bottom:1px solid var(--line);font-size:13px;text-align:left}.table th{color:var(--muted);font-size:12px}
 .sourcebox{border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:10px;max-height:220px;overflow:auto}.source-row{display:flex;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:7px;padding:8px;margin-bottom:6px}.source-row input{margin-top:3px}
@@ -116,6 +159,7 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 }
 
 
+.progress-nav-group{margin:0 0 2px}.progress-main-nav{display:flex!important;align-items:center;gap:0}.progress-main-nav .progress-chevron{margin-left:auto;font-size:13px}.progress-children{padding-left:12px}.progress-child{font-size:12px!important;padding-top:9px!important;padding-bottom:9px!important}.qnavtree-extra{margin-top:2px}
 .qnavtree{margin:2px 0 8px 10px;border-left:1px solid #406079;padding-left:8px}
 .qnavtree .subnav{display:block;width:100%;border:0;background:transparent;color:#b9c9d7;text-align:left;padding:8px 8px;border-radius:6px;font-size:13px}
 .qnavtree .subnav:hover,.qnavtree .subnav.active{background:#1b4b72;color:#fff}
@@ -183,6 +227,21 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 .lib-layout.lib-nav-collapsed{grid-template-columns:0 minmax(0,1fr)}
 .lib-layout.lib-nav-collapsed .lib-side{display:none}
 .lib-layout.lib-nav-collapsed .lib-article{width:100%}
+body.dark .lib-layout{background:var(--card);border-color:var(--line)}
+body.dark .lib-side{background:#111e29;border-right-color:var(--line)}
+body.dark .lib-side button[data-art]{color:#d9e3ea}
+body.dark .lib-side button[data-art]:hover{background:#1a2b38;color:#fff}
+body.dark .lib-side button[data-art].active{background:#12334e;color:#68b4ff;border-left-color:#68b4ff}
+body.dark .lib-section-toggle{color:#e8eef2!important}
+body.dark .lib-section-toggle:hover{background:#1a2b38!important}
+body.dark .lib-library-head{background:#172532;border-bottom-color:var(--line)}
+body.dark .lib-library-search{background:#0e1822;color:var(--ink);border-color:var(--line)}
+body.dark .lib-tool{color:#c7d3dc}
+body.dark .lib-tool:hover{background:#1a2b38;color:var(--blue)}
+body.dark .lib-titlebar{color:var(--ink)}
+body.dark .lib-titlebar h2{color:var(--ink)}
+body.dark .lib-content-wrap{color:var(--ink)}
+body.dark .library-toc .toc-link{color:#9fc5df}
 .note-meta{font-size:12px;color:var(--muted);margin-right:auto}
 .note-toolbar .note-sep{width:1px;height:24px;background:var(--line);margin:0 3px}
 .note-toolbar button{font-size:14px}
@@ -238,7 +297,7 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 @media(max-width:1050px){.manager-list,.editor-compact{max-height:none}.ivtg-drawer{width:96vw}}
 
 
-/* Gesloten bèta-toegang */
+/* MedQNL toegangspoort */
 #accessGate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#f5f7f9;padding:24px}
 #accessGate .gate-card{width:min(410px,100%);background:#fff;border:1px solid #d8e0e7;border-radius:14px;box-shadow:0 16px 40px rgba(10,32,52,.12);padding:28px}
 #accessGate .gate-logo{font-weight:800;font-size:28px;color:#102b43;margin-bottom:18px}
@@ -251,10 +310,10 @@ body.dark .ivtg-note-list button.active{background:#1d2a35;border-color:#3a4f60}
 #accessGate button{width:100%;border:0;border-radius:8px;padding:11px 12px;margin-top:12px;background:#2d8de6;color:#fff;font-weight:700}
 #accessGate .gate-error{min-height:18px;color:#b42318;font-size:12px;margin-top:9px}
 body.gate-locked #app{display:none!important}
-body.gate-unlocked #accessGate{display:none}
+body.gate-unlocked #accessGate{display:none!important}
 body.dark #accessGate{background:#0e1822}
 body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-shadow:none}
-body.dark #accessGate h1,#accessGate.dark h1,body.dark #accessGate label{color:#f1f5f8}
+body.dark #accessGate h1,body.dark #accessGate label{color:#f1f5f8}
 body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
 
 .app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
@@ -263,14 +322,21 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 .note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
 .ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
 .qbank-builder{max-width:1100px}.qbank-mode-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.qbank-mode-card{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;background:var(--card);padding:13px;cursor:pointer}.qbank-mode-card.selected{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue)}.qbank-mode-card input{margin-top:3px}.qbank-mode-card span{display:flex;flex-direction:column;gap:4px}.qbank-mode-card small{color:var(--muted);line-height:1.45}.qbank-topic-block{padding:13px 0;border-bottom:1px solid var(--line)}.qbank-topic-block:last-child{border-bottom:0}.qbank-topic-title{font-weight:800;color:var(--navy);margin-bottom:8px}.qbank-subsections{display:flex;gap:7px;flex-wrap:wrap}.qbank-subsection{padding:5px 9px;border-radius:999px;background:var(--blue2);color:var(--blue);font-size:12px;font-weight:700}@media(max-width:900px){.qbank-mode-grid{grid-template-columns:1fr}}.question-manager-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 10px}.question-manager-tabs .perf-tab{padding:9px 12px}.question-manager-tabs .perf-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
-.content-manager-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:12px}.compact-select{width:48%;min-width:180px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px}.qbank-structure-item{cursor:default}.qbank-structure-item:hover{border-color:var(--blue)}.qbank-structure-list{max-height:68vh}.question-editor-section{padding:12px;border:1px solid var(--line);background:var(--bg);border-radius:10px;margin-bottom:14px}.question-rich-editor{min-height:260px}.question-stem-live{line-height:1.7}.question-stem-live p{margin:10px 0}.question-stem-live img.question-inline-image{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:10px 0}.question-stem-live table{width:100%;border-collapse:collapse;margin:12px 0}.question-stem-live th,.question-stem-live td{border:1px solid var(--line);padding:8px 10px;text-align:left}.question-stem-live ul,.question-stem-live ol{padding-left:24px}.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
+.content-manager-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:12px}.compact-select{width:48%;min-width:180px;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:7px;padding:6px 8px}.qbank-structure-item{cursor:default}.qbank-structure-item:hover{border-color:var(--blue)}.qbank-structure-list{max-height:68vh}.question-editor-section{padding:12px;border:1px solid var(--line);background:var(--bg);border-radius:10px;margin-bottom:14px}.question-rich-editor{min-height:260px}.question-stem-live{line-height:1.7}.question-stem-live p{margin:10px 0}
+.rich-format-toolbar{display:flex;gap:4px;align-items:center;margin:6px 0 6px;padding:5px 6px;border:1px solid var(--line);border-radius:7px;background:var(--bg);width:max-content}
+.question-rich-selection-toolbar{position:fixed;z-index:1200;display:none;align-items:center;gap:4px;padding:5px;background:var(--card);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(10,32,52,.18);white-space:nowrap}
+.question-rich-selection-toolbar button{width:34px;height:32px;border:1px solid var(--line);border-radius:6px;background:var(--card);color:var(--ink);font-weight:800}
+.question-rich-selection-toolbar button:hover{background:var(--blue2);border-color:var(--blue);color:var(--blue)}
+body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.rich-format-btn{width:32px;height:30px;border:1px solid transparent;border-radius:5px;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.rich-format-btn:hover,.rich-format-btn.active{background:var(--blue2);border-color:var(--blue);color:var(--blue)}.question-stem-live img.question-inline-image{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:10px 0}.question-stem-live table{width:100%;border-collapse:collapse;margin:12px 0}.question-stem-live th,.question-stem-live td{border:1px solid var(--line);padding:8px 10px;text-align:left}.question-stem-live ul,.question-stem-live ol{padding-left:24px}.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
 </style>
 </head>
 <body class="gate-locked">
-<div id="accessGate" aria-label="Gesloten bèta toegang">
+<div id="accessGate" aria-label="MedQNL toegang">
   <div class="gate-card">
     <div class="gate-logo">MedQ<span>NL</span></div>
-    <h1>Gesloten testomgeving</h1>
+    <h1>Toegang tot MedQNL</h1>
     <p>Voer het wachtwoord in om de MedQNL-website te openen.</p>
     <form id="accessForm" autocomplete="off">
       <label for="accessPassword">Wachtwoord</label>
@@ -284,50 +350,41 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 <div id="app"></div>
 <script>
 (function(){
-  var PASSWORD='Chanel';
-  var gate=document.getElementById('accessGate');
-  var form=document.getElementById('accessForm');
-  var input=document.getElementById('accessPassword');
-  var error=document.getElementById('accessError');
+  var PASSWORD="Chanel";
+  var gate=document.getElementById("accessGate");
+  var form=document.getElementById("accessForm");
+  var input=document.getElementById("accessPassword");
+  var error=document.getElementById("accessError");
+
   function startApp(){
-    var tries=0;
-    function bootWhenReady(){
-      tries++;
-      try{
-        if(typeof window.__medqnlBoot==='function'){
-          var app=document.getElementById('app');
-          if(app) app.style.display='block';
-          window.__medqnlBoot();
-          return;
-        }
-      }catch(e){
-        if(error) error.textContent='De website kon niet worden gestart.';
-        return;
-      }
-      if(tries<40)setTimeout(bootWhenReady,25);
-      else if(error)error.textContent='De website kon niet worden gestart. Vernieuw de pagina.';
+    document.body.classList.remove("gate-locked");
+    document.body.classList.add("gate-unlocked");
+    window.__medqnlAuthRole="admin";
+    window.__medqnlAuthSession=null;
+    try{localStorage.removeItem("medqnl_auth_v1")}catch(e){}
+    if(gate)gate.style.display="none";
+    if(input)input.value="";
+    try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
+    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
+  }
+
+  var alreadyUnlocked=false;
+  try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
+  if(alreadyUnlocked)startApp();
+
+  form.addEventListener("submit",function(ev){
+    ev.preventDefault();
+    if(input.value===PASSWORD){
+      startApp();
+    }else{
+      error.textContent="Onjuist wachtwoord.";
+      input.value="";
+      input.focus();
     }
-    bootWhenReady();
-  }
-  function unlock(){
-    try{sessionStorage.setItem('medqnl_access','1')}catch(e){}
-    document.body.classList.remove('gate-locked');
-    document.body.classList.add('gate-unlocked');
-    if(input) input.value='';
-    if(error) error.textContent='';
-    startApp();
-  }
-  var unlocked=false;
-  try{unlocked=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
-  if(unlocked) unlock();
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    if(input.value===PASSWORD){unlock();}
-    else{error.textContent='Onjuist wachtwoord.';input.value='';input.focus();}
   });
 })();
 </script>
-
+<div id='questionRichSelectionToolbar' class='question-rich-selection-toolbar' aria-label='Tekstopmaak'><button type='button' data-question-rich-format='bold' title='Dikgedrukt'><strong>B</strong></button><button type='button' data-question-rich-format='italic' title='Cursief'><em>I</em></button></div>
 <div id="markbar" class="floating-mark">
 <button class="mark-dot yellow" data-mark-color="yellow" title="Geel"></button>
 <button class="mark-dot green" data-mark-color="green" title="Groen"></button>
@@ -370,6 +427,7 @@ lab:'<svg viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 002 3h10a2 2 0 0
 note:'<svg class="note-nav-icon" viewBox="0 0 24 24"><path d="M5 4h14v16H5z"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
 calc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 11h2M12 11h2M16 11h.01M8 15h2M12 15h2M16 15h.01M8 18h2M12 18h2M16 18h.01"/></svg>',
 feedback:'<svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/><path d="M8 9h8M8 12h5"/></svg>',
+mail:'<svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M5 7l7 6 7-6M5 17h4M15 17h4"/></svg>',
 end:'<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>'
 };
 
@@ -448,13 +506,13 @@ var QUESTIONS=[
 {id:"q2",subject:"Metamedica",topic:"WGBO",difficulty:"Gemiddeld",title:"13-jarige patiënt",caseText:"Een 13-jarige wilsbekwame patiënt heeft een reguliere medische behandeling nodig. De patiënt en de ouders zijn beiden betrokken bij de beslissing.",stem:"Welke regel past in beginsel bij de WGBO?",options:["Alleen de arts beslist.","Alleen de ouders beslissen.","De jongere en de ouder(s)/voogd hebben in beginsel beide een rol in de toestemming.","De burgemeester beslist.","Niemand hoeft toestemming te geven."],correct:2,explanation:"Tussen **12 en 16 jaar** geldt in beginsel een vorm van dubbele toestemming: de jongere en de ouder(s) of voogd met gezag hebben beide een rol.",objective:"De WGBO-leeftijdsregeling voor 12- tot 16-jarigen kennen.",sourceIds:["s1","s2"],image:""},
 {id:"q3",subject:"Metamedica",topic:"Laboratoriuminterpretatie",difficulty:"Makkelijk",title:"Hyponatriëmie",caseText:"Een 72-jarige patiënt gebruikt een diureticum en is sinds twee dagen misselijk en suf. Het serum-natrium is 124 mmol/L.",stem:"Welke labafwijking is duidelijk aanwezig?",options:["Hypernatriëmie","Hyponatriëmie","Hyperkaliëmie","Hypocalciëmie","Hyperchloremie"],correct:1,explanation:"Een natriumwaarde van **124 mmol/L** ligt onder de gebruikelijke volwassen referentiewaarde en past bij **hyponatriëmie**.",objective:"Elektrolytenafwijkingen herkennen met behulp van een referentietabel.",sourceIds:["s11","s13"],image:""},
 
-{id:"q11",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Diagnostiek bij ongecompliceerde cystitis",difficulty:"Gemiddeld",title:"Casus 1: De gezonde, niet-zwangere vrouw",caseText:"Een 28-jarige gezonde vrouw meldt zich bij de huisarts met sinds twee dagen last van dysurie (pijn bij het plassen), toegenomen mictiefrequentie en strangurie. Ze heeft geen koorts, rugpijn of koude rillingen. Een zwangerschapstest is negatief.",stem:"Wat is op basis van de geldende richtlijnen (o.a. NHG-Standaard Urineweginfecties) de meest aangewezen diagnostische stap?",options:["Direct een urinekweek inzetten alvorens een behandeling te starten.","Diagnostiek met behulp van een nitriettest en/of leukocytentest op een urinestrip.","Meteen beeldvorming (echografie van de blaas en nieren) aanvragen.","Aanvullend een CRP-meting in het bloed uitvoeren om te differentiëren."],correct:1,explanation:"Juiste antwoord: B\n\nWaarom B goed is: Bij een niet-zwangere vrouw in de vruchtbare leeftijd met typische klachten van een ongecompliceerde urineweginfectie (cystitis) volstaat urine-onderzoek met een urinestrip (waarbij de nitriettest zeer specifiek is en leukocyten/erytrocyten ondersteunend zijn). Binnen de huisartsgeneeskunde kan bij een klassiek klachtenbeeld zelfs direct de diagnose worden gesteld of worden volstaan met een urinestrip.\n\nWaarom A fout is: Een urinekweek is bij een gezonde, niet-zwangere vrouw met een ongecompliceerde cystitis niet routinematig geïndiceerd. Dit wordt pas gedaan bij twijfel, recidiverende UWI's, behandelingssucces dat uitblijft (therapieresistentie) of wanneer er sprake is van risicogroepen of een gecompliceerd beloop.\n\nWaarom C fout is: Beeldvorming (zoals een echo) is overbodig bij een eerste, ongecompliceerde UWI bij een verder gezonde jonge vrouw. Dit is pas geïndiceerd bij aanwijzingen voor anatomische/functionele afwijkingen, nierstenen of recidiverende pyelonefritis.\n\nWaarom D fout is: Serumontstekingsparameters zoals CRP of leukocytengetal in het bloed voegen bij een lokaal begrensde blaasontsteking (cystitis) geen waarde toe en worden niet routinematig bepaald.",objective:"De diagnostische aanpak van een ongecompliceerde cystitis bij een gezonde, niet-zwangere vrouw herkennen.",sourceIds:["s28"],image:""},
-{id:"q12",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Asymptomatische bacteriurie bij ouderen",difficulty:"Moeilijk",title:"Casus 2: Vragen rondom de kwetsbare oudere",caseText:"Een 82-jarige vrouw met matige dementie woont in een verpleeghuis. De verzorging merkt op dat haar urine wat sterker ruikt en troebeler is dan normaal. Mw. heeft geen koorts, geen pijnklachten (zover inschatbaar) en vertoont geen acute veranderingen in haar gedrag of functioneren (geen delier of acute verslechtering).",stem:"Welke diagnostische/beleidsmatige benadering is hier het meest toepasselijk?",options:["Direct een blaaspunctie of eenmalige katheterisatie uitvoeren om de urine op kweek te zetten.","Een urinestrip uitvoeren; als deze positief is voor nitriet, direct starten met antibiotica.","Geen urine-onderzoek of antibiotica starten, maar het beloop observeren en zorgen voor voldoende hydratatie.","Direct een urinekweek inzetten en empirisch behandelen met breedspectrum antibiotica."],correct:2,explanation:"Juiste antwoord: C\n\nWaarom C goed is: Asymptomatische bacteriurie (ASB) komt zeer frequent voor bij ouderen (vooral in verpleeghuizen). Troebele of sterk ruikende urine alleen, zonder zieksymptomen of acute functionele/cognitieve achteruitgang, is geen indicatie voor diagnostiek of behandeling. Onnodig testen leidt tot overbehandeling met antibiotica, bijwerkingen en resistentievorming. Goede hydratatie en observatie is het juiste beleid.\n\nWaarom A fout is: Een invasieve urineopvang (katheterisatie/blaaspunctie) is niet geïndiceerd bij het ontbreken van klinische symptomen van een infectie.\n\nWaarom B fout is: Een positiviteit op een urinestrip (leukocyten of nitriet) toont bij ouderen heel vaak alleen asymptomatische bacteriurie aan. Het behandelen van een positieve strip zonder klinische symptomen wordt sterk afgeraden.\n\nWaarom D fout is: Zonder symptomen van een weefselinvasieve infectie (zoals koorts, delier, flankpijn of hemodynamische instabiliteit) is zowel een urinekweek als het starten van antibiotica onjuist.",objective:"Asymptomatische bacteriurie onderscheiden van een symptomatische urineweginfectie bij kwetsbare ouderen.",sourceIds:["s28"],image:""},
-{id:"q13",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Pyelonefritis en weefselinvasie",difficulty:"Moeilijk",title:"Casus 3: Koorts en flankpijn (tekenen van weefselinvasie)",caseText:"Een 45-jarige man presenteert zich op de HAP met sinds een dag hoge koorts (39,2 °C), koude rillingen, misselijkheid en zeurende pijn in de linkerflank. Bij lichamelijk onderzoek is er sprake van slagpijn in de linker nierstreek (slagpijn in de flank).",stem:"Wat is met betrekking tot de diagnostiek en kweekindicatie bij deze patiënt juist?",options:["Een urinekweek is niet nodig; de klinische diagnose pyelonefritis volstaat om de antibioticakuur af te maken.","Een urinekweek dient vóór het starten van de antibiotica te worden ingezet om het causale organisme en de gevoeligheid te bepalen.","Er moet eerst een blaaskweek via een cystoscopie worden afgenomen om prostatitis uit te sluiten alvorens men urine opkweekt.","Urine-onderzoek is onbetrouwbaar bij mannen, dus de diagnose mag uitsluitend worden gesteld via een bloedkweek en CT-scan."],correct:1,explanation:"Juiste antwoord: B\n\nWaarom B goed is: Mannen en patiënten met tekenen van weefselinvasie (pyelonefritis / gecompliceerde UWI) vallen in een risicogroep. Bij hen moet altijd een urinekweek (inclusief resistentiebepaling) worden ingezet vóór de start van de empirische antibiotische behandeling, zodat de therapie later gericht kan worden aangepast.\n\nWaarom A fout is: Bij een UWI met weefselinvasie (zoals pyelonefritis of prostatitis) of bij mannen is een urinekweek juist wél essentieel vanwege het hogere risico op gecompliceerde verwekkers of resistentie.\n\nWaarom C fout is: Een cystoscopie is gecontra-indiceerd tijdens een acute bacteriële infectie van de urinewegen vanwege het risico op het induceren van een bacteriemie/sepsis en is niet nodig om de diagnose te stellen.\n\nWaarom D fout is: Urine-onderzoek (midstream urine-sediment/strip en kweek) is wél betrouwbaar bij mannen. Hoewel een bloedkweek of CT-scan bij ernstig zieke of gehospitaliseerde patiënten overwogen kan worden, is het onjuist dat de diagnose uitsluitend daardoor gesteld kan worden.",objective:"Indicaties voor urinekweek herkennen bij mannen en bij tekenen van weefselinvasie.",sourceIds:["s28"],image:""},
+{id:"q11",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Diagnostiek bij ongecompliceerde cystitis",difficulty:"Gemiddeld",title:"De gezonde, niet-zwangere vrouw",caseText:"Een 28-jarige gezonde vrouw meldt zich bij de huisarts met sinds twee dagen last van dysurie (pijn bij het plassen), toegenomen mictiefrequentie en strangurie. Ze heeft geen koorts, rugpijn of koude rillingen. Een zwangerschapstest is negatief.",stem:"Wat is op basis van de geldende richtlijnen (o.a. NHG-Standaard Urineweginfecties) de meest aangewezen diagnostische stap?",options:["Direct een urinekweek inzetten alvorens een behandeling te starten.","Diagnostiek met behulp van een nitriettest en/of leukocytentest op een urinestrip.","Meteen beeldvorming (echografie van de blaas en nieren) aanvragen.","Aanvullend een CRP-meting in het bloed uitvoeren om te differentiëren."],correct:1,explanation:"Juiste antwoord: B\n\nWaarom B goed is: Bij een niet-zwangere vrouw in de vruchtbare leeftijd met typische klachten van een ongecompliceerde urineweginfectie (cystitis) volstaat urine-onderzoek met een urinestrip (waarbij de nitriettest zeer specifiek is en leukocyten/erytrocyten ondersteunend zijn). Binnen de huisartsgeneeskunde kan bij een klassiek klachtenbeeld zelfs direct de diagnose worden gesteld of worden volstaan met een urinestrip.\n\nWaarom A fout is: Een urinekweek is bij een gezonde, niet-zwangere vrouw met een ongecompliceerde cystitis niet routinematig geïndiceerd. Dit wordt pas gedaan bij twijfel, recidiverende UWI's, behandelingssucces dat uitblijft (therapieresistentie) of wanneer er sprake is van risicogroepen of een gecompliceerd beloop.\n\nWaarom C fout is: Beeldvorming (zoals een echo) is overbodig bij een eerste, ongecompliceerde UWI bij een verder gezonde jonge vrouw. Dit is pas geïndiceerd bij aanwijzingen voor anatomische/functionele afwijkingen, nierstenen of recidiverende pyelonefritis.\n\nWaarom D fout is: Serumontstekingsparameters zoals CRP of leukocytengetal in het bloed voegen bij een lokaal begrensde blaasontsteking (cystitis) geen waarde toe en worden niet routinematig bepaald.",objective:"De diagnostische aanpak van een ongecompliceerde cystitis bij een gezonde, niet-zwangere vrouw herkennen.",sourceIds:["s28"],image:""},
+{id:"q12",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Asymptomatische bacteriurie bij ouderen",difficulty:"Moeilijk",title:"Vragen rondom de kwetsbare oudere",caseText:"Een 82-jarige vrouw met matige dementie woont in een verpleeghuis. De verzorging merkt op dat haar urine wat sterker ruikt en troebeler is dan normaal. Mw. heeft geen koorts, geen pijnklachten (zover inschatbaar) en vertoont geen acute veranderingen in haar gedrag of functioneren (geen delier of acute verslechtering).",stem:"Welke diagnostische/beleidsmatige benadering is hier het meest toepasselijk?",options:["Direct een blaaspunctie of eenmalige katheterisatie uitvoeren om de urine op kweek te zetten.","Een urinestrip uitvoeren; als deze positief is voor nitriet, direct starten met antibiotica.","Geen urine-onderzoek of antibiotica starten, maar het beloop observeren en zorgen voor voldoende hydratatie.","Direct een urinekweek inzetten en empirisch behandelen met breedspectrum antibiotica."],correct:2,explanation:"Juiste antwoord: C\n\nWaarom C goed is: Asymptomatische bacteriurie (ASB) komt zeer frequent voor bij ouderen (vooral in verpleeghuizen). Troebele of sterk ruikende urine alleen, zonder zieksymptomen of acute functionele/cognitieve achteruitgang, is geen indicatie voor diagnostiek of behandeling. Onnodig testen leidt tot overbehandeling met antibiotica, bijwerkingen en resistentievorming. Goede hydratatie en observatie is het juiste beleid.\n\nWaarom A fout is: Een invasieve urineopvang (katheterisatie/blaaspunctie) is niet geïndiceerd bij het ontbreken van klinische symptomen van een infectie.\n\nWaarom B fout is: Een positiviteit op een urinestrip (leukocyten of nitriet) toont bij ouderen heel vaak alleen asymptomatische bacteriurie aan. Het behandelen van een positieve strip zonder klinische symptomen wordt sterk afgeraden.\n\nWaarom D fout is: Zonder symptomen van een weefselinvasieve infectie (zoals koorts, delier, flankpijn of hemodynamische instabiliteit) is zowel een urinekweek als het starten van antibiotica onjuist.",objective:"Asymptomatische bacteriurie onderscheiden van een symptomatische urineweginfectie bij kwetsbare ouderen.",sourceIds:["s28"],image:""},
+{id:"q13",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Pyelonefritis en weefselinvasie",difficulty:"Moeilijk",title:"Koorts en flankpijn",caseText:"Een 45-jarige man presenteert zich op de HAP met sinds een dag hoge koorts (39,2 °C), koude rillingen, misselijkheid en zeurende pijn in de linkerflank. Bij lichamelijk onderzoek is er sprake van slagpijn in de linker nierstreek (slagpijn in de flank).",stem:"Wat is met betrekking tot de diagnostiek en kweekindicatie bij deze patiënt juist?",options:["Een urinekweek is niet nodig; de klinische diagnose pyelonefritis volstaat om de antibioticakuur af te maken.","Een urinekweek dient vóór het starten van de antibiotica te worden ingezet om het causale organisme en de gevoeligheid te bepalen.","Er moet eerst een blaaskweek via een cystoscopie worden afgenomen om prostatitis uit te sluiten alvorens men urine opkweekt.","Urine-onderzoek is onbetrouwbaar bij mannen, dus de diagnose mag uitsluitend worden gesteld via een bloedkweek en CT-scan."],correct:1,explanation:"Juiste antwoord: B\n\nWaarom B goed is: Mannen en patiënten met tekenen van weefselinvasie (pyelonefritis / gecompliceerde UWI) vallen in een risicogroep. Bij hen moet altijd een urinekweek (inclusief resistentiebepaling) worden ingezet vóór de start van de empirische antibiotische behandeling, zodat de therapie later gericht kan worden aangepast.\n\nWaarom A fout is: Bij een UWI met weefselinvasie (zoals pyelonefritis of prostatitis) of bij mannen is een urinekweek juist wél essentieel vanwege het hogere risico op gecompliceerde verwekkers of resistentie.\n\nWaarom C fout is: Een cystoscopie is gecontra-indiceerd tijdens een acute bacteriële infectie van de urinewegen vanwege het risico op het induceren van een bacteriemie/sepsis en is niet nodig om de diagnose te stellen.\n\nWaarom D fout is: Urine-onderzoek (midstream urine-sediment/strip en kweek) is wél betrouwbaar bij mannen. Hoewel een bloedkweek of CT-scan bij ernstig zieke of gehospitaliseerde patiënten overwogen kan worden, is het onjuist dat de diagnose uitsluitend daardoor gesteld kan worden.",objective:"Indicaties voor urinekweek herkennen bij mannen en bij tekenen van weefselinvasie.",sourceIds:["s28"],image:""},
 
-{id:"q9",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Acute bacteriële prostatitis",difficulty:"Moeilijk",title:"Vraag 2: Een man met mictieklachten en koorts",caseText:"Een 62-jarige man presenteert zich op de Spoedeisende Hulp met sinds 24 uur bestaande koude rillingen, een temperatuur van 38,9 °C en spierpijn. Tevens vermeldt hij een hevig branderig gevoel bij het plassen en moeite met het uitplassen. Bij lichte palpatie van de prostaat via rectaal toucher geeft patiënt extreme pijn aan. Bloedonderzoek toont een verhoogd CRP (142 mg/L) en een leukocytose.",stem:"Wat is de meest accurate fysiologische onderbouwing voor de keuze van het antibioticum in deze casus?",options:["De patiënt moet behandeld worden met Nitrofurantoïne, omdat dit de hoogste concentratie in het lumen van de blaas bereikt.","De patiënt moet behandeld worden met Ciprofloxacin, omdat dit middel een goede weefselpenetratie heeft in het prostaatweefsel.","De patiënt moet behandeld worden met Fosfomycine, omdat dit bacteriostatisch werkt tegen grampositieve diplokokken.","De patiënt kan afwachtend worden behandeld zonder antibiotica, mits de urinekweek negatief blijft."],correct:1,explanation:"Klinische interpretatie: Deze patiënt heeft een acute bacteriële prostatitis (tekenen van weefselinvasie/gecompliceerde UWI bij een man met koorts en een pijnlijk rectaal toucher).\n\nWaarom B juist is: Bij weefselinvasie (zoals prostatitis of pyelonefritis) is een middel nodig met een hoge weefselpenetratie. Fluorochinolonen zoals Ciprofloxacin dringen uitstekend door in het prostaatweefsel en zijn daardoor de aangewezen orale behandeling.\n\nWaarom de andere opties onjuist zijn:\nA (Nitrofurantoïne): Dringt nauwelijks door in weefsels (nierparenchym/prostaat) en is dus strikt contra-geïndiceerd bij een gecompliceerde UWI/prostatitis.\nC (Fosfomycine): Biedt eveneens onvoldoende weefselspiegels in de prostaat en heeft een ander werkingsspectrum.\nD (Afwachtend): Een acute prostatitis met systemische verschijnselen vereist direct antibiotische behandeling om urosepsis en abcesvorming te voorkomen.",objective:"Het onderscheid tussen een ongecompliceerde lage UWI en een infectie met weefselinvasie herkennen en antibioticakeuze koppelen aan weefselpenetratie.",sourceIds:["s19"],image:""},
+{id:"q9",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"Urineweginfecties",mode:"clinical",topic:"Acute bacteriële prostatitis",difficulty:"Moeilijk",title:"Een man met mictieklachten en koorts",caseText:"Een 62-jarige man presenteert zich op de Spoedeisende Hulp met sinds 24 uur bestaande koude rillingen, een temperatuur van 38,9 °C en spierpijn. Tevens vermeldt hij een hevig branderig gevoel bij het plassen en moeite met het uitplassen. Bij lichte palpatie van de prostaat via rectaal toucher geeft patiënt extreme pijn aan. Bloedonderzoek toont een verhoogd CRP (142 mg/L) en een leukocytose.",stem:"Wat is de meest accurate fysiologische onderbouwing voor de keuze van het antibioticum in deze casus?",options:["De patiënt moet behandeld worden met Nitrofurantoïne, omdat dit de hoogste concentratie in het lumen van de blaas bereikt.","De patiënt moet behandeld worden met Ciprofloxacin, omdat dit middel een goede weefselpenetratie heeft in het prostaatweefsel.","De patiënt moet behandeld worden met Fosfomycine, omdat dit bacteriostatisch werkt tegen grampositieve diplokokken.","De patiënt kan afwachtend worden behandeld zonder antibiotica, mits de urinekweek negatief blijft."],correct:1,explanation:"Klinische interpretatie: Deze patiënt heeft een acute bacteriële prostatitis (tekenen van weefselinvasie/gecompliceerde UWI bij een man met koorts en een pijnlijk rectaal toucher).\n\nWaarom B juist is: Bij weefselinvasie (zoals prostatitis of pyelonefritis) is een middel nodig met een hoge weefselpenetratie. Fluorochinolonen zoals Ciprofloxacin dringen uitstekend door in het prostaatweefsel en zijn daardoor de aangewezen orale behandeling.\n\nWaarom de andere opties onjuist zijn:\nA (Nitrofurantoïne): Dringt nauwelijks door in weefsels (nierparenchym/prostaat) en is dus strikt contra-geïndiceerd bij een gecompliceerde UWI/prostatitis.\nC (Fosfomycine): Biedt eveneens onvoldoende weefselspiegels in de prostaat en heeft een ander werkingsspectrum.\nD (Afwachtend): Een acute prostatitis met systemische verschijnselen vereist direct antibiotische behandeling om urosepsis en abcesvorming te voorkomen.",objective:"Het onderscheid tussen een ongecompliceerde lage UWI en een infectie met weefselinvasie herkennen en antibioticakeuze koppelen aan weefselpenetratie.",sourceIds:["s19"],image:""},
 
-{id:"q10",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"SOA's",mode:"clinical",topic:"Gonorroe",difficulty:"Gemiddeld",title:"Vraag 3: Een jonge man met urethrale afscheiding",caseText:"Een 23-jarige man bezoekt het soa-spreekuur met sinds 4 dagen bestaande overvloedige, geel-groene, purulente afscheiding uit de urethra en mictieklachten. Hij geeft aan twee weken geleden onbeschermd seksueel contact te hebben gehad. Microscopisch onderzoek van een grampreparaat van de afscheiding toont gramnegatieve diplokokken binnenin de polymorfnucleaire leukocyten (intracellulair).",stem:"Wat is de meest geschikte initiële behandeling voor deze aandoening volgens de richtlijnen?",options:["Doxycycline 100 mg 2dd p.o. gedurende 7 dagen","Ceftriaxon 500 mg i.m. eenmalig","Metronidazol 2000 mg p.o. eenmalig","Fluconazol 150 mg p.o. eenmalig"],correct:1,explanation:"Klinische interpretatie: Het klinisch beeld van overvloedige purulente afscheiding gecombineerd met de microscopische bevinding van intracellulaire gramnegatieve diplokokken is bewijzend voor een gonorroe-urethritis (Neisseria gonorrhoeae).\n\nWaarom B juist is: De eerste keus behandeling voor een ongecompliceerde gonokokkeninfectie is een eenmalige intramusculaire injectie met Ceftriaxon 500 mg (of 1000 mg afhankelijk van lokaal protocol).\n\nWaarom de andere opties onjuist zijn:\nA (Doxycycline): Is de eerste keus behandeling voor Chlamydia trachomatis, niet voor gonorroe (vanwege hoge resistentiecijfers van N. gonorrhoeae tegen tetracyclines).\nC (Metronidazol): Is de behandeling voor Trichomonas vaginalis en bacteriële vaginose.\nD (Fluconazol): Is een antimycoticum gebruikt voor schimmelinfecties (bijv. Candida).",objective:"Gonorroïsche urethritis herkennen aan het klinische beeld en intracellulaire gramnegatieve diplokokken en de eerste keus antibioticum kennen.",sourceIds:["s27"],image:""}
+{id:"q10",subject:"Infectie, Immunologie & Bloed",qbankSubsection:"SOA's",mode:"clinical",topic:"Gonorroe",difficulty:"Gemiddeld",title:"Een jonge man met urethrale afscheiding",caseText:"Een 23-jarige man bezoekt het soa-spreekuur met sinds 4 dagen bestaande overvloedige, geel-groene, purulente afscheiding uit de urethra en mictieklachten. Hij geeft aan twee weken geleden onbeschermd seksueel contact te hebben gehad. Microscopisch onderzoek van een grampreparaat van de afscheiding toont gramnegatieve diplokokken binnenin de polymorfnucleaire leukocyten (intracellulair).",stem:"Wat is de meest geschikte initiële behandeling voor deze aandoening volgens de richtlijnen?",options:["Doxycycline 100 mg 2dd p.o. gedurende 7 dagen","Ceftriaxon 500 mg i.m. eenmalig","Metronidazol 2000 mg p.o. eenmalig","Fluconazol 150 mg p.o. eenmalig"],correct:1,explanation:"Klinische interpretatie: Het klinisch beeld van overvloedige purulente afscheiding gecombineerd met de microscopische bevinding van intracellulaire gramnegatieve diplokokken is bewijzend voor een gonorroe-urethritis (Neisseria gonorrhoeae).\n\nWaarom B juist is: De eerste keus behandeling voor een ongecompliceerde gonokokkeninfectie is een eenmalige intramusculaire injectie met Ceftriaxon 500 mg (of 1000 mg afhankelijk van lokaal protocol).\n\nWaarom de andere opties onjuist zijn:\nA (Doxycycline): Is de eerste keus behandeling voor Chlamydia trachomatis, niet voor gonorroe (vanwege hoge resistentiecijfers van N. gonorrhoeae tegen tetracyclines).\nC (Metronidazol): Is de behandeling voor Trichomonas vaginalis en bacteriële vaginose.\nD (Fluconazol): Is een antimycoticum gebruikt voor schimmelinfecties (bijv. Candida).",objective:"Gonorroïsche urethritis herkennen aan het klinische beeld en intracellulaire gramnegatieve diplokokken en de eerste keus antibioticum kennen.",sourceIds:["s27"],image:""}
 ];
 
 var QBANK_SUBJECTS=[
@@ -479,13 +537,7 @@ var QUESTION_MODES=[
 ];
 function isQbankSubject(subject){return has(QBANK_SUBJECTS,String(subject||""))}
 function qbankSubsections(subject){return QBANK_SUBSECTIONS[String(subject||"")]||[]}
-function qbankTopicOptions(subject,subsection,currentTopic){
- var out=[],i,q;
- for(i=0;i<state.questions.length;i++){q=state.questions[i];if(isQbankSubject(q.subject)&&(!subject||q.subject===subject)&&(!subsection||q.qbankSubsection===subsection)&&q.topic&&!has(out,q.topic))out.push(q.topic)}
- if(currentTopic&&!has(out,currentTopic))out.push(currentTopic);
- out.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
- return out;
-}
+function qbankTopicOptions(subject,subsection,currentTopic){return[]}
 function questionMode(q){return q&&q.mode==="clinical"?"clinical":"knowledge"}
 
 var SECTIONS=[
@@ -968,6 +1020,10 @@ function load(){
       if(typeof x.feedback[fi].response!=="string")x.feedback[fi].response="";
       if(typeof x.feedback[fi].respondedAt!=="string")x.feedback[fi].respondedAt="";
     }
+    for(var fii=0;fii<x.feedback.length;fii++){
+      if(typeof x.feedback[fii].studentName!=="string"||!x.feedback[fii].studentName)x.feedback[fii].studentName=x.name||"Student";
+    }
+    for(var qi=0;qi<x.questions.length;qi++)x.questions[qi].topic="";
     if(!x.highlights || typeof x.highlights!=="object")x.highlights={};
     if(!x.questionMarks || typeof x.questionMarks!=="object")x.questionMarks={};
     if(!x.chapterTime || typeof x.chapterTime!=="object")x.chapterTime={};
@@ -975,6 +1031,7 @@ function load(){
     if(!x.name)x.name="Student";
     if(!x.benchmark || typeof x.benchmark!=="object")x.benchmark={medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0};
     if(!x.ui || typeof x.ui!=="object")x.ui={};
+    if(typeof x.ui.progressExpanded!=="boolean")x.ui.progressExpanded=false;
     if(!x.ai || typeof x.ai!=="object")x.ai={endpoint:"/api/grade-open"};
     if(typeof x.ai.endpoint!=="string")x.ai.endpoint="/api/grade-open";
     migrateABCD(x);
@@ -986,7 +1043,7 @@ function load(){
     return x;
   }
  }catch(e){}
- var fresh={questions:clone(QUESTIONS),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},questionMarks:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0},ai:{endpoint:"/api/grade-open"}};
+ var fresh={questions:clone(QUESTIONS.filter(function(q){return q.id==="q9"||q.id==="q10"||q.id==="q11"||q.id==="q12"||q.id==="q13";})),articles:clone(ARTICLES),sources:clone(SOURCES),sections:clone(SECTIONS),answers:{},attempts:[],notes:{},feedback:[],highlights:{},questionMarks:{},chapterTime:{},name:"Student",theme:"light",benchmark:{medianScore:null,percentile:null,otherAvgTime:null,sampleSize:0},ai:{endpoint:"/api/grade-open"}};
  migrateABCD(fresh);
  fresh.questionSeedVersion=QUESTION_SEED_VERSION;
  ensureMedicalLibrary(fresh);
@@ -1022,23 +1079,149 @@ function migrateABCD(x){
    }
  }
 }
-var QUESTION_SEED_VERSION=7;
+var QUESTION_SEED_VERSION=8;
 function ensureQuestionBankSeeds(x){
  var version=Number(x.questionSeedVersion)||0;
  if(version>=QUESTION_SEED_VERSION)return false;
- var changed=false,i,q;
- if(version<7){
-   var kept=[];
-   for(i=0;i<x.questions.length;i++){q=x.questions[i];if(!/^b4(?:o|r)\\d+$/.test(String(q.id||"")))kept.push(q);else changed=true;}
+ var changed=false,i,q,keepIds={q9:true,q10:true,q11:true,q12:true,q13:true},kept=[];
+ if(version<8){
+   for(i=0;i<QUESTIONS.length;i++){
+     q=QUESTIONS[i];
+     if(keepIds[q.id]){q=clone(q);q.topic="";kept.push(q);}
+   }
    x.questions=kept;
+   x.answers={};
+   for(i=0;i<x.questions.length;i++)x.questions[i].topic="";
+   changed=true;
+ }else{
+   for(i=0;i<x.questions.length;i++){
+     q=x.questions[i];
+     if(keepIds[q.id]){q.topic="";kept.push(q);}
+   }
+   if(kept.length!==x.questions.length){x.questions=kept;x.answers={};changed=true;}
  }
- for(i=0;i<QUESTIONS.length;i++){q=QUESTIONS[i];if(!byId(x.questions,q.id)){x.questions.push(clone(q));changed=true;}}
- for(i=0;i<BLOCK4_QUESTION_BANK.length;i++){q=BLOCK4_QUESTION_BANK[i];if(!byId(x.questions,q.id)){x.questions.push(clone(q));changed=true;}}
- for(i=0;i<SOURCES.length;i++){q=SOURCES[i];if((q.id==="s27"||q.id==="s28")&&!byId(x.sources,q.id)){x.sources.push(clone(q));changed=true;}}
- x.questionSeedVersion=QUESTION_SEED_VERSION;return changed;
+ x.questionSeedVersion=QUESTION_SEED_VERSION;
+ return changed;
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
 function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function authToken(){return window.__medqnlAuthSession&&window.__medqnlAuthSession.access_token?window.__medqnlAuthSession.access_token:""}
+async function supabaseAuthedFetch(path,options){
+ var opts=Object.assign({},options||{}),headers=Object.assign({},opts.headers||{});
+ headers.apikey=authConfig.anonKey;headers.Accept='application/json';
+ var token=authToken();if(token)headers.Authorization='Bearer '+token;
+ opts.headers=headers;return fetch(authConfig.url+path,opts);
+}
+async function fetchQuestionBankRemote(){
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?select=id,question,updated_at&order=updated_at.asc',{method:'GET'});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vragenbank ophalen mislukt.');
+ var dr=await supabaseAuthedFetch('/rest/v1/question_bank_deletions?select=id',{method:'GET'});
+ var dd=await dr.json().catch(function(){return []});
+ if(!dr.ok)throw new Error((dd&&dd.message)||'Verwijderde vragen ophalen mislukt.');
+ return {rows:Array.isArray(d)?d:[],deletedIds:Array.isArray(dd)?dd.map(function(x){return String(x.id)}):[]};
+}
+async function upsertQuestionRemote(question){
+ if(!question||!question.id)return;
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:String(question.id),question:question})});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vraag opslaan op de server mislukt.');
+ await supabaseAuthedFetch('/rest/v1/question_bank_deletions?id=eq.'+encodeURIComponent(String(question.id)),{method:'DELETE'});
+}
+async function deleteQuestionRemote(id){
+ id=String(id||'').trim();if(!id)throw new Error('Ontbrekende vraag-id.');
+ var marker=await supabaseAuthedFetch('/rest/v1/question_bank_deletions?on_conflict=id',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:id,deleted_at:new Date().toISOString()})});
+ var md=await marker.json().catch(function(){return []});
+ if(!marker.ok)throw new Error((md&&md.message)||'Verwijdermarkering opslaan mislukt.');
+ var rr=await supabaseAuthedFetch('/rest/v1/question_bank?id=eq.'+encodeURIComponent(id),{method:'DELETE'});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||'Vraag permanent verwijderen mislukt.');
+}
+function persistQuestionRemote(question){
+ upsertQuestionRemote(question).catch(function(err){
+   alert("Vraag is lokaal opgeslagen, maar kon niet permanent worden opgeslagen: "+(err&&err.message?err.message:String(err)));
+ });
+}
+async function syncQuestionsFromServer(){
+ var remote=await fetchQuestionBankRemote();
+ var syncedKey='medqnl_question_bank_sync_v1';
+ var migrated=false;try{migrated=localStorage.getItem(syncedKey)==='1'}catch(e){}
+ if(!migrated){
+   var localIds={},i,q;
+   for(i=0;i<state.questions.length;i++){q=state.questions[i];if(q&&q.id)localIds[String(q.id)]=true;}
+   var seedIds=['q9','q10','q11','q12','q13'];
+   for(i=0;i<seedIds.length;i++){
+     if(!localIds[seedIds[i]] && remote.deletedIds.indexOf(seedIds[i])<0)await deleteQuestionRemote(seedIds[i]);
+   }
+   for(i=0;i<state.questions.length;i++)if(state.questions[i]&&state.questions[i].id)await upsertQuestionRemote(state.questions[i]);
+   try{localStorage.setItem(syncedKey,'1')}catch(e){}
+   remote=await fetchQuestionBankRemote();
+ }
+ var remoteQuestions=remote.rows.map(function(row){return row&&row.question?row.question:null}).filter(Boolean);
+ var remoteIds={};for(var ri=0;ri<remoteQuestions.length;ri++)remoteIds[String(remoteQuestions[ri].id)]=true;
+ for(var ai=state.answers?Object.keys(state.answers):[],ii=0;ii<ai.length;ii++)if(!remoteIds[ai[ii]])delete state.answers[ai[ii]];
+ state.questions=remoteQuestions;
+ save();
+}
+async function syncFeedbackFromServer(){
+ var token=authToken();if(!token)return;
+ try{
+  var pr=await supabaseAuthedFetch('/rest/v1/profiles?id=eq.'+encodeURIComponent(tokenUserId())+'&select=id,email,name,role&limit=1',{method:'GET'});
+  var pd=await pr.json().catch(function(){return []});
+  if(pr.status===401){logout();return}
+  if(!pr.ok)throw new Error((pd&&pd.message)||'Profiel ophalen mislukt.');
+  var profile=Array.isArray(pd)?pd[0]:null;
+  if(!profile)throw new Error('Profiel ontbreekt in Supabase.');
+  window.__medqnlAuthRole=profile.role||'student';
+  if(profile.name)state.name=profile.name;
+  if(profile.email)state.email=profile.email;
+  var path=profile.role==='admin'?'/rest/v1/feedback?select=*&order=updated_at.desc':'/rest/v1/feedback?user_id=eq.'+encodeURIComponent(tokenUserId())+'&select=*&order=updated_at.desc';
+  var rr=await supabaseAuthedFetch(path,{method:'GET'});
+  var d=await rr.json().catch(function(){return []});
+  if(rr.status===401){logout();return}
+  if(!rr.ok)throw new Error((d&&d.message)||'Feedback ophalen mislukt.');
+  state.feedback=Array.isArray(d)?d.map(function(f){return {id:f.id,date:f.created_at||'',category:f.category||'Overig',message:f.message||'',questionId:f.question_id||'',questionTitle:f.question_title||'',studentName:f.student_name||'Student',studentEmail:f.student_email||'',status:f.status==='resolved'||f.handled===true?'resolved':'open',response:f.response||'',respondedAt:f.responded_at||''}}):[];
+  save();
+ }catch(e){console.warn("Feedback sync:",e&&e.message?e.message:e)}
+}
+function tokenUserId(){
+ var s=window.__medqnlAuthSession||authSession||{},id=s.user&&s.user.id?s.user.id:s.user_id;
+ return id||'';
+}
+async function createFeedbackRemote(fb){
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback',{method:'POST',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   user_id:tokenUserId(),
+   student_email:(((window.__medqnlAuthSession||authSession||{}).user||{}).email)||state.email||'',
+   student_name:state.name||'Student',
+   question_id:fb.questionId||'',
+   question_title:fb.questionTitle||'',
+   category:fb.category||'Overig',
+   message:fb.message||'',
+   status:'open',
+   handled:false,
+   response:'',
+   responded_at:null
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback opslaan mislukt.');
+ return Array.isArray(d)?d[0]:d;
+}
+async function updateFeedbackRemote(fb){
+ if(!authToken())throw new Error('Je moet ingelogd zijn.');
+ var status=fb.status==='resolved'?'resolved':'open';
+ var rr=await supabaseAuthedFetch('/rest/v1/feedback?id=eq.'+encodeURIComponent(fb.id),{method:'PATCH',headers:{'Content-Type':'application/json',Prefer:'return=representation'},body:JSON.stringify({
+   status:status,
+   handled:status==='resolved',
+   response:fb.response||'',
+   responded_at:new Date().toISOString()
+ })});
+ var d=await rr.json().catch(function(){return []});
+ if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
+ if(!rr.ok)throw new Error((d&&d.message)||'Feedback bijwerken mislukt.');
+ return Array.isArray(d)?d[0]:d;
+}
 function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
 function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
 function esc(s){return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}
@@ -1170,20 +1353,21 @@ function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
- var appNavCollapsed=!!state.ui.appNavCollapsed;
- var qtree="<div class='qnavtree'>"+
- "<button class='subnav section "+(progressOpen?"active":"")+"' data-page='performance-overall'>"+(ICONS.progress||ICONS.qbank)+" <span>Voortgang</span></button>"+
- "<div style='padding-left:12px'>"+
- "<button class='subnav "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" <span>Algehele prestatie</span></button>"+
- "<button class='subnav "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" <span>Rapport</span></button>"+
- "</div>"+
- "<button class='subnav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" <span>Zoeken</span></button>"+
- "<button class='subnav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" <span>Notities</span></button>"+
+ var appNavCollapsed=!!state.ui.appNavCollapsed,progressExpanded=!!state.ui.progressExpanded;
+ var qtree="<div class='progress-nav-group'>"+
+ "<button class='nav progress-main-nav "+(progressOpen?"active":"")+"' data-toggle-progress>"+(ICONS.progress||ICONS.qbank)+" Voortgang <span class='progress-chevron'>"+(progressExpanded?"▾":"▸")+"</span></button>"+
+ "<div class='progress-children' style='display:"+(progressExpanded?"block":"none")+"'>"+
+ "<button class='nav progress-child "+(page==="performance-overall"?"active":"")+"' data-page='performance-overall'>"+(ICONS.overall||ICONS.qbank)+" Algehele prestatie</button>"+
+ "<button class='nav progress-child "+(page==="performance-reports"?"active":"")+"' data-page='performance-reports'>"+(ICONS.report||ICONS.qbank)+" Rapport</button>"+
+ "</div></div>"+
+ "<div class='qnavtree-extra'>"+
+ "<button class='nav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" Zoeken</button>"+
+ "<button class='nav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" Notities</button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>Bètaversie · Contentbeheer v2</span><button class='btn secondary' data-page='settings'>Instellingen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
- nav("dashboard","Dashboard",ICONS.home)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
- "<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear)+
+ nav("dashboard","Dashboard",ICONS.home)+nav("daily","Daily",ICONS.qbank)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+nav("library","Medische Bibliotheek",ICONS.book)+
+ (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
  "</aside><main class='main "+((page==="ivtg-library"||page==="library")?"library-main":"")+"'>"+body+"</main></div>";
 }
 function welcomeMessage(){
@@ -1197,16 +1381,212 @@ function welcomeMessage(){
  ];
  return messages[Math.floor(Math.random()*messages.length)];
 }
+function feedbackSortedCopy(){
+ var arr=Array.isArray(state.feedback)?state.feedback.slice():[];
+ arr.sort(function(a,b){
+  var ad=Date.parse(String(a.respondedAt||a.date||""))||0,bd=Date.parse(String(b.respondedAt||b.date||""))||0;
+  return bd-ad;
+ });
+ return arr;
+}
+function renderMailboxPreview(limit){
+ var fbs=feedbackSortedCopy(),i,h="",shown=0;
+ for(i=0;i<fbs.length&&shown<limit;i++){
+  var fb=fbs[i],status=fb.status==="resolved"?"resolved":"open",hasResponse=String(fb.response||"").trim()!=="";
+  h+="<div class='mailbox-item "+status+"'>"+
+    "<div class='mailbox-item-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemene feedback")+"</strong><div class='mailbox-meta'>"+esc(fb.category||"Overig")+" · "+esc(fb.date||"")+"</div></div>"+
+    "<span class='feedback-status "+status+"'>"+(status==="resolved"?"Opgelost":(hasResponse?"Nieuwe reactie":"In behandeling"))+"</span></div>"+
+    (hasResponse?"<div class='mailbox-message admin'><div class='mailbox-message-label'>Reactie van admin</div>"+md(fb.response)+"</div>":"<div class='small muted' style='margin-top:10px'>Nog geen reactie van de admin.</div>")+
+    (status==="resolved"?"<div class='small muted' style='margin-top:8px'>Deze feedback is opgelost en staat nog in je geschiedenis.</div>":"")+
+  "</div>";shown++;
+ }
+ return h||"<div class='empty'><div class='mailbox-empty-icon'>✉</div><strong>Je mailbox is nog leeg.</strong><div class='small' style='margin-top:6px'>Reacties van admins op je feedback verschijnen hier.</div></div>";
+}
+function mailbox(){
+ var fbs=feedbackSortedCopy(),i,h="",openCount=0,responseCount=0;
+ for(i=0;i<fbs.length;i++){
+  var fb=fbs[i],status=fb.status==="resolved"?"resolved":"open",hasResponse=String(fb.response||"").trim()!=="";
+  if(status==="open")openCount++;
+  if(hasResponse)responseCount++;
+  h+="<div class='mailbox-item "+status+"'>"+
+    "<div class='mailbox-item-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemene feedback")+"</strong><div class='mailbox-meta'>"+esc(fb.category||"Overig")+" · "+esc(fb.date||"")+"</div></div>"+
+    "<span class='feedback-status "+status+"'>"+(status==="resolved"?"Opgelost":(hasResponse?"Nieuwe reactie":"In behandeling"))+"</span></div>"+
+    "<div class='mailbox-message student'><div class='mailbox-message-label'>Jouw feedback</div>"+md(fb.message||"")+"</div>"+
+    (hasResponse?"<div class='mailbox-message admin'><div class='mailbox-message-label'>Reactie van admin</div>"+md(fb.response)+"</div>":"<div class='small muted' style='margin-top:10px'>Nog geen reactie van de admin.</div>")+
+    (status==="resolved"?"<div class='small muted' style='margin-top:8px'>Opgelost door de admin. De conversatie blijft bewaard in je mailbox.</div>":"")+
+  "</div>";
+ }
+ return shell("<div class='pagehead'><div><h1>Mailbox</h1><p>Hier vind je reacties van admins op je feedback en de status van meldingen.</p></div></div>"+
+ "<div class='grid g3' style='margin-bottom:15px'><div class='card stat'><div class='label'>Open feedback</div><div class='value'>"+openCount+"</div></div><div class='card stat'><div class='label'>Reacties ontvangen</div><div class='value'>"+responseCount+"</div></div><div class='card stat'><div class='label'>Totaal berichten</div><div class='value'>"+fbs.length+"</div></div></div>"+
+ "<div class='card'><div class='title'>Berichten</div><div class='mailbox-list'>"+h+"</div></div>");
+}
+var MEDQNL_DAILY_PUZZLES=[
+{name:"Apixaban",aliases:["apixaban"],className:"DOAC · directe factor-Xa-remmer",mechanism:"Remt selectief en direct factor Xa, waardoor de trombinevorming afneemt.",indication:"Preventie van beroerte bij atriumfibrilleren en behandeling/preventie van veneuze trombo-embolie.",sideEffect:"Bloeding is de belangrijkste bijwerking.",pearl:"Dit is geen vitamine-K-antagonist; denk aan directe factor-Xa-remming.",category:"Antistolling"},
+{name:"Metformine",aliases:["metformine","metformin"],className:"Biguanide",mechanism:"Verlaagt vooral de hepatische glucoseproductie en verbetert de insulinegevoeligheid.",indication:"Veelgebruikt als eerstekeusmedicatie bij type 2-diabetes.",sideEffect:"Maag-darmklachten zijn frequent; bij ernstig nierfalen is lactaatacidose een belangrijk risico.",pearl:"Bij verslechterende nierfunctie moet het gebruik opnieuw worden beoordeeld.",category:"Diabetes"},
+{name:"Ramipril",aliases:["ramipril"],className:"ACE-remmer",mechanism:"Remt ACE en verlaagt daardoor de vorming van angiotensine II en aldosteron.",indication:"Onder andere hypertensie, hartfalen en cardiovasculaire risicoreductie.",sideEffect:"Droge hoest, hyperkaliëmie en zelden angio-oedeem.",pearl:"ACE-remmers zijn gecontra-indiceerd tijdens de zwangerschap.",category:"Cardiovasculair"},
+{name:"Furosemide",aliases:["furosemide"],className:"Lisdiureticum",mechanism:"Remt de Na-K-2Cl-cotransporter in de dikke opstijgende lis van Henle.",indication:"Behandeling van overvulling en oedeem, onder andere bij hartfalen.",sideEffect:"Hypokaliëmie, dehydratie en hypotensie.",pearl:"Denk bij sterke diurese aan volumestatus en elektrolyten.",category:"Diureticum"},
+{name:"Salbutamol",aliases:["salbutamol"],className:"Kortwerkende bèta-2-agonist",mechanism:"Stimuleert bèta-2-receptoren en veroorzaakt bronchodilatatie.",indication:"Snelle verlichting van bronchusobstructie, bijvoorbeeld bij astma.",sideEffect:"Tremor, palpitaties en tachycardie.",pearl:"Dit is vooral een luchtwegverwijder voor snelle symptoomverlichting.",category:"Luchtwegen"},
+{name:"Omeprazol",aliases:["omeprazol"],className:"Protonpompremmer",mechanism:"Remt de H+/K+-ATPase in de pariëtale maagcel en verlaagt zo de zuursecretie.",indication:"Onder andere refluxklachten, ulcuslijden en gastroprotectie in geselecteerde situaties.",sideEffect:"Maag-darmklachten en bij langdurig gebruik onder andere risico op vitamine-B12-tekort.",pearl:"Het aangrijpingspunt zit bij de protonpomp van de maagwand.",category:"Maagzuurremmer"},
+{name:"Levothyroxine",aliases:["levothyroxine","thyroxine"],className:"Synthetisch schildklierhormoon T4",mechanism:"Vervangt thyroxine en wordt in weefsels deels omgezet naar het actieve T3.",indication:"Behandeling van hypothyreoïdie.",sideEffect:"Een te hoge dosering kan klachten van hyperthyreoïdie geven.",pearl:"TSH is belangrijk voor het controleren van de substitutiedosering.",category:"Endocrinologie"},
+{name:"Atorvastatine",aliases:["atorvastatine","atorvastatin"],className:"Statine",mechanism:"Remt HMG-CoA-reductase en verlaagt daarmee vooral het LDL-cholesterol.",indication:"Reductie van cardiovasculair risico bij dyslipidemie en secundaire preventie.",sideEffect:"Spierklachten; ernstige spierbeschadiging is zeldzaam.",pearl:"De kern van de behandeling is LDL-verlaging en risicoreductie.",category:"Lipidologie"},
+{name:"Sertraline",aliases:["sertraline"],className:"SSRI",mechanism:"Remt selectief de heropname van serotonine.",indication:"Onder andere depressie, paniekstoornis, PTSS en OCD.",sideEffect:"Misselijkheid, slaapverandering en seksuele disfunctie.",pearl:"Het therapeutische effect ontstaat geleidelijk, terwijl bijwerkingen eerder kunnen optreden.",category:"Psychiatrie"},
+{name:"Nitrofurantoine",aliases:["nitrofurantoine","nitrofurantoïne"],className:"Urinair antibioticum",mechanism:"Wordt in bacteriën omgezet in reactieve metabolieten die meerdere bacteriële processen beschadigen.",indication:"Veelgebruikt bij een ongecompliceerde cystitis als het volgens de richtlijn passend is.",sideEffect:"Misselijkheid; zeldzame pulmonale en hepatische bijwerkingen.",pearl:"Denk aan hoge concentraties in de urine bij blaasinfecties.",category:"Urologie"},
+{name:"Tamsulosine",aliases:["tamsulosine"],className:"Selectieve alfa-1A-blokker",mechanism:"Ontspant glad spierweefsel in prostaat en blaashals door alfa-1-blokkade.",indication:"Verlichting van mictieklachten bij benigne prostaathyperplasie.",sideEffect:"Duizeligheid en orthostatische klachten; ejaculatiestoornissen kunnen voorkomen.",pearl:"Het verbetert de urinestroom maar verkleint de prostaat niet.",category:"Urologie"},
+{name:"Warfarine",aliases:["warfarine"],className:"Vitamine-K-antagonist",mechanism:"Remt vitamine-K-epoxidereductase en verlaagt de aanmaak van vitamine-K-afhankelijke stollingsfactoren.",indication:"Orale antistolling in specifieke indicaties.",sideEffect:"Bloeding en veel interacties met geneesmiddelen en voeding.",pearl:"Denk aan INR-controle en een smalle therapeutische breedte.",category:"Antistolling"},
+{name:"Spironolacton",aliases:["spironolacton","spironolactone"],className:"Aldosteronantagonist",mechanism:"Blokkeert de mineralocorticoïdreceptor in de distale nefron.",indication:"Onder andere hartfalen en hyperaldosteronisme; soms bij ascites.",sideEffect:"Hyperkaliëmie en gynaecomastie.",pearl:"Kalium is de klassieke laboratoriumwaarde om bij dit middel te bewaken.",category:"Diureticum"},
+{name:"Prednisolon",aliases:["prednisolon","prednisolone"],className:"Systemisch glucocorticoïd",mechanism:"Activeert de glucocorticoïdreceptor en beïnvloedt genexpressie met sterke anti-inflammatoire effecten.",indication:"Tal van inflammatoire en auto-immuunziekten.",sideEffect:"Hyperglykemie, vochtretentie en bij langdurig gebruik onder andere osteoporose.",pearl:"Bij langdurig gebruik niet abrupt stoppen vanwege bijnierschorssuppressie.",category:"Corticosteroïd"},
+{name:"Semaglutide",aliases:["semaglutide"],className:"GLP-1-receptoragonist",mechanism:"Activeert de GLP-1-receptor en beïnvloedt glucoseafhankelijke insulinesecretie, verzadiging en maaglediging.",indication:"Type 2-diabetes en, afhankelijk van product en indicatie, gewichtsbehandeling.",sideEffect:"Misselijkheid, braken en diarree.",pearl:"De combinatie van glucose-effect en verminderde eetlust is kenmerkend.",category:"Diabetes"},
+{name:"Ceftriaxon",aliases:["ceftriaxon","ceftriaxone"],className:"Derde generatie cefalosporine",mechanism:"Remt bacteriële celwandsynthese via penicillinebindende eiwitten.",indication:"Diverse ernstige bacteriële infecties en specifieke infectieziekten.",sideEffect:"Allergische reacties en diarree; galblaassludge kan voorkomen.",pearl:"Een breedspectrumcefalosporine dat vaak parenteraal wordt gebruikt.",category:"Antibioticum"},
+{name:"Doxycycline",aliases:["doxycycline"],className:"Tetracycline-antibioticum",mechanism:"Remt bacteriële eiwitsynthese via de 30S-ribosomale subunit.",indication:"Onder andere bepaalde respiratoire infecties en soa's, afhankelijk van de verwekker.",sideEffect:"Fotosensitiviteit en maag-darmklachten; oesofagitis bij verkeerd innemen.",pearl:"Neem met voldoende water in en ga niet direct liggen.",category:"Antibioticum"},
+{name:"Clopidogrel",aliases:["clopidogrel"],className:"P2Y12-remmer",mechanism:"Remt irreversibel de ADP-gemedieerde activatie van bloedplaatjes via P2Y12.",indication:"Secundaire preventie van atherotrombotische events, onder andere na bepaalde PCI's.",sideEffect:"Bloeding.",pearl:"Dit is plaatjesremming en geen directe anticoagulatie.",category:"Antitromboticum"},
+{name:"Bisoprolol",aliases:["bisoprolol"],className:"Selectieve bèta-1-blokker",mechanism:"Blokkeert vooral bèta-1-receptoren en verlaagt hartfrequentie en contractiliteit.",indication:"Onder andere hypertensie, angina pectoris en hartfalen.",sideEffect:"Bradycardie, vermoeidheid en koude extremiteiten.",pearl:"Controleer vooral hartfrequentie en bloeddruk.",category:"Cardiovasculair"},
+{name:"Amlodipine",aliases:["amlodipine"],className:"Dihydropyridine-calciumantagonist",mechanism:"Blokkeert L-type calciumkanalen in vasculaire gladde spier en veroorzaakt vasodilatatie.",indication:"Hypertensie en angina pectoris.",sideEffect:"Perifeer oedeem en hoofdpijn.",pearl:"Enkeloedeem door vasodilatatie is een klassiek herkenningspunt.",category:"Cardiovasculair"},
+{name:"Losartan",aliases:["losartan"],className:"Angiotensine-II-receptorblokker (ARB)",mechanism:"Blokkeert de AT1-receptor van angiotensine II.",indication:"Onder andere hypertensie en geselecteerde vormen van nier- en hartfalen.",sideEffect:"Hyperkaliëmie en hypotensie.",pearl:"Een ARB geeft veel minder vaak droge hoest dan een ACE-remmer.",category:"Cardiovasculair"},
+{name:"Digoxine",aliases:["digoxine","digoxin"],className:"Hartglycoside",mechanism:"Remt Na+/K+-ATPase en verhoogt indirect intracellulair calcium; verhoogt ook de vagale tonus.",indication:"In geselecteerde situaties bij hartfalen en frequentiecontrole bij atriumfibrilleren.",sideEffect:"Misselijkheid, bradycardie en visusstoornissen bij toxiciteit.",pearl:"Nierfunctie en elektrolyten zijn belangrijk bij het risico op toxiciteit.",category:"Cardiovasculair"},
+{name:"Paracetamol",aliases:["paracetamol","acetaminophen"],className:"Analgeticum en antipyreticum",mechanism:"Werkt centraal pijn- en koortsremmend; het exacte mechanisme is niet volledig opgehelderd.",indication:"Milde tot matige pijn en koorts.",sideEffect:"Bij overdosering kan ernstige leverbeschadiging optreden.",pearl:"Let op de totale dagdosering, ook wanneer het middel in combinatiepreparaten zit.",category:"Pijnstilling"},
+{name:"Morfine",aliases:["morfine","morphine"],className:"Sterk opioïd",mechanism:"Activeert vooral µ-opioïdreceptoren in het centrale zenuwstelsel.",indication:"Ernstige pijn, inclusief palliatieve symptoombestrijding.",sideEffect:"Ademhalingsdepressie, obstipatie, misselijkheid en sufheid.",pearl:"Bij opioïden horen pijnstilling en risico op respiratoire depressie bij elkaar.",category:"Pijnstilling"},
+{name:"Vancomycine",aliases:["vancomycine","vancomycin"],className:"Glycopeptide-antibioticum",mechanism:"Remt bacteriële celwandsynthese door binding aan D-Ala-D-Ala-structuren.",indication:"Ernstige infecties met Gram-positieve bacteriën, waaronder MRSA, afhankelijk van de situatie.",sideEffect:"Nefrotoxiciteit en infusiereactie zoals het red-man-syndroom.",pearl:"Bij systemisch gebruik is therapeutic drug monitoring in relevante situaties belangrijk.",category:"Antibioticum"},
+{name:"Flucloxacilline",aliases:["flucloxacilline","flucloxacillin"],className:"Penicillinase-resistente penicilline",mechanism:"Remt de bacteriële celwandsynthese en is stabieler tegen stafylokokkenpenicillinase.",indication:"Met name infecties veroorzaakt door methicillinegevoelige stafylokokken.",sideEffect:"Maag-darmklachten en allergische reacties; leverproblemen zijn zeldzamer.",pearl:"Denk aan stafylokokken en betalactamase-resistentie.",category:"Antibioticum"}
+];
+
+var MEDQNL_DAILY_CASES={
+"Apixaban":{patient:"Een 72-jarige vrouw met atriumfibrilleren gebruikt dagelijks dit middel om haar kans op een beroerte te verlagen. Ze heeft verder hypertensie en merkt dat ze zich eigenlijk prima voelt; het middel is vooral bedoeld om een toekomstige complicatie te voorkomen.",story:"Bij atriumfibrilleren kan bloed makkelijker blijven stilstaan in het atrium en daardoor een stolsel vormen. Dit middel remt factor Xa direct, waardoor minder trombine en uiteindelijk minder fibrine wordt gevormd. Voor deze patiënt is het doel preventie van trombo-embolie, niet het behandelen van een bestaande pijnklacht of bloeddruk. In de praktijk staan therapietrouw, nierfunctie, interacties en het signaleren van bloedingen centraal."},
+"Metformine":{patient:"Een 58-jarige man is recent gediagnosticeerd met type 2-diabetes. Zijn nuchtere glucosewaarden blijven te hoog ondanks aanpassingen van voeding en beweging, waarna hij met dit middel start.",story:"Dit middel verlaagt vooral de glucoseproductie door de lever en verbetert de insulinegevoeligheid. Daardoor daalt de bloedglucose zonder dezelfde manier van hypoglykemie als bij middelen die de insulineafgifte direct stimuleren. Maag-darmklachten komen geregeld voor en zijn vaak het meest merkbaar bij de start of na dosisverhoging. Bij een sterk verminderde nierfunctie moet de behandeling opnieuw worden beoordeeld vanwege het risico op accumulatie en lactaatacidose."},
+"Ramipril":{patient:"Een 67-jarige vrouw heeft herhaaldelijk een hoge bloeddruk en tekenen van cardiovasculair risico. Haar huisarts schrijft dit middel voor omdat naast bloeddrukverlaging ook bescherming van hart en vaten gewenst is.",story:"Ramipril is een ACE-remmer die de vorming van angiotensine II vermindert. Daardoor neemt vasoconstrictie af en daalt ook de aldosteronproductie, wat bijdraagt aan een lagere bloeddruk en minder cardiale belasting. Een droge, prikkelende hoest is een bekende bijwerking; ook hyperkaliëmie en nierfunctieveranderingen zijn klinisch relevant. Bij zwangerschap mag een ACE-remmer niet worden gebruikt."},
+"Furosemide":{patient:"Een 78-jarige man met hartfalen komt op controle met dikke enkels en snelle gewichtstoename door vochtretentie. Hij gebruikt dit middel om overtollig vocht kwijt te raken en daardoor minder benauwd te zijn.",story:"Furosemide is een krachtig lisdiureticum dat de Na-K-2Cl-cotransporter in de dikke opstijgende lis van Henle remt. Daardoor neemt de uitscheiding van natrium en water toe en vermindert overvulling. De klinische winst zit bij deze patiënt vooral in minder oedeem en minder klachten door volume-overbelasting. Bij krachtige diurese moet je letten op dehydratie, hypotensie en verstoringen van kalium en andere elektrolyten."},
+"Salbutamol":{patient:"Een 21-jarige student met astma krijgt tijdens het sporten plots piepende ademhaling en benauwdheid. Hij gebruikt dit inhalatiemiddel voor snelle verlichting van de luchtwegvernauwing.",story:"Salbutamol is een kortwerkende bèta-2-agonist die de gladde spieren van de luchtwegen ontspant en zo bronchodilatatie geeft. Het effect is bedoeld om benauwdheid en piepen snel te verminderen wanneer sprake is van bronchusobstructie. Tremor en palpitaties kunnen optreden doordat bèta-2-agonisten ook buiten de luchtwegen effecten hebben. Een toenemende behoefte aan dit middel kan bovendien een signaal zijn dat de astmacontrole onvoldoende is."},
+"Omeprazol":{patient:"Een 64-jarige man heeft al weken last van zuurbranden en zure oprispingen, vooral na het eten en bij liggen. Zijn arts kiest dit middel om de zuursecretie van de maag sterk te remmen.",story:"Omeprazol remt de H+/K+-ATPase in de pariëtale maagcel en onderdrukt daarmee de maagzuurproductie. Dat maakt het geschikt bij onder andere refluxklachten en geselecteerde ulcus- of gastroprotectieve indicaties. Het middel pakt dus de zuursecretie aan, niet alleen het gevoel van brandend maagzuur. Bij langdurig gebruik moet de noodzaak regelmatig worden herbeoordeeld, onder meer omdat tekorten en andere langetermijneffecten relevant kunnen worden."},
+"Levothyroxine":{patient:"Een 45-jarige vrouw heeft vermoeidheid, kouwelijkheid en een traag gevoel ontwikkeld. Bloedonderzoek past bij hypothyreoïdie en zij start met dit middel als hormoonsubstitutie.",story:"Levothyroxine is synthetisch thyroxine (T4) en vervangt het hormoon dat bij hypothyreoïdie onvoldoende wordt geproduceerd. In het lichaam wordt een deel omgezet naar het actievere T3, waardoor de stofwisseling weer beter wordt gereguleerd. De juiste dosering is belangrijk: te weinig geeft aanhoudende hypothyreoïdie, te veel kan juist klachten van hyperthyreoïdie veroorzaken. TSH-metingen helpen om de substitutiedosering op termijn af te stemmen."},
+"Atorvastatine":{patient:"Een 61-jarige man heeft een verhoogd cardiovasculair risico en een te hoog LDL-cholesterol. Zijn arts wil het risico op een hartinfarct of beroerte verlagen en schrijft daarom dit middel voor.",story:"Atorvastatine remt HMG-CoA-reductase, een belangrijk enzym in de cholesterolsynthese. Daardoor neemt de aanmaak van cholesterol af en wordt vooral het LDL-cholesterol sterk verlaagd. De behandeling is gericht op risicoreductie op langere termijn, ook wanneer iemand zich op dat moment volledig gezond voelt. Spierklachten zijn een bekende bijwerking; ernstige spierbeschadiging is zeldzaam maar vraagt wel om alertheid bij passende klachten."},
+"Sertraline":{patient:"Een 34-jarige vrouw heeft al maanden sombere stemming, verlies van interesse en slaapproblemen. Na beoordeling start zij met dit middel vanwege een depressieve stoornis.",story:"Sertraline is een SSRI en remt selectief de heropname van serotonine in de synaps. Het klinische effect bouwt meestal geleidelijk op, terwijl bijwerkingen zoals misselijkheid of slaapverandering al eerder merkbaar kunnen zijn. Het middel wordt ook gebruikt bij verschillende angst- en stressgerelateerde stoornissen. Evaluatie van effect, bijwerkingen, therapietrouw en eventuele suïcidaliteitsklachten hoort bij goede follow-up, zeker aan het begin van de behandeling."},
+"Nitrofurantoine":{patient:"Een 29-jarige vrouw krijgt plots branderigheid bij het plassen en moet veel vaker kleine beetjes plassen. Bij een ongecompliceerde blaasinfectie wordt haar dit middel voorgeschreven omdat het hoge concentraties in de urine bereikt.",story:"Nitrofurantoïne wordt door bacteriële enzymen omgezet in reactieve metabolieten die meerdere bacteriële processen beschadigen. Het middel is daardoor vooral geschikt voor infecties waarbij hoge concentraties in de urine gewenst zijn, zoals een ongecompliceerde cystitis wanneer het volgens de richtlijn passend is. Maag-darmklachten kunnen voorkomen; zeldzamere pulmonale of hepatische bijwerkingen zijn vooral relevant bij passende klachten of langer gebruik. Bij de keuze voor het middel tellen onder meer de aard van de infectie en de nierfunctie mee."},
+"Tamsulosine":{patient:"Een 68-jarige man wordt 's nachts meerdere keren wakker om te plassen en heeft moeite om de urinestroom op gang te krijgen. Onderzoek past bij benigne prostaathyperplasie en daarom krijgt hij dit middel.",story:"Tamsulosine blokkeert vooral alfa-1A-receptoren in het gladde spierweefsel van prostaat en blaashals. Daardoor neemt de weerstand tijdens het plassen af en kan de urinestroom verbeteren. Het middel verkleint de prostaat zelf niet; het verlicht vooral de mechanische klachten. Duizeligheid, orthostatische klachten en ejaculatiestoornissen kunnen optreden en zijn relevante punten voor patiëntvoorlichting."},
+"Warfarine":{patient:"Een 76-jarige man heeft een mechanische hartklep en heeft blijvende orale antistolling nodig om stolselvorming te voorkomen. Hij gebruikt dit middel en laat op vaste momenten zijn INR controleren.",story:"Warfarine is een vitamine-K-antagonist en remt de regeneratie van actieve vitamine K. Daardoor worden meerdere vitamine-K-afhankelijke stollingsfactoren minder aangemaakt. Het middel heeft een smalle therapeutische breedte en reageert op veel geneesmiddelen en veranderingen in voeding, waardoor INR-monitoring essentieel is. De belangrijkste complicatie van te sterke antistolling is bloeding, terwijl te weinig effect juist tromboserisico laat bestaan."},
+"Spironolacton":{patient:"Een 74-jarige man met hartfalen heeft ondanks zijn overige behandeling nog steeds klachten en krijgt dit middel toegevoegd. Zijn arts wil het effect van aldosteron tegenwerken en volgt daarbij zijn kalium en nierfunctie.",story:"Spironolacton blokkeert de mineralocorticoïdreceptor en remt zo het effect van aldosteron in de distale nefron. Daardoor houdt het lichaam minder natrium en water vast en blijft kalium eerder behouden dan bij klassieke lisdiuretica. Bij hartfalen kan het daarom een belangrijke aanvulling zijn op andere behandeling. Het belangrijkste veiligheidsaandachtspunt is hyperkaliëmie, naast veranderingen in nierfunctie en bij mannen het optreden van gynaecomastie."},
+"Prednisolon":{patient:"Een 52-jarige vrouw heeft een forse opvlamming van een auto-immuunziekte met pijn en ontstekingsverschijnselen. Zij krijgt tijdelijk dit middel om de ontstekingsreactie snel te onderdrukken.",story:"Prednisolon is een systemisch glucocorticoïd dat via de glucocorticoïdreceptor de expressie van veel ontstekingsgerelateerde genen beïnvloedt. Daardoor neemt de inflammatoire activiteit breed af. Het middel kan zeer effectief zijn, maar ook hyperglykemie, vochtretentie en andere corticosteroïdgerelateerde effecten veroorzaken. Bij langer gebruik is abrupt stoppen onveilig omdat de eigen bijnierschorsproductie onderdrukt kan raken; afbouwen moet dan passend worden gepland."},
+"Semaglutide":{patient:"Een 49-jarige man met type 2-diabetes heeft daarnaast overgewicht en haalt onvoldoende glykemische controle uit leefstijl en eerdere behandeling. Hij start met dit middel, dat zowel de glucosehuishouding als de verzadiging beïnvloedt.",story:"Semaglutide is een GLP-1-receptoragonist. Het versterkt onder meer glucoseafhankelijke insulineafgifte en beïnvloedt eetlust en maaglediging, waardoor zowel glucosewaarden als voedselinname kunnen veranderen. Misselijkheid, braken en diarree komen vooral in het begin geregeld voor. Het is belangrijk om het concrete product, de indicatie en de dosering te koppelen aan de situatie, omdat toepassingen voor diabetes en gewichtsbehandeling niet identiek zijn."},
+"Ceftriaxon":{patient:"Een 66-jarige vrouw wordt opgenomen met een ernstige bacteriële infectie waarbij een breedspectrum antibioticum nodig is. Zij krijgt dit middel parenteraal zodat snel voldoende blootstelling wordt bereikt.",story:"Ceftriaxon is een derde generatie cefalosporine die de bacteriële celwandsynthese remt via binding aan penicillinebindende eiwitten. Daardoor kunnen gevoelige bacteriën zich niet normaal delen en blijft de celwand instabiel. Het middel wordt gebruikt bij diverse ernstige infecties en specifieke infectieziekten. Allergische reacties en diarree zijn bekende aandachtspunten; bij langdurige of specifieke behandeling kunnen ook galweg- en levergerelateerde verschijnselen relevant zijn."},
+"Doxycycline":{patient:"Een 27-jarige man heeft een infectie waarvoor de arts een tetracycline-antibioticum kiest. Hij krijgt instructies om de tabletten met voldoende water in te nemen en niet direct daarna te gaan liggen.",story:"Doxycycline remt de bacteriële eiwitsynthese door te binden aan de 30S-ribosomale subunit. Het middel wordt gebruikt bij verschillende infecties, afhankelijk van de verwekker en lokale richtlijn. Fotosensitiviteit en maag-darmklachten zijn bekende bijwerkingen; verkeerd innemen kan oesofagitis geven. Goede inname-instructies zijn daarom een belangrijk deel van de behandeling en patiëntvoorlichting."},
+"Clopidogrel":{patient:"Een 63-jarige man heeft recent een coronair stent gekregen na een acuut coronair syndroom. Hij gebruikt dit middel om te voorkomen dat bloedplaatjes opnieuw samenklonteren rond het behandelde vat.",story:"Clopidogrel remt irreversibel de P2Y12-receptor op bloedplaatjes en vermindert daarmee ADP-gemedieerde plaatjesactivatie. Het is dus een plaatjesremmer en geen directe anticoagulans. Het doel bij deze patiënt is het verkleinen van het risico op atherotrombotische complicaties, bijvoorbeeld na een PCI in de juiste klinische context. Bloeding is de belangrijkste bijwerking en therapietrouw is extra belangrijk wanneer een stent recent is geplaatst."},
+"Bisoprolol":{patient:"Een 70-jarige man met hartfalen heeft een verhoogde hartfrequentie en inspanningsklachten. Zijn cardioloog gebruikt dit middel om de belasting van het hart op langere termijn te verlagen.",story:"Bisoprolol blokkeert vooral bèta-1-receptoren en verlaagt daardoor hartfrequentie en contractiliteit. Bij de juiste patiënt en geleidelijke instelling kan dat de sympathische belasting van het hart verminderen en onderdeel zijn van de behandeling van hartfalen. Bradycardie en hypotensie zijn belangrijke controlepunten, naast vermoeidheid en koude extremiteiten. Bij hartfalen worden bètablokkers doorgaans zorgvuldig opgebouwd en niet abrupt gestopt."},
+"Amlodipine":{patient:"Een 56-jarige vrouw heeft ondanks leefstijlmaatregelen een aanhoudend hoge bloeddruk. Zij start met dit middel, waarmee de perifere vaatweerstand kan worden verlaagd.",story:"Amlodipine is een dihydropyridine-calciumantagonist die L-type calciumkanalen in vasculaire gladde spier blokkeert. Hierdoor ontstaat vaatverwijding en daalt de bloeddruk. Een opvallend praktisch punt is perifeer oedeem, vaak zichtbaar als dikke enkels, door veranderingen in de capillaire hydrostatische druk. Het middel kan ook bij angina pectoris worden gebruikt wanneer verdere vasodilatatie gewenst is."},
+"Losartan":{patient:"Een 60-jarige man heeft hypertensie en kreeg eerder een droge hoest bij een ACE-remmer. De arts kiest daarom een ander aangrijpingspunt binnen hetzelfde hormonale systeem.",story:"Losartan is een angiotensine-II-receptorblokker en blokkeert de AT1-receptor. Daarmee vermindert het de vasoconstrictieve en aldosteronverhogende effecten van angiotensine II. Omdat het middel niet hetzelfde ACE-mechanisme gebruikt, komt de typische ACE-remmerhoest veel minder vaak voor. Ook bij een ARB blijven bloeddruk, nierfunctie en kalium belangrijke controlepunten."},
+"Digoxine":{patient:"Een 81-jarige vrouw met atriumfibrilleren heeft ondanks andere behandeling nog steeds een te hoge ventrikelfrequentie en gebruikt dit middel in een zorgvuldig geselecteerde situatie. Haar nierfunctie en elektrolyten worden regelmatig gevolgd.",story:"Digoxine remt Na+/K+-ATPase, waardoor intracellulair calcium indirect toeneemt, en versterkt daarnaast de vagale tonus. Hierdoor kan de contractiliteit toenemen en wordt de geleiding via de AV-knoop afgeremd, wat bij geselecteerde patiënten kan helpen bij frequentiecontrole. De therapeutische marge is relatief smal en het middel wordt grotendeels renaal geklaard. Misselijkheid, bradycardie en visusstoornissen kunnen passen bij toxiciteit, waarbij nierfunctie en kaliumstatus extra belangrijk zijn."},
+"Paracetamol":{patient:"Een 43-jarige vrouw heeft een paar dagen hoofdpijn en spierpijn door een virale infectie. Zij kiest dit middel voor pijn- en koortsvermindering en heeft geen complexe pijnbehandeling nodig.",story:"Paracetamol werkt vooral centraal pijn- en koortsremmend; het precieze werkingsmechanisme is niet volledig opgehelderd. Het is een veelgebruikt middel bij milde tot matige pijn en koorts. De grote valkuil zit niet zozeer in de normale dosis, maar in het onbedoeld stapelen van preparaten die ook paracetamol bevatten. Overdosering kan ernstige leverbeschadiging geven en vraagt daarom snelle herkenning en beoordeling."},
+"Morfine":{patient:"Een 67-jarige man met gevorderde kanker heeft ernstige pijn die onvoldoende reageert op niet-opioïde pijnstilling. Hij krijgt dit middel in een schema dat is afgestemd op effect, bijwerkingen en zijn klinische toestand.",story:"Morfine is een sterk opioïd dat vooral via de μ-opioïdreceptor werkt. Het vermindert de beleving van ernstige pijn, maar heeft tegelijk voorspelbare opioïde effecten op het centrale zenuwstelsel en het maag-darmkanaal. Ademhalingsdepressie, sufheid, misselijkheid en obstipatie zijn belangrijke aandachtspunten. Daarom horen dosisaanpassing, monitoring en preventie van obstipatie bij een veilige opioïdbehandeling."},
+"Vancomycine":{patient:"Een 69-jarige man wordt opgenomen met een ernstige infectie waarbij een resistente Gram-positieve bacterie wordt vermoed of aangetoond. Hij krijgt dit middel intraveneus en de dosering wordt afgestemd op zijn nierfunctie en blootstelling.",story:"Vancomycine is een glycopeptide-antibioticum dat de bacteriële celwandsynthese remt door te binden aan D-Ala-D-Ala-structuren. Het wordt onder andere gebruikt bij ernstige infecties door resistente Gram-positieve bacteriën, afhankelijk van de klinische situatie. Nierfunctie en therapeutische blootstelling zijn belangrijk omdat overdosering het risico op toxiciteit verhoogt. Een te snelle infusie kan bovendien een infusiereactie veroorzaken, waardoor de toedieningssnelheid relevant is."},
+"Flucloxacilline":{patient:"Een 58-jarige vrouw heeft een forse huid- en wekedeleninfectie waarbij een methicillinegevoelige stafylokok waarschijnlijk is. De arts kiest daarom een penicillinase-resistente penicilline.",story:"Flucloxacilline remt de bacteriële celwandsynthese en is relatief stabiel tegen penicillinasen van stafylokokken. Daardoor is het gericht bruikbaar bij infecties door gevoelige stafylokokken. Allergische reacties en maag-darmklachten kunnen optreden; levergerelateerde bijwerkingen zijn zeldzamer maar klinisch relevant. De keuze voor dit middel hangt altijd af van de vermoedelijke of aangetoonde verwekker en de lokale antibioticakeuzes."}
+};
+
+var MEDQNL_DAILY_KEY="medqnl_daily_puzzle_v1",medqnlDailyTimer=null;
+function medqnlDailyDate(){
+ try{return new Intl.DateTimeFormat("en-CA",{timeZone:"Europe/Amsterdam",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+ catch(e){var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");return d.getFullYear()+"-"+m+"-"+day}
+}
+function medqnlDayNumber(dateKey){
+ var parts=String(dateKey).split("-").map(Number),base=Date.UTC(2026,0,1),cur=Date.UTC(parts[0],parts[1]-1,parts[2]);
+ return Math.floor((cur-base)/86400000);
+}
+function medqnlDailyTarget(){
+ var date=medqnlDailyDate(),idx=((medqnlDayNumber(date)%MEDQNL_DAILY_PUZZLES.length)+MEDQNL_DAILY_PUZZLES.length)%MEDQNL_DAILY_PUZZLES.length,puzzle=MEDQNL_DAILY_PUZZLES[idx],info=MEDQNL_DAILY_CASES[puzzle.name]||{};
+ return {date:date,index:idx,puzzle:Object.assign({},puzzle,info)};
+}
+function medqnlDailyState(){
+ try{
+  var raw=localStorage.getItem(MEDQNL_DAILY_KEY),x=raw?JSON.parse(raw):{};
+  if(!x||typeof x!=="object")x={};
+  if(typeof x.streak!=="number")x.streak=0;
+  if(typeof x.bestStreak!=="number")x.bestStreak=x.streak;
+  if(!x.results||typeof x.results!=="object")x.results={};
+  return x;
+ }catch(e){return {streak:0,bestStreak:0,results:{}}}
+}
+function saveMedqnlDailyState(x){try{localStorage.setItem(MEDQNL_DAILY_KEY,JSON.stringify(x))}catch(e){}}
+function medqnlNormalizeGuess(value){
+ return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]/g,"");
+}
+function medqnlDailyComplete(solved,attempts){
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),today=t.date,p=today.split("-").map(Number),prevDate=new Date(Date.UTC(p[0],p[1]-1,p[2]-1)),prev=prevDate.getUTCFullYear()+"-"+String(prevDate.getUTCMonth()+1).padStart(2,"0")+"-"+String(prevDate.getUTCDate()).padStart(2,"0"),previous=!!(st.results[prev]&&st.results[prev].completed);
+ st.streak=solved?(previous?(st.streak||0)+1:1):0;
+ st.bestStreak=Math.max(st.bestStreak||0,st.streak);
+ st.results[today]={completed:true,solved:!!solved,attempts:attempts||0,score:solved?Math.max(1,6-(attempts||1)):0,finishedAt:Date.now()};
+ saveMedqnlDailyState(st);return st;
+}
+function medqnlDailySubmit(){
+ var target=medqnlDailyTarget(),st=medqnlDailyState(),existing=st.results[target.date];
+ if(existing&&existing.completed)return;
+ var input=document.getElementById("dailyPuzzleGuess"),status=document.getElementById("dailyPuzzleStatus"),guess=String(input&&input.value||"").trim();
+ if(!guess){if(status)status.textContent="Vul een geneesmiddel in.";return}
+ var temp=st.results[target.date]&&typeof st.results[target.date]==="object"?st.results[target.date]:{},attempts=Number(temp.attempts)||0;
+ attempts++;
+ var normalized=medqnlNormalizeGuess(guess),answers=(target.puzzle.aliases||[]).map(medqnlNormalizeGuess);
+ if(answers.indexOf(normalized)>=0){medqnlDailyComplete(true,attempts);render();return}
+ if(!st.results[target.date])st.results[target.date]={attempts:attempts,wrongGuesses:[]};
+ else st.results[target.date].attempts=attempts;
+ st.results[target.date].wrongGuesses=Array.isArray(st.results[target.date].wrongGuesses)?st.results[target.date].wrongGuesses:[];
+ st.results[target.date].wrongGuesses.push(guess);
+ if(attempts>=5){medqnlDailyComplete(false,attempts);render();return}
+ saveMedqnlDailyState(st);render();
+}
+function medqnlDailyCountdown(){
+ var now=new Date(),tom=new Date(now.getTime()+24*60*60*1000);
+ tom.setHours(0,0,0,0);
+ var sec=Math.max(0,Math.floor((tom-now)/1000)),h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60),s=sec%60;
+ return String(h).padStart(2,"0")+":"+String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+}
+function medqnlStartDailyTimer(){
+ if(medqnlDailyTimer)clearInterval(medqnlDailyTimer);
+ medqnlDailyTimer=setInterval(function(){var el=document.getElementById("dailyPuzzleCountdown");if(el)el.textContent=medqnlDailyCountdown()},1000);
+}
+function medqnlDailyCard(){
+ var t=medqnlDailyTarget(),st=medqnlDailyState(),today=st.results[t.date],p=t.puzzle;
+ if(today&&today.completed){
+  var score=today.solved?Math.max(1,6-(Number(today.attempts)||1)):0;
+  return "<div class='card daily-puzzle-card daily-puzzle-complete'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY · #"+esc(String(t.index+1))+"</span><h2>"+(today.solved?"Goed gedaan":"Dagafsluiting")+"</h2><p>"+(today.solved?"Je hebt <strong>"+esc(p.name)+"</strong> gevonden in "+esc(String(today.attempts))+" poging(en).":"Vandaag niet gevonden. Het antwoord was <strong>"+esc(p.name)+"</strong>.")+"</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div>"+
+  "<div class='daily-story'>"+
+  "<div class='daily-patient-case'><div class='daily-patient-label'>De patiënt achter de puzzel</div><strong>"+esc(p.patient||"Een patiënt gebruikt dit geneesmiddel vanwege een passende klinische indicatie.")+"</strong></div>"+
+  "<div class='daily-story-section'><strong>Waarom kreeg deze patiënt dit middel?</strong><p>"+esc(p.story||"Dit geneesmiddel is gekozen vanwege de beschreven klinische indicatie.")+"</p></div>"+
+  "<div class='daily-story-grid'><div class='daily-story-section'><strong>Geneesmiddelengroep &amp; werking</strong><p>"+esc(p.className)+". "+esc(p.mechanism)+"</p></div><div class='daily-story-section'><strong>Waar let je op in de praktijk?</strong><p>"+esc(p.indication)+" Belangrijk aandachtspunt: "+esc(p.sideEffect)+"</p></div></div>"+
+  "<div class='daily-story-section'><strong>MedQNL-kenniskaart</strong><p>"+esc(p.pearl)+"</p></div></div>"+
+  "<div class='daily-result'><div><span class='daily-result-label'>Dagscore</span><strong>"+score+" / 5</strong></div><div><span class='daily-result-label'>Beste streak</span><strong>"+esc(String(st.bestStreak))+" dagen</strong></div><div><span class='daily-result-label'>Nieuwe puzzel</span><strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></div></div></div>";
+ }
+ var wrong=today&&Array.isArray(today.wrongGuesses)?today.wrongGuesses:[],visible=Math.min(1+wrong.length,5),hints=[
+ "Patiëntcasus: "+(p.patient||"Een patiënt gebruikt dit middel vanwege een klinische reden die je uit de context kunt afleiden."),
+ "Geneesmiddelengroep: "+p.className+".",
+ "Werkingsmechanisme: "+p.mechanism,
+ "Typische toepassing: "+p.indication,
+ "Belangrijke bijwerking: "+p.sideEffect
+ ],hintHtml="",i;
+ for(i=0;i<visible;i++){
+  if(i===0)hintHtml+="<div class='daily-patient-case'><div class='daily-patient-label'>Casus</div><strong>"+esc(p.patient||hints[0].replace("Patiëntcasus: ",""))+"</strong></div>";
+  else hintHtml+="<div class='daily-hint'><span>"+i+"</span><div>"+hints[i]+"</div></div>";
+ }
+ return "<div class='card daily-puzzle-card'><div class='daily-puzzle-head'><div><span class='daily-eyebrow'>MEDQNL DAILY · #"+esc(String(t.index+1))+"</span><h2>Welk geneesmiddel gebruikt deze patiënt?</h2><p>Lees de casus, maak een klinische inschatting en gebruik maximaal vijf pogingen. Bij een foute gok komt de volgende clue vrij.</p></div><div class='daily-streak'><strong>🔥 "+esc(String(st.streak))+"</strong><span>dagen streak</span></div></div><div class='daily-puzzle-body'><div class='daily-hints'>"+hintHtml+"</div><form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><label for='dailyPuzzleGuess'>Jouw gok</label><input id='dailyPuzzleGuess' placeholder='Typ een geneesmiddel…' autocomplete='off' spellcheck='false'><button class='btn primary' type='submit'>Doe gok</button><div id='dailyPuzzleStatus' class='small muted'>Nog "+Math.max(0,5-wrong.length)+" poging(en).</div></form></div><div class='daily-puzzle-footer'><span>Klinische casus · verborgen geneesmiddel</span><span>Nieuwe puzzel over <strong id='dailyPuzzleCountdown'>"+medqnlDailyCountdown()+"</strong></span></div></div>";
+}
+
 function dashboard(){
- var s=stats();
+ var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
+ for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
+ var daily=medqnlDailyCard();
+ setTimeout(medqnlStartDailyTimer,0);
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
- "<div class='grid g3'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
+ daily+
+ "<div class='grid g3' style='margin-top:15px'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
  "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
- "<div class='card'><div class='title'>Jouw recente activiteit</div>"+(s.n?"<div class='row'><span>Vragen beantwoord</span><strong>"+s.n+"</strong></div><div class='row'><span>Correcte antwoorden</span><strong>"+s.c+"</strong></div>":"<div class='empty'>Je hebt nog geen vragen beantwoord.</div>")+"</div></div>");
+ "<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:10px'><div class='title' style='margin-bottom:0'>Mailbox</div><button class='btn secondary' data-page='mailbox'>Open mailbox</button></div>"+
+ "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
+ "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
 }
+
+function daily(){
+ var daily=medqnlDailyCard();
+ setTimeout(medqnlStartDailyTimer,0);
+ return shell("<div class='pagehead'><div><h1>MedQNL Daily</h1><p>Iedere dag één geneesmiddel, verpakt als een klinische patiëntcasus.</p></div></div>"+daily);
+}
+
 function qbank(){
  var subsHtml="",i,j,list;
  for(i=0;i<QBANK_SUBJECTS.length;i++){
@@ -1252,16 +1632,10 @@ function syncQuestionTaxonomyForm(form){
  var qbank=!!(form.moduleQbank&&form.moduleQbank.checked),qbox=form.querySelector("[data-qbank-taxonomy]"),ibox=form.querySelector("[data-ivtg-subject-field]");
  if(qbox)qbox.style.display=qbank?"grid":"none";if(ibox)ibox.style.display=qbank?"none":"block";
  if(qbank){
-   var sub=form.qbankSubject?form.qbankSubject.value:QBANK_SUBJECTS[0],chapter=form.qbankSubsection?form.qbankSubsection.value:"",topic=form.qbankTopic?form.qbankTopic.value:"",newTopic=form.qbankNewTopic;
+   var sub=form.qbankSubject?form.qbankSubject.value:QBANK_SUBJECTS[0],chapter=form.qbankSubsection?form.qbankSubsection.value:"";
    if(!isQbankSubject(sub))sub=QBANK_SUBJECTS[0];
    var chapters=qbankSubsections(sub),newChapter=chapters.indexOf(chapter)>=0?chapter:(chapters[0]||"");
    if(form.qbankSubsection){form.qbankSubsection.innerHTML="";for(var i=0;i<chapters.length;i++){var op=new Option(chapters[i],chapters[i]);if(chapters[i]===newChapter)op.selected=true;form.qbankSubsection.add(op)}}
-   var topics=qbankTopicOptions(sub,newChapter,topic),html="<option value=''>Kies een bestaand subonderwerp</option>";
-   for(var j=0;j<topics.length;j++)html+="<option value='"+esc(topics[j])+"'"+(topics[j]===topic?" selected":"")+">"+esc(topics[j])+"</option>";
-   html+="<option value='__new__'"+(topic==="__new__"?" selected":"")+">+ Nieuw subonderwerp…</option>";
-   if(form.qbankTopic)form.qbankTopic.innerHTML=html;
-   var showNew=topic==="__new__"||(topic&&topics.indexOf(topic)<0);
-   if(newTopic){newTopic.style.display=showNew?"block":"none";if(showNew&&topic!=="__new__"&&newTopic.value!==topic)newTopic.value=topic}
  }
 }
 function startQbankSession(){
@@ -1596,18 +1970,23 @@ function sourcePicker(ids){
  return "<div class='sourcebox'>"+(h||"<div class='small muted'>Nog geen bronnen.</div>")+"</div>";
 }
 
+function richFormatToolbar(editorId){
+ return "<div class='rich-format-toolbar' data-rich-toolbar='"+esc(editorId)+"'>"+
+   "<button type='button' class='rich-format-btn' data-rich-format='bold' data-rich-editor='"+esc(editorId)+"' title='Vet'><strong>B</strong></button>"+
+   "<button type='button' class='rich-format-btn' data-rich-format='italic' data-rich-editor='"+esc(editorId)+"' title='Cursief'><em>I</em></button>"+
+ "</div>";
+}
 function questionForm(q){
  if(!q)q={id:"",title:"",subject:QBANK_SUBJECTS[0],topic:"",difficulty:"Gemiddeld",caseText:"",stem:"",stemRichHtml:"",inlineImages:{},inlineImageWidths:{},type:"mcq",points:1,modelAnswer:"",rubric:[],options:["","","",""],correct:0,explanation:"",objective:"",sourceIds:[],image:"",source:"",modules:{qbank:true,ivtg:false},qbankSubsection:qbankSubsections(QBANK_SUBJECTS[0])[0]||""};
  if(!q.inlineImages||typeof q.inlineImages!=="object")q.inlineImages={};if(!q.inlineImageWidths||typeof q.inlineImageWidths!=="object")q.inlineImageWidths={};
  var mods=q.modules||{qbank:true,ivtg:false},qbankChecked=mods.qbank!==false&&isQbankSubject(q.subject),ivtgChecked=!!mods.ivtg&&!qbankChecked;
  var qType=q.type==="open"?"open":"mcq",qSubject=qbankChecked?q.subject:QBANK_SUBJECTS[0],qChapter=q.qbankSubsection&&qbankSubsections(qSubject).indexOf(q.qbankSubsection)>=0?q.qbankSubsection:(qbankSubsections(qSubject)[0]||"");
- var qTopics=qbankTopicOptions(qSubject,qChapter,q.topic),topicHtml="<option value=''>Kies een bestaand subonderwerp</option>",ti;for(ti=0;ti<qTopics.length;ti++)topicHtml+="<option value='"+esc(qTopics[ti])+"'"+(q.topic===qTopics[ti]?" selected":"")+">"+esc(qTopics[ti])+"</option>";topicHtml+="<option value='__new__'>+ Nieuw subonderwerp…</option>";
  var qChapters=qbankSubsections(qSubject),chapterHtml="",ci;for(ci=0;ci<qChapters.length;ci++)chapterHtml+="<option value='"+esc(qChapters[ci])+"'"+(qChapter===qChapters[ci]?" selected":"")+">"+esc(qChapters[ci])+"</option>";
  var qSubjectHtml="";for(ci=0;ci<QBANK_SUBJECTS.length;ci++)qSubjectHtml+="<option value='"+esc(QBANK_SUBJECTS[ci])+"'"+(qSubject===QBANK_SUBJECTS[ci]?" selected":"")+">"+esc(QBANK_SUBJECTS[ci])+"</option>";
  var inlineJson=JSON.stringify(q.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(q.inlineImageWidths||{}).replace(/</g,"\\u003c"),stemHtml=questionStemEditorHtml(q),newTopicStyle=q.topic&&qTopics.indexOf(q.topic)<0?"block":"none";
  var mcqHtml="<div class='grid g2' data-question-mcq style='display:"+(qType==="open"?"none":"grid")+"'><div class='field'><label>A</label><input name='o0' value='"+esc(q.options[0]||"")+"'></div><div class='field'><label>B</label><input name='o1' value='"+esc(q.options[1]||"")+"'></div><div class='field'><label>C</label><input name='o2' value='"+esc(q.options[2]||"")+"'></div><div class='field'><label>D</label><input name='o3' value='"+esc(q.options[3]||"")+"'></div><div class='field'><label>Correct antwoord</label><select name='correct'><option value='0'"+(q.correct===0?" selected":"")+">A</option><option value='1'"+(q.correct===1?" selected":"")+">B</option><option value='2'"+(q.correct===2?" selected":"")+">C</option><option value='3'"+(q.correct===3?" selected":"")+">D</option></select></div></div>";
- var openHtml="<div data-question-open style='display:"+(qType==="open"?"block":"none")+"'><div class='field'><label>Modelantwoord</label><textarea name='modelAnswer' style='min-height:150px'>"+esc(q.modelAnswer||"")+"</textarea></div><div class='field'><label>Beoordelingscriteria (één criterium per regel)</label><textarea name='rubric' style='min-height:140px'>"+esc((Array.isArray(q.rubric)?q.rubric:[]).join("\n"))+"</textarea></div></div>";
- return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp, hoofdstuk en subonderwerp gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Subonderwerp</label><select name='qbankTopic' id='questionQbankTopic'>"+topicHtml+"</select><input name='qbankNewTopic' id='questionQbankNewTopic' value='"+esc((q.topic&&qTopics.indexOf(q.topic)<0)?q.topic:"")+"' placeholder='Nieuw subonderwerp' style='display:"+newTopicStyle+";margin-top:7px'></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'></div><div class='grid g2'><div class='field'><label>Subonderwerp</label><input name='topic' id='questionIvtgTopic' value='"+esc(ivtgChecked?q.topic:"")+"' placeholder='Vrij subonderwerp'></div><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'><div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
+ var openHtml="<div data-question-open style='display:"+(qType==="open"?"block":"none")+"'><div class='field'><label>Modelantwoord (verplicht voor AI-nakijken)</label><textarea name='modelAnswer' style='min-height:150px'>"+esc(q.modelAnswer||"")+"</textarea></div><div class='field'><label>Beoordelingscriteria (één criterium per regel)</label><textarea name='rubric' style='min-height:140px'>"+esc((Array.isArray(q.rubric)?q.rubric:[]).join("\n"))+"</textarea></div></div>";
+ return "<form id='questionform' data-id='"+esc(q.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(q.title||"")+"' required></div><div class='question-editor-section'><div class='field'><label>Beschikbaar in</label><div style='display:flex;gap:18px;flex-wrap:wrap'><label style='font-weight:400'><input type='checkbox' name='moduleQbank'"+(qbankChecked?" checked":"")+"> Vragenbank</label><label style='font-weight:400'><input type='checkbox' name='moduleIvtg'"+(ivtgChecked?" checked":"")+"> iVTG Trainer</label></div><div class='small muted'>Voor Qbank-vragen worden hoofdonderwerp en hoofdstuk gekozen uit de vaste Qbank-structuur.</div></div><div class='grid g2' data-qbank-taxonomy style='display:"+(qbankChecked?"grid":"none")+"'><div class='field'><label>Hoofdonderwerp</label><select name='qbankSubject' id='questionQbankSubject'>"+qSubjectHtml+"</select></div><div class='field'><label>Hoofdstuk</label><select name='qbankSubsection' id='questionQbankSubsection'>"+chapterHtml+"</select></div><div class='field'><label>Vraagmodus</label><select name='mode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div><div data-ivtg-subject-field style='display:"+(qbankChecked?"none":"block")+"'><div class='field'><label>iVTG-onderwerp</label><input name='subject' id='questionIvtgSubject' value='"+esc(ivtgChecked?q.subject:"")+"' placeholder='Bijvoorbeeld Metamedica'><div class='field'><label>Vraagmodus</label><select name='ivtgMode'><option value='knowledge'"+(questionMode(q)==="knowledge"?" selected":"")+">Kennis- &amp; Conceptcheck</option><option value='clinical'"+(questionMode(q)==="clinical"?" selected":"")+">Klinische Casus</option></select></div></div></div></div><div class='grid g2'><div class='field'><label>Vraagtype</label><select name='questionType'><option value='mcq'"+(qType==="mcq"?" selected":"")+">Meerkeuze</option><option value='open'"+(qType==="open"?" selected":"")+">Open antwoord</option></select></div><div class='field'><label>Maximum punten</label><input name='points' type='number' min='0.5' step='0.5' value='"+esc(String(q.points||1))+"'></div></div><div class='field'><label>Moeilijkheid</label><select name='difficulty'><option"+(q.difficulty==="Makkelijk"?" selected":"")+">Makkelijk</option><option"+(q.difficulty==="Gemiddeld"?" selected":"")+">Gemiddeld</option><option"+(q.difficulty==="Moeilijk"?" selected":"")+">Moeilijk</option></select></div><div class='field'><label>Casus</label><textarea name='caseText'>"+esc(q.caseText||"")+"</textarea></div><div class='field'><label>Vraag</label><input type='hidden' name='stem' value='"+esc(q.stem||"")+"'><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'><div id='questionStemEditor' class='article-rich-editor question-rich-editor' contenteditable='true' spellcheck='true'>"+stemHtml+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen in de vraag</strong><div class='small muted'>Gebruik <code>[afbeelding]</code> op de plek van de geüploade afbeelding. Gebruik <code>*tekst*</code> voor vetgedrukte tekst.</div><button type='button' class='btn secondary' data-add-question-inline-image>Afbeelding kiezen</button><input id='questionInlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='questionInlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='questionInlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='questionInlineImageSizeValue'>180 px</span></div></div></div>"+mcqHtml+openHtml+"<div class='grid g2'><div class='field'><label>Bronlabel</label><input name='source' value='"+esc(q.source||"")+"' placeholder='Bijv. Aangeleverde toets - herschreven variant'></div><div class='field'><label>Leerdoel</label><input name='objective' value='"+esc(q.objective||"")+"'></div></div><div class='field'><label>Uitleg</label><textarea name='explanation' id='questionExplanationStore' hidden>"+esc(q.explanation||"")+"</textarea><div id='questionExplanationEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+(q.explanationRichHtml?sanitizeRichHtml(q.explanationRichHtml):md(q.explanation||""))+"</div></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(q.image||"")+"'>"+(q.image?"<img class='image-preview' src='"+q.image+"'><button class='btn danger' type='button' data-remove-image='question' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(q.sourceIds||[])+"</div><div style='display:flex;gap:8px;align-items:center'><button class='btn primary' type='submit'>Vraag opslaan</button><button class='btn danger' type='button' data-remove-current-question='1' style='display:"+(q.id?"inline-block":"none")+"'>Vraag verwijderen</button></div></form>";
 }
 function articleForm(a){
  if(!a)a={id:"",library:"ivtg",title:"",sectionId:state.sections[0]?state.sections[0].id:"",body:[""],richHtml:"",sourceIds:[],image:"",inlineImages:{},inlineImageWidths:{}};
@@ -1615,7 +1994,7 @@ function articleForm(a){
  for(i=0;i<state.sections.length;i++)sec+="<option value='"+esc(state.sections[i].id)+"'"+(state.sections[i].id===a.sectionId?" selected":"")+">"+esc(state.sections[i].title)+"</option>";
  if(!a.inlineImageWidths||typeof a.inlineImageWidths!=="object")a.inlineImageWidths={};
  var inlineJson=JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"),widthJson=JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c");
- return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Hoofdstuk</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea><div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Sectie opslaan</button></form>";
+ return "<form id='articleform' data-id='"+esc(a.id)+"'><div class='field'><label>Titel</label><input name='title' value='"+esc(a.title)+"' required></div><div class='field'><label>Hoofdstuk</label><select name='sectionId'>"+sec+"</select></div><div class='field'><label>Inhoud</label><textarea name='body' id='articleBodyStore' hidden>"+esc((a.body||[]).join("\n\n"))+"</textarea>"+richFormatToolbar("articleEditor")+"<div id='articleEditor' class='article-rich-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak rechtstreeks uit Word, ChatGPT, Gemini of Claude met Ctrl+V (of ⌘V). Vet, koppen, lijsten, tabellen en afbeeldingen worden zo veel mogelijk behouden.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeeldingen kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(inlineJson)+"'><input type='hidden' name='inlineImageWidths' value='"+esc(widthJson)+"'></div><div class='field'><label>Afbeelding</label><input type='file' name='imageFile' accept='image/*'><input type='hidden' name='currentImage' value='"+esc(a.image||"")+"'>"+(a.image?"<img class='image-preview' src='"+a.image+"'><button class='btn danger' type='button' data-remove-image='article' style='margin-top:7px'>Afbeelding verwijderen</button>":"")+"</div><div class='field'><div style='display:flex;justify-content:space-between'><label>Bronnen</label><button class='btn secondary' type='button' data-newsource-inline>+ Nieuwe bron</button></div><div id='inline-source-slot'></div>"+sourcePicker(a.sourceIds||[])+"</div><button class='btn primary' type='submit'>Sectie opslaan</button></form>";
 }
 function sourceForm(s){if(!s)s={id:"",title:"",url:""};return "<form id='sourceform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam bron</label><input name='title' value='"+esc(s.title)+"' required></div><div class='field'><label>URL</label><input name='url' value='"+esc(s.url)+"' required></div><button class='btn primary' type='submit'>Bron opslaan</button></form>"}
 function sectionForm(s){if(!s)s={id:"",title:""};return "<form id='sectionform' data-id='"+esc(s.id)+"'><div class='field'><label>Naam hoofdstuk</label><input name='title' value='"+esc(s.title)+"' required></div><button class='btn primary' type='submit'>Hoofdstuk opslaan</button></form>"}
@@ -1633,7 +2012,21 @@ function saveDragOrder(){
  var al=document.getElementById('articleList');if(al){var aes=al.querySelectorAll('[data-dragart]');for(var j=0;j<aes.length;j++){var art=byId(state.articles,aes[j].getAttribute('data-dragart'));if(art)art.order=j+1;}}
  state.sections.sort(function(a,b){return (a.order||0)-(b.order||0)});state.articles.sort(function(a,b){return (a.order||0)-(b.order||0)});save();
 }
-function removeQuestion(id){if(!confirm('Vraag verwijderen?'))return;removeBy(state.questions,id);delete state.answers[id];save();render();}
+async function removeQuestion(id){
+ var list=document.getElementById("adminQuestionList"),listTop=list?list.scrollTop:0,scrollY=window.scrollY||0;
+ try{
+   await deleteQuestionRemote(id);
+   removeBy(state.questions,id);
+   delete state.answers[id];
+   save();render();
+   requestAnimationFrame(function(){
+     var next=document.getElementById("adminQuestionList");if(next)next.scrollTop=listTop;
+     window.scrollTo(0,scrollY);
+   });
+ }catch(err){
+   alert("Vraag verwijderen mislukt: "+(err&&err.message?err.message:String(err)));
+ }
+}
 function removeSection(id){
  var section=byId(state.sections,id);
  if(!section)return;
@@ -1653,14 +2046,21 @@ function admin(){
  var secs="",arts="",feedback="",i,s,a;
  for(i=0;i<state.sections.length;i++){s=state.sections[i];secs+="<div class='manager-item "+(s.id===secId?"active":"")+"' draggable='true' data-dragsec='"+esc(s.id)+"' data-secselect='"+esc(s.id)+"'><span class='small muted'>"+(s.library==="medical"?"Medisch":"iVTG")+"</span><input class='inline-edit' data-sec-title='"+esc(s.id)+"' value='"+esc(s.title)+"'><button class='tiny-btn' data-delsec='"+esc(s.id)+"'>×</button></div>"}
  for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===secId){a=state.articles[i];arts+="<div class='manager-item' draggable='true' data-dragart='"+esc(a.id)+"'><input class='inline-edit' data-art-title='"+esc(a.id)+"' value='"+esc(a.title)+"'><div class='manager-actions'><button class='tiny-btn' data-edita='"+esc(a.id)+"'>Bewerken</button><button class='tiny-btn' data-dela='"+esc(a.id)+"'>×</button></div></div>"}
- var fbs=state.feedback||[];
+ var fbs=state.feedback||[],showResolved=!!(state.ui&&state.ui.showResolvedFeedback),resolvedCount=0,openCount=0;
+ for(i=0;i<fbs.length;i++){
+  var fb0=fbs[i];if(fb0.status==="resolved")resolvedCount++;else openCount++;
+ }
+ feedback="<div class='notice' style='margin-bottom:10px;display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap'><span>"+openCount+" openstaande feedbackmelding(en)"+(resolvedCount?" · "+resolvedCount+" opgelost":"")+"</span><button class='btn secondary' data-feedback-toggle-resolved>"+(showResolved?"Toon alleen open":"Toon opgeloste feedback")+"</button></div>";
+ var renderedFeedback=0;
  for(i=0;i<fbs.length;i++){
   var fb=fbs[i],fbStatus=fb.status==="resolved"?"resolved":"open",fid=fb.id||"";
+  if(fbStatus==="resolved"&&!showResolved)continue;
+  renderedFeedback++;
   feedback+="<div class='feedback-admin-card' data-feedback-id='"+esc(fid)+"'>"+
-    "<div class='feedback-admin-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span></div>"+
+    "<div class='feedback-admin-head'><div><strong>"+esc(fb.questionTitle||fb.questionId||"Algemeen")+"</strong> <span class='feedback-chip'>"+esc(fb.category||"Overig")+"</span><div class='small muted'>Student: "+esc(fb.studentName||state.name||"Student")+" · "+esc(fb.date||"")+"</div></div>"+
     "<span class='feedback-status "+fbStatus+"'>"+(fbStatus==="resolved"?"Opgelost":"Open")+"</span></div>"+
-    "<div class='small muted'>"+esc(fb.date||"")+"</div>"+
-    "<div class='feedback-message'>"+esc(fb.message||"")+"</div>"+
+    "<div class='feedback-message'><div class='mailbox-message-label'>Feedback van student</div>"+md(fb.message||"")+"</div>"+
+    (String(fb.response||"").trim()?"<div class='feedback-message' style='background:var(--blue2)'><div class='mailbox-message-label'>Huidige reactie</div>"+md(fb.response)+"</div>":"")+
     "<div class='field' style='margin-top:10px'><label>Reactie</label><textarea data-feedback-response='"+esc(fid)+"' style='min-height:90px' placeholder='Schrijf een reactie aan de student...'>"+esc(fb.response||"")+"</textarea></div>"+
     "<div style='display:flex;gap:8px;align-items:center;flex-wrap:wrap'>"+
       "<select data-feedback-status='"+esc(fid)+"'><option value='open'"+(fbStatus==="open"?" selected":"")+">Open</option><option value='resolved'"+(fbStatus==="resolved"?" selected":"")+">Opgelost</option></select>"+
@@ -1668,19 +2068,21 @@ function admin(){
       (fb.respondedAt?"<span class='small muted'>Laatst bijgewerkt: "+esc(fb.respondedAt)+"</span>":"")+
     "</div></div>";
  }
+ if(!renderedFeedback)feedback+="<div class='empty'>Geen openstaande feedback. Opgeloste feedback blijft bewaard in de geschiedenis.</div>";
+
  var qstructSubject=state.ui.adminQbankStructureSubject&&isQbankSubject(state.ui.adminQbankStructureSubject)?state.ui.adminQbankStructureSubject:QBANK_SUBJECTS[0],qstructChapters=qbankSubsections(qstructSubject),qstructOptions="";
  for(i=0;i<QBANK_SUBJECTS.length;i++)qstructOptions+="<option value='"+esc(QBANK_SUBJECTS[i])+"'"+(qstructSubject===QBANK_SUBJECTS[i]?" selected":"")+">"+esc(QBANK_SUBJECTS[i])+"</option>";
  var qstructItems="";for(i=0;i<qstructChapters.length;i++)qstructItems+="<div class='manager-item qbank-structure-item'><span class='small muted'>"+String(i+1).padStart(2,"0")+"</span><strong>"+esc(qstructChapters[i])+"</strong></div>";
  var sectionsPanel="<div class='content-manager-panel' "+(activeTab==="sections"?"":"hidden")+"><div class='manager-col'><div class='manager-head'>Hoofdstukken <button class='tiny-btn' data-new-section-inline>+</button></div><div class='manager-list' id='sectionList'>"+secs+"</div></div></div>";
  var chaptersPanel="<div class='content-manager-panel' "+(activeTab==="chapters"?"":"hidden")+"><div class='content-manager-grid'><div class='manager-col'><div class='manager-head'>Secties <span class='small muted'>Hoofdstuk: "+esc(sectionTitle(secId))+"</span><button class='tiny-btn' data-new-article-inline>+</button></div><div class='manager-list' id='articleList'>"+(arts||"<div class='empty'>Geen secties in dit hoofdstuk.</div>")+"</div></div><div class='manager-col'><div class='manager-head'><span>Qbank-structuur</span><select id='adminQbankStructureSubject' class='compact-select'>"+qstructOptions+"</select></div><div class='small muted' style='padding:10px 12px 4px'>Vaste Qbank-hoofdonderwerpen en hoofdstukken.</div><div class='manager-list qbank-structure-list'>"+qstructItems+"</div></div></div></div>";
  var questionModule=state.ui.adminQuestionModule==="ivtg"?"ivtg":"qbank";
- var questionsPanel="<div class='content-manager-panel' "+(activeTab==="questions"?"":"hidden")+"><div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><div style='display:flex;gap:6px;align-items:center'><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div><div class='question-manager-tabs'><button class='perf-tab "+(questionModule==="qbank"?"active":"")+"' data-question-module='qbank'>Vragenbank</button><button class='perf-tab "+(questionModule==="ivtg"?"active":"")+"' data-question-module='ivtg'>iVTG Trainer</button></div><div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, onderwerp, diagnose...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle Qbank-onderwerpen</option></select><select id='adminQuestionSubsection' class='search' style='margin:0'><option value=''>Alle hoofdstukken</option></select><select id='adminQuestionTopic' class='search' style='margin:0'><option value=''>Alle subonderwerpen</option></select></div><div class='question-manager-grid' id='adminQuestionList'></div></div></div>";
+ var questionsPanel="<div class='content-manager-panel' "+(activeTab==="questions"?"":"hidden")+"><div class='manager-col question-manager-col'><div class='manager-head'><span>Vragen</span><div style='display:flex;gap:6px;align-items:center'><span class='small muted' id='questionCount'>"+state.questions.length+" vragen</span><button class='btn primary' data-editq='new'>+ Nieuwe vraag</button></div></div><div class='question-manager-tabs'><button class='perf-tab "+(questionModule==="qbank"?"active":"")+"' data-question-module='qbank'>Vragenbank</button><button class='perf-tab "+(questionModule==="ivtg"?"active":"")+"' data-question-module='ivtg'>iVTG Trainer</button></div><div class='question-filters'><input id='adminQuestionSearch' class='search' style='margin:0' placeholder='Zoek vraag, onderwerp, diagnose...'><select id='adminQuestionSubject' class='search' style='margin:0'><option value=''>Alle Qbank-onderwerpen</option></select><select id='adminQuestionSubsection' class='search' style='margin:0'><option value=''>Alle hoofdstukken</option></select></div><div class='question-manager-grid' id='adminQuestionList'></div></div></div>";
  return shell("<div class='pagehead'><div><h1>Content beheren</h1><p>Beheer je content als hoofdstukken met onderliggende secties en vragen.</p></div></div><div class='content-manager-tabs' role='tablist' aria-label='Content onderdelen'><button class='content-manager-tab "+(activeTab==="sections"?"active":"")+"' data-admin-tab='sections'>Hoofdstukken</button><button class='content-manager-tab "+(activeTab==="chapters"?"active":"")+"' data-admin-tab='chapters'>Secties</button><button class='content-manager-tab "+(activeTab==="questions"?"active":"")+"' data-admin-tab='questions'>Vragen</button></div><div class='content-manager'>"+sectionsPanel+chaptersPanel+questionsPanel+"</div><div class='card' style='margin-top:16px'><div class='title'>Feedback van studenten</div><div class='admin-feedback'>"+(feedback||"<div class='empty'>Geen feedback ontvangen.</div>")+"</div></div>");
 }
 function renderAdminQuestions(){
- var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject"),chapter=document.getElementById("adminQuestionSubsection"),topic=document.getElementById("adminQuestionTopic");
+ var box=document.getElementById("adminQuestionList"),search=document.getElementById("adminQuestionSearch"),subject=document.getElementById("adminQuestionSubject"),chapter=document.getElementById("adminQuestionSubsection");
  if(!box)return;
- var module=(state.ui&&state.ui.adminQuestionModule)||"qbank",oldSubject=subject?subject.value:"",oldChapter=chapter?chapter.value:"",oldTopic=topic?topic.value:"";
+ var module=(state.ui&&state.ui.adminQuestionModule)||"qbank",oldSubject=subject?subject.value:"",oldChapter=chapter?chapter.value:"";
  var subjectOptions=[],i,q,mods,text,match,j,tokens=normalizeSearch(search?search.value:"").split(" ").filter(Boolean);
  if(module==="qbank")subjectOptions=QBANK_SUBJECTS.slice();else for(i=0;i<state.questions.length;i++){q=state.questions[i];mods=q.modules||{qbank:true,ivtg:true};if(mods.ivtg!==false&&!isQbankSubject(q.subject)&&q.subject&&!has(subjectOptions,q.subject))subjectOptions.push(q.subject)}
  subjectOptions.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
@@ -1688,24 +2090,17 @@ function renderAdminQuestions(){
  if(subject){subject.innerHTML="<option value=''>"+(module==="qbank"?"Alle Qbank-onderwerpen":"Alle iVTG-onderwerpen")+"</option>";for(i=0;i<subjectOptions.length;i++)subject.innerHTML+="<option value='"+esc(subjectOptions[i])+"'"+(validSubject===subjectOptions[i]?" selected":"")+">"+esc(subjectOptions[i])+"</option>"}
  var chapterOptions=module==="qbank"&&validSubject?qbankSubsections(validSubject):[],validChapter=chapterOptions.indexOf(oldChapter)>=0?oldChapter:"";
  if(chapter){chapter.innerHTML="<option value=''>Alle hoofdstukken</option>";for(i=0;i<chapterOptions.length;i++)chapter.innerHTML+="<option value='"+esc(chapterOptions[i])+"'"+(validChapter===chapterOptions[i]?" selected":"")+">"+esc(chapterOptions[i])+"</option>"}
- var topicOptions=[];
- if(module==="qbank")topicOptions=qbankTopicOptions(validSubject,validChapter,oldTopic);
- else for(i=0;i<state.questions.length;i++){q=state.questions[i];mods=q.modules||{qbank:true,ivtg:true};if(mods.ivtg===false||isQbankSubject(q.subject))continue;if(validSubject&&q.subject!==validSubject)continue;if(q.topic&&!has(topicOptions,q.topic))topicOptions.push(q.topic)}
- topicOptions.sort(function(a,b){return String(a).localeCompare(String(b),"nl")});
- var validTopic=topicOptions.indexOf(oldTopic)>=0?oldTopic:"";
- if(topic){topic.innerHTML="<option value=''>Alle subonderwerpen</option>";for(i=0;i<topicOptions.length;i++)topic.innerHTML+="<option value='"+esc(topicOptions[i])+"'"+(validTopic===topicOptions[i]?" selected":"")+">"+esc(topicOptions[i])+"</option>"}
- var selectedSubject=subject?subject.value:validSubject,selectedChapter=chapter?chapter.value:validChapter,selectedTopic=topic?topic.value:validTopic,h="",count=0;
+ var selectedSubject=subject?subject.value:validSubject,selectedChapter=chapter?chapter.value:validChapter,h="",count=0;
  for(i=0;i<state.questions.length;i++){
    q=state.questions[i];mods=q.modules||{qbank:true,ivtg:true};
    if(module==="qbank"&&(mods.qbank===false||!isQbankSubject(q.subject)))continue;
    if(module==="ivtg"&&(mods.ivtg===false||isQbankSubject(q.subject)))continue;
    if(selectedSubject&&q.subject!==selectedSubject)continue;
    if(selectedChapter&&q.qbankSubsection!==selectedChapter)continue;
-   if(selectedTopic&&q.topic!==selectedTopic)continue;
    text=questionSearchText(q);match=!tokens.length;for(j=0;j<tokens.length;j++)if(text.indexOf(tokens[j])<0){match=false;break}
    if(!match)continue;
    count++;
-   h+="<article class='question-admin-card'><div class='question-admin-top'><div><span class='question-chip'>"+esc(q.subject||"Onbekend")+"</span>"+(q.qbankSubsection?" <span class='small muted'>"+esc(q.qbankSubsection)+"</span>":"")+(q.topic?" <span class='small muted'>• "+esc(q.topic)+"</span>":"")+"</div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn danger' data-delq='"+esc(q.id)+"'>Verwijderen</button></div></div><h3>"+esc(q.title||q.stem||"Onbenoemde vraag")+"</h3><p>"+esc(String(q.stem||"").slice(0,180))+(String(q.stem||"").length>180?"…":"")+"</p><div class='small muted'>"+(q.qbankSubsection?"Hoofdstuk: "+esc(q.qbankSubsection)+" · ":"")+"ABCD · "+esc(q.difficulty||"")+"</div></article>";
+   h+="<article class='question-admin-card'><div class='question-admin-top'><div><span class='question-chip'>"+esc(q.subject||"Onbekend")+"</span>"+(q.qbankSubsection?" <span class='small muted'>"+esc(q.qbankSubsection)+"</span>":"")+"</div><div class='manager-actions'><button class='tiny-btn' data-editq='"+esc(q.id)+"'>Bewerken</button><button class='tiny-btn danger' data-delq='"+esc(q.id)+"'>Verwijderen</button></div></div><h3>"+esc(q.title||q.stem||"Onbenoemde vraag")+"</h3><p>"+esc(String(q.stem||"").slice(0,180))+(String(q.stem||"").length>180?"…":"")+"</p><div class='small muted'>"+(q.qbankSubsection?"Hoofdstuk: "+esc(q.qbankSubsection)+" · ":"")+(q.type==="open"?"Open opdracht":"ABCD")+" · "+esc(q.difficulty||"")+"</div></article>";
  }
  box.innerHTML=h||"<div class='empty'>Geen vragen gevonden.</div>";
  var counter=document.getElementById("questionCount");if(counter)counter.textContent=count+" "+(count===1?"vraag":"vragen");
@@ -1836,13 +2231,9 @@ function notesPage(){
 }
 function countArticlesIn(id){var n=0,i;for(i=0;i<state.articles.length;i++)if(state.articles[i].sectionId===id)n++;return n}
 function settings(){
- var ai=state.ai||{endpoint:"/api/grade-open"};
- return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen en AI-nakijken.</p></div></div><div class='card' style='max-width:720px'>"+
+ return shell("<div class='pagehead'><div><h1>Instellingen</h1><p>Persoonlijke instellingen.</p></div></div><div class='card' style='max-width:720px'>"+
  "<div class='field'><label>Naam</label><input id='nameinput' value='"+esc(state.name)+"'></div>"+
  "<div class='row'><div><strong>Donkere modus</strong><div class='small muted'>Ook de iVTG-vraagomgeving blijft leesbaar in donkere modus.</div></div><button class='btn secondary' id='toggleTheme'>"+(state.theme==="dark"?"Uitschakelen":"Inschakelen")+"</button></div>"+
- "<div style='margin-top:18px;padding-top:16px;border-top:1px solid var(--line)'><div class='title'>AI-nakijken voor open vragen</div><div class='notice' style='margin-bottom:12px'>AI gebruikt alleen de ingestelde endpoint. Bewaar de OpenAI-sleutel uitsluitend server-side en zet geen sleutel in deze site of repository.</div>"+
- "<div class='field'><label>AI-endpoint</label><input id='aiEndpointInput' value='"+esc(ai.endpoint||"/api/grade-open")+"' placeholder='/api/grade-open'></div>"+
- "<button class='btn primary' id='saveAI'>AI-instellingen opslaan</button></div>"+
  "<button class='btn primary' id='saveName' style='margin-top:16px'>Opslaan</button></div>");
 }
 function showModal(type){
@@ -1917,7 +2308,6 @@ document.addEventListener("keydown",function(ev){
  }
 });
 document.addEventListener("click",function(ev){
- if(ev.target&&ev.target.id==="saveAI"){if(!state.ai)state.ai={endpoint:"/api/grade-open"};state.ai.endpoint=String((document.getElementById("aiEndpointInput")||{}).value||"").trim()||"/api/grade-open";save();alert("AI-instellingen opgeslagen.");return;}
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
  if(t.closest&&t.closest("[data-add-question-inline-image]")){var inp=document.getElementById("questionInlineImageFile"),ed=document.getElementById("questionStemEditor");if(inp){if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
  if(qimg){var form=qimg.closest("form"),ws=form&&form.querySelector("input[name='inlineImageWidths']"),widths={};if(ws)try{widths=JSON.parse(ws.value||"{}")}catch(e){}var id=qimg.getAttribute("data-inline-editor-id"),bar=document.getElementById("questionInlineImageSizeBar"),slider=document.getElementById("questionInlineImageSize"),label=document.getElementById("questionInlineImageSizeValue"),w=parseInt(widths[id],10)||180;if(bar&&slider){slider.value=w;slider.setAttribute("data-image-id",id);if(label)label.textContent=w+" px";bar.style.display="flex"}}
@@ -1930,7 +2320,76 @@ document.addEventListener("keydown",function(ev){
  var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
  if(img&&sel.isCollapsed&&(ev.key==="Backspace"||ev.key==="Delete")){ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove()}
 });
-document.addEventListener("selectionchange",function(){var ed=document.getElementById("questionStemEditor"),sel=window.getSelection();if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange()});
+function hideQuestionRichToolbar(){
+ var bar=document.getElementById("questionRichSelectionToolbar");
+ if(bar)bar.style.display="none";
+ window.__questionRichSelection=null;
+}
+function showQuestionRichToolbar(){
+ var bar=document.getElementById("questionRichSelectionToolbar"),sel=window.getSelection();
+ if(!bar||!sel||!sel.rangeCount)return;
+ var range=sel.getRangeAt(0),node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node;
+ var ed=el&&el.closest?el.closest(".article-rich-editor"):null;
+ if(!ed||!ed.contains(sel.focusNode)){
+   if(bar.contains(document.activeElement))return;
+   hideQuestionRichToolbar();return;
+ }
+ if(sel.isCollapsed){
+   if(bar.style.display!=="none")return;
+   hideQuestionRichToolbar();return;
+ }
+ ed._savedRange=range.cloneRange();
+ window.__questionRichSelection={editorId:ed.id,range:range.cloneRange()};
+ var rect=range.getBoundingClientRect(),left=rect.left+(rect.width/2)-42,top=rect.top-46;
+ if(top<8)top=Math.min(window.innerHeight-48,rect.bottom+8);
+ left=Math.max(8,Math.min(window.innerWidth-92,left));
+ bar.style.left=left+"px";
+ bar.style.top=Math.max(8,top)+"px";
+ bar.style.display="flex";
+}
+document.addEventListener("selectionchange",function(){window.requestAnimationFrame(function(){showQuestionRichToolbar()})});
+function applyRichFormat(editorId,cmd){
+ var ed=document.getElementById(editorId),sel=window.getSelection(),range=ed&&ed._savedRange?ed._savedRange:null;
+ if(!ed)return;
+ ed.focus();
+ if(range&&ed.contains(range.commonAncestorContainer)){
+   try{sel.removeAllRanges();sel.addRange(range)}catch(e){}
+ }
+ try{document.execCommand(cmd,false,null)}catch(e){}
+ var nextSel=window.getSelection();if(nextSel&&nextSel.rangeCount){
+   ed._savedRange=nextSel.getRangeAt(0).cloneRange();
+   window.__questionRichSelection={editorId:ed.id,range:ed._savedRange.cloneRange()};
+ }
+ ed.dispatchEvent(new Event("input",{bubbles:true}));
+}
+document.addEventListener("mousedown",function(ev){
+ var qbtn=ev.target.closest?ev.target.closest("[data-question-rich-format]"):null;
+ if(qbtn){
+   ev.preventDefault();
+   return;
+ }
+ var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
+ if(btn)ev.preventDefault();
+});
+document.addEventListener("click",function(ev){
+ var qbtn=ev.target.closest?ev.target.closest("[data-question-rich-format]"):null;
+ if(qbtn){
+   var stored=window.__questionRichSelection;
+   if(stored&&stored.editorId)applyRichFormat(stored.editorId,qbtn.getAttribute("data-question-rich-format"));
+   return;
+ }
+ var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
+ if(!btn)return;
+ applyRichFormat(btn.getAttribute("data-rich-editor"),btn.getAttribute("data-rich-format"));
+});
+document.addEventListener("mousedown",function(ev){
+ var bar=document.getElementById("questionRichSelectionToolbar");
+ if(!bar||bar.style.display==="none")return;
+ if(bar.contains(ev.target))return;
+ var ed=ev.target&&ev.target.closest?ev.target.closest(".article-rich-editor,.note-editor"):null;
+ if(!ed)hideQuestionRichToolbar();
+});
+window.addEventListener("resize",hideQuestionRichToolbar);
 document.addEventListener("paste",async function(ev){
  var qstem=ev.target&&ev.target.closest?ev.target.closest("#questionStemEditor"):null;if(!qstem)return;
  var cd=ev.clipboardData,html=cd&&cd.getData("text/html"),plain=cd&&cd.getData("text/plain"),images=await clipboardImagesToDataUrls(cd);if(!html&&!images.length)return;ev.preventDefault();
@@ -1983,6 +2442,8 @@ document.addEventListener("click",function(ev){
 document.addEventListener("mousedown",function(ev){var inside=ev.target.closest&&ev.target.closest("#articleText, #markbar");if(!inside)hideMarkbar()});
 document.addEventListener("click",function(ev){
  var t=ev.target,el;
+ el=t.closest?t.closest("[data-toggle-progress]"):null;
+ if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
@@ -2032,10 +2493,16 @@ if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"St
   var resp=document.querySelector("[data-feedback-response='"+fid+"']"),st=document.querySelector("[data-feedback-status='"+fid+"']");
   fbi.response=resp?String(resp.value||"").trim():"";
   fbi.status=st&&st.value==="resolved"?"resolved":"open";
-  fbi.respondedAt=new Date().toLocaleString("nl-NL");
-  save();render();return
+  fbi.respondedAt=new Date().toISOString();
+  fbi.studentName=fbi.studentName||state.name||"Student";
+  (async function(){try{var saved=await updateFeedbackRemote(fbi);if(saved){fbi.status=saved.status||fbi.status;fbi.response=saved.response||fbi.response;fbi.respondedAt=saved.responded_at||fbi.respondedAt}save();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden bijgewerkt.")}})();return
 }
-if(t.id==="sendFeedback"){var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}var fq=session?session.questions[session.index]:null;state.feedback.push({id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:""});save();closeModal();return}
+if(t.id==="sendFeedback"){
+ var msg=document.getElementById("fbmsg").value;if(!msg){alert("Schrijf eerst je feedback.");return}
+ var fq=session?session.questions[session.index]:null;
+ var pending={id:"fb"+Date.now(),date:new Date().toLocaleString("nl-NL"),category:document.getElementById("fbcat").value,message:msg,questionId:fq?fq.id:"",questionTitle:fq?fq.title:"",studentName:state.name||"Student",status:"open",response:"",respondedAt:""};
+ (async function(){try{var saved=await createFeedbackRemote(pending);if(saved){pending.id=saved.id||pending.id;pending.date=saved.created_at||pending.date;pending.status=saved.status||"open"}state.feedback.push(pending);save();closeModal();render()}catch(e){alert(e&&e.message?e.message:"Feedback kon niet worden opgeslagen.")}})();return
+}
  el=t.closest?t.closest("[data-mark-question]"):null;if(el){toggleQuestionMark(el.getAttribute("data-mark-question"));return}
  if(t.hasAttribute("data-mark-action")){showMarkbar();return}
  if(t.hasAttribute("data-calc")){
@@ -2066,15 +2533,18 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
+ el=t.closest?t.closest("[data-auth-logout]"):null;if(el){try{sessionStorage.removeItem("medqnl_access")}catch(e){}location.reload();return}
+ el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
  el=t.closest?t.closest("[data-delq]"):null;if(el){removeQuestion(el.getAttribute("data-delq"));return}
+ el=t.closest?t.closest("[data-remove-current-question]"):null;if(el){var qform=el.closest("#questionform"),qid=qform?qform.getAttribute("data-id"):"";if(qid)removeQuestion(qid);return}
  el=t.closest?t.closest("[data-edita]"):null;if(el){editArticle(el.getAttribute("data-edita"));return}
  el=t.closest?t.closest("[data-edits]"):null;if(el){editSource(el.getAttribute("data-edits"));return}
 });
 document.addEventListener("input",function(ev){
  if(ev.target.id==="labsearch")renderLabs();
  if(ev.target.id==="globalSearch"){searchGlobal()}
- if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"||ev.target.id==="adminQuestionSubsection"||ev.target.id==="adminQuestionTopic"){renderAdminQuestions()}
+ if(ev.target.id==="adminQuestionSearch"||ev.target.id==="adminQuestionSubject"||ev.target.id==="adminQuestionSubsection"){renderAdminQuestions()}
  if(ev.target.id==="libsearch"){
  var input=ev.target,q=normalizeSearch(input.value),b=document.querySelectorAll(".lib-side button[data-art]"),i,j,matched={};
  for(i=0;i<b.length;i++){
@@ -2127,8 +2597,8 @@ document.addEventListener("change",function(ev){
    syncQuestionTaxonomyForm(qf);return;
  }
  if(ev.target.id==="adminQbankStructureSubject"){if(!state.ui)state.ui={};state.ui.adminQbankStructureSubject=ev.target.value;save();render();return}
- if(ev.target.id==="adminQuestionSubject"){var ac=document.getElementById("adminQuestionSubsection"),at=document.getElementById("adminQuestionTopic");if(ac){var al=qbankSubsections(ev.target.value);ac.innerHTML="<option value=''>Alle hoofdstukken</option>";for(var ai=0;ai<al.length;ai++)ac.innerHTML+="<option value='"+esc(al[ai])+"'>"+esc(al[ai])+"</option>"}if(at)at.value="";renderAdminQuestions();return}
- if(ev.target.id==="adminQuestionSubsection"||ev.target.id==="adminQuestionTopic"){renderAdminQuestions();return}
+ if(ev.target.id==="adminQuestionSubject"){var ac=document.getElementById("adminQuestionSubsection");if(ac){var al=qbankSubsections(ev.target.value);ac.innerHTML="<option value=''>Alle hoofdstukken</option>";for(var ai=0;ai<al.length;ai++)ac.innerHTML+="<option value='"+esc(al[ai])+"'>"+esc(al[ai])+"</option>"}renderAdminQuestions();return}
+ if(ev.target.id==="adminQuestionSubsection"){renderAdminQuestions();return}
 });
 document.addEventListener("change",function(ev){
  if(ev.target.name==="questionType"){var qf=ev.target.closest("#questionform");if(qf){var open=ev.target.value==="open",mc=qf.querySelector("[data-question-mcq]"),op=qf.querySelector("[data-question-open]");if(mc)mc.style.display=open?"none":"grid";if(op)op.style.display=open?"block":"none";}return;}
@@ -2165,6 +2635,7 @@ document.addEventListener("change",function(ev){
 });
 document.addEventListener("submit",function(ev){
  var f=ev.target,i,nodes,checked,obj,ix,input,file;
+ if(f.id==="dailyPuzzleForm"){ev.preventDefault();medqnlDailySubmit();return}
  if(["questionform","articleform","sourceform","sectionform"].indexOf(f.id)<0)return;
  ev.preventDefault();
  function finish(imageData){
@@ -2175,13 +2646,13 @@ document.addEventListener("submit",function(ev){
   var modQbank=!!(f.moduleQbank&&f.moduleQbank.checked),modIvtg=!!(f.moduleIvtg&&f.moduleIvtg.checked),qmode=modQbank?(f.mode?f.mode.value:"knowledge"):(f.ivtgMode?f.ivtgMode.value:"knowledge");
   var qType=f.questionType?f.questionType.value:"mcq",pointValue=Math.max(0.5,Number(f.points&&f.points.value)||1);
   var qsubject=modQbank?(f.qbankSubject?f.qbankSubject.value:""):(f.subject?f.subject.value:""),qsub=modQbank?(f.qbankSubsection?f.qbankSubsection.value:""):"";
-  var qtopic=modQbank?(f.qbankTopic?f.qbankTopic.value:""):(f.topic?f.topic.value:"");if(modQbank&&qtopic==="__new__")qtopic=f.qbankNewTopic?f.qbankNewTopic.value.trim():"";
   var inlineImages={},inlineImageWidths={};try{inlineImages=JSON.parse(f.querySelector("input[name='inlineImages']").value||"{}")}catch(e){}try{inlineImageWidths=JSON.parse(f.querySelector("input[name='inlineImageWidths']").value||"{}")}catch(e){}
   if(modQbank){if(!isQbankSubject(qsubject)){alert("Kies een geldig Qbank-hoofdonderwerp.");return}var validChapters=qbankSubsections(qsubject);if(!qsub||validChapters.indexOf(qsub)<0)qsub=validChapters[0]||"";modIvtg=false}
   if(qType==="open"&&!String(obj.modelAnswer||"").trim()){alert("Vul een modelantwoord in voor een open vraag.");return}
   if(!modQbank&&!modIvtg){alert("Selecteer ten minste één omgeving voor deze vraag.");return}
-  obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:qsubject,topic:qtopic,difficulty:f.difficulty.value,caseText:f.caseText.value,stem:stemText,stemRichHtml:stemRich,inlineImages:inlineImages,inlineImageWidths:inlineImageWidths,qbankSubsection:qsub,mode:qmode,type:qType,points:pointValue,modelAnswer:qType==="open"?(f.modelAnswer?f.modelAnswer.value.trim():""):"",rubric:qType==="open"?String(f.rubric?f.rubric.value:"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean):[],options:qType==="open"?["","","",""]:[f.o0?f.o0.value:"",f.o1?f.o1.value:"",f.o2?f.o2.value:"",f.o3?f.o3.value:""],correct:qType==="open"?0:parseInt(f.correct&&f.correct.value||"0",10),explanation:exText,explanationRichHtml:exRich,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||"",modules:{qbank:modQbank,ivtg:modIvtg}};
+  obj={id:f.getAttribute("data-id")||"q"+Date.now(),title:f.title.value,subject:qsubject,topic:"",difficulty:f.difficulty.value,caseText:f.caseText.value,stem:stemText,stemRichHtml:stemRich,inlineImages:inlineImages,inlineImageWidths:inlineImageWidths,qbankSubsection:qsub,mode:qmode,type:qType,points:pointValue,modelAnswer:qType==="open"?(f.modelAnswer?f.modelAnswer.value.trim():""):"",rubric:qType==="open"?String(f.rubric?f.rubric.value:"").split(/\n+/).map(function(x){return x.trim()}).filter(Boolean):[],options:qType==="open"?["","","",""]:[f.o0?f.o0.value:"",f.o1?f.o1.value:"",f.o2?f.o2.value:"",f.o3?f.o3.value:""],correct:qType==="open"?0:parseInt(f.correct&&f.correct.value||"0",10),explanation:exText,explanationRichHtml:exRich,objective:f.objective.value,source:f.source.value,sourceIds:checked,image:imageData||f.currentImage.value||"",modules:{qbank:modQbank,ivtg:modIvtg}};
   ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj
+  persistQuestionRemote(obj);
 }
 else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),richHtml=ed?serializeRichEditor(ed):"",plain=richHtmlToText(richHtml),serialized=plain;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}var selectedSection=byId(state.sections,f.sectionId.value),articleLibrary=(selectedSection&&selectedSection.library==="medical"?"medical":"ivtg");obj={id:f.getAttribute("data-id")||"a"+Date.now(),library:articleLibrary,title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),richHtml:richHtml,sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
@@ -2194,8 +2665,11 @@ else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='s
 });
 
 document.addEventListener("selectionchange",function(){
- var ed=document.getElementById("articleEditor"),sel=window.getSelection();
- if(ed&&sel&&sel.rangeCount&&ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+ var sel=window.getSelection();if(!sel||!sel.rangeCount)return;
+ var editors=document.querySelectorAll(".article-rich-editor"),i,ed;
+ for(i=0;i<editors.length;i++){
+  ed=editors[i];if(ed.contains(sel.anchorNode))ed._savedRange=sel.getRangeAt(0).cloneRange();
+ }
 });document.addEventListener("paste",async function(ev){
  var qex=ev.target&&ev.target.closest?ev.target.closest("#questionExplanationEditor"):null;
  if(qex){
@@ -2264,9 +2738,10 @@ var el=ev.target.closest?ev.target.closest("[data-dragsec],[data-dragart]"):null
 
 function render(){
  document.body.classList.toggle("dark",state.theme==="dark");
+ if(page==="admin"&&window.__medqnlAuthRole!=="admin")page="dashboard";
  var root=document.getElementById("app");
  if(page==="question"){root.innerHTML=questionPage();return}
- var body=page==="dashboard"?dashboard():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
+ var body=page==="dashboard"?dashboard():page==="daily"?daily():page==="mailbox"?mailbox():page==="qbank"?qbank():page==="previous-tests"?previousTests():page==="performance-overall"?performanceOverall():page==="performance-reports"?performanceReports():page==="performance-reports-systems"?performanceReportsSystems():page==="performance-reports-topics"?performanceReportsTopics():page==="performance-graphs"?performanceOverall():page==="search"?searchPage():page==="notes"?notesPage():page==="ivtg"?ivtg():page==="ivtg-library"?library():page==="library"?medicalLibrary():page==="admin"?admin():page==="settings"?settings():page==="result"?result():dashboard();
  root.innerHTML=body;if(page==="admin"){renderAdminQuestions();}
 }
 function showAppError(err){
@@ -2275,14 +2750,15 @@ function showAppError(err){
   var msg=err&&err.message?err.message:String(err||"Onbekende fout");
   root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
 }
-function bootMedQNL(){
+async function bootMedQNL(){
   try{
+    await syncQuestionsFromServer();
+    await syncFeedbackFromServer();
     render();
   }catch(err){
     try{
-      localStorage.removeItem(KEY);
-      state=load();
       render();
+      console.warn("Question bank sync:",err&&err.message?err.message:err);
     }catch(retryErr){
       showAppError(retryErr||err);
     }
@@ -2290,9 +2766,6 @@ function bootMedQNL(){
 }
 window.__medqnlBoot=bootMedQNL;
 
-var __accessReady=false;
-try{__accessReady=sessionStorage.getItem('medqnl_access')==='1'}catch(e){}
-if(__accessReady)bootMedQNL();
 })();
 </script>
 </body>
