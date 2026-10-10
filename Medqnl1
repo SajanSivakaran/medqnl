@@ -33,7 +33,9 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
-.title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}.small{font-size:12px}.muted{color:var(--muted)}
+.title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}
+.library-edit-head{display:flex;gap:10px;align-items:center;margin-bottom:12px}.library-edit-title{flex:1;font-size:22px;font-weight:800;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.library-article-editor{min-height:520px;padding:18px;border:1px solid var(--line);border-radius:9px;background:var(--card);line-height:1.7}.library-article-editor:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
+@media(max-width:720px){.library-edit-head{display:block}.library-edit-head button{width:100%;margin-top:8px}.library-edit-title{width:100%;box-sizing:border-box}}.small{font-size:12px}.muted{color:var(--muted)}
 .grid{display:grid;gap:15px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
 .btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700}.primary{background:var(--blue);color:#fff}.secondary{background:var(--card);color:var(--ink);border:1px solid var(--line)}.danger{background:var(--redbg);color:var(--red);border:1px solid #e8bbb3}
 .stat .label{font-size:12px;color:var(--muted)}.stat .value{font-size:28px;font-weight:800;color:var(--navy);margin-top:3px}
@@ -1981,7 +1983,7 @@ function library(){
    if(sectionCandidate.library!=="medical" && hasIvtgArticle)ivtgSections.push(sectionCandidate);
  }
  if(!state.ui)state.ui={};
- var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="";
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="",canEdit=window.__medqnlAuthRole==="admin";
  if(a){try{toc=articleToc(a,"mainsec")||""}catch(e){toc=""}}
  var collapsed=!!state.ui.libNavCollapsed;
  if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>");
@@ -1991,12 +1993,30 @@ function library(){
    var secCollapsed=!!sectionCollapsed[sec.id],secArticles="",hasArticles=false;
    for(j=0;j<ivtgArticles.length;j++)if(ivtgArticles[j].sectionId===sec.id){
      hasArticles=true;
-     secArticles+="<button data-art='"+ivtgArticles[j].id+"' class='"+(ivtgArticles[j].id===a.id?"active":"")+"'>"+esc(ivtgArticles[j].title)+"</button>";
+     secArticles+="<button type='button' data-art='"+ivtgArticles[j].id+"' class='"+(ivtgArticles[j].id===a.id?"active":"")+"'>"+esc(ivtgArticles[j].title)+"</button>";
    }
-   navs+="<button class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
+   navs+="<button type='button' class='lib-section-toggle' data-toggle-lib-section='"+esc(sec.id)+"' aria-expanded='"+(!secCollapsed)+"'><span>"+esc(sec.title)+"</span><span class='lib-section-chevron'>"+(secCollapsed?"›":"⌄")+"</span></button>";
    if(!secCollapsed && hasArticles)navs+="<div class='lib-section-items'>"+secArticles+"</div>";
  }
- return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div><div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+"<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div><div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></article></div>");
+ var titleOrForm=canEdit
+   ? "<form id='libraryArticleForm' data-id='"+esc(a.id)+"'><div class='library-edit-head'><input name='title' class='library-edit-title' value='"+esc(a.title||"")+"' aria-label='Titel van hoofdstuk'><button class='btn primary' type='submit'>Wijzigingen opslaan</button></div>"
+   : "<div class='lib-titlebar'><h2>"+esc(a.title)+"</h2><div class='lib-action-row'><button class='lib-action' title='Notitie' data-open-notes>▱</button><button class='lib-action' title='Markeren' data-mark-action>✎</button></div></div>";
+ var editorBody=canEdit
+   ? richFormatToolbar("articleEditor")+"<div id='articleEditor' class='article-rich-editor library-article-editor' contenteditable='true' spellcheck='true'>"+articleEditorHtml(a)+"</div><div class='inline-image-tools'><strong>Inline afbeeldingen</strong><div class='small muted'>Plak afbeeldingen rechtstreeks in de tekst of voeg ze toe met de knop.</div><button type='button' class='btn secondary' id='addInlineImage'>Afbeelding kiezen</button><input id='inlineImageFile' type='file' accept='image/*' multiple style='display:none'><div id='inlineImageSizeBar' class='inline-image-sizebar' style='display:none'><label>Grootte</label><input id='inlineImageSize' type='range' min='80' max='600' step='10' value='180'><span id='inlineImageSizeValue'>180 px</span></div></div><input type='hidden' name='inlineImages' value='"+esc(JSON.stringify(a.inlineImages||{}).replace(/</g,"\\u003c"))+"'><input type='hidden' name='inlineImageWidths' value='"+esc(JSON.stringify(a.inlineImageWidths||{}).replace(/</g,"\\u003c"))+"'></form>"
+   : "<div id='articleText' class='article-content'>"+renderInlineImages(state.highlights[a.id]||articleHtml(a,"mainsec"))+"</div>";
+ var articleWrap=canEdit
+   ? titleOrForm.replace("</div>","")+"" // marker only; form closes after editor below
+   : titleOrForm;
+ if(canEdit){
+   articleWrap=titleOrForm+"<div class='lib-content-wrap'>"+editorBody.replace("</form>","")+"</div></form>";
+ }else{
+   articleWrap=titleOrForm+"<div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+editorBody+"<div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div>";
+ }
+ if(canEdit){
+   // Rebuild the edit form cleanly so the rich editor stays inside the form.
+   articleWrap="<form id='libraryArticleForm' data-id='"+esc(a.id)+"'><div class='library-edit-head'><input name='title' class='library-edit-title' value='"+esc(a.title||"")+"' aria-label='Titel van hoofdstuk'><button class='btn primary' type='submit'>Wijzigingen opslaan</button></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+editorBody.replace("</form>","")+"<div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></form>";
+ }
+ return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'>"+(canEdit?articleWrap:"<div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap)+"</article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function medicalLibrary(){
@@ -2578,6 +2598,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-newsource-inline]"):null;if(el){openInlineSource(el);return}
  el=t.closest?t.closest("[data-new-section-inline]"):null;if(el){quickNewSection();return}
  el=t.closest?t.closest("[data-new-article-inline]"):null;if(el){quickNewArticle();return}
+ if(t.closest&&t.closest("[data-sec-title]"))return;
  el=t.closest?t.closest("[data-secselect]"):null;if(el){state.ui.selectedSection=el.getAttribute("data-secselect");save();render();return}
  el=t.closest?t.closest("[data-dela]"):null;if(el){var deleteArticleId=el.getAttribute("data-dela"),deleteArticle=byId(state.articles,deleteArticleId);if(deleteArticle&&confirm("Hoofdstuk verwijderen?")){removeBy(state.articles,deleteArticleId);delete state.highlights[deleteArticleId];delete state.chapterTime[deleteArticleId];if(articleId===deleteArticleId)articleId=state.articles[0]?state.articles[0].id:"";save();render()}return}
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
@@ -2686,7 +2707,7 @@ document.addEventListener("change",function(ev){
 });
 document.addEventListener("submit",function(ev){
  var f=ev.target,i,nodes,checked,obj,ix,input,file;
- if(["questionform","articleform","sourceform","sectionform"].indexOf(f.id)<0)return;
+ if(["questionform","articleform","libraryArticleForm","sourceform","sectionform"].indexOf(f.id)<0)return;
  ev.preventDefault();
  function finish(imageData){
   if(f.id==="questionform"){
@@ -2704,6 +2725,21 @@ document.addEventListener("submit",function(ev){
   ix=idx(state.questions,obj.id);if(ix<0)state.questions.push(obj);else state.questions[ix]=obj
   persistQuestionRemote(obj);
 }
+else if(f.id==="libraryArticleForm"){
+   var libraryArticle=byId(state.articles,f.getAttribute("data-id"));
+   if(!libraryArticle){alert("Hoofdstuk niet gevonden.");return;}
+   var libraryEditor=document.getElementById("articleEditor"),libraryRichHtml=libraryEditor?serializeRichEditor(libraryEditor):"",libraryText=richHtmlToText(libraryRichHtml),libraryStore=f.querySelector("input[name='inlineImages']"),libraryWstore=f.querySelector("input[name='inlineImageWidths']"),libraryImages={},libraryWidths={};
+   try{libraryImages=JSON.parse(libraryStore?libraryStore.value:"{}")}catch(e){}
+   try{libraryWidths=JSON.parse(libraryWstore?libraryWstore.value:"{}")}catch(e){}
+   libraryArticle.title=String(f.title.value||"").trim()||libraryArticle.title;
+   libraryArticle.richHtml=libraryRichHtml;
+   libraryArticle.body=libraryText?libraryText.split(/\n\s*\n/):[""];
+   libraryArticle.inlineImages=libraryImages;
+   libraryArticle.inlineImageWidths=libraryWidths;
+   save();
+   page="ivtg-library";
+   articleId=libraryArticle.id;
+ }
 else if(f.id==="articleform"){checked=[];nodes=f.querySelectorAll("input[name='src']");for(i=0;i<nodes.length;i++)if(nodes[i].checked)checked.push(nodes[i].value);var ed=document.getElementById("articleEditor"),store=f.querySelector("input[name='inlineImages']"),wstore=f.querySelector("input[name='inlineImageWidths']"),richHtml=ed?serializeRichEditor(ed):"",plain=richHtmlToText(richHtml),serialized=plain;f.body.value=serialized;var inlineImages={};try{inlineImages=JSON.parse(store?store.value:"{}")}catch(e){}var inlineImageWidths={};try{inlineImageWidths=JSON.parse(wstore?wstore.value:"{}")}catch(e){}var selectedSection=byId(state.sections,f.sectionId.value),articleLibrary=(selectedSection&&selectedSection.library==="medical"?"medical":"ivtg");obj={id:f.getAttribute("data-id")||"a"+Date.now(),library:articleLibrary,title:f.title.value,sectionId:f.sectionId.value,body:serialized.split(/\n\s*\n/),richHtml:richHtml,sourceIds:checked,image:imageData||f.currentImage.value||"",inlineImages:inlineImages,inlineImageWidths:inlineImageWidths};ix=idx(state.articles,obj.id);if(ix<0)state.articles.push(obj);else state.articles[ix]=obj}
   else if(f.id==="sourceform"){obj={id:f.getAttribute("data-id")||"s"+Date.now(),title:f.title.value,url:f.url.value};ix=idx(state.sources,obj.id);if(ix<0)state.sources.push(obj);else state.sources[ix]=obj}
   else{obj={id:f.getAttribute("data-id")||"sec"+Date.now(),title:f.title.value,order:state.sections.length+1};ix=idx(state.sections,obj.id);if(ix<0)state.sections.push(obj);else state.sections[ix]=obj}
