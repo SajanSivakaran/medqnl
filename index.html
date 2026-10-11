@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-supabase-admin-auth-dutch-intro-v4">
+<meta name="medqnl-build" content="2026-10-11-login-route-navigation-moon-footer-v5">
 <title>MedQNL</title>
 <style>
 :root{
@@ -460,6 +460,38 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate .footer-bottom{max-width:1240px;margin:38px auto 0;padding-top:22px;border-top:1px solid #2d4137;font-size:11px;color:#84968a}
 @media(max-width:850px){#accessGate .steps-grid{grid-template-columns:1fr}#accessGate .landing-cta-band{align-items:flex-start;flex-direction:column}#accessGate .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#accessGate .footer-about{grid-column:1/-1}}
 @media(max-width:600px){#accessGate .mock-panel{padding:13px}#accessGate .mock-case p{font-size:12px}#accessGate .footer-grid{grid-template-columns:1fr 1fr;gap:22px}#accessGate .landing-features{grid-template-columns:1fr}}
+
+/* Navigatie, inlogroute en footer in MedQNL-stijl */
+#accessGate .landing-nav{position:sticky;top:0;z-index:10;justify-content:space-between;gap:24px;flex-wrap:nowrap}
+#accessGate .landing-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);margin-left:auto;margin-right:clamp(8px,2vw,24px)}
+#accessGate .landing-links a{font-size:14px;text-decoration:none;color:#26352f;white-space:nowrap;font-weight:500}
+#accessGate .landing-links a:hover{color:#477f70}
+#accessGate .landing-nav-actions{display:flex;align-items:center;gap:14px}
+#accessGate .landing-nav .nav-signin{display:inline-flex;align-items:center;gap:8px;text-decoration:none;white-space:nowrap}
+#accessGate .moon-toggle{width:40px;height:40px;padding:0;border:1px solid #d9e2d8;border-radius:50%;background:#f8f6f0;color:#214e45;display:grid;place-items:center;font-size:21px}
+#accessGate .landing-cta-band{background:#141918;padding:clamp(42px,6vw,78px) clamp(20px,7.5vw,108px);min-height:190px}
+#accessGate .landing-cta-band h2{font-size:clamp(30px,4vw,50px);letter-spacing:-1.4px}
+#accessGate .landing-cta-band h2 em{color:#a9c7b4}
+#accessGate .landing-cta-band button{padding:14px 23px;border-radius:999px;font-weight:500}
+#accessGate .landing-footer{background:#141918;padding:55px clamp(20px,7.5vw,108px) 28px}
+#accessGate .footer-grid{grid-template-columns:1.5fr repeat(4,minmax(90px,1fr));gap:clamp(18px,3vw,44px)}
+#accessGate .footer-bottom{padding-top:26px;margin-top:42px}
+#accessGate.theme-dark{background:#17251f;color:#edf3ed}
+#accessGate.theme-dark .landing-nav{background:#1c2c24;border-color:#3c5549}
+#accessGate.theme-dark .landing-links a{color:#edf3ed}
+#accessGate.theme-dark .landing-title,#accessGate.theme-dark .how-title,#accessGate.theme-dark .feature-card h3,#accessGate.theme-dark .step-card h3{color:#edf3ed}
+#accessGate.theme-dark .landing-copy,#accessGate.theme-dark .feature-card p,#accessGate.theme-dark .step-card p{color:#b6c7ba}
+#accessGate.theme-dark .landing-features,#accessGate.theme-dark .how-it-works{background:#17251f}
+#accessGate.theme-dark .feature-card,#accessGate.theme-dark .step-card,#accessGate.theme-dark .mock-panel{background:#20332a;border-color:#3c5549}
+#accessGate.theme-dark .mock-question,#accessGate.theme-dark .mock-case p{color:#edf3ed}
+#accessGate.theme-dark .mock-case{background:#24372d}
+#accessGate.theme-dark .mock-answer{background:#20332a;color:#edf3ed;border-color:#3c5549}
+#accessGate.theme-dark .mock-answer.correct{background:#294b39;color:#edf3ed}
+#accessGate.theme-dark .signin-card{background:#20332a;border-color:#3c5549}
+#accessGate.theme-dark .signin-card h1{color:#edf3ed}
+#accessGate.theme-dark .moon-toggle{background:#294b39;color:#edf3ed;border-color:#3c5549}
+@media(max-width:760px){#accessGate .landing-nav{height:auto;min-height:68px;padding:12px 18px;flex-wrap:wrap}#accessGate .landing-links{order:3;width:100%;justify-content:center;margin:0;gap:20px}#accessGate .landing-links a{font-size:13px}#accessGate .landing-nav-actions{margin-left:auto}#accessGate .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){#accessGate .landing-links{gap:12px}#accessGate .landing-links a{font-size:12px}#accessGate .landing-nav .nav-signin{padding:10px 12px}}
 .library-main-nav-reopen{background:#214e45!important;border-color:#477f70!important}
 .case{border-left-color:var(--blue)!important}
 .daily-puzzle-title .underline,.daily-progress-dot.active,.daily-guess-form button{background:#477f70!important}
@@ -514,8 +546,11 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 <body class="gate-locked">
 <div id="accessGate" aria-label="MedQNL introductie">
   <header class="landing-nav">
-    <div class="gate-logo">MedQ<span>NL</span></div>
-    <button type="button" class="nav-signin" id="openSignIn">Inloggen <span aria-hidden="true">→</span></button>
+    <a href="/medqnl/" class="gate-logo" style="text-decoration:none">MedQ<span>NL</span></a>
+    <nav class="landing-links" aria-label="Hoofdnavigatie">
+      <a href="/medqnl/">Home</a><a href="#aboutMedQNL">Over ons</a><a href="mailto:support@medqnl.nl">Contact</a><a href="#plans">Plannen</a>
+    </nav>
+    <div class="landing-nav-actions"><button type="button" class="moon-toggle" id="landingTheme" aria-label="Donkere modus" title="Donkere modus">☾</button><a class="nav-signin" id="openSignIn" href="/medqnl/inloggen/">Inloggen <span aria-hidden="true">→</span></a></div>
   </header>
   <section class="landing-view" id="landingView">
     <div class="landing-wrap">
@@ -563,10 +598,10 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       <article class="step-card"><div class="step-icon">▥</div><div class="step-label">— &nbsp; STAP 3</div><h3>Volg je voortgang</h3><p>Ontdek met je resultaten waar je extra aandacht aan moet besteden en studeer gerichter.</p></article>
     </div>
   </section>
-  <section class="landing-cta-band"><div><h2>Klaar om te beginnen? <em>Vergroot je kennis.</em></h2><p>Oefen je klinisch redeneren met MedQNL.</p></div><button type="button" id="ctaSignIn">Open MedQNL →</button></section>
+  <section class="landing-cta-band" id="plans"><div><h2>Klaar om te beginnen? <em>Begin vandaag.</em></h2><p>Oefen gericht en bouw stap voor stap aan je medische kennis.</p></div><button type="button" id="ctaSignIn">Aan de slag →</button></section>
   <footer class="landing-footer">
     <div class="footer-grid">
-      <div class="footer-about"><div class="footer-brand">MedQ<span>NL</span></div><div class="footer-copy">De medische leeromgeving voor klinische vragen, gericht oefenen en een overzichtelijke bibliotheek.</div></div>
+      <div class="footer-about" id="aboutMedQNL"><div class="footer-brand">MedQ<span>NL</span></div><div class="footer-copy">De medische leeromgeving voor klinische vragen, gericht oefenen en een overzichtelijke bibliotheek.</div></div>
       <div class="footer-col"><h4>PLATFORM</h4><a href="#landingFeatures">Vragenbanken</a><a href="#howItWorks">Zo werkt het</a><a href="#landingFeatures">Dagpuzzel</a></div>
       <div class="footer-col"><h4>OVER ONS</h4><a href="#landingFeatures">Over MedQNL</a><a href="mailto:support@medqnl.nl">Contact</a></div>
       <div class="footer-col"><h4>HULPMIDDELEN</h4><a href="#landingFeatures">Studiemiddelen</a><a href="#howItWorks">Aan de slag</a></div>
@@ -610,11 +645,13 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   var adminForm=document.getElementById("adminForm");
 
   function showSignIn(){
+    try{history.pushState({medqnlRoute:"login"},"","/medqnl/inloggen/")}catch(e){}
     landing.style.display="none";
     signIn.style.display="flex";
     window.scrollTo(0,0);
   }
   function showLanding(){
+    try{history.pushState({medqnlRoute:"home"},"","/medqnl/")}catch(e){}
     signIn.style.display="none";
     landing.style.display="block";
     adminForm.style.display="none";
@@ -631,7 +668,11 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
-  document.getElementById("openSignIn").addEventListener("click",showSignIn);
+  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();showSignIn()});
+  document.getElementById("landingTheme").addEventListener("click",function(){var dark=gate.classList.toggle("theme-dark");this.textContent=dark?"☀":"☾";this.setAttribute("aria-label",dark?"Lichte modus":"Donkere modus");try{localStorage.setItem("medqnl_landing_theme",dark?"dark":"light")}catch(e){}});
+  window.addEventListener("popstate",function(){if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){landing.style.display="none";signIn.style.display="flex"}else{signIn.style.display="none";landing.style.display="block"}});
+  if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){landing.style.display="none";signIn.style.display="flex"}
+  try{if(localStorage.getItem("medqnl_landing_theme")==="dark"){gate.classList.add("theme-dark");document.getElementById("landingTheme").textContent="☀"}}catch(e){}
   document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
   document.getElementById("heroSignIn").addEventListener("click",showSignIn);
   document.getElementById("backToLanding").addEventListener("click",showLanding);
