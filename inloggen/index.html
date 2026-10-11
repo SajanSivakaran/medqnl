@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-login-route-navigation-moon-footer-v5">
+<meta name="medqnl-build" content="2026-10-11-login-signup-and-admin-flow-v7">
 <title>MedQNL</title>
 <style>
 :root{
@@ -461,6 +461,41 @@ body.gate-unlocked #accessGate{display:none!important}
 @media(max-width:850px){#accessGate .steps-grid{grid-template-columns:1fr}#accessGate .landing-cta-band{align-items:flex-start;flex-direction:column}#accessGate .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#accessGate .footer-about{grid-column:1/-1}}
 @media(max-width:600px){#accessGate .mock-panel{padding:13px}#accessGate .mock-case p{font-size:12px}#accessGate .footer-grid{grid-template-columns:1fr 1fr;gap:22px}#accessGate .landing-features{grid-template-columns:1fr}}
 
+
+/* Inloggen: volledig zichtbare formulierweergave, passend bij MedQPrep-referentie */
+#accessGate .signin-view{min-height:calc(100vh - 76px);align-items:stretch;justify-content:center;padding:0;background:#f8f6f0}
+#accessGate .signin-card{width:min(520px,100%);margin:auto;border:0;box-shadow:none;background:transparent;border-radius:0;padding:clamp(26px,5vw,56px);max-width:520px}
+#accessGate .signin-card>.gate-logo{display:none}
+#accessGate .signin-card h1{font-size:clamp(30px,3.2vw,42px);line-height:1.16;letter-spacing:-1.3px;color:#26352f;margin:0 0 10px}
+#accessGate .signin-card h1 em{font-family:Georgia,serif;color:#214e45;font-weight:400}
+#accessGate .signin-card p{font-size:14px;line-height:1.65;color:#697a70;margin:0 0 28px}
+#accessGate .signin-form{margin:0;padding:0;border:0}
+#accessGate .signin-form label{display:block;font-size:10px;letter-spacing:1.8px;text-transform:uppercase;color:#697a70;margin:0 0 9px}
+#accessGate .signin-form input{width:100%;height:54px;border:1px solid #d9d8c9;border-radius:999px;background:transparent;padding:0 18px;color:#26352f;font-size:14px;outline:none}
+#accessGate .signin-form input:focus{border-color:#477f70;box-shadow:0 0 0 3px rgba(71,127,112,.12)}
+#accessGate .signin-form>input{margin-bottom:22px}
+#accessGate .password-label-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 9px}
+#accessGate .password-label-row label{margin:0}
+#accessGate .forgot-password{border:0;padding:0;background:transparent;color:#214e45;font-size:12px;font-weight:500}
+#accessGate .password-input-wrap{position:relative;margin-bottom:16px}
+#accessGate .password-input-wrap input{padding-right:55px}
+#accessGate .password-eye{position:absolute;right:8px;top:7px;width:40px;height:40px;background:transparent!important;color:#697a70!important;padding:0!important;font-size:18px}
+#accessGate .signin-security{border:1px solid #ccd7cc;background:#e8ebe2;border-radius:32px;padding:15px 17px;color:#53665a;font-size:12px;line-height:1.55;margin:0 0 20px}
+#accessGate .signin-submit{display:block;width:100%;border-radius:999px!important;height:52px;padding:12px 20px;background:#214e45!important;color:#fff!important;font-weight:600}
+#accessGate .signin-submit:disabled{opacity:.65;cursor:wait}
+#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;font-size:12px!important}
+#accessGate .signup-link{padding:0!important;border:0!important;background:transparent!important;color:#214e45!important;font-weight:700!important}
+#accessGate.theme-dark .signup-link{color:#a9c7b4!important}
+#accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
+#accessGate .signin-card .signin-back:hover{color:#214e45}
+#accessGate .signin-footer{border-top:1px solid #d9d8c9;display:flex;justify-content:space-between;gap:14px;align-items:center;padding-top:22px;margin-top:35px;color:#829186;font-size:11px}
+#accessGate .signin-footer a{color:#697a70;text-decoration:none;margin-left:12px}
+#accessGate.theme-dark .signin-view{background:#17251f}
+#accessGate.theme-dark .signin-card h1{color:#edf3ed}
+#accessGate.theme-dark .signin-card p,#accessGate.theme-dark .signin-form label{color:#b6c7ba}
+#accessGate.theme-dark .signin-form input{color:#edf3ed;border-color:#3c5549}
+#accessGate.theme-dark .signin-security{background:#24372d;border-color:#3c5549;color:#b6c7ba}
+#accessGate.theme-dark .signin-footer{border-color:#3c5549}
 /* Navigatie, inlogroute en footer in MedQNL-stijl */
 #accessGate .landing-nav{position:sticky;top:0;z-index:10;justify-content:space-between;gap:24px;flex-wrap:nowrap}
 #accessGate .landing-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);margin-left:auto;margin-right:clamp(8px,2vw,24px)}
@@ -613,20 +648,20 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   <section class="signin-view" id="signInView" aria-label="Inloggen">
     <div class="signin-card">
       <div class="gate-logo">MedQ<span>NL</span></div>
-      <h1>Welkom terug</h1>
-      <p>Kies hoe je wilt inloggen om verder te gaan naar je MedQNL-studieomgeving.</p>
-      <button type="button" class="admin-entry" id="adminEntry"><span><strong>Admin</strong><br><small>Beheer de MedQNL-inhoud</small></span><span aria-hidden="true">→</span></button>
-      <div class="admin-form" id="adminForm">
-        <form id="accessForm" autocomplete="off">
-          <label for="accessEmail">E-mailadres</label>
-          <input id="accessEmail" type="email" autocomplete="username" placeholder="jouw@email.nl" required>
-          <label for="accessPassword" style="margin-top:12px">Wachtwoord</label>
-          <input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required>
-          <button type="submit">Inloggen als admin</button>
-          <div class="gate-error" id="accessError" aria-live="polite"></div>
-        </form>
-      </div>
+      <h1>Log in op je <em>MedQNL-account.</em></h1>
+      <p>Log in met je e-mailadres en wachtwoord om verder te gaan naar je MedQNL-studieomgeving.</p>
+      <form id="accessForm" class="admin-form signin-form" autocomplete="on" style="display:block">
+        <label for="accessEmail">E-mailadres</label>
+        <input id="accessEmail" type="email" autocomplete="username" placeholder="jouw@email.nl" required>
+        <div class="password-label-row"><label for="accessPassword">Wachtwoord</label><button type="button" class="forgot-password" id="forgotPassword">Wachtwoord vergeten?</button></div>
+        <div class="password-input-wrap"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required><button type="button" id="togglePassword" class="password-eye" aria-label="Wachtwoord tonen">◉</button></div>
+        <div class="signin-security">◈ &nbsp; Je account wordt gecontroleerd via Supabase. Alleen beheerders hebben toegang tot de beheeromgeving.</div>
+        <button type="submit" class="signin-submit">↪ &nbsp; Inloggen</button>
+        <p class="signup-prompt">Nog geen account? <button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></p>
+        <div class="gate-error" id="accessError" aria-live="polite"></div>
+      </form>
       <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
+      <div class="signin-footer"><span>© 2026 MedQNL</span><span><a href="#aboutMedQNL">Over ons</a><a href="mailto:support@medqnl.nl">Contact</a></span></div>
     </div>
   </section>
 </div>
@@ -676,21 +711,35 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
   document.getElementById("heroSignIn").addEventListener("click",showSignIn);
   document.getElementById("backToLanding").addEventListener("click",showLanding);
-  document.getElementById("adminEntry").addEventListener("click",function(){
-    adminForm.style.display="block";
-    input.focus();
-  });
+  document.getElementById("togglePassword").addEventListener("click",function(){input.type=input.type==="password"?"text":"password";this.textContent=input.type==="password"?"◉":"⊙";this.setAttribute("aria-label",input.type==="password"?"Wachtwoord tonen":"Wachtwoord verbergen")});
+  document.getElementById("forgotPassword").addEventListener("click",async function(){var email=emailInput.value.trim();if(!email){error.textContent="Vul eerst je e-mailadres in om een herstelmail aan te vragen.";emailInput.focus();return}this.disabled=true;try{var rr=await fetch(AUTH_URL+"/auth/v1/recover",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:email,redirect_to:"https://sajansivakaran.github.io/medqnl/inloggen/"})});if(!rr.ok)throw new Error("De herstelmail kon niet worden aangevraagd. Controleer de instellingen van Supabase Auth.");error.textContent="Als dit e-mailadres bij een account hoort, ontvang je instructies voor wachtwoordherstel."}catch(e){error.textContent=e.message||"Wachtwoordherstel is niet gelukt."}finally{this.disabled=false}});
+  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();showSignIn()});
   document.getElementById("exploreFeatures").addEventListener("click",function(){
     document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
   });
   var alreadyUnlocked=false;
   try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
   if(alreadyUnlocked)startApp();
+  var signupMode=false;
+  document.getElementById("signupToggle").addEventListener("click",function(){
+    signupMode=!signupMode;error.textContent="";
+    var submit=form.querySelector('button[type="submit"]');
+    submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";
+    document.getElementById("signupToggle").textContent=signupMode?"Terug naar inloggen":"Account aanmaken";
+    input.autocomplete=signupMode?"new-password":"current-password";
+  });
   form.addEventListener("submit",async function(ev){
     ev.preventDefault();
     var submit=form.querySelector('button[type="submit"]');
-    submit.disabled=true;submit.textContent="Bezig met inloggen…";error.textContent="";
+    submit.disabled=true;submit.textContent=signupMode?"Account wordt aangemaakt…":"Bezig met inloggen…";error.textContent="";
     try{
+      if(signupMode){
+        var signupResponse=await fetch(AUTH_URL+"/auth/v1/signup",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
+        var signup=await signupResponse.json();
+        if(!signupResponse.ok)throw new Error(signup.msg||signup.message||signup.error_description||"Account aanmaken is mislukt.");
+        error.textContent=signup.session?"Account aangemaakt. Controleer daarna je beheerdersrol.":"Accountaanvraag ontvangen. Controleer je e-mail om je account te bevestigen. Daarna moet de beheerder je rol activeren.";
+        return;
+      }
       var response=await fetch(AUTH_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
       var auth=await response.json();
       if(!response.ok||!auth.access_token)throw new Error(auth.msg||auth.message||auth.error_description||"Inloggen mislukt. Controleer je e-mailadres en wachtwoord.");
@@ -698,15 +747,15 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       var profiles=await profileResponse.json();
       if(!profileResponse.ok||!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"})){
         await fetch(AUTH_URL+"/auth/v1/logout",{method:"POST",headers:{"apikey":AUTH_KEY,"Authorization":"Bearer "+auth.access_token}});
-        throw new Error("Dit account heeft geen beheerdersrechten.");
+        throw new Error("Dit account heeft nog geen beheerdersrechten. Maak eerst een account aan en laat de rol admin activeren.");
       }
       window.__medqnlAuthSession=auth;
       try{localStorage.setItem("medqnl_auth_v1",JSON.stringify(auth))}catch(e){}
       startApp();
     }catch(err){
       error.textContent=err&&err.message?err.message:"Inloggen is niet gelukt.";
-      input.value="";input.focus();
-    }finally{submit.disabled=false;submit.textContent="Inloggen als admin";}
+      if(!signupMode){input.value="";input.focus();}
+    }finally{submit.disabled=false;submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";}
   });
 })();
 </script>
