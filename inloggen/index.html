@@ -60,8 +60,10 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
       <button class="admin-entry" id="adminToggle" type="button" aria-expanded="false" aria-controls="adminBox">Admin</button>
       <section class="admin-box" id="adminBox" aria-hidden="true" aria-labelledby="adminTitle">
         <h3 id="adminTitle">Admin inloggen</h3>
-        <p class="hint">Vul je e-mailadres en je normale MedQNL-accountwachtwoord hierboven in. Alleen accounts met de admin-rol krijgen beheertoegang.</p>
+        <p class="hint">Voer je adminwachtwoord in. Alleen het gekoppelde adminaccount krijgt toegang.</p>
         <form id="adminForm">
+          <label for="adminPassword">Adminwachtwoord</label>
+          <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" placeholder="Je wachtwoord" required>
           <button class="submit" id="adminSubmit" type="submit">Verder als admin</button>
           <div class="status" id="adminStatus" role="status" aria-live="polite"></div>
         </form>
@@ -111,15 +113,16 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
    }catch(error){status.textContent=error.message||'Er ging iets mis. Probeer het opnieuw.'}
    finally{button.disabled=false}
  });
+ const ADMIN_EMAIL='sivakaran.sajan@gmail.com';
  const adminToggle=document.getElementById('adminToggle'),adminBox=document.getElementById('adminBox'),adminForm=document.getElementById('adminForm'),adminStatus=document.getElementById('adminStatus'),adminSubmit=document.getElementById('adminSubmit');
  adminToggle.addEventListener('click',function(){const open=adminBox.getAttribute('aria-hidden')!=='false';adminBox.setAttribute('aria-hidden',String(!open));adminToggle.setAttribute('aria-expanded',String(open));if(open)document.getElementById('email').focus();});
  document.getElementById('adminCancel').addEventListener('click',function(){adminBox.setAttribute('aria-hidden','true');adminToggle.setAttribute('aria-expanded','false');adminForm.reset();adminStatus.textContent='';});
  adminForm.addEventListener('submit',async function(event){
    event.preventDefault();adminStatus.style.color='#a33b32';adminStatus.textContent='Adminwachtwoord wordt gecontroleerd…';adminSubmit.disabled=true;
    try{
-     const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;
-     if(!email||!password)throw new Error('Vul eerst ook je e-mailadres en je normale accountwachtwoord hierboven in.');
-     const data=await signIn(email,password);
+     const password=document.getElementById('adminPassword').value;
+     if(!password)throw new Error('Vul je adminwachtwoord in.');
+     const data=await signIn(ADMIN_EMAIL,password);
      const profile=await getProfile(data.access_token);
      if(!profile||profile.role!=='admin')throw new Error('Dit account heeft geen adminrechten. Beheertoegang is geweigerd.');
      sessionStorage.setItem('medqnl_login_access_token',data.access_token);
