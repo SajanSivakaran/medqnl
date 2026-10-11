@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle-v3">
+<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle-v6">
 <title>MedQNL</title>
 <style>
 :root{
@@ -34,7 +34,7 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
-.daily-puzzle-page{max-width:920px;margin:0 auto}
+.daily-puzzle-page{max-width:820px;margin:0 auto}
 .daily-puzzle-shell{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
 .daily-puzzle-topbar{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}
 .daily-puzzle-title{text-align:left}
@@ -62,8 +62,6 @@ a{color:var(--blue)}
 .daily-guess-form input::placeholder{color:var(--muted)}
 .daily-guess-form input:focus{border-color:#4aaea2;box-shadow:0 0 0 3px rgba(74,174,162,.12)}
 .daily-guess-form button{width:auto;margin:0;padding:12px 22px;background:#4aaea2;color:#fff}
-.daily-autocomplete{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:2000;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 26px rgba(10,32,52,.16);max-height:260px;overflow:auto}
-.daily-autocomplete option{padding:7px}
 .daily-guess-list{display:grid;gap:6px;margin-top:10px}
 .daily-guess-row{display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;background:var(--redbg);border:1px solid #efc0bb;color:var(--red);font-size:13px}
 .daily-guess-row.correct{background:var(--greenbg);border-color:#b7d9c6;color:var(--green)}
@@ -1468,10 +1466,10 @@ var DAILY_PUZZLES=[
   ],
   flashcard:{
    group:"Een krachtig lisdiureticum.",
-   mechanism:"Remt het Na⁺/K⁺/2Cl⁻-cotransport in het stijgende been van de lis van Henle in de nier, wat zorgt voor een sterke uitscheiding van natriumchloride en water.",
-   indications:"Kortademigheid en oedeem bij hartfalen, en ascites bij levercirrose.",
-   adverse:["Uitdroging (dehydratie) en hypotensie (met valneiging tot gevolg).","Hypokaliëmie (kaliumtekort), met risico op spierzwakte of ritmestoornissen.","Nierinsufficiëntie bij te snelle of te grote vochtentrekking.","Ototoxiciteit (slechthorendheid/doofheid) bij hooggedoseerd of langdurig intraveneus gebruik."],
-   kinetics:"Snelle en sterke werking met een werkingsduur van ongeveer 6 uur. Bij verminderde nierfunctie moet hoger worden gedoseerd."
+   mechanism:"Remt het Na⁺/K⁺/2Cl⁻-cotransport in het stijgende been van de lis van Henle, met sterke uitscheiding van natriumchloride en water.",
+   indications:"Kortademigheid en oedeem bij hartfalen; ascites bij levercirrose.",
+   adverse:["Uitdroging (dehydratie) en hypotensie, met valneiging.","Hypokaliëmie, met risico op spierzwakte of ritmestoornissen.","Nierinsufficiëntie bij te snelle of te grote vochtentrekking.","Ototoxiciteit bij hooggedoseerd of langdurig intraveneus gebruik."],
+   kinetics:"Snelle en sterke werking met ongeveer 6 uur werkingsduur. Bij verminderde nierfunctie is een hogere dosering nodig."
   }
  },
  {
@@ -1479,9 +1477,9 @@ var DAILY_PUZZLES=[
   answerAliases:["adrenaline","epinefrine","epinephrine"],
   title:"Adrenaline",
   levels:[
-   {level:4,label:"Expert",text:"Dit middel wordt lokaal vaak gecombineerd met een lokaal anaestheticum (zoals lidocaïne) om via vaatvernauwing de werkingsduur van de verdoving te verlengen en lokaal bloedverlies te verminderen. Vanwege het risico op ischemische necrose wordt deze combinatie vermeden bij verdovingen aan acra."},
+   {level:4,label:"Expert",text:"Dit middel wordt lokaal vaak gecombineerd met een lokaal anaestheticum (zoals lidocaïne) om via vaatvernauwing de werkingsduur van de verdoving te verlengen en lokaal bloedverlies te verminderen. Vanwege ischemische necrose wordt gebruik bij acra vermeden."},
    {level:3,label:"Gevorderd",text:"Bij een graad 3 of 4 anafylactische reactie met luchtwegobstructie of circulatoire collaps is dit middel de absolute eerste keus acute levensreddende behandeling en wordt het zo snel mogelijk intramusculair toegediend in het anterolaterale bovenbeen."},
-   {level:2,label:"Gemiddeld",text:"Dit catecholamine grijpt krachtig aan op zowel α- als β-adrenerge receptoren en veroorzaakt vasoconstrictie, bronchodilatatie en een toename van hartfrequentie en contractiekracht."},
+   {level:2,label:"Gemiddeld",text:"Dit catecholamine grijpt aan op zowel α- als β-adrenerge receptoren en veroorzaakt onder andere vasoconstrictie, bronchodilatatie, een hogere hartfrequentie en meer contractiekracht."},
    {level:1,label:"Makkelijk",text:"In de noodopvang staat dit middel ook wel bekend onder zijn internationale/Amerikaanse naam epinefrine."}
   ],
   flashcard:{
@@ -1500,12 +1498,15 @@ function dailyPuzzleCycle(){
  var start=DAILY_PUZZLE_ANCHOR+(cycle*DAILY_PUZZLE_INTERVAL);
  return {cycle:cycle,start:start,end:start+DAILY_PUZZLE_INTERVAL};
 }
-function dailyPuzzleForCycle(cycle){return DAILY_PUZZLES[cycle%DAILY_PUZZLES.length]}
+function dailyPuzzleForCycle(cycle){
+ return DAILY_PUZZLES[cycle%DAILY_PUZZLES.length];
+}
 function dailyPuzzleState(){
- var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v3",raw=null,x=null;
+ var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v2",raw=null,x=null;
  try{raw=localStorage.getItem(key);x=raw?JSON.parse(raw):null}catch(e){}
- if(!x||x.cycle!==info.cycle||!Array.isArray(x.guesses))x={cycle:info.cycle,guesses:[],completed:false,correct:false,flashcardOpen:false,completedAt:0};
- if(typeof x.flashcardOpen!=="boolean")x.flashcardOpen=false;
+ if(!x||x.cycle!==info.cycle||!Array.isArray(x.guesses)){
+  x={cycle:info.cycle,guesses:[],completed:false,correct:false,completedAt:0};
+ }
  return x;
 }
 function dailyPuzzleStats(){
@@ -1514,9 +1515,15 @@ function dailyPuzzleStats(){
  if(!x||typeof x.current!=="number"||typeof x.best!=="number")x={current:0,best:0,lastCompletedCycle:null};
  return x;
 }
-function saveDailyPuzzleState(x){try{localStorage.setItem("medqnl_daily_drug_puzzle_v3",JSON.stringify(x))}catch(e){}}
-function saveDailyPuzzleStats(x){try{localStorage.setItem("medqnl_daily_streak_v1",JSON.stringify(x))}catch(e){}}
-function normalizeDailyGuess(value){return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"")}
+function saveDailyPuzzleState(x){
+ try{localStorage.setItem("medqnl_daily_drug_puzzle_v2",JSON.stringify(x))}catch(e){}
+}
+function saveDailyPuzzleStats(x){
+ try{localStorage.setItem("medqnl_daily_streak_v1",JSON.stringify(x))}catch(e){}
+}
+function normalizeDailyGuess(value){
+ return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+}
 function isDailyDrugCorrect(puzzle,value){
  var x=normalizeDailyGuess(value),i;
  for(i=0;i<puzzle.answerAliases.length;i++)if(x===normalizeDailyGuess(puzzle.answerAliases[i]))return true;
@@ -1525,23 +1532,19 @@ function isDailyDrugCorrect(puzzle,value){
 function dailyPuzzleHintHtml(state,puzzle){
  var revealed=state.correct?Math.min(state.guesses.length,puzzle.levels.length):Math.min(state.guesses.length+1,puzzle.levels.length),h="",i,l;
  if(revealed<1)revealed=1;
- for(i=0;i<revealed;i++){l=puzzle.levels[i];h+="<div class='daily-hint'><div class='daily-hint-level'>Level "+l.level+" · "+esc(l.label)+"</div><div class='daily-hint-text'>"+esc(l.text)+"</div></div>"}
- return h;
-}
-function dailyPuzzleProgressHtml(state){
- var h="",i,max=4,revealed=state.correct?Math.min(state.guesses.length,max):Math.min(state.guesses.length+1,max);
- for(i=0;i<max;i++)h+="<span class='daily-progress-dot "+(i<revealed?"active":"")+"'></span>";
+ for(i=0;i<revealed;i++){
+  l=puzzle.levels[i];
+  h+="<div class='daily-hint'><div class='daily-hint-level'>Level "+l.level+" · "+esc(l.label)+(i===0?" · Start hier":"")+"</div><div class='daily-hint-text'>"+esc(l.text)+"</div></div>";
+ }
  return h;
 }
 function dailyPuzzleGuessesHtml(state){
  var h="",i,g,ok;
- for(i=0;i<state.guesses.length;i++){g=state.guesses[i];ok=!!g.correct;h+="<div class='daily-guess-row "+(ok?"correct":"")+"'><span class='daily-guess-num'>"+(i+1)+"</span><span>"+esc(g.value)+"</span><span class='daily-guess-mark'>"+(ok?"✓":"×")+"</span></div>"}
+ for(i=0;i<state.guesses.length;i++){
+  g=state.guesses[i];ok=!!g.correct;
+  h+="<div class='daily-guess-row "+(ok?"correct":"")+"'><span class='daily-guess-num'>"+(i+1)+"</span><span>"+esc(g.value)+"</span><span class='daily-guess-mark'>"+(ok?"✓":"×")+"</span></div>";
+ }
  return h;
-}
-function dailyDrugDatalistHtml(){
- var h="<datalist id='dailyDrugOptions'>";
- for(var i=0;i<DAILY_DRUG_OPTIONS.length;i++)h+="<option value='"+esc(DAILY_DRUG_OPTIONS[i])+"'></option>";
- return h+"</datalist>";
 }
 function dailyFlashcardHtml(puzzle){
  var f=puzzle.flashcard,ad="";
@@ -1549,16 +1552,15 @@ function dailyFlashcardHtml(puzzle){
  return "<div class='daily-flashcard-inline'><div class='daily-flashcard-head'><div><div class='eyebrow'>Geneesmiddel · Flashcard</div><h3>"+esc(puzzle.title)+"</h3></div></div><div class='daily-flashcard-grid'><div class='daily-flashcard-block'><h4>Medicijngroep</h4><p>"+esc(f.group)+"</p></div><div class='daily-flashcard-block'><h4>Kinetiek &amp; dosering</h4><p>"+esc(f.kinetics)+"</p></div><div class='daily-flashcard-block full'><h4>Werkingsmechanisme</h4><p>"+esc(f.mechanism)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste indicaties</h4><p>"+esc(f.indications)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste bijwerkingen</h4><ul>"+ad+"</ul></div></div></div>";
 }
 function dailyPuzzlePage(){
- var info=dailyPuzzleCycle(),puzzle=dailyPuzzleForCycle(info.cycle),state=dailyPuzzleState(),streak=dailyPuzzleStats(),done=!!state.completed,wrong=!state.correct&&state.guesses.length>0&&!done;
- var status=state.correct?"<div class='daily-guess-status good'>Correct! Je streak is bijgewerkt.</div>":(done?"<div class='daily-guess-status bad'>Geen juiste gok. Het antwoord was "+esc(puzzle.title)+".</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":""));
- var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><div class='daily-guess-input-wrap'><input id='dailyPuzzleGuess' list='dailyDrugOptions' type='text' maxlength='100' placeholder='Typ een geneesmiddel...' aria-label='Geneesmiddel raden' autocomplete='off'><div></div></div><button class='btn primary' type='submit'>Submit</button></form>"+dailyDrugDatalistHtml());
+ var info=dailyPuzzleCycle(),puzzle=dailyPuzzleForCycle(info.cycle),state=dailyPuzzleState(),streak=dailyPuzzleStats(),done=!!state.completed;
+ var wrong=!state.correct&&state.guesses.length>0&& !done;
+ var status=state.correct?"<div class='daily-guess-status good'>Correct!</div>":(done?"<div class='daily-guess-status bad'>Geen juiste gok. Het antwoord was "+esc(puzzle.title)+".</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":""));
+ var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><div class='daily-guess-input-wrap'><input id='dailyPuzzleGuess' list='dailyDrugOptions' type='text' maxlength='100' placeholder='Typ een geneesmiddel...' aria-label='Geneesmiddel raden' autocomplete='off'><datalist id='dailyDrugOptions'>"+DAILY_DRUG_OPTIONS.map(function(x){return "<option value='"+esc(x)+"'></option>"}).join("")+"</datalist></div><button class='btn primary' type='submit'>Submit</button></form>");
  var action=done?"<div class='daily-complete-actions'><button type='button' class='btn secondary' data-open-daily-flashcard>Medicijn inzien?</button></div>"+(state.flashcardOpen?dailyFlashcardHtml(puzzle):""):"";
- var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel over 24 uur</span></div>";
- var modal=state.flashcardOpen?dailyFlashcardHtml(puzzle):"";
- return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Level 4 is het moeilijkst.</p></div></div>"+
- "<div class='daily-puzzle-page'><div class='daily-puzzle-shell'><div class='daily-puzzle-topbar'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Raad het geneesmiddel. Na iedere foute gok krijg je één extra aanwijzing.</div></div><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div></div>"+
- "<div class='daily-level-intro'><span>Hints</span><div class='daily-progress'>"+dailyPuzzleProgressHtml(state)+"</div></div>"+
- "<div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>"+modal);
+var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel om "+next.toLocaleDateString("nl-NL",{day:"2-digit",month:"2-digit"})+" · "+next.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"})+"</span></div>";
+ return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Ontgrendel de volgende aanwijzing na een foute gok.</p></div></div>"+
+ "<div class='daily-puzzle-page'><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div>"+
+ "<div class='daily-puzzle-card'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Level 4 is het moeilijkst. Bij elke foute gok komt een makkelijker level vrij.</div></div><div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+answer+progress+"</div></div>");
 }
 function medqnlDailySubmit(){
  var input=document.getElementById("dailyPuzzleGuess"),value=input?String(input.value||"").trim():"";
@@ -1568,15 +1570,14 @@ function medqnlDailySubmit(){
  var correct=isDailyDrugCorrect(puzzle,value);
  state.guesses.push({value:value,correct:correct});
  if(correct||state.guesses.length>=4){
-  state.completed=true;state.correct=correct;state.completedAt=Date.now();state.flashcardOpen=false;
+  state.completed=true;state.correct=correct;state.completedAt=Date.now();
   if(correct){
    var streak=dailyPuzzleStats();
-   if(streak.lastCompletedCycle!==info.cycle){
-    streak.current=(streak.lastCompletedCycle===info.cycle-1)?streak.current+1:1;
-    streak.best=Math.max(streak.best,streak.current);
-    streak.lastCompletedCycle=info.cycle;
-    saveDailyPuzzleStats(streak);
-   }
+   if(streak.lastCompletedCycle===info.cycle)return;
+   streak.current=(streak.lastCompletedCycle===info.cycle-1)?streak.current+1:1;
+   streak.best=Math.max(streak.best,streak.current);
+   streak.lastCompletedCycle=info.cycle;
+   saveDailyPuzzleStats(streak);
   }
  }
  saveDailyPuzzleState(state);render();
@@ -2507,7 +2508,7 @@ document.addEventListener("click",function(ev){
  var t=ev.target,el;
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
- el=t.closest?t.closest("[data-open-daily-flashcard]"):null;if(el){var ds=dailyPuzzleState();ds.flashcardOpen=true;saveDailyPuzzleState(ds);render();return}
+ el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
