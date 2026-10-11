@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-sage-ivory-dutch-intro-v3">
+<meta name="medqnl-build" content="2026-10-11-supabase-admin-auth-dutch-intro-v4">
 <title>MedQNL</title>
 <style>
 :root{
@@ -583,8 +583,10 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       <button type="button" class="admin-entry" id="adminEntry"><span><strong>Admin</strong><br><small>Beheer de MedQNL-inhoud</small></span><span aria-hidden="true">→</span></button>
       <div class="admin-form" id="adminForm">
         <form id="accessForm" autocomplete="off">
-          <label for="accessPassword">Admin-wachtwoord</label>
-          <input id="accessPassword" type="password" inputmode="text" autocomplete="current-password" placeholder="Voer je wachtwoord in" required>
+          <label for="accessEmail">E-mailadres</label>
+          <input id="accessEmail" type="email" autocomplete="username" placeholder="jouw@email.nl" required>
+          <label for="accessPassword" style="margin-top:12px">Wachtwoord</label>
+          <input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required>
           <button type="submit">Inloggen als admin</button>
           <div class="gate-error" id="accessError" aria-live="polite"></div>
         </form>
@@ -596,12 +598,14 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 <div id="app"></div>
 <script>
 (function(){
-  var PASSWORD="Chanel";
+  var AUTH_URL="https://lwgbufaxwfrzqlonhmry.supabase.co";
+  var AUTH_KEY="sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3";
   var gate=document.getElementById("accessGate");
   var landing=document.getElementById("landingView");
   var signIn=document.getElementById("signInView");
   var form=document.getElementById("accessForm");
   var input=document.getElementById("accessPassword");
+  var emailInput=document.getElementById("accessEmail");
   var error=document.getElementById("accessError");
   var adminForm=document.getElementById("adminForm");
 
@@ -622,8 +626,6 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
     window.__medqnlAuthRole="admin";
-    window.__medqnlAuthSession=null;
-    try{localStorage.removeItem("medqnl_auth_v1")}catch(e){}
     if(gate)gate.style.display="none";
     if(input)input.value="";
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
@@ -643,15 +645,27 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   var alreadyUnlocked=false;
   try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
   if(alreadyUnlocked)startApp();
-  form.addEventListener("submit",function(ev){
+  form.addEventListener("submit",async function(ev){
     ev.preventDefault();
-    if(input.value===PASSWORD){
+    var submit=form.querySelector('button[type="submit"]');
+    submit.disabled=true;submit.textContent="Bezig met inloggen…";error.textContent="";
+    try{
+      var response=await fetch(AUTH_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
+      var auth=await response.json();
+      if(!response.ok||!auth.access_token)throw new Error(auth.msg||auth.message||auth.error_description||"Inloggen mislukt. Controleer je e-mailadres en wachtwoord.");
+      var profileResponse=await fetch(AUTH_URL+"/rest/v1/profiles?select=role&id=eq."+encodeURIComponent(auth.user.id),{headers:{"apikey":AUTH_KEY,"Authorization":"Bearer "+auth.access_token}});
+      var profiles=await profileResponse.json();
+      if(!profileResponse.ok||!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"})){
+        await fetch(AUTH_URL+"/auth/v1/logout",{method:"POST",headers:{"apikey":AUTH_KEY,"Authorization":"Bearer "+auth.access_token}});
+        throw new Error("Dit account heeft geen beheerdersrechten.");
+      }
+      window.__medqnlAuthSession=auth;
+      try{localStorage.setItem("medqnl_auth_v1",JSON.stringify(auth))}catch(e){}
       startApp();
-    }else{
-      error.textContent="Onjuist wachtwoord.";
-      input.value="";
-      input.focus();
-    }
+    }catch(err){
+      error.textContent=err&&err.message?err.message:"Inloggen is niet gelukt.";
+      input.value="";input.focus();
+    }finally{submit.disabled=false;submit.textContent="Inloggen als admin";}
   });
 })();
 </script>
