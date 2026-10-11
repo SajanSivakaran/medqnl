@@ -596,7 +596,6 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 <div id="app"></div>
 <script>
 (function(){
-  var PASSWORD="Chanel";
   var gate=document.getElementById("accessGate");
   var landing=document.getElementById("landingView");
   var signIn=document.getElementById("signInView");
@@ -613,47 +612,57 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   function showLanding(){
     signIn.style.display="none";
     landing.style.display="block";
-    adminForm.style.display="none";
-    error.textContent="";
-    input.value="";
+    if(adminForm)adminForm.style.display="none";
+    if(error)error.textContent="";
+    if(input)input.value="";
     window.scrollTo(0,0);
   }
-  function startApp(){
+  function startApp(accessToken){
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
     window.__medqnlAuthRole="admin";
-    window.__medqnlAuthSession=null;
-    try{localStorage.removeItem("medqnl_auth_v1")}catch(e){}
+    window.__medqnlAuthSession=accessToken;
     if(gate)gate.style.display="none";
     if(input)input.value="";
-    try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
-    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
+    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(function(){startApp(accessToken)},0);
   }
   document.getElementById("openSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("heroSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("backToLanding").addEventListener("click",showLanding);
-  if(location.pathname.replace(/\/$/,"").endsWith("/inloggen")){landing.style.display="none";signIn.style.display="flex";}
-  document.getElementById("adminEntry").addEventListener("click",function(){
-    adminForm.style.display="block";
-    input.focus();
-  });
+  if(location.pathname.replace(/\/$/,"").endsWith("/inloggen")){window.location.replace("/medqnl/inloggen/");return;}
+  document.getElementById("adminEntry").addEventListener("click",function(){window.location.href="/medqnl/inloggen/";});
   document.getElementById("exploreFeatures").addEventListener("click",function(){
     document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
   });
-  var alreadyUnlocked=false;
-  try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
-  if(alreadyUnlocked)startApp();
-  form.addEventListener("submit",function(ev){
+  if(form)form.addEventListener("submit",function(ev){
     ev.preventDefault();
-    if(input.value===PASSWORD){
-      startApp();
-    }else{
-      error.textContent="Onjuist wachtwoord.";
-      input.value="";
-      input.focus();
-    }
+    window.location.href="/medqnl/inloggen/";
   });
+
+  async function validateAdminSession(){
+    var token=null;
+    try{token=sessionStorage.getItem("medqnl_login_access_token")}catch(e){}
+    if(!token){return;}
+    try{
+      var userResponse=await fetch("https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/user",{
+        headers:{"apikey":"sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3","Authorization":"Bearer "+token}
+      });
+      if(!userResponse.ok)throw new Error("Session invalid");
+      var user=await userResponse.json();
+      var profileResponse=await fetch("https://lwgbufaxwfrzqlonhmry.supabase.co/rest/v1/profiles?select=role&id=eq."+encodeURIComponent(user.id),{
+        headers:{"apikey":"sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3","Authorization":"Bearer "+token}
+      });
+      if(!profileResponse.ok)throw new Error("Profile check failed");
+      var profiles=await profileResponse.json();
+      if(!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"}))throw new Error("Not an admin");
+      startApp(token);
+    }catch(e){
+      try{sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_access")}catch(ignore){}
+      if(error)error.textContent="Je admin-sessie is verlopen of dit account heeft geen adminrechten. Log opnieuw in.";
+    }
+  }
+  validateAdminSession();
 })();
 </script>
 <div id='questionRichSelectionToolbar' class='question-rich-selection-toolbar' aria-label='Tekstopmaak'><button type='button' data-question-rich-format='bold' title='Dikgedrukt'><strong>B</strong></button><button type='button' data-question-rich-format='italic' title='Cursief'><em>I</em></button></div>
