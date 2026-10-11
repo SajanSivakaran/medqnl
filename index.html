@@ -509,13 +509,41 @@ body.gate-unlocked #accessGate{display:none!important}
 body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)}
 .rich-format-btn{width:32px;height:30px;border:1px solid transparent;border-radius:5px;background:var(--card);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .rich-format-btn:hover,.rich-format-btn.active{background:var(--blue2);border-color:var(--blue);color:var(--blue)}.question-stem-live img.question-inline-image{display:block;max-width:100%;height:auto;border:1px solid var(--line);border-radius:8px;margin:10px 0}.question-stem-live table{width:100%;border-collapse:collapse;margin:12px 0}.question-stem-live th,.question-stem-live td{border:1px solid var(--line);padding:8px 10px;text-align:left}.question-stem-live ul,.question-stem-live ol{padding-left:24px}.question-filters{display:grid;grid-template-columns:1.4fr 1fr;gap:8px;padding:10px;border-bottom:1px solid var(--line);background:var(--bg)}.question-manager-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px;max-height:68vh;overflow:auto}.question-admin-card{border:1px solid var(--line);border-radius:9px;background:var(--card);padding:12px}.question-admin-card h3{margin:8px 0 5px;font-size:15px;color:var(--navy);line-height:1.3}.question-admin-card p{margin:0 0 8px;color:var(--muted);font-size:12px;line-height:1.45}.question-admin-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.question-chip{display:inline-block;font-size:10px;font-weight:700;padding:3px 7px;border-radius:999px;background:var(--blue2);color:var(--blue)}.question-admin-card .danger{color:var(--red)}.question-manager-col{min-width:0}@media(min-width:1350px){.question-manager-grid{grid-template-columns:1fr 1fr}}@media(max-width:820px){.question-filters{grid-template-columns:1fr}}
+
+/* Intro header/footer refinement */
+#accessGate .landing-announcement{height:38px;background:#141a18;color:#d4d6d1;padding:0 clamp(20px,6vw,88px);display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:.2px}
+#accessGate .landing-announcement>span:first-child{color:#e87c5e;font-size:17px}
+#accessGate .announcement-right{margin-left:auto;color:#c4c7c1}
+#accessGate .landing-nav{min-height:82px;padding:14px clamp(20px,6vw,88px);display:flex;align-items:center;gap:28px}
+#accessGate .landing-links{display:flex;align-items:center;justify-content:center;gap:clamp(14px,2.3vw,34px);margin-left:auto}
+#accessGate .landing-links a{color:#26352f;text-decoration:none;font-size:14px;white-space:nowrap}
+#accessGate .landing-links a:hover{color:#477f70}
+#accessGate .landing-nav-actions{display:flex;align-items:center;gap:12px}
+#accessGate .theme-toggle{width:38px;height:38px;flex:0 0 38px;border-radius:50%;border:1px solid #d9e2d8;background:transparent;color:#26352f;font-size:20px;padding:0;display:grid;place-items:center}
+#accessGate .landing-nav-actions .nav-signin{background:transparent;color:#26352f;border:0;white-space:nowrap}
+#accessGate .landing-start{border-radius:999px;background:#141a18!important;color:#fff!important;padding:12px 18px;white-space:nowrap}
+#accessGate .landing-footer{background:#141a18!important;color:#a9b6ab!important;border-top:1px solid #303a35!important}
+#accessGate .footer-bottom{border-top-color:#303a35!important}
+#accessGate.landing-dark{background:#17251f;color:#edf3ed}
+#accessGate.landing-dark .landing-nav{background:#20332a;border-color:#3c5549}
+#accessGate.landing-dark .landing-links a,#accessGate.landing-dark .landing-nav-actions .nav-signin{color:#edf3ed}
+#accessGate.landing-dark .theme-toggle{color:#edf3ed;border-color:#52695d}
+#accessGate.landing-dark .landing-view{background:#17251f}
+#accessGate.landing-dark .landing-title,#accessGate.landing-dark .feature-card h3{color:#dcebe2}
+#accessGate.landing-dark .landing-copy,#accessGate.landing-dark .landing-proof{color:#b6c7ba}
+#accessGate.landing-dark .feature-card,#accessGate.landing-dark .mock-panel{background:#20332a;border-color:#3c5549}
+#accessGate.landing-dark .mock-question{color:#dcebe2}
+@media(max-width:900px){#accessGate .landing-links{display:none}#accessGate .landing-nav{gap:12px}#accessGate .landing-nav-actions{margin-left:auto}#accessGate .landing-start{display:none}}
+@media(max-width:520px){#accessGate .landing-announcement{font-size:10px}#accessGate .announcement-right{display:none}#accessGate .landing-nav{min-height:68px}#accessGate .landing-nav-actions{gap:5px}}
 </style>
 </head>
 <body class="gate-locked">
 <div id="accessGate" aria-label="MedQNL introductie">
+  <div class="landing-announcement"><span>✧</span> MedQNL · Jouw medische studieplek <span class="announcement-right">support@medqnl.nl</span></div>
   <header class="landing-nav">
     <div class="gate-logo">MedQ<span>NL</span></div>
-    <button type="button" class="nav-signin" id="openSignIn">Inloggen <span aria-hidden="true">→</span></button>
+    <nav class="landing-links"><a href="#landingView">Home</a><a href="#landingFeatures">Vragenbanken</a><a href="#howItWorks">Zo werkt het</a><a href="#landingFeatures">Over MedQNL</a><a href="mailto:support@medqnl.nl">Contact</a></nav>
+    <div class="landing-nav-actions"><button type="button" class="theme-toggle" id="landingThemeToggle" aria-label="Donkere modus inschakelen" title="Donkere modus inschakelen">☾</button><button type="button" class="nav-signin" id="openSignIn">Inloggen <span aria-hidden="true">→</span></button><button type="button" class="landing-start" id="landingStart">Aan de slag →</button></div>
   </header>
   <section class="landing-view" id="landingView">
     <div class="landing-wrap">
@@ -627,6 +655,11 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(function(){startApp(accessToken,user)},0);
   }
   document.getElementById("openSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
+  var landingThemeButton=document.getElementById("landingThemeToggle");
+  function setLandingTheme(){var dark=document.getElementById("accessGate").classList.contains("landing-dark");if(landingThemeButton){landingThemeButton.textContent=dark?"☼":"☾";landingThemeButton.setAttribute("aria-label",dark?"Systeemthema gebruiken":"Donkere modus inschakelen");landingThemeButton.title=dark?"Systeemthema gebruiken":"Donkere modus inschakelen";}}
+  if(landingThemeButton)landingThemeButton.addEventListener("click",function(){var gateEl=document.getElementById("accessGate");var isDark=gateEl.classList.contains("landing-dark");if(isDark){gateEl.classList.remove("landing-dark");gateEl.classList.remove("landing-system-dark");}else{gateEl.classList.add("landing-dark");}setLandingTheme();});
+  var landingStart=document.getElementById("landingStart");if(landingStart)landingStart.addEventListener("click",function(){window.location.href="/medqnl/inloggen/";});
+  setLandingTheme();
   document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("heroSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("backToLanding").addEventListener("click",showLanding);
