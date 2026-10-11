@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-sage-ivory-fullsite-images-v1">
+<meta name="medqnl-build" content="2026-10-11-sage-ivory-intro-casus-v2">
 <title>MedQNL</title>
 <style>
 :root{
@@ -421,6 +421,45 @@ body.gate-unlocked #accessGate{display:none!important}
 .nav{color:#edf3ed!important}
 .nav:hover,.nav.active{background:#386b5a!important;color:#fff!important}
 .hero{background:linear-gradient(135deg,#214e45,#477f70)!important}
+
+/* Realistische casusweergave op de intro */
+#accessGate .mock-panel{transform:none!important;padding:18px}
+#accessGate .mock-case{background:#f7f6f0;border-left:4px solid #477f70;border-radius:8px;padding:12px 13px;margin:16px 0}
+#accessGate .mock-case-label{display:block;font-size:10px;font-weight:800;letter-spacing:1.3px;color:#477f70;margin-bottom:5px}
+#accessGate .mock-case p{font-size:13px;line-height:1.45;color:#26352f;margin:0}
+#accessGate .mock-question{font-size:14px;line-height:1.5;margin:15px 0 10px;color:#214e45}
+#accessGate .mock-answer{font-size:12px;line-height:1.4;padding:10px 11px;background:#fffdf8;margin:6px 0;border-color:#d9e2d8;color:#26352f}
+#accessGate .mock-answer.correct{background:#e3eee5;border-color:#b9d0bd;color:#214e45}
+#accessGate .mock-foot{font-size:10px;gap:10px;flex-wrap:wrap}
+#accessGate .landing-hero{align-items:start}
+#accessGate .landing-wrap{padding-top:clamp(38px,5vw,68px)}
+#accessGate .landing-features{margin-top:48px}
+#accessGate .how-it-works{padding:52px clamp(20px,6vw,88px) 64px;background:#f8f6f0}
+#accessGate .section-eyebrow{font-size:10px;letter-spacing:2px;font-family:Georgia,serif;color:#214e45;text-transform:uppercase;margin-bottom:15px}
+#accessGate .how-title{font-size:clamp(32px,4vw,48px);line-height:1.1;letter-spacing:-1.5px;color:#26352f;margin:0 0 30px}
+#accessGate .how-title em{font-family:Georgia,serif;font-weight:400;color:#214e45}
+#accessGate .steps-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+#accessGate .step-card{background:#fffdf8;border:1px solid #d9e2d8;border-radius:22px;padding:24px}
+#accessGate .step-icon{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;background:#dcebe3;color:#214e45;font-size:21px;margin-bottom:26px}
+#accessGate .step-label{font-family:Georgia,serif;font-size:10px;letter-spacing:2px;color:#214e45;text-transform:uppercase;margin-bottom:12px}
+#accessGate .step-card h3{font-size:18px;font-weight:600;color:#26352f;margin:0 0 10px}
+#accessGate .step-card p{font-size:13px;line-height:1.6;color:#697a70;margin:0}
+#accessGate .landing-cta-band{background:#17251f;color:#f8f6f0;padding:55px clamp(20px,6vw,88px);display:flex;align-items:center;justify-content:space-between;gap:24px}
+#accessGate .landing-cta-band h2{font-size:clamp(30px,4vw,48px);line-height:1.1;margin:0 0 12px;font-weight:500}
+#accessGate .landing-cta-band h2 em{font-family:Georgia,serif;color:#a9c7b4;font-weight:400}
+#accessGate .landing-cta-band p{color:#b6c7ba;margin:0;font-size:14px}
+#accessGate .landing-cta-band button{background:transparent;border:1px solid #dce8df;color:#f8f6f0;border-radius:999px;white-space:nowrap}
+#accessGate .landing-footer{background:#17251f;color:#a9b6ab;border-top:1px solid #3c5549;text-align:left;padding:42px clamp(20px,6vw,88px)}
+#accessGate .footer-grid{max-width:1240px;margin:0 auto;display:grid;grid-template-columns:1.5fr repeat(4,1fr);gap:28px}
+#accessGate .footer-brand{font-weight:850;font-size:24px;color:#f8f6f0;margin-bottom:12px}
+#accessGate .footer-brand span{color:#a9c7b4}
+#accessGate .footer-copy{font-size:13px;line-height:1.7;color:#a9b6ab;max-width:270px}
+#accessGate .footer-col h4{font-family:Georgia,serif;font-size:10px;letter-spacing:1.5px;font-weight:400;color:#dce8df;margin:5px 0 16px}
+#accessGate .footer-col a{display:block;color:#b6c7ba;text-decoration:none;font-size:13px;margin:0 0 12px}
+#accessGate .footer-col a:hover{color:#fff}
+#accessGate .footer-bottom{max-width:1240px;margin:38px auto 0;padding-top:22px;border-top:1px solid #2d4137;font-size:11px;color:#84968a}
+@media(max-width:850px){#accessGate .steps-grid{grid-template-columns:1fr}#accessGate .landing-cta-band{align-items:flex-start;flex-direction:column}#accessGate .footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#accessGate .footer-about{grid-column:1/-1}}
+@media(max-width:600px){#accessGate .mock-panel{padding:13px}#accessGate .mock-case p{font-size:12px}#accessGate .footer-grid{grid-template-columns:1fr 1fr;gap:22px}#accessGate .landing-features{grid-template-columns:1fr}}
 .library-main-nav-reopen{background:#214e45!important;border-color:#477f70!important}
 .case{border-left-color:var(--blue)!important}
 .daily-puzzle-title .underline,.daily-progress-dot.active,.daily-guess-form button{background:#477f70!important}
@@ -497,12 +536,13 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         </div>
         <div class="mock-panel" aria-label="Voorbeeld van een medische oefenvraag">
           <img class="hero-study-image" src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=85" alt="Student geneeskunde studeert met medische literatuur" loading="eager"><div class="mock-top"><span>MEDQNL · OEFENVRAAG</span><span class="mock-pill">Tutor-modus</span></div>
-          <div class="mock-question">Een patiënt start met amlodipine. Welk effect past het best bij dit geneesmiddel?</div>
-          <div class="mock-answer">A. Sterke daling van de hartfrequentie</div>
-          <div class="mock-answer correct">B. Arteriolaire vasodilatatie <span aria-hidden="true">✓</span></div>
-          <div class="mock-answer">C. Remming van de ACE</div>
-          <div class="mock-answer">D. Verhoogde renine-afgifte als primair effect</div>
-          <div class="mock-foot"><span>Voorbeeldweergave</span><span>Antwoord met uitleg</span></div>
+          <div class="mock-case"><span class="mock-case-label">CASUS</span><p>Een 23-jarige man bezoekt het soa-spreekuur met sinds 4 dagen bestaande overvloedige, geel-groene, purulente afscheiding uit de urethra en mictieklachten. Hij geeft aan twee weken geleden onbeschermd seksueel contact te hebben gehad. Microscopisch onderzoek van een grampreparaat van de afscheiding toont gramnegatieve diplokokken binnen de polymorfonucleaire leukocyten (intracellulair).</p></div>
+          <div class="mock-question">Wat is de meest geschikte initiële behandeling voor deze aandoening volgens de richtlijnen?</div>
+          <div class="mock-answer">A. Doxycycline 100 mg 2dd p.o. gedurende 7 dagen</div>
+          <div class="mock-answer correct">B. Ceftriaxon 500 mg i.m. eenmalig <span aria-hidden="true">✓</span></div>
+          <div class="mock-answer">C. Metronidazol 2000 mg p.o. eenmalig</div>
+          <div class="mock-answer">D. Fluconazol 150 mg p.o. eenmalig</div>
+          <div class="mock-foot"><span>Voorbeeldvraag</span><span>Casus · Diagnostiek · Behandeling</span></div>
         </div>
       </div>
       <div class="landing-features" id="landingFeatures">
@@ -511,7 +551,29 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         <article class="feature-card"><img class="feature-image" src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=700&q=80" alt="Zorgprofessional bekijkt medische gegevens" loading="lazy"><div class="feature-icon">↗</div><h3>Volg je voortgang</h3><p>Bekijk je resultaten, bewaar belangrijke vragen en besteed extra aandacht aan onderwerpen die moeilijk blijven.</p></article>
       </div>
     </div>
-    <footer class="landing-footer">MedQNL · Een centrale plek voor jouw medische voorbereiding</footer>
+  </section>
+  <section class="how-it-works" id="howItWorks">
+    <div class="steps-grid" style="display:block;max-width:1240px">
+      <div class="section-eyebrow">— &nbsp; HOW IT WORKS</div>
+      <h2 class="how-title">Three steps to <em>excellence.</em></h2>
+    </div>
+    <div class="steps-grid">
+      <article class="step-card"><div class="step-icon">▤</div><div class="step-label">— &nbsp; STEP 1</div><h3>Choose your study area</h3><p>Open the question bank or library and focus on the subject you want to master.</p></article>
+      <article class="step-card"><div class="step-icon">▣</div><div class="step-label">— &nbsp; STEP 2</div><h3>Practice and review</h3><p>Answer clinical questions, review explanations and revisit important learning material.</p></article>
+      <article class="step-card"><div class="step-icon">▥</div><div class="step-label">— &nbsp; STEP 3</div><h3>Track your progress</h3><p>Use your results to identify weak areas and study more effectively over time.</p></article>
+    </div>
+  </section>
+  <section class="landing-cta-band"><div><h2>Ready to start? <em>Build your confidence.</em></h2><p>Practice clinical reasoning with MedQNL.</p></div><button type="button" id="ctaSignIn">Open MedQNL →</button></section>
+  <footer class="landing-footer">
+    <div class="footer-grid">
+      <div class="footer-about"><div class="footer-brand">MedQ<span>NL</span></div><div class="footer-copy">The medical learning environment for clinical questions, focused practice and a structured medical library.</div></div>
+      <div class="footer-col"><h4>PLATFORM</h4><a href="#landingFeatures">Question Banks</a><a href="#howItWorks">How it works</a><a href="#landingFeatures">Daily puzzle</a></div>
+      <div class="footer-col"><h4>COMPANY</h4><a href="#landingFeatures">About MedQNL</a><a href="mailto:support@medqnl.nl">Contact</a></div>
+      <div class="footer-col"><h4>RESOURCES</h4><a href="#landingFeatures">Study tools</a><a href="#howItWorks">Getting started</a></div>
+      <div class="footer-col"><h4>LEGAL</h4><a href="#accessGate">Privacy</a><a href="#accessGate">Terms</a></div>
+    </div>
+    <div class="footer-bottom">© 2026 MedQNL · Medical learning, in one place.</div>
+  </footer>
   </section>
   <section class="signin-view" id="signInView" aria-label="Inloggen">
     <div class="signin-card">
@@ -568,6 +630,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
   document.getElementById("openSignIn").addEventListener("click",showSignIn);
+  document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
   document.getElementById("heroSignIn").addEventListener("click",showSignIn);
   document.getElementById("backToLanding").addEventListener("click",showLanding);
   document.getElementById("adminEntry").addEventListener("click",function(){
