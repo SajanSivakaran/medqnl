@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-navigation-final-fix">
+<meta name="medqnl-build" content="2026-10-11-nav-direct-fix-v2">
 <title>MedQNL</title>
 <style>
 :root{
@@ -343,6 +343,7 @@ body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-sha
 body.dark #accessGate h1,body.dark #accessGate label{color:#f1f5f8}
 body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
 
+.library-main-nav-reopen{position:fixed;left:0;top:88px;z-index:200;border:1px solid #31536d;border-left:0;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;padding:10px 13px;box-shadow:2px 4px 12px rgba(0,0,0,.14);font-size:13px;font-weight:700;cursor:pointer}.library-main-nav-reopen:hover{background:#1f537c}
 .app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
 .layout.app-nav-collapsed .side{display:none}.layout.app-nav-collapsed .main{max-width:none;width:100%}
 .lib-layout.lib-nav-collapsed{grid-template-columns:minmax(0,1fr)!important}.lib-layout.lib-nav-collapsed .lib-side{display:none}.standalone-library .lib-article{min-width:0}
@@ -1376,6 +1377,21 @@ function currentChapterSeconds(){
 function stats(){var n=0,c=0,k;for(k in state.answers)if(state.answers.hasOwnProperty(k)){n++;if(state.answers[k].correct)c++}return{n:n,c:c,acc:n?Math.round(c/n*100):null}}
 function srcFoot(ids){var h="",i,s;ids=ids||[];for(i=0;i<ids.length;i++){s=byId(state.sources,ids[i]);if(s)h+="<div><span class='sup'>["+(i+1)+"]</span> "+esc(s.title)+" — <a href='"+esc(s.url)+"' target='_blank'>bron openen</a></div>"}return h}
 function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+"' data-page='"+id+"'>"+svg+" "+label+"</button>"}
+window.__medqnlGoDashboard=function(){
+ page="dashboard";session=null;
+ if(!state.ui)state.ui={};
+ state.ui.appNavCollapsed=false;
+ state.ui.libraryAutoCollapsed=false;
+ state.ui.libraryNavOpen=false;
+ save();render();
+};
+window.__medqnlToggleMainNav=function(){
+ if(!state.ui)state.ui={};
+ state.ui.appNavCollapsed=!state.ui.appNavCollapsed;
+ state.ui.libraryAutoCollapsed=false;
+ state.ui.libraryNavOpen=false;
+ save();render();
+};
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
@@ -1392,7 +1408,7 @@ function shell(body){
  "<button class='nav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" Zoeken</button>"+
  "<button class='nav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" Notities</button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><button type='button' class='logo logo-link' data-page='dashboard' title='Naar dashboard'>MedQ<span>NL</span></button><button type='button' class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><button type='button' class='logo logo-link' onclick='window.__medqnlGoDashboard()' title='Naar dashboard'>MedQ<span>NL</span></button><button type='button' class='app-nav-global-toggle' onclick='window.__medqnlToggleMainNav()' title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("daily-puzzle","Dagpuzzel",ICONS.puzzle)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+
  (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
@@ -2017,7 +2033,7 @@ function library(){
    // Rebuild the edit form cleanly so the rich editor stays inside the form.
    articleWrap="<form id='libraryArticleForm' data-id='"+esc(a.id)+"'><div class='library-edit-head'><input name='title' class='library-edit-title' value='"+esc(a.title||"")+"' aria-label='Titel van hoofdstuk'><button class='btn primary' type='submit'>Wijzigingen opslaan</button></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+editorBody.replace("</form>","")+"<div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></form>";
  }
- return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div><div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap+"</article></div>");
+ return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div>"+(collapsed?"<button type='button' class='library-main-nav-reopen' onclick='window.__medqnlToggleMainNav()' title='Hoofdnavigatie tonen'>☰ <span>Menu</span></button>":"")+"<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap+"</article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function result(){
@@ -2527,7 +2543,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
  el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
- if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;state.ui.libraryNavOpen=false;save();render();return}
+ if(t.hasAttribute("data-toggle-appnav")){window.__medqnlToggleMainNav();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
  if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
