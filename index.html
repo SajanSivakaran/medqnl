@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-library-nav-fix-v3">
+<meta name="medqnl-build" content="2026-10-11-library-nav-final">
 <title>MedQNL</title>
 <style>
 :root{
@@ -1379,7 +1379,9 @@ function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
- var appNavCollapsed=!!state.ui.appNavCollapsed,progressExpanded=!!state.ui.progressExpanded;
+ var appNavCollapsed=page==="ivtg-library";
+ if(page!=="ivtg-library")state.ui.appNavCollapsed=false;
+ var progressExpanded=!!state.ui.progressExpanded;
  var qtree="<div class='progress-nav-group'>"+
  "<button class='nav progress-main-nav "+(progressOpen?"active":"")+"' data-toggle-progress>"+(ICONS.progress||ICONS.qbank)+" Voortgang <span class='progress-chevron'>"+(progressExpanded?"▾":"▸")+"</span></button>"+
  "<div class='progress-children' style='display:"+(progressExpanded?"block":"none")+"'>"+
@@ -2509,7 +2511,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
  el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
- el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();var previousPage=page;page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.appNavCollapsed=true;state.ui.libraryAutoCollapsed=true;startChapterTimer(articleId);}else if(previousPage==="ivtg-library"&&state.ui.libraryAutoCollapsed){state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=false}save();render();return}
+ el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();var previousPage=page;page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.libraryAutoCollapsed=true;startChapterTimer(articleId);}else{state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=false}save();render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
  el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
@@ -2525,7 +2527,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
  el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
- if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.libraryAutoCollapsed=false;state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
+ if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};if(page!=="ivtg-library")state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
  if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
