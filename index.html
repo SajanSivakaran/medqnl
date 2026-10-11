@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle-v6">
+<meta name="medqnl-build" content="2026-10-11-library-auto-collapse">
 <title>MedQNL</title>
 <style>
 :root{
@@ -2509,7 +2509,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
  el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
- el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.appNavCollapsed=true;startChapterTimer(articleId);}save();render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
  el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
