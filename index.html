@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-library-auto-collapse-v2">
+<meta name="medqnl-build" content="2026-10-11-stable-daily-puzzle-fix">
 <title>MedQNL</title>
 <style>
 :root{
@@ -1560,7 +1560,7 @@ function dailyPuzzlePage(){
 var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel om "+next.toLocaleDateString("nl-NL",{day:"2-digit",month:"2-digit"})+" · "+next.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"})+"</span></div>";
  return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Ontgrendel de volgende aanwijzing na een foute gok.</p></div></div>"+
  "<div class='daily-puzzle-page'><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div>"+
- "<div class='daily-puzzle-card'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Level 4 is het moeilijkst. Bij elke foute gok komt een makkelijker level vrij.</div></div><div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+answer+progress+"</div></div>");
+ "<div class='daily-puzzle-card'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Level 4 is het moeilijkst. Bij elke foute gok komt een makkelijker level vrij.</div></div><div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>");
 }
 function medqnlDailySubmit(){
  var input=document.getElementById("dailyPuzzleGuess"),value=input?String(input.value||"").trim():"";
