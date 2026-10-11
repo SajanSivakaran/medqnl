@@ -332,24 +332,54 @@ body.dark .library-toc .toc-link{color:#9fc5df}
 
 
 /* MedQNL toegangspoort */
-#accessGate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;background:#f5f7f9;padding:24px}
-#accessGate .gate-card{width:min(410px,100%);background:#fff;border:1px solid #d8e0e7;border-radius:14px;box-shadow:0 16px 40px rgba(10,32,52,.12);padding:28px}
-#accessGate .gate-logo{font-weight:800;font-size:28px;color:#102b43;margin-bottom:18px}
-#accessGate .gate-logo span{color:#2d8de6}
-#accessGate h1{font-size:21px;line-height:1.25;margin:0 0 8px;color:#1e2a36}
-#accessGate p{margin:0 0 18px;color:#70808e;font-size:14px;line-height:1.5}
-#accessGate label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#1e2a36}
-#accessGate input{width:100%;border:1px solid #cbd5df;border-radius:8px;padding:11px 12px;outline:none}
-#accessGate input:focus{border-color:#2d8de6;box-shadow:0 0 0 3px rgba(45,141,230,.12)}
-#accessGate button{width:100%;border:0;border-radius:8px;padding:11px 12px;margin-top:12px;background:#2d8de6;color:#fff;font-weight:700}
+#accessGate{position:fixed;inset:0;z-index:99999;overflow:auto;background:#f7f9fc;color:#162b40;font-family:Arial,Helvetica,sans-serif}
+#accessGate .landing-nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(20px,6vw,88px);border-bottom:1px solid #e2e9f0;background:rgba(255,255,255,.92)}
+#accessGate .gate-logo{font-weight:850;font-size:27px;letter-spacing:-1px;color:#102b43;margin:0}
+#accessGate .gate-logo span{color:#2788e8}
+#accessGate button{border:0;border-radius:9px;padding:12px 18px;background:#2586e5;color:#fff;font-weight:750;cursor:pointer;transition:transform .15s,background .15s}
+#accessGate button:hover{background:#176fc5;transform:translateY(-1px)}
+#accessGate .nav-signin{background:#fff;color:#183c5a;border:1px solid #d8e2ec}
+#accessGate .landing-wrap{max-width:1240px;margin:0 auto;padding:clamp(34px,6vw,82px) 24px 56px}
+#accessGate .landing-hero{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:clamp(28px,5vw,72px)}
+#accessGate .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #d6e8fb;background:#eaf4ff;color:#1c70bd;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.4px}
+#accessGate .landing-title{font-size:clamp(38px,5.5vw,66px);line-height:1.04;letter-spacing:-2.5px;color:#102b43;margin:20px 0}
+#accessGate .landing-title em{font-style:normal;color:#2586e5}
+#accessGate .landing-copy{max-width:570px;color:#607487;font-size:17px;line-height:1.75;margin:0 0 25px}
+#accessGate .landing-ctas{display:flex;gap:10px;flex-wrap:wrap}
+#accessGate .landing-ctas button{padding:14px 20px}
+#accessGate .landing-proof{display:flex;gap:22px;flex-wrap:wrap;margin-top:30px;color:#6c7f90;font-size:12px}
+#accessGate .landing-proof strong{display:block;color:#183c5a;font-size:17px;margin-bottom:4px}
+#accessGate .mock-panel{background:#fff;border:1px solid #dce6ef;border-radius:22px;padding:22px;box-shadow:0 24px 65px rgba(22,61,95,.12);transform:rotate(1deg)}
+#accessGate .mock-top{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #e8edf2;color:#526a7e;font-size:12px;font-weight:700}
+#accessGate .mock-pill{background:#e8f6ee;color:#20804b;padding:6px 9px;border-radius:999px}
+#accessGate .mock-question{font-size:17px;line-height:1.55;font-weight:750;color:#18364f;margin:20px 0 15px}
+#accessGate .mock-answer{padding:12px 14px;border:1px solid #e0e8ef;border-radius:10px;margin:8px 0;color:#526a7e;font-size:13px}
+#accessGate .mock-answer.correct{background:#eaf8f0;border-color:#8dd5aa;color:#197442}
+#accessGate .mock-foot{display:flex;justify-content:space-between;align-items:center;margin-top:18px;color:#718496;font-size:12px}
+#accessGate .landing-features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:62px}
+#accessGate .feature-card{background:#fff;border:1px solid #e0e8ef;border-radius:14px;padding:20px}
+#accessGate .feature-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:11px;background:#eaf4ff;color:#2586e5;font-size:19px;font-weight:800}
+#accessGate .feature-card h3{margin:14px 0 7px;color:#173650;font-size:16px}
+#accessGate .feature-card p{margin:0;color:#6a7f91;font-size:13px;line-height:1.65}
+#accessGate .landing-footer{text-align:center;padding:20px;color:#8796a4;font-size:12px;border-top:1px solid #e3eaf0}
+#accessGate .signin-view{display:none;min-height:calc(100vh - 76px);align-items:center;justify-content:center;padding:28px}
+#accessGate .signin-card{width:min(440px,100%);background:#fff;border:1px solid #dce6ef;border-radius:18px;padding:30px;box-shadow:0 18px 50px rgba(22,61,95,.12)}
+#accessGate .signin-card h1{font-size:26px;color:#102b43;margin:22px 0 8px}
+#accessGate .signin-card p{color:#6c7f90;font-size:14px;line-height:1.6;margin:0 0 20px}
+#accessGate .admin-entry{width:100%;display:flex;align-items:center;justify-content:space-between;background:#f5f8fb;color:#183c5a;border:1px solid #dbe5ed;padding:15px;margin-top:10px;text-align:left}
+#accessGate .admin-entry:hover{background:#edf5fc}
+#accessGate .admin-form{display:none;margin-top:18px;padding-top:18px;border-top:1px solid #e4ebf1}
+#accessGate .admin-form label{display:block;font-size:13px;font-weight:750;margin-bottom:7px;color:#243c50}
+#accessGate .admin-form input{width:100%;border:1px solid #cbd8e3;border-radius:9px;padding:12px;outline:none;color:#18364f;background:#fff}
+#accessGate .admin-form input:focus{border-color:#2586e5;box-shadow:0 0 0 3px rgba(37,134,229,.12)}
+#accessGate .admin-form button{width:100%;margin-top:12px}
 #accessGate .gate-error{min-height:18px;color:#b42318;font-size:12px;margin-top:9px}
+#accessGate .signin-back{background:transparent;color:#607487;padding:10px 0;margin-top:14px}
+#accessGate .signin-back:hover{background:transparent;color:#2586e5;transform:none}
 body.gate-locked #app{display:none!important}
 body.gate-unlocked #accessGate{display:none!important}
-body.dark #accessGate{background:#0e1822}
-body.dark #accessGate .gate-card{background:#15232f;border-color:#344b5d;box-shadow:none}
-body.dark #accessGate h1,body.dark #accessGate label{color:#f1f5f8}
-body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5d}
-
+@media(max-width:850px){#accessGate .landing-hero{grid-template-columns:1fr}#accessGate .mock-panel{max-width:560px;transform:none}#accessGate .landing-features{margin-top:35px}}
+@media(max-width:600px){#accessGate .landing-nav{height:66px;padding:0 18px}#accessGate .gate-logo{font-size:23px}#accessGate .landing-wrap{padding:35px 18px}#accessGate .landing-title{letter-spacing:-1.5px}#accessGate .landing-copy{font-size:15px}#accessGate .landing-proof{gap:14px}#accessGate .landing-features{grid-template-columns:1fr;margin-top:30px}#accessGate .signin-view{min-height:calc(100vh - 66px);padding:18px}#accessGate .signin-card{padding:23px}}
 .library-main-nav-reopen{position:fixed;left:0;top:88px;z-index:200;border:1px solid #31536d;border-left:0;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;padding:10px 13px;box-shadow:2px 4px 12px rgba(0,0,0,.14);font-size:13px;font-weight:700;cursor:pointer}.library-main-nav-reopen:hover{background:#1f537c}
 .app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
 .layout.app-nav-collapsed .side{display:none!important}.layout.app-nav-collapsed .main{max-width:none;width:100%}
@@ -368,29 +398,89 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 </style>
 </head>
 <body class="gate-locked">
-<div id="accessGate" aria-label="MedQNL toegang">
-  <div class="gate-card">
+<div id="accessGate" aria-label="MedQNL introductie">
+  <header class="landing-nav">
     <div class="gate-logo">MedQ<span>NL</span></div>
-    <h1>Toegang tot MedQNL</h1>
-    <p>Voer het wachtwoord in om de MedQNL-website te openen.</p>
-    <form id="accessForm" autocomplete="off">
-      <label for="accessPassword">Wachtwoord</label>
-      <input id="accessPassword" type="password" inputmode="text" autocomplete="current-password" autofocus>
-      <button type="submit">Naar MedQNL</button>
-      <div class="gate-error" id="accessError" aria-live="polite"></div>
-    </form>
-  </div>
+    <button type="button" class="nav-signin" id="openSignIn">Inloggen <span aria-hidden="true">→</span></button>
+  </header>
+  <section class="landing-view" id="landingView">
+    <div class="landing-wrap">
+      <div class="landing-hero">
+        <div>
+          <div class="eyebrow"><span aria-hidden="true">✦</span> JOUW MEDISCHE STUDIEPLEK</div>
+          <h1 class="landing-title">Leer slimmer.<br><em>Oefen gericht.</em><br>Word zekerder.</h1>
+          <p class="landing-copy">MedQNL helpt je medische kennis actief te oefenen, lastige onderwerpen terug te vinden en je voortgang bij te houden — allemaal op één plek.</p>
+          <div class="landing-ctas">
+            <button type="button" id="heroSignIn">Open MedQNL <span aria-hidden="true">→</span></button>
+            <button type="button" class="nav-signin" id="exploreFeatures">Ontdek de functies</button>
+          </div>
+          <div class="landing-proof">
+            <div><strong>Vragenbank</strong>Oefenen op jouw tempo</div>
+            <div><strong>Dagpuzzel</strong>Elke dag een uitdaging</div>
+            <div><strong>Voortgang</strong>Zie waar je staat</div>
+          </div>
+        </div>
+        <div class="mock-panel" aria-label="Voorbeeld van een medische oefenvraag">
+          <div class="mock-top"><span>MEDQNL · OEFENVRAAG</span><span class="mock-pill">Tutor-modus</span></div>
+          <div class="mock-question">Een patiënt start met amlodipine. Welk effect past het best bij dit geneesmiddel?</div>
+          <div class="mock-answer">A. Sterke daling van de hartfrequentie</div>
+          <div class="mock-answer correct">B. Arteriolaire vasodilatatie <span aria-hidden="true">✓</span></div>
+          <div class="mock-answer">C. Remming van de ACE</div>
+          <div class="mock-answer">D. Verhoogde renine-afgifte als primair effect</div>
+          <div class="mock-foot"><span>Voorbeeldweergave</span><span>Antwoord met uitleg</span></div>
+        </div>
+      </div>
+      <div class="landing-features" id="landingFeatures">
+        <article class="feature-card"><div class="feature-icon">✓</div><h3>Gericht oefenen</h3><p>Train met medische vragen en bekijk uitleg om niet alleen het antwoord, maar ook de redenering te begrijpen.</p></article>
+        <article class="feature-card"><div class="feature-icon">✦</div><h3>Dagelijkse uitdaging</h3><p>Houd je kennis actief met de dagpuzzel en kom regelmatig terug voor een nieuwe oefening.</p></article>
+        <article class="feature-card"><div class="feature-icon">↗</div><h3>Volg je voortgang</h3><p>Bekijk je resultaten, bewaar belangrijke vragen en besteed extra aandacht aan onderwerpen die moeilijk blijven.</p></article>
+      </div>
+    </div>
+    <footer class="landing-footer">MedQNL · Een centrale plek voor jouw medische voorbereiding</footer>
+  </section>
+  <section class="signin-view" id="signInView" aria-label="Inloggen">
+    <div class="signin-card">
+      <div class="gate-logo">MedQ<span>NL</span></div>
+      <h1>Welkom terug</h1>
+      <p>Kies hoe je wilt inloggen om verder te gaan naar je MedQNL-studieomgeving.</p>
+      <button type="button" class="admin-entry" id="adminEntry"><span><strong>Admin</strong><br><small>Beheer de MedQNL-inhoud</small></span><span aria-hidden="true">→</span></button>
+      <div class="admin-form" id="adminForm">
+        <form id="accessForm" autocomplete="off">
+          <label for="accessPassword">Admin-wachtwoord</label>
+          <input id="accessPassword" type="password" inputmode="text" autocomplete="current-password" placeholder="Voer je wachtwoord in" required>
+          <button type="submit">Inloggen als admin</button>
+          <div class="gate-error" id="accessError" aria-live="polite"></div>
+        </form>
+      </div>
+      <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
+    </div>
+  </section>
 </div>
-
 <div id="app"></div>
 <script>
 (function(){
   var PASSWORD="Chanel";
   var gate=document.getElementById("accessGate");
+  var landing=document.getElementById("landingView");
+  var signIn=document.getElementById("signInView");
   var form=document.getElementById("accessForm");
   var input=document.getElementById("accessPassword");
   var error=document.getElementById("accessError");
+  var adminForm=document.getElementById("adminForm");
 
+  function showSignIn(){
+    landing.style.display="none";
+    signIn.style.display="flex";
+    window.scrollTo(0,0);
+  }
+  function showLanding(){
+    signIn.style.display="none";
+    landing.style.display="block";
+    adminForm.style.display="none";
+    error.textContent="";
+    input.value="";
+    window.scrollTo(0,0);
+  }
   function startApp(){
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
@@ -402,11 +492,19 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
-
+  document.getElementById("openSignIn").addEventListener("click",showSignIn);
+  document.getElementById("heroSignIn").addEventListener("click",showSignIn);
+  document.getElementById("backToLanding").addEventListener("click",showLanding);
+  document.getElementById("adminEntry").addEventListener("click",function(){
+    adminForm.style.display="block";
+    input.focus();
+  });
+  document.getElementById("exploreFeatures").addEventListener("click",function(){
+    document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
+  });
   var alreadyUnlocked=false;
   try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
   if(alreadyUnlocked)startApp();
-
   form.addEventListener("submit",function(ev){
     ev.preventDefault();
     if(input.value===PASSWORD){
@@ -419,6 +517,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   });
 })();
 </script>
+<div id='questionRichSelectionToolbar'</script>
 <div id='questionRichSelectionToolbar' class='question-rich-selection-toolbar' aria-label='Tekstopmaak'><button type='button' data-question-rich-format='bold' title='Dikgedrukt'><strong>B</strong></button><button type='button' data-question-rich-format='italic' title='Cursief'><em>I</em></button></div>
 <div id="markbar" class="floating-mark">
 <button class="mark-dot yellow" data-mark-color="yellow" title="Geel"></button>
