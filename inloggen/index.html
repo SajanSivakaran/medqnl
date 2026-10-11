@@ -735,7 +735,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     gate.classList.add("login-mode");
     try{history.pushState({medqnlRoute:"login"},"","/medqnl/inloggen/")}catch(e){}
     landing.style.display="none";
-    signIn.style.display="flex";
+    signIn.style.display="grid";
     window.scrollTo(0,0);
   }
   function showLanding(){
