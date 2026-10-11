@@ -629,10 +629,11 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
-  document.getElementById("openSignIn").addEventListener("click",showSignIn);
-  document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
-  document.getElementById("heroSignIn").addEventListener("click",showSignIn);
+  document.getElementById("openSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
+  document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
+  document.getElementById("heroSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("backToLanding").addEventListener("click",showLanding);
+  if(location.pathname.replace(/\/$/,"").endsWith("/inloggen")){landing.style.display="none";signIn.style.display="flex";}
   document.getElementById("adminEntry").addEventListener("click",function(){
     adminForm.style.display="block";
     input.focus();
