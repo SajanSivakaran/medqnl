@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle-v3">
+<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle-v4">
 <title>MedQNL</title>
 <style>
 :root{
@@ -55,26 +55,30 @@ a{color:var(--blue)}
 .daily-hint-text{font-size:14px;font-weight:600}
 .daily-guess-status{margin-top:12px;padding:13px 14px;border-radius:11px;text-align:center;font-size:15px;font-weight:800}
 .daily-guess-status.bad{background:var(--redbg);border:1px solid #e7aaa1;color:var(--red);box-shadow:0 0 12px rgba(180,35,24,.18)}
-.daily-guess-status.good{background:var(--greenbg);border:1px solid #9fd3b2;color:var(--green)}
-.daily-guess-form{display:flex;gap:9px;align-items:center;padding:14px 0 0;background:transparent;border:0}
-.daily-guess-form input{flex:1;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:12px 13px;outline:none}
+.daily-guess-status.good{background:var(--greenbg);border:1px solid #9fd3b6;color:var(--green)}
+.daily-guess-form{display:flex;gap:9px;align-items:flex-start;padding:14px 0 0;background:transparent;border:0}
+.daily-guess-input-wrap{position:relative;flex:1;min-width:0}
+.daily-guess-form input{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:12px 13px;outline:none}
 .daily-guess-form input::placeholder{color:var(--muted)}
 .daily-guess-form input:focus{border-color:#4aaea2;box-shadow:0 0 0 3px rgba(74,174,162,.12)}
 .daily-guess-form button{width:auto;margin:0;padding:12px 22px;background:#4aaea2;color:#fff}
+.daily-autocomplete{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:2000;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 26px rgba(10,32,52,.16);max-height:260px;overflow:auto;display:none}
+.daily-autocomplete.show{display:block}
+.daily-autocomplete-option{display:block;width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 12px;text-align:left;font-size:13px;cursor:pointer}
+.daily-autocomplete-option:last-child{border-bottom:0}
+.daily-autocomplete-option:hover,.daily-autocomplete-option.active{background:var(--blue2);color:var(--blue)}
+.daily-autocomplete-empty{padding:10px 12px;font-size:12px;color:var(--muted)}
 .daily-guess-list{display:grid;gap:6px;margin-top:10px}
 .daily-guess-row{display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;background:var(--redbg);border:1px solid #efc0bb;color:var(--red);font-size:13px}
 .daily-guess-row.correct{background:var(--greenbg);border-color:#b7d9c6;color:var(--green)}
 .daily-guess-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.06);font-size:11px;font-weight:800}
 .daily-guess-mark{text-align:right;font-weight:900}
 .daily-puzzle-footer{display:flex;justify-content:space-between;gap:12px;padding-top:14px;margin-top:12px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
-.daily-complete-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.daily-flashcard-overlay{position:fixed;inset:0;z-index:3000;background:rgba(10,24,36,.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;padding:20px}
-.daily-flashcard-modal{width:min(760px,100%);max-height:88vh;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 22px 60px rgba(0,0,0,.25);padding:22px}
+.daily-complete-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.daily-flashcard-inline{margin-top:13px;border:1px solid var(--line);border-radius:13px;background:var(--bg);padding:17px}
 .daily-flashcard-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
 .daily-flashcard-head .eyebrow{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--blue)}
 .daily-flashcard-head h3{margin:4px 0 0;color:var(--navy);font-size:28px;font-family:Georgia,"Times New Roman",serif}
-.daily-flashcard-close{width:34px;height:34px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font-size:20px;line-height:1}
-.daily-flashcard-card{border:1px solid var(--line);border-radius:13px;background:var(--bg);padding:17px}
 .daily-flashcard-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .daily-flashcard-block{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 13px}
 .daily-flashcard-block.full{grid-column:1/-1}
@@ -82,7 +86,7 @@ a{color:var(--blue)}
 .daily-flashcard-block p,.daily-flashcard-block li{font-size:13px;line-height:1.55;color:var(--ink)}
 .daily-flashcard-block p{margin:0}
 .daily-flashcard-block ul{margin:0;padding-left:18px}
-.daily-flashcard-foot{margin-top:13px;text-align:center;font-size:11px;color:var(--muted)}
+.daily-flashcard-block li{margin:4px 0}
 @media(max-width:760px){.daily-puzzle-topbar{display:block}.daily-streaks{justify-content:flex-start;margin-top:14px}.daily-puzzle-title h2{font-size:27px}.daily-hint{display:block}.daily-hint-level{margin-bottom:5px}.daily-flashcard-grid{grid-template-columns:1fr}.daily-flashcard-block.full{grid-column:auto}}
 @media(max-width:620px){.daily-puzzle-shell{padding:17px}.daily-guess-form{flex-direction:column;align-items:stretch}.daily-guess-form button{width:100%}}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}@media(max-width:720px){.farma-controls,}
@@ -1454,6 +1458,7 @@ function mailbox(){
 
 var DAILY_PUZZLE_INTERVAL=24*60*60*1000;
 var DAILY_PUZZLE_ANCHOR=Date.UTC(2026,9,11,0,0,0);
+var DAILY_DRUG_OPTIONS=["BCG vaccine","Ebola vaccine","Japanese encephalitis vaccine","Medicines for COVID-19","Abacavir","Abacavir + dolutegravir + lamivudine","Abacavir + lamivudine","Abiraterone","Acamprosate calcium","Acenocoumarol","Acetazolamide","Acetic acid","Acetylcysteine","Acetylsalicylic acid","Acetylsalicylic acid + atorvastatin + ramipril","Acetylsalicylic acid + simvastatin + ramipril + atenolol + hydrochlorothiazide","Aciclovir","Aclidinium","Activated charcoal","Adalimumab","Afatinib","Albendazole","Alcohol based hand rub","All-trans retinoic acid","Allopurinol","Alprostadil (prostaglandin E1)","Alteplase","Amidotrizoate","Amikacin","Amiloride","Amiodarone","Amitriptyline","Amlodipine","Amodiaquine - sulfadoxine + pyrimethamine","Amoxicillin","Amoxicillin + clavulanic acid","Amphotericin B","Ampicillin","Anastrozole","Anidulafungin","Ansuvimab","Anti-D immunoglobulin","Anti-rabies immunoglobulin","Anti-rabies virus monoclonal antibodies","Anti-tetanus immunoglobulin","Antivenom immunoglobulin","Apixaban","Aprepitant","Aripiprazole","Arpraziquantel","Arsenic trioxide","Artemether","Artemether + lumefantrine","Artesunate","Artesunate + amodiaquine","Artesunate + mefloquine","Artesunate + pyronaridine","Artesunate - sulfadoxine + pyrimethamine","Ascorbic acid","Asparaginase","Atazanavir + ritonavir","Atenolol","Atezolizumab","Atoltivimab + maftivimab + odesivimab","Atorvastatin","Atorvastatin + perindopril + amlodipine","Atracurium","Atropine","Azathioprine","Azithromycin","Baclofen","Barium sulfate","Beclometasone","Beclometasone + formoterol","Bedaquiline","Bendamustine","Benzathine benzylpenicillin","Benznidazole","Benzoyl peroxide","Benzyl benzoate","Benzylpenicillin","Beractant","Betamethasone","Bevacizumab","Bicalutamide","Biperiden","Bisacodyl","Bisoprolol","Bleomycin","Blinatumomab","Bortezomib","Bromocriptine","Budesonide","Budesonide + formoterol","Budesonide + salmeterol","Bumetanide","Bupivacaine","Buprenorphine","Bupropion","Cabergoline","Caffeine citrate","Calamine","Calcipotriol","Calcitriol","Calcium","Calcium folinate (leucovorin calcium)","Calcium gluconate","Canagliflozin","Capecitabine","Carbachol","Carbamazepine","Carbetocin","Carbimazole","Carboplatin","Carvedilol","Caspofungin","Cefalexin","Cefazolin","Cefiderocol","Cefixime","Cefotaxime","Ceftazidime","Ceftazidime + avibactam","Ceftolozane + tazobactam","Ceftriaxone","Cefuroxime","Cemiplimab","Certolizumab pegol","Cetirizine","Chlorambucil","Chloramphenicol","Chlorhexidine","Chlorine base compound","Chloroquine","Chlorothiazide","Chloroxylenol","Chlorpromazine","Chlortalidone","Chlortetracycline","Cholera vaccine","Ciclesonide","Ciclosporin","Ciprofloxacin","Cisplatin","Citalopram","Cladribine","Clarithromycin","Clindamycin","Clofazimine","Clomifene","Clomipramine","Clopidogrel","Clotrimazole","Cloxacillin","Clozapine","Coagulation factor IX complex","Coagulation factor IX, plasma-derived","Coagulation factor IX, recombinant","Coagulation factor VIII, plasma-derived","Coagulation factor VIII, recombinant","Coal tar","Codeine","Colecalciferol","Colistin (injection)","Compound sodium lactate solution","Condoms","Copper-containing intrauterine device","Cryoprecipitate (native)","Cryoprecipitate (pathogen-reduced)","Cyclizine","Cyclopentolate","Cyclophosphamide","Cycloserine","Cytarabine","Cytisine (cytisinicline)","Dabigatran","Dacarbazine","Daclatasvir","Daclatasvir + sofosbuvir","Dactinomycin","Dalteparin","Dapagliflozin","Dapsone","Darbepoetin alfa","Darunavir","Dasatinib","Daunorubicin","Deferasirox","Deferiprone","Deferoxamine","Delamanid","Dengue vaccine","Desmopressin","Dexamethasone","Dextran 70","Diaphragms","Diazepam","Diazoxide","Dicloxacillin","Diethylcarbamazine","Digoxin","Dihydroartemisinin + piperaquine","Diloxanide","Dimercaprol","Dinoprostone (prostaglandin E2)","Diphtheria antitoxin","Diphtheria vaccine","Docetaxel","Docusate sodium","Dolasetron","Dolutegravir","Dolutegravir + lamivudine + tenofovir","Dopamine","Doxorubicin","Doxorubicin (as pegylated liposomal)","Doxycycline","Dulaglutide","Edoxaban","Efavirenz","Efavirenz + emtricitabine + tenofovir","Efavirenz + lamivudine + tenofovir","Eflornithine","Eletriptan","Elexacaftor + tezacaftor + ivacaftor","Emicizumab","Empagliflozin","Emtricitabine + tenofovir","Enalapril","Enoxaparin","Entecavir","Enzalutamide","Ephedrine","Epinephrine","Epoetin alfa","Epoetin beta","Epoetin theta","Equine rabies immunoglobulin","Ergocalciferol","Ergometrine","Erlotinib","Erythromycin","Erythropoiesis-stimulating agents","Escitalopram","Estradiol cypionate + medroxyprogesterone acetate","Etanercept","Ethambutol","Ethambutol + isoniazid + pyrazinamide + rifampicin","Ethambutol + isoniazid + rifampicin","Ethanol","Ethinylestradiol + etonogestrel","Ethinylestradiol + levonorgestrel","Ethinylestradiol + norethisterone","Ethionamide","Ethosuximide","Etonogestrel-releasing implant","Etoposide","Everolimus","Fentanyl","Ferrous salt","Ferrous salt + folic acid","Fexinidazole","Fexofenadine","Filgrastim","Flucloxacillin","Fluconazole","Flucytosine","Fludarabine","Fludrocortisone","Fluorescein","Fluoride","Fluorouracil","Fluoxetine","Fluphenazine","Flutamide","Fluticasone","Fluticasone + formoterol","Fluticasone furoate + vilanterol","Fluvastatin","Fluvoxamine","Folic acid","Fomepizole","Fosfomycin (injection)","Fresh-frozen plasma","Furosemide","Gefitinib","Gemcitabine","Gentamicin","Glass ionomer cement","Glatiramer acetate","Glecaprevir + pibrentasvir","Gliclazide","Glucagon","Glucose","Glucose + sodium chloride","Glutaral","Glycerol","Glyceryl trinitrate","Glycopyrronium","Golimumab","Goserelin","Granisetron","Griseofulvin","Haemophilus influenzae type b vaccine","Haloperidol","Haloperidol decanoate","Heparin sodium","Hepatitis A vaccine","Hepatitis B vaccine","Hepatitis E vaccine","Homatropine","Human papilloma virus (HPV) vaccine","Hydralazine","Hydrochlorothiazide","Hydrocortisone","Hydromorphone","Hydroxocobalamin","Hydroxychloroquine","Hydroxyurea (hydroxycarbamide)","Hyoscine butylbromide","Hyoscine hydrobromide","Hypochlorous acid","Ibrutinib","Ibuprofen","Ifosfamide","Imatinib","Imipenem + cilastatin","Indapamide","Indometacin","Infliximab","Influenza vaccine (seasonal)","Insulin (analogue, long-acting)","Insulin (analogue, rapid-acting)","Insulin (human, intermediate-acting)","Insulin (human, short-acting)","Insulin aspart","Insulin degludec","Insulin detemir","Insulin glargine","Insulin glulisine","Insulin lispro","Intraperitoneal dialysis solution","Iodine","Iodine + potassium iodide (Lugol's solution)","Iohexol","Ipratropium bromide","Irinotecan","Isoflurane","Isoniazid","Isoniazid + pyrazinamide + rifampicin","Isoniazid + pyridoxine + sulfamethoxazole + trimethoprim","Isoniazid + rifampicin","Isoniazid + rifapentine","Isosorbide dinitrate","Itraconazole","Ivacaftor","Ivermectin","Kanamycin","Ketamine","Lactulose","Lamivudine","Lamivudine + tenofovir","Lamivudine + zidovudine","Lamotrigine","Latanoprost","Ledipasvir + sofosbuvir","Lenalidomide","Letrozole","Leuprorelin","Levamisole","Levetiracetam","Levodopa + benserazide","Levodopa + carbidopa","Levofloxacin","Levonorgestrel","Levonorgestrel-releasing implant","Levothyroxine","Lidocaine","Lidocaine + epinephrine","Linezolid","Liraglutide","Lisinopril + amlodipine","Lisinopril + hydrochlorothiazide","Lithium carbonate","Loperamide","Lopinavir + ritonavir","Loratadine","Lorazepam","Losartan","Lovastatin","Magnesium sulfate","Malaria vaccine","Mannitol","Measles vaccine","Mebendazole","Medroxyprogesterone acetate","Mefloquine","Meglumine antimoniate","Meglumine iotroxate","Melarsoprol","Melphalan","Meningococcal meningitis vaccine","Mercaptopurine","Meropenem","Meropenem + vaborbactam","Mesalazine","Mesna","Metformin","Methadone","Methimazole","Methotrexate","Methoxy polyethylene glycol-epoetin beta","Methyldopa","Methylergometrine","Methylprednisolone","Methylthioninium chloride","Meticillin","Metoclopramide","Metoprolol","Metronidazole","Micafungin","Miconazole","Midazolam","Mifepristone - misoprostol","Miltefosine","Misoprostol","Mometasone","Mometasone + formoterol","Morphine","Moxidectin","Moxifloxacin","Mpox vaccine","Multiple micronutrient powder","Multiple micronutrient supplement","Mumps vaccine","Mupirocin","Nadroparin","Nafcillin","Naloxone","Naltrexone","Naproxen","Natamycin","Neostigmine","Netilmicin","Nevirapine","Niclosamide","Nicotinamide","Nicotine replacement therapy","Nifedipine","Nifurtimox","Nilotinib","Nilutamide","Nitrofurantoin","Nitrous oxide","Nivolumab","Norethisterone","Norethisterone enantate","Normal immunoglobulin","Nystatin","Octreotide","Ofloxacin","Olanzapine","Omeprazole","Ondansetron","Oral rehydration salts","Oral rehydration salts - zinc sulfate","Oseltamivir","Oxacillin","Oxaliplatin","Oxamniquine","Oxycodone","Oxygen","Oxytetracycline","Oxytocin","P-aminosalicylate sodium","Paclitaxel","Paliperidone","Palonosetron","Pancreatic enzymes","Paracetamol (acetaminophen)","Paromomycin","Paroxetine","Pegaspargase","Pegfilgrastim","Pembrolizumab","Penicillamine","Pentamidine","Phenobarbital","Phenoxymethylpenicillin","Phenytoin","Phytomenadione","Pilocarpine","Piperacillin + tazobactam","Platelets","Plazomicin","Pneumococcal vaccine","Podophyllotoxin","Podophyllum resin","Poliomyelitis vaccine","Polygeline","Polymyxin B (injection)","Porcatant alfa","Potassium chloride","Potassium ferric hexacyanoferrate (Prussian blue)","Potassium iodide","Potassium permanganate","Povidone iodine","Pravastatin","Praziquantel","Precipitated sulfur","Prednisolone","Prednisone","Pretomanid","Primaquine","Procaine benzylpenicillin","Procarbazine","Progesterone vaginal ring","Propanol","Propofol","Propranolol","Propylthiouracil","Protamine sulfate","Protionamide","Pyrantel","Pyrazinamide","Pyridostigmine","Pyridoxine","Pyrimethamine","Quetiapine","Quinine","Rabies vaccine","Raltegravir","Ranitidine","Rasburicase","Ravidasvir","Ready to use therapeutic food","Realgar-indigo naturalis formulation","Red blood cells","Resin-based composite (high-viscosity)","Resin-based composite (low-viscosity)","Respiratory syncytial virus vaccine","Retinol","Ribavirin","Riboflavin","Rifabutin","Rifampicin","Rifapentine","Risperidone","Ritonavir","Rituximab","Rivaroxaban","Rotavirus vaccine","Rubella vaccine","Salbutamol","Salicylic acid","Selenium sulfide","Semaglutide","Senna","Sertraline","Sevoflurane","Silver diamine fluoride","Silver sulfadiazine","Simvastatin","Sodium calcium edetate","Sodium chloride","Sodium hydrogen carbonate","Sodium nitrite","Sodium nitroprusside","Sodium stibogluconate","Sodium thiosulfate","Sofosbuvir","Sofosbuvir + velpatasvir","Spectinomycin","Spironolactone","Streptokinase","Streptomycin (injection)","Succimer","Sulfadiazine","Sulfadoxine + pyrimethamine","Sulfamethoxazole + trimethoprim","Sulfasalazine","Sumatriptan","Sunscreen, broad-spectrum","Suramin sodium","Suxamethonium","Tacalcitol","Tacrolimus","Tamoxifen","Tedizolid","Telmisartan + amlodipine","Telmisartan + hydrochlorothiazide","Tenofovir disoproxil fumarate","Terbinafine","Terbutaline","Terizidone","Testosterone","Tetanus vaccine","Tetracaine","Tetracycline","Thalidomide","Thiamine","Thiopental","Tick-borne encephalitis vaccine","Timolol","Tinidazole","Tioguanine","Tiotropium bromide","Tirzepatide","Tobramycin","Torasemide","Tranexamic acid","Trastuzumab","Triamcinolone hexacetonide","Triclabendazole","Trihexyphenidyl","Trimethoprim","Triptorelin","Tropicamide","Tropisetron","Tuberculin, purified protein derivative","Typhoid vaccine","Ulipristal","Umeclidinium","Urea","Ustekinumab","Valaciclovir","Valganciclovir","Valproic acid (sodium valproate)","Valsartan + amlodipine + hydrochlorothiazide","Vancomycin","Varenicline","Varicella vaccine","Vecuronium","Verapamil","Vinblastine","Vincristine","Vinorelbine","Voriconazole","Warfarin","Water for injection","Whole blood","Xylometazoline","Yellow fever vaccine","Zanubrutinib","Zidovudine","Zinc sulfate","Zoledronic acid","Zuclopenthixol decanoate"];
 var DAILY_PUZZLES=[
  {
   id:"furosemide",
@@ -1469,7 +1474,7 @@ var DAILY_PUZZLES=[
    group:"Een krachtig lisdiureticum.",
    mechanism:"Remt het Na⁺/K⁺/2Cl⁻-cotransport in het stijgende been van de lis van Henle in de nier, wat zorgt voor een sterke uitscheiding van natriumchloride en water.",
    indications:"Kortademigheid en oedeem bij hartfalen, en ascites bij levercirrose.",
-   adverse:["Uitdroging (dehydratie) en hypotensie (met valneiging tot gevolg).","Hypokaliëmie (kaliumtekort), met risico op spierzwakte of ritmestoornissen.","Nierinsufficiëntie bij te snelle of te grote vochtentrekking.","Ototoxiciteit (slechthorendheid/doofheid) bij hooggedoseerd of langdurig intraveneus gebruik."],
+   adverse:["Uitdroging (dehydratie) en hypotensie (met valneiging tot gevolg).","Hypokaliëmie (kaliumtekort), wat kan leiden tot spierzwakte of ritmestoornissen.","Nierinsufficiëntie bij te snelle of te grote vochtentrekking.","Ototoxiciteit (slechthorendheid/doofheid) bij hooggedoseerd of langdurig intraveneus gebruik."],
    kinetics:"Snelle en sterke werking met een werkingsduur van ongeveer 6 uur. Bij verminderde nierfunctie moet hoger worden gedoseerd."
   }
  },
@@ -1501,7 +1506,7 @@ function dailyPuzzleCycle(){
 }
 function dailyPuzzleForCycle(cycle){return DAILY_PUZZLES[cycle%DAILY_PUZZLES.length]}
 function dailyPuzzleState(){
- var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v3",raw=null,x=null;
+ var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v4",raw=null,x=null;
  try{raw=localStorage.getItem(key);x=raw?JSON.parse(raw):null}catch(e){}
  if(!x||x.cycle!==info.cycle||!Array.isArray(x.guesses))x={cycle:info.cycle,guesses:[],completed:false,correct:false,flashcardOpen:false,completedAt:0};
  if(typeof x.flashcardOpen!=="boolean")x.flashcardOpen=false;
@@ -1513,13 +1518,27 @@ function dailyPuzzleStats(){
  if(!x||typeof x.current!=="number"||typeof x.best!=="number")x={current:0,best:0,lastCompletedCycle:null};
  return x;
 }
-function saveDailyPuzzleState(x){try{localStorage.setItem("medqnl_daily_drug_puzzle_v3",JSON.stringify(x))}catch(e){}}
+function saveDailyPuzzleState(x){try{localStorage.setItem("medqnl_daily_drug_puzzle_v4",JSON.stringify(x))}catch(e){}}
 function saveDailyPuzzleStats(x){try{localStorage.setItem("medqnl_daily_streak_v1",JSON.stringify(x))}catch(e){}}
-function normalizeDailyGuess(value){return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"")}
+function normalizeDailyGuess(value){return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
 function isDailyDrugCorrect(puzzle,value){
  var x=normalizeDailyGuess(value),i;
  for(i=0;i<puzzle.answerAliases.length;i++)if(x===normalizeDailyGuess(puzzle.answerAliases[i]))return true;
  return false;
+}
+function dailyDrugMatches(value){
+ var q=normalizeDailyGuess(value),out=[];
+ if(!q)return out;
+ for(var i=0;i<DAILY_DRUG_OPTIONS.length;i++){
+  var name=DAILY_DRUG_OPTIONS[i],n=normalizeDailyGuess(name);
+  if(n.indexOf(q)===0 || n.indexOf(" "+q)>=0)out.push(name);
+ }
+ out.sort(function(a,b){
+  var an=normalizeDailyGuess(a),bn=normalizeDailyGuess(b),as=an.indexOf(q)===0,bs=bn.indexOf(q)===0;
+  if(as!==bs)return as?-1:1;
+  return an.localeCompare(bn);
+ });
+ return out.slice(0,8);
 }
 function dailyPuzzleHintHtml(state,puzzle){
  var revealed=state.correct?Math.min(state.guesses.length,puzzle.levels.length):Math.min(state.guesses.length+1,puzzle.levels.length),h="",i,l;
@@ -1540,19 +1559,18 @@ function dailyPuzzleGuessesHtml(state){
 function dailyFlashcardHtml(puzzle){
  var f=puzzle.flashcard,ad="";
  for(var i=0;i<f.adverse.length;i++)ad+="<li>"+esc(f.adverse[i])+"</li>";
- return "<div class='daily-flashcard-overlay' role='dialog' aria-modal='true' aria-label='Flashcard "+esc(puzzle.title)+"'><div class='daily-flashcard-modal'><div class='daily-flashcard-head'><div><div class='eyebrow'>Leerkaart · Dagpuzzel</div><h3>"+esc(puzzle.title)+"</h3></div><button type='button' class='daily-flashcard-close' data-close-daily-flashcard aria-label='Flashcard sluiten'>×</button></div><div class='daily-flashcard-card'><div class='daily-flashcard-grid'><div class='daily-flashcard-block'><h4>Medicijngroep</h4><p>"+esc(f.group)+"</p></div><div class='daily-flashcard-block'><h4>Kinetiek &amp; dosering</h4><p>"+esc(f.kinetics)+"</p></div><div class='daily-flashcard-block full'><h4>Werkingsmechanisme</h4><p>"+esc(f.mechanism)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste indicaties</h4><p>"+esc(f.indications)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste bijwerkingen</h4><ul>"+ad+"</ul></div></div></div><div class='daily-flashcard-foot'>Klik op × om terug te gaan naar de puzzel.</div></div></div>";
+ return "<div class='daily-flashcard-inline'><div class='daily-flashcard-head'><div><div class='eyebrow'>Geneesmiddel · Flashcard</div><h3>"+esc(puzzle.title)+"</h3></div></div><div class='daily-flashcard-grid'><div class='daily-flashcard-block'><h4>Medicijngroep</h4><p>"+esc(f.group)+"</p></div><div class='daily-flashcard-block'><h4>Kinetiek &amp; dosering</h4><p>"+esc(f.kinetics)+"</p></div><div class='daily-flashcard-block full'><h4>Werkingsmechanisme</h4><p>"+esc(f.mechanism)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste indicaties</h4><p>"+esc(f.indications)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste bijwerkingen</h4><ul>"+ad+"</ul></div></div></div>";
 }
 function dailyPuzzlePage(){
  var info=dailyPuzzleCycle(),puzzle=dailyPuzzleForCycle(info.cycle),state=dailyPuzzleState(),streak=dailyPuzzleStats(),done=!!state.completed,wrong=!state.correct&&state.guesses.length>0&&!done;
  var status=state.correct?"<div class='daily-guess-status good'>Correct! Je streak is bijgewerkt.</div>":(done?"<div class='daily-guess-status bad'>Geen juiste gok. Het antwoord was "+esc(puzzle.title)+".</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":""));
- var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><input id='dailyPuzzleGuess' type='text' maxlength='60' placeholder='Geneesmiddel...' aria-label='Geneesmiddel raden'><button class='btn primary' type='submit'>Submit</button></form>");
- var action=done?"<div class='daily-complete-actions'><button type='button' class='btn secondary' data-open-daily-flashcard>Bekijk flashcard</button></div>":"";
+ var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><div class='daily-guess-input-wrap'><input id='dailyPuzzleGuess' type='text' maxlength='100' placeholder='Typ een geneesmiddel...' aria-label='Geneesmiddel raden' autocomplete='off'><div id='dailyAutocomplete' class='daily-autocomplete' role='listbox'></div></div><button class='btn primary' type='submit'>Submit</button></form>");
+ var action=done?"<div class='daily-complete-actions'><button type='button' class='btn secondary' data-open-daily-flashcard>Medicijn inzien?</button></div>"+(state.flashcardOpen?dailyFlashcardHtml(puzzle):""):"";
  var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel over 24 uur</span></div>";
- var modal=state.flashcardOpen?dailyFlashcardHtml(puzzle):"";
  return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Level 4 is het moeilijkst.</p></div></div>"+
  "<div class='daily-puzzle-page'><div class='daily-puzzle-shell'><div class='daily-puzzle-topbar'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Raad het geneesmiddel. Na iedere foute gok krijg je één extra aanwijzing.</div></div><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div></div>"+
  "<div class='daily-level-intro'><span>Hints</span><div class='daily-progress'>"+dailyPuzzleProgressHtml(state)+"</div></div>"+
- "<div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>"+modal);
+ "<div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>");
 }
 function medqnlDailySubmit(){
  var input=document.getElementById("dailyPuzzleGuess"),value=input?String(input.value||"").trim():"";
@@ -1562,7 +1580,7 @@ function medqnlDailySubmit(){
  var correct=isDailyDrugCorrect(puzzle,value);
  state.guesses.push({value:value,correct:correct});
  if(correct||state.guesses.length>=4){
-  state.completed=true;state.correct=correct;state.completedAt=Date.now();state.flashcardOpen=true;
+  state.completed=true;state.correct=correct;state.completedAt=Date.now();state.flashcardOpen=false;
   if(correct){
    var streak=dailyPuzzleStats();
    if(streak.lastCompletedCycle!==info.cycle){
@@ -1575,20 +1593,6 @@ function medqnlDailySubmit(){
  }
  saveDailyPuzzleState(state);render();
 }
-function dashboard(){
- var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
- for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
- return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
- "<div class='grid g3' style='margin-top:15px'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
- "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
- "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
- "<div class='row'><div><strong>Dagpuzzel</strong><div class='small muted'>Raad elke 24 uur een nieuw geneesmiddel.</div></div><button class='btn secondary' data-page='daily-puzzle'>Open</button></div>"+
- "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+ "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
- "<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:10px'><div class='title' style='margin-bottom:0'>Mailbox</div><button class='btn secondary' data-page='mailbox'>Open mailbox</button></div>"+
- "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
- "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
-}
-
 function qbank(){
  var subsHtml="",i,j,list;
  for(i=0;i<QBANK_SUBJECTS.length;i++){
@@ -2365,6 +2369,32 @@ document.addEventListener("keydown",function(ev){
   var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove();
  }
 });
+function renderDailyAutocomplete(){
+ var input=document.getElementById("dailyPuzzleGuess"),box=document.getElementById("dailyAutocomplete");
+ if(!input||!box)return;
+ var matches=dailyDrugMatches(input.value),html="";
+ if(!matches.length){box.classList.remove("show");box.innerHTML="";return}
+ for(var i=0;i<matches.length;i++)html+="<button type='button' class='daily-autocomplete-option' data-daily-option='"+esc(matches[i])+"'>"+esc(matches[i])+"</button>";
+ box.innerHTML=html;box.classList.add("show");
+}
+document.addEventListener("input",function(ev){
+ if(ev.target&&ev.target.id==="dailyPuzzleGuess")renderDailyAutocomplete();
+});
+document.addEventListener("keydown",function(ev){
+ var input=ev.target&&ev.target.id==="dailyPuzzleGuess"?ev.target:null;if(!input)return;
+ var box=document.getElementById("dailyAutocomplete");if(!box||!box.classList.contains("show"))return;
+ var opts=Array.from(box.querySelectorAll(".daily-autocomplete-option")),active=box.querySelector(".daily-autocomplete-option.active"),idx=active?opts.indexOf(active):-1;
+ if(ev.key==="ArrowDown"){ev.preventDefault();idx=(idx+1)%opts.length;opts.forEach(function(x){x.classList.remove("active")});opts[idx].classList.add("active");opts[idx].scrollIntoView({block:"nearest"});return}
+ if(ev.key==="ArrowUp"){ev.preventDefault();idx=(idx<=0?opts.length:idx)-1;opts.forEach(function(x){x.classList.remove("active")});opts[idx].classList.add("active");opts[idx].scrollIntoView({block:"nearest"});return}
+ if(ev.key==="Enter"&&active){ev.preventDefault();input.value=active.getAttribute("data-daily-option");box.classList.remove("show");return}
+ if(ev.key==="Escape"){box.classList.remove("show");return}
+});
+document.addEventListener("click",function(ev){
+ var choice=ev.target.closest?ev.target.closest("[data-daily-option]"):null;
+ if(choice){var input=document.getElementById("dailyPuzzleGuess"),box=document.getElementById("dailyAutocomplete");if(input)input.value=choice.getAttribute("data-daily-option");if(box)box.classList.remove("show");if(input)input.focus();return}
+ var inside=ev.target.closest?ev.target.closest(".daily-guess-input-wrap"):null;
+ if(!inside){var box2=document.getElementById("dailyAutocomplete");if(box2)box2.classList.remove("show")}
+});
 document.addEventListener("click",function(ev){
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
  if(t.closest&&t.closest("[data-add-question-inline-image]")){var inp=document.getElementById("questionInlineImageFile"),ed=document.getElementById("questionStemEditor");if(inp){if(ed&&document.getSelection&&document.getSelection().rangeCount)ed._savedRange=document.getSelection().getRangeAt(0).cloneRange();inp.click()}return}
@@ -2502,7 +2532,6 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
  el=t.closest?t.closest("[data-open-daily-flashcard]"):null;if(el){var ds=dailyPuzzleState();ds.flashcardOpen=true;saveDailyPuzzleState(ds);render();return}
- el=t.closest?t.closest("[data-close-daily-flashcard]"):null;if(el){var cs=dailyPuzzleState();cs.flashcardOpen=false;saveDailyPuzzleState(cs);render();return}
  el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();page=el.getAttribute("data-page");session=null;if(page==="ivtg-library")startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
