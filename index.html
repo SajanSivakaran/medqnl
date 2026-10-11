@@ -2573,6 +2573,8 @@ document.addEventListener("click",function(ev){
    ds.flashcardOpen=true;
    saveDailyPuzzleState(ds);
    render();
+   var flashcard=document.querySelector(".daily-flashcard");
+   if(flashcard)flashcard.scrollIntoView({behavior:"smooth",block:"start"});
    return;
  }
  el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
