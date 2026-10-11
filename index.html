@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-library-nav-toggle-fix">
+<meta name="medqnl-build" content="2026-10-11-navigation-final-fix">
 <title>MedQNL</title>
 <style>
 :root{
@@ -23,7 +23,7 @@ button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 a{color:var(--blue)}
 .top{height:62px;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:50}.top-left{display:flex;align-items:center;gap:10px}
-.logo{font-size:22px;font-weight:800;color:var(--navy)}.logo span{color:var(--blue)}
+.logo{font-size:22px;font-weight:800;color:var(--navy);border:0;background:transparent;padding:0;cursor:pointer;line-height:1}.logo span{color:var(--blue)}.logo-link:hover{opacity:.84}
 .top-actions{display:flex;gap:8px;align-items:center}
 .badge{font-size:12px;border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--muted)}
 .layout{display:flex;min-height:calc(100vh - 62px)}
@@ -1379,7 +1379,7 @@ function nav(id,label,svg){return "<button class='nav "+(page===id?"active":"")+
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
- var appNavCollapsed=page==="ivtg-library" ? !state.ui.libraryNavOpen : !!state.ui.appNavCollapsed;
+ var appNavCollapsed=!!state.ui.appNavCollapsed;
  if(page!=="ivtg-library"){state.ui.appNavCollapsed=false;state.ui.libraryNavOpen=false}
  var progressExpanded=!!state.ui.progressExpanded;
  var qtree="<div class='progress-nav-group'>"+
@@ -1392,7 +1392,7 @@ function shell(body){
  "<button class='nav "+(page==="search"?"active":"")+"' data-page='search'>"+ICONS.search+" Zoeken</button>"+
  "<button class='nav "+(page==="notes"?"active":"")+"' data-page='notes'>"+ICONS.note+" Notities</button>"+
  "</div>";
- return "<div class='top'><div class='top-left'><div class='logo'>MedQ<span>NL</span></div><button class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
+ return "<div class='top'><div class='top-left'><button type='button' class='logo logo-link' data-page='dashboard' title='Naar dashboard'>MedQ<span>NL</span></button><button type='button' class='app-nav-global-toggle' data-toggle-appnav title='"+(appNavCollapsed?"Navigatie tonen":"Navigatie verbergen")+"' style='margin-left:6px'>☰</button></div><div class='top-actions'><span class='badge'>"+esc((window.__medqnlAuthRole==="admin"?"Admin":"Student"))+(window.__medqnlAuthSession&&window.__medqnlAuthSession.user&&window.__medqnlAuthSession.user.email?" · "+esc(window.__medqnlAuthSession.user.email):"")+"</span><button class='btn secondary' data-page='settings'>Instellingen</button><button class='btn secondary' data-auth-logout>Uitloggen</button></div></div>"+
  "<div class='layout "+(appNavCollapsed?"app-nav-collapsed":"")+"'><aside class='side'><div class='navlabel'>Studeren</div>"+
  nav("dashboard","Dashboard",ICONS.home)+nav("daily-puzzle","Dagpuzzel",ICONS.puzzle)+nav("qbank","Vragenbank",ICONS.qbank)+qtree+nav("ivtg","iVTG Trainer",ICONS.book)+nav("ivtg-library","iVTG Bibliotheek",ICONS.book)+
  (window.__medqnlAuthRole==="admin"?"<div class='navlabel'>Beheer</div>"+nav("admin","Content beheren",ICONS.gear):"")+
@@ -2511,7 +2511,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
  el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
- el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();var previousPage=page;page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.libraryNavOpen=false;state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=true;startChapterTimer(articleId);}else{state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=false;state.ui.libraryNavOpen=false}save();render();return}
+ el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();var previousPage=page;page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.appNavCollapsed=true;state.ui.libraryNavOpen=false;state.ui.libraryAutoCollapsed=true;startChapterTimer(articleId);}else{state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=false;state.ui.libraryNavOpen=false}save();render();return}
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
  el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
@@ -2527,7 +2527,7 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
  el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
  el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
- if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.libraryNavOpen=!state.ui.libraryNavOpen}else state.ui.appNavCollapsed=!state.ui.appNavCollapsed;save();render();return}
+ if(t.hasAttribute("data-toggle-appnav")){if(!state.ui)state.ui={};state.ui.appNavCollapsed=!state.ui.appNavCollapsed;state.ui.libraryNavOpen=false;save();render();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
  if(t.id==="startivtg"){startSession(true,"Alle onderwerpen");return}
  if(t.id==="startqb"){startSession(false,"Alle onderwerpen");return}
