@@ -780,15 +780,15 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
-  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();showSignIn()});
+  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();window.location.href="/medqnl/inloggen/"});
   document.getElementById("landingTheme").addEventListener("click",function(){var dark=gate.classList.toggle("theme-dark");this.textContent=dark?"☀":"☾";this.setAttribute("aria-label",dark?"Lichte modus":"Donkere modus");try{localStorage.setItem("medqnl_landing_theme",dark?"dark":"light")}catch(e){}});
   document.getElementById("backToLandingTop").addEventListener("click",showLanding);
   document.getElementById("signinTheme").addEventListener("click",function(){var dark=gate.classList.toggle("theme-dark");this.textContent=dark?"☀":"☾";document.getElementById("landingTheme").textContent=dark?"☀":"☾";try{localStorage.setItem("medqnl_landing_theme",dark?"dark":"light")}catch(e){}});
   window.addEventListener("popstate",function(){if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){gate.classList.add("login-mode");landing.style.display="none";signIn.style.display="grid"}else{gate.classList.remove("login-mode");signIn.style.display="none";landing.style.display="block"}});
   if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){gate.classList.add("login-mode");landing.style.display="none";signIn.style.display="grid"}
   try{if(localStorage.getItem("medqnl_landing_theme")==="dark"){gate.classList.add("theme-dark");document.getElementById("landingTheme").textContent="☀";document.getElementById("signinTheme").textContent="☀"}}catch(e){}
-  document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
-  document.getElementById("heroSignIn").addEventListener("click",showSignIn);
+  document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
+  document.getElementById("heroSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("backToLanding").addEventListener("click",showLanding);
   document.getElementById("togglePassword").addEventListener("click",function(){input.type=input.type==="password"?"text":"password";this.textContent=input.type==="password"?"◉":"⊙";this.setAttribute("aria-label",input.type==="password"?"Wachtwoord tonen":"Wachtwoord verbergen")});
   document.getElementById("forgotPassword").addEventListener("click",async function(){var email=emailInput.value.trim();if(!email){error.textContent="Vul eerst je e-mailadres in om een herstelmail aan te vragen.";emailInput.focus();return}this.disabled=true;try{var rr=await fetch(AUTH_URL+"/auth/v1/recover",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:email,redirect_to:"https://sajansivakaran.github.io/medqnl/inloggen/"})});if(!rr.ok)throw new Error("De herstelmail kon niet worden aangevraagd. Controleer de instellingen van Supabase Auth.");error.textContent="Als dit e-mailadres bij een account hoort, ontvang je instructies voor wachtwoordherstel."}catch(e){error.textContent=e.message||"Wachtwoordherstel is niet gelukt."}finally{this.disabled=false}});
