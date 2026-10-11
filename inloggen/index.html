@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-split-login-darkmode-security-v9">
+<meta name="medqnl-build" content="2026-10-11-visible-signup-button-v10">
 <title>MedQNL</title>
 <style>
 :root{
@@ -518,9 +518,11 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate .signin-security{border:1px solid #ccd7cc;background:#e8ebe2;border-radius:32px;padding:15px 17px;color:#53665a;font-size:12px;line-height:1.55;margin:0 0 20px}
 #accessGate .signin-submit{display:block;width:100%;border-radius:999px!important;height:52px;padding:12px 20px;background:#214e45!important;color:#fff!important;font-weight:600}
 #accessGate .signin-submit:disabled{opacity:.65;cursor:wait}
-#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;font-size:12px!important}
-#accessGate .signup-link{padding:0!important;border:0!important;background:transparent!important;color:#214e45!important;font-weight:700!important}
+#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;font-size:12px!important;display:block!important;visibility:visible!important;opacity:1!important;position:relative;z-index:5}
+#accessGate .signup-link{display:inline-block!important;visibility:visible!important;opacity:1!important;padding:4px 2px!important;border:0!important;background:transparent!important;color:#214e45!important;font-weight:700!important;text-decoration:underline!important;cursor:pointer!important}
 #accessGate.theme-dark .signup-link{color:#a9c7b4!important}
+#accessGate .signup-prompt:before{content:"";display:block;width:100%;height:1px;background:var(--line);margin:20px 0 12px}
+#accessGate .signup-link{font-size:13px!important}
 #accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
 #accessGate .signin-card .signin-back:hover{color:#214e45}
 #accessGate .signin-footer{border-top:1px solid #d9d8c9;display:flex;justify-content:space-between;gap:14px;align-items:center;padding-top:22px;margin-top:35px;color:#829186;font-size:11px}
