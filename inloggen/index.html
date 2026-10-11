@@ -134,8 +134,6 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
      });
      const session=await verify.json();
      if(!verify.ok||!session.access_token)throw new Error(session.msg||session.message||'Beveiligde adminsessie kon niet worden gestart.');
-     const profile=await getProfile(session.access_token);
-     if(!profile||profile.role!=='admin')throw new Error('Dit account heeft geen adminrechten.');
      sessionStorage.setItem('medqnl_login_access_token',session.access_token);
      sessionStorage.setItem('medqnl_admin_mode','true');
      adminStatus.style.color='var(--green)';adminStatus.textContent='Admin gecontroleerd. Je wordt doorgestuurd…';
