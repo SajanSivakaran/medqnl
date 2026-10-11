@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-split-login-screen-v8">
+<meta name="medqnl-build" content="2026-10-11-split-login-darkmode-security-v9">
 <title>MedQNL</title>
 <style>
 :root{
@@ -531,6 +531,24 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate.theme-dark .signin-form input{color:#edf3ed;border-color:#3c5549}
 #accessGate.theme-dark .signin-security{background:#24372d;border-color:#3c5549;color:#b6c7ba}
 #accessGate.theme-dark .signin-footer{border-color:#3c5549}
+
+/* Contrastcorrecties voor donkere modus op de volledige introductie */
+#accessGate.theme-dark .gate-logo{color:#edf3ed}
+#accessGate.theme-dark .eyebrow{background:#24372d;border-color:#3c5549;color:#a9c7b4}
+#accessGate.theme-dark .landing-proof{color:#b6c7ba}
+#accessGate.theme-dark .landing-proof strong{color:#edf3ed}
+#accessGate.theme-dark .feature-icon,#accessGate.theme-dark .step-icon{background:#294b39;color:#dcebe2}
+#accessGate.theme-dark .section-eyebrow,#accessGate.theme-dark .step-label{color:#a9c7b4}
+#accessGate.theme-dark .landing-footer{background:#141b18;border-color:#3c5549;color:#a9b6ab}
+#accessGate.theme-dark .footer-brand{color:#edf3ed}
+#accessGate.theme-dark .footer-copy,#accessGate.theme-dark .footer-col a{color:#b6c7ba}
+#accessGate.theme-dark .footer-col h4{color:#dce8df}
+#accessGate.theme-dark .footer-bottom{border-color:#3c5549;color:#a9b6ab}
+#accessGate.theme-dark .landing-cta-band{background:#101613}
+#accessGate.theme-dark .landing-cta-band h2{color:#edf3ed}
+#accessGate.theme-dark .landing-cta-band p{color:#b6c7ba}
+#accessGate.theme-dark .landing-cta-band button{border-color:#7a9686;color:#edf3ed}
+#accessGate.theme-dark .nav-signin{background:#294b39!important;color:#edf3ed!important;border-color:#3c5549!important}
 /* Navigatie, inlogroute en footer in MedQNL-stijl */
 #accessGate .landing-nav{position:sticky;top:0;z-index:10;justify-content:space-between;gap:24px;flex-wrap:nowrap}
 #accessGate .landing-links{display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);margin-left:auto;margin-right:clamp(8px,2vw,24px)}
@@ -773,9 +791,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   document.getElementById("exploreFeatures").addEventListener("click",function(){
     document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
   });
-  var alreadyUnlocked=false;
-  try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
-  if(alreadyUnlocked)startApp();
+  try{sessionStorage.removeItem("medqnl_access")}catch(e){}
   var signupMode=false;
   document.getElementById("signupToggle").addEventListener("click",function(){
     signupMode=!signupMode;error.textContent="";
