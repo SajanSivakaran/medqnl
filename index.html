@@ -2,7 +2,8 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">\n<meta name="medqnl-build" content="2026-10-10-farma-hotfix-3">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="medqnl-build" content="2026-10-11-daily-drug-puzzle">
 <title>MedQNL</title>
 <style>
 :root{
@@ -33,31 +34,33 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
-.daily-puzzle-card{margin-top:2px;overflow:hidden}
-.daily-puzzle-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px}
-.daily-eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;color:var(--blue)}
-.daily-puzzle-card h2{margin:5px 0 5px;font-size:25px;color:var(--navy)}
-.daily-puzzle-card p{margin:0;color:var(--muted);line-height:1.5}
-.daily-streak{min-width:96px;text-align:right;display:flex;flex-direction:column}
-.daily-streak strong{font-size:23px;color:var(--navy)}
-.daily-streak span{font-size:11px;color:var(--muted)}
-.daily-puzzle-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;margin-top:20px}
-.daily-hints{display:grid;gap:8px}
-.daily-hint{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:8px;line-height:1.5}
-.daily-hint span{flex:0 0 22px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--blue2);color:var(--blue);font-size:11px;font-weight:800}
-.daily-patient-case{padding:14px 16px;background:var(--blue2);border:1px solid var(--line);border-radius:10px;margin-bottom:10px;line-height:1.65}.daily-patient-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:800;color:var(--blue);margin-bottom:6px}.daily-patient-case strong{color:var(--navy)}.daily-story{margin-top:10px}.daily-story-section{padding:12px 14px;border:1px solid var(--line);border-radius:9px;background:var(--bg);margin-top:8px;line-height:1.65}.daily-story-section strong{color:var(--navy)}.daily-story-section p{margin:6px 0}.daily-story-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}.daily-story-grid .daily-story-section{margin-top:0}@media(max-width:720px){.daily-story-grid{grid-template-columns:1fr}}
-.daily-guess-form{padding:14px;background:var(--bg);border:1px solid var(--line);border-radius:10px}
-.daily-guess-form label{display:block;font-size:12px;font-weight:800;margin-bottom:6px;color:var(--navy)}
-.daily-guess-form input{width:100%;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);padding:11px 12px;outline:none}
-.daily-guess-form input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
-.daily-guess-form button{width:100%;margin-top:9px}
-.daily-puzzle-footer{display:flex;justify-content:space-between;gap:12px;padding-top:13px;margin-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
-.daily-puzzle-complete .daily-result{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px}
-.daily-result>div,.daily-knowledge{background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:12px}
-.daily-result-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:5px}
-.daily-result strong{font-size:18px;color:var(--navy)}
-.daily-knowledge{margin-top:10px}
-@media(max-width:850px){.daily-puzzle-body{grid-template-columns:1fr}.daily-puzzle-footer,.daily-puzzle-head{flex-direction:column}.daily-streak{text-align:left}.daily-puzzle-complete .daily-result{grid-template-columns:1fr}}
+.daily-puzzle-card{max-width:650px;margin:2px auto 0;padding:8px 0 0;background:transparent}
+.daily-puzzle-title{text-align:center;margin:0 0 18px}
+.daily-puzzle-title h2{margin:0;color:var(--navy);font-family:Georgia,"Times New Roman",serif;font-size:29px;line-height:1.2}
+.daily-puzzle-title .underline{width:40px;height:3px;border-radius:999px;background:#4aaea2;margin:10px auto 0}
+.daily-puzzle-subtitle{text-align:center;font-size:12px;color:var(--muted);margin-top:8px}
+.daily-hints{display:grid;gap:9px}
+.daily-hint{display:block;padding:12px 15px;background:#eef7fc;border:1px solid #bfdaec;border-radius:12px;text-align:center;line-height:1.4;color:#21415b}
+.daily-hint-level{font-size:11px;font-weight:800;letter-spacing:.2px;margin-bottom:5px;color:#6b8090}
+.daily-hint-text{font-size:15px;font-weight:700}
+.daily-guess-status{margin-top:12px;padding:13px 14px;border-radius:12px;text-align:center;font-size:16px;font-weight:800}
+.daily-guess-status.bad{background:#f8d4d9;border:1px solid #eb9da9;color:#8e1f2d;box-shadow:0 0 13px rgba(211,71,93,.38)}
+.daily-guess-status.good{background:#d8f0e5;border:1px solid #9fd3b6;color:#216b4a}
+.daily-guess-form{display:flex;gap:9px;align-items:center;padding:10px 0 0;background:transparent;border:0}
+.daily-guess-form input{flex:1;min-width:0;border:1px solid #bfd3e2;border-radius:9px;background:var(--card);color:var(--ink);padding:11px 12px;outline:none}
+.daily-guess-form input::placeholder{color:#8ba7ba}
+.daily-guess-form input:focus{border-color:#4aaea2;box-shadow:0 0 0 3px rgba(74,174,162,.12)}
+.daily-guess-form button{width:auto;margin:0;padding:11px 20px;background:#4aaea2;color:#fff}
+.daily-guess-list{display:grid;gap:5px;margin-top:7px}
+.daily-guess-row{display:grid;grid-template-columns:32px 1fr 20px;align-items:center;gap:8px;padding:9px 12px;border-radius:999px;background:#fff0f1;border:1px solid #f1b9c0;color:#a6222e;font-size:13px}
+.daily-guess-row.correct{background:#e8f5ef;border-color:#b7d9c6;color:#26734e}
+.daily-guess-num{width:23px;height:23px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:#eadbdd;color:#7c5960;font-size:11px;font-weight:800}
+.daily-guess-row.correct .daily-guess-num{background:#cfe7da;color:#39705a}
+.daily-guess-mark{text-align:right;font-weight:900;font-size:15px}
+.daily-puzzle-footer{display:flex;justify-content:center;gap:12px;padding-top:10px;margin-top:7px;font-size:11px;color:var(--muted)}
+.daily-puzzle-complete{margin-top:7px}
+.daily-puzzle-complete .daily-answer{margin-top:9px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:var(--bg);text-align:center;font-size:13px}
+@media(max-width:650px){.daily-puzzle-card{padding-top:0}.daily-puzzle-title h2{font-size:25px}.daily-hint-text{font-size:14px}.daily-guess-form{flex-direction:column;align-items:stretch}.daily-guess-form button{width:100%}}
 .title{font-weight:800;color:var(--navy);font-size:18px;margin-bottom:10px}@media(max-width:720px){.farma-controls,}
 .library-edit-head{display:flex;gap:10px;align-items:center;margin-bottom:12px}.library-edit-title{flex:1;font-size:22px;font-weight:800;padding:11px 13px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}.library-article-editor{min-height:520px;padding:18px;border:1px solid var(--line);border-radius:9px;background:var(--card);line-height:1.7}.library-article-editor:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue2)}
 @media(max-width:720px){.library-edit-head{display:block}.library-edit-head button{width:100%;margin-top:8px}.library-edit-title{width:100%;box-sizing:border-box}}.small{font-size:12px}.muted{color:var(--muted)}
@@ -1422,19 +1425,83 @@ function mailbox(){
 }
 
 
+
+var DAILY_DRUG_PUZZLE={
+ answerAliases:["adrenaline","epinefrine","epinephrine"],
+ levels:[
+  {level:3,label:"Moeilijk / Specialistisch",text:"Dit middel wordt lokaal vaak gecombineerd met een lokaal anaestheticum (zoals lidocaïne) om via vaatvernauwing de werkingsduur van de verdoving te verlengen en het lokale bloedverlies te verminderen. Echter, vanwege het risico op ischemische necrose (gevaar voor weefselsterfte) is deze combinatie gecontra-indiceerd bij verdovingen aan 'acra' (zoals vingers, tenen, neusvleugels en oren)."},
+  {level:2,label:"Gemiddeld",text:"Bij een graad 3 of 4 anafylactische reactie (met luchtwegobstructie of circulatoire collaps) is dit middel de absolute eerste keus acute levensreddende behandeling. Het dient hierbij zo snel mogelijk intramusculair (i.m.) te worden toegediend, bij voorkeur in het anterolaterale bovenbeen."},
+  {level:1,label:"Makkelijk",text:"Dit is ons belangrijkste lichaamseigen 'fight-or-flight' catecholamine. Het grijpt krachtig aan op zowel α- als β-adrenerge receptoren, veroorzaakt sterke vasoconstrictie, bronchodilatatie en een toename van de hartfrequentie en slagkracht. In de noodopvang staat het ook wel bekend onder zijn internationale/Amerikaanse naam epinefrine."}
+ ]
+};
+function dailyPuzzleDateKey(){
+ var d=new Date(),m=String(d.getMonth()+1).padStart(2,"0"),day=String(d.getDate()).padStart(2,"0");
+ return d.getFullYear()+"-"+m+"-"+day;
+}
+function dailyPuzzleState(){
+ var key="medqnl_daily_drug_puzzle_v1",today=dailyPuzzleDateKey(),raw=null,x=null;
+ try{raw=localStorage.getItem(key);x=raw?JSON.parse(raw):null}catch(e){}
+ if(!x||x.date!==today||!Array.isArray(x.guesses))x={date:today,guesses:[],completed:false,correct:false};
+ return x;
+}
+function saveDailyPuzzleState(x){
+ try{localStorage.setItem("medqnl_daily_drug_puzzle_v1",JSON.stringify(x))}catch(e){}
+}
+function normalizeDailyGuess(value){
+ return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
+}
+function isDailyDrugCorrect(value){
+ var x=normalizeDailyGuess(value),i;
+ for(i=0;i<DAILY_DRUG_PUZZLE.answerAliases.length;i++)if(x===DAILY_DRUG_PUZZLE.answerAliases[i])return true;
+ return false;
+}
+function dailyPuzzleHintHtml(state){
+ var revealed=Math.min(state.guesses.length+1,DAILY_DRUG_PUZZLE.levels.length),h="",i,l;
+ for(i=0;i<revealed;i++){
+  l=DAILY_DRUG_PUZZLE.levels[i];
+  h+="<div class='daily-hint'><div class='daily-hint-level'>Level "+l.level+" · "+esc(l.label)+(i===0?" · Start hier":"")+"</div><div class='daily-hint-text'>"+esc(l.text)+"</div></div>";
+ }
+ return h;
+}
+function dailyPuzzleGuessesHtml(state){
+ var h="",i,g,ok;
+ for(i=0;i<state.guesses.length;i++){
+  g=state.guesses[i];ok=!!g.correct;
+  h+="<div class='daily-guess-row "+(ok?"correct":"")+"'><span class='daily-guess-num'>"+(i+1)+"</span><span>"+esc(g.value)+"</span><span class='daily-guess-mark'>"+(ok?"✓":"×")+"</span></div>";
+ }
+ return h;
+}
+function dashboardPuzzle(){
+ var state=dailyPuzzleState(),done=!!state.completed,wrong=!state.correct&&state.guesses.length>0;
+ var status=state.correct?"<div class='daily-guess-status good'>Correct!</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":"");
+ var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><input id='dailyPuzzleGuess' type='text' maxlength='60' placeholder='Geneesmiddel...' aria-label='Geneesmiddel raden'><button class='btn primary' type='submit'>Submit</button></form>");
+ var answer=done?"<div class='daily-puzzle-complete'><div class='daily-answer'><strong>Antwoord:</strong> Adrenaline (epinefrine)</div></div>":"";
+ var progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,3)+" van 3</span><span>Dagpuzzel</span></div>";
+ return "<div class='card daily-puzzle-card'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Raad het geneesmiddel aan de hand van steeds duidelijkere klinische aanwijzingen.</div></div><div class='daily-hints'>"+dailyPuzzleHintHtml(state)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+answer+progress+"</div>";
+}
+function medqnlDailySubmit(){
+ var input=document.getElementById("dailyPuzzleGuess"),value=input?String(input.value||"").trim():"";
+ if(!value){if(input)input.focus();return}
+ var state=dailyPuzzleState();
+ if(state.completed)return;
+ var correct=isDailyDrugCorrect(value);
+ state.guesses.push({value:value,correct:correct});
+ if(correct||state.guesses.length>=3){state.completed=true;state.correct=correct}
+ saveDailyPuzzleState(state);render();
+}
 function dashboard(){
  var s=stats(),fbs=feedbackSortedCopy(),responses=0,open=0,i;
  for(i=0;i<fbs.length;i++){if(fbs[i].status!=="resolved")open++;if(String(fbs[i].response||"").trim()!=="")responses++;}
  return shell("<div class='pagehead'><div><h1>"+welcomeMessage()+"</h1><p>Dit is je persoonlijke voortgang binnen MedQNL.</p></div></div>"+
+ dashboardPuzzle()+
  "<div class='grid g3' style='margin-top:15px'><div class='card stat'><div class='label'>Vragen beantwoord</div><div class='value'>"+s.n+"</div></div><div class='card stat'><div class='label'>Correct</div><div class='value'>"+s.c+"</div></div><div class='card stat'><div class='label'>iVTG-sessies</div><div class='value'>"+state.attempts.length+"</div></div></div>"+
  "<div class='grid g2' style='margin-top:15px'><div class='card'><div class='title'>Ga verder met studeren</div>"+
  "<div class='row'><div><strong>Vragenbank</strong><div class='small muted'>Casusgerichte Nederlandse vragen.</div></div><button class='btn secondary' data-page='qbank'>Open</button></div>"+
  "<div class='row'><div><strong>iVTG Trainer</strong><div class='small muted'>Oefenen in de aparte toetsomgeving.</div></div><button class='btn secondary' data-page='ivtg'>Open</button></div>"+ "<div class='row'><div><strong>iVTG Bibliotheek</strong><div class='small muted'>Lees, zoek en markeer leerstof.</div></div><button class='btn secondary' data-page='ivtg-library'>Open</button></div></div>"+
  "<div class='card'><div style='display:flex;justify-content:space-between;align-items:center;gap:10px'><div class='title' style='margin-bottom:0'>Mailbox</div><button class='btn secondary' data-page='mailbox'>Open mailbox</button></div>"+
  "<div class='small muted' style='margin:7px 0 12px'>"+(responses?(responses+" reactie(s) van de admin ontvangen."):(open?"Je hebt feedback openstaan.":"Nog geen feedback of reacties."))+"</div>"+
- "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");}
-
-
+ "<div class='mailbox-list'>"+renderMailboxPreview(3)+"</div></div></div>");
+}
 
 function qbank(){
  var subsHtml="",i,j,list;
