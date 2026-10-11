@@ -535,6 +535,31 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 #accessGate.landing-dark .mock-question{color:#dcebe2}
 @media(max-width:900px){#accessGate .landing-links{display:none}#accessGate .landing-nav{gap:12px}#accessGate .landing-nav-actions{margin-left:auto}#accessGate .landing-start{display:none}}
 @media(max-width:520px){#accessGate .landing-announcement{font-size:10px}#accessGate .announcement-right{display:none}#accessGate .landing-nav{min-height:68px}#accessGate .landing-nav-actions{gap:5px}}
+
+/* Neutral charcoal dark mode */
+body.dark{--navy:#f0f0ee;--navy2:#d5d5d2;--blue:#b8c5cc;--blue2:#292b2d;--ink:#eeeeec;--muted:#a5a7a8;--line:#383a3c;--bg:#171819;--card:#222426;--green:#d0d2d3;--greenbg:#292b2d;--red:#f0aaa0;--redbg:#3b2727;--shadow:none}
+#accessGate.landing-dark{background:#171819;color:#eeeeec}
+#accessGate.landing-dark .landing-nav{background:#222426;border-color:#383a3c}
+#accessGate.landing-dark .landing-links a,#accessGate.landing-dark .landing-nav-actions .nav-signin{color:#eeeeec}
+#accessGate.landing-dark .theme-toggle{color:#eeeeec;border-color:#505254}
+#accessGate.landing-dark .landing-view{background:#171819}
+#accessGate.landing-dark .landing-title,#accessGate.landing-dark .feature-card h3{color:#eeeeec}
+#accessGate.landing-dark .landing-copy,#accessGate.landing-dark .landing-proof{color:#b6b8b9}
+#accessGate.landing-dark .feature-card,#accessGate.landing-dark .mock-panel{background:#222426;border-color:#383a3c}
+#accessGate.landing-dark .mock-question{color:#eeeeec}
+
+/* Dashboard visual refresh */
+.top{background:var(--card);border-bottom-color:var(--line)}
+.main:not(.library-main){padding:30px;max-width:1600px}
+.main .pagehead h1{font-size:26px;letter-spacing:-.5px}
+.main .grid.g3:has(.stat){grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.main .stat.card{border-radius:24px;min-height:118px;padding:20px;border-color:var(--line);box-shadow:none}
+.main .stat .label{font-size:13px}.main .stat .value{font-size:26px;color:var(--ink);font-weight:600}
+.main .card{box-shadow:none;border-radius:18px}
+.main .grid.g2{gap:16px}
+body.dark .side{background:#202224;color:#e5e5e3}
+body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{background:#303234;color:#fff}
+@media(max-width:850px){.main .grid.g3:has(.stat){grid-template-columns:repeat(2,minmax(0,1fr))}.main:not(.library-main){padding:18px}}
 </style>
 </head>
 <body class="gate-locked">
@@ -2991,7 +3016,7 @@ if(t.id==="calcClear"){var cd=document.getElementById("calc");if(cd){cd.setAttri
  el=t.closest?t.closest("[data-dels]"):null;if(el){if(confirm("Bron verwijderen?")){var sid=el.getAttribute("data-dels"),i;removeBy(state.sources,sid);for(i=0;i<state.questions.length;i++)state.questions[i].sourceIds=removeId(state.questions[i].sourceIds,sid);for(i=0;i<state.articles.length;i++)state.articles[i].sourceIds=removeId(state.articles[i].sourceIds,sid);save();render()}return}
  el=t.closest?t.closest("[data-admin-tab]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminTab=el.getAttribute("data-admin-tab")||"sections";save();render();return}
  el=t.closest?t.closest("[data-question-module]"):null;if(el){if(!state.ui)state.ui={};state.ui.adminQuestionModule=el.getAttribute("data-question-module")||"qbank";save();renderAdminQuestions();return}
- el=t.closest?t.closest("[data-auth-logout]"):null;if(el){try{sessionStorage.removeItem("medqnl_access");sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_user");}catch(e){}window.__medqnlAuthRole=null;window.__medqnlAuthSession=null;location.replace("/medqnl/inloggen/");return}
+ el=t.closest?t.closest("[data-auth-logout]"):null;if(el){try{sessionStorage.removeItem("medqnl_access");sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_user");}catch(e){}window.__medqnlAuthRole=null;window.__medqnlAuthSession=null;location.replace("/medqnl/");return}
  el=t.closest?t.closest("[data-feedback-toggle-resolved]"):null;if(el){if(!state.ui)state.ui={};state.ui.showResolvedFeedback=!state.ui.showResolvedFeedback;save();render();return}
  el=t.closest?t.closest("#adminQuestionSearchBtn"):null;if(el){renderAdminQuestions();var si=document.getElementById("adminQuestionSearch");if(si)si.focus();return}
  el=t.closest?t.closest("[data-editq]"):null;if(el){var qid=el.getAttribute("data-editq");if(qid==='new'){editQuestion('')}else{editQuestion(qid)}return}
@@ -3223,23 +3248,13 @@ function showAppError(err){
   root.innerHTML="<div style='min-height:100vh;display:flex;align-items:center;justify-content:center;padding:30px;background:#f5f7f9;font-family:Arial,sans-serif;color:#1e2a36'><div style='max-width:760px;background:#fff;border:1px solid #d8e0e7;border-radius:12px;padding:24px;box-shadow:0 8px 30px rgba(0,0,0,.08)'><h1 style='margin:0 0 8px'>MedQNL kon niet worden geladen</h1><p style='margin:0 0 12px;color:#70808e'>De fout is automatisch opgevangen. Vernieuw de pagina om opnieuw te proberen.</p><pre style='white-space:pre-wrap;font-size:12px;background:#f5f7f9;padding:12px;border-radius:8px'>"+esc(msg)+"</pre></div></div>";
 }
 async function bootMedQNL(){
-  try{
-    render();
-  }catch(renderErr){
-    showAppError(renderErr);
-    return;
-  }
-  try{
-    await Promise.race([
-      syncQuestionsFromServer(),
-      new Promise(function(_,reject){setTimeout(function(){reject(new Error("Vragenbank synchronisatie duurt te lang; de app blijft beschikbaar met lokaal geladen content."));},8000);})
-    ]);
-    try{await syncFeedbackFromServer();}catch(feedbackErr){console.warn("Feedback sync:",feedbackErr&&feedbackErr.message?feedbackErr.message:feedbackErr);}
-    render();
-  }catch(err){
-    console.warn("Question bank sync:",err&&err.message?err.message:err);
-    render();
-  }
+  try{render();}catch(renderErr){showAppError(renderErr);return;}
+  // Laat de interface direct verschijnen; synchroniseer data op de achtergrond.
+  Promise.resolve().then(function(){return syncQuestionsFromServer();}).then(function(){
+    return syncFeedbackFromServer();
+  }).then(function(){render();}).catch(function(err){
+    console.warn("Achtergrondsynchronisatie:",err&&err.message?err.message:err);
+  });
 }
 
 window.__medqnlBoot=bootMedQNL;
