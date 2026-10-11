@@ -642,7 +642,19 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
 
   async function validateAdminSession(){
     var token=null;
-    try{token=sessionStorage.getItem("medqnl_login_access_token")}catch(e){}
+    // Supabase GitHub OAuth may return an implicit-flow access token in the URL fragment.
+    try{
+      var fragment=new URLSearchParams(window.location.hash.replace(/^#/, ""));
+      var oauthToken=fragment.get("access_token");
+      if(oauthToken){
+        sessionStorage.setItem("medqnl_login_access_token",oauthToken);
+        sessionStorage.setItem("medqnl_admin_mode","true");
+        token=oauthToken;
+        history.replaceState(null,document.title,window.location.pathname+window.location.search);
+      } else {
+        token=sessionStorage.getItem("medqnl_login_access_token");
+      }
+    }catch(e){}
     if(!token){return;}
     try{
       var userResponse=await fetch("https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/user",{
