@@ -524,6 +524,8 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate.theme-dark .signup-prompt{background:#20332a;border-color:#3c5549;color:#edf3ed}
 #accessGate .signup-prompt:before{content:"";display:block;width:100%;height:1px;background:var(--line);margin:20px 0 12px}
 #accessGate .signup-link{font-size:13px!important}
+#accessGate a.signup-route-link{display:inline-flex!important;text-decoration:none!important;margin-top:3px!important;color:#214e45!important;background:transparent!important;border:0!important;padding:5px!important;font-size:12px!important}
+#accessGate.theme-dark a.signup-route-link{color:#a9c7b4!important}
 #accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
 #accessGate .signin-card .signin-back:hover{color:#214e45}
 #accessGate .signin-footer{border-top:1px solid #d9d8c9;display:flex;justify-content:space-between;gap:14px;align-items:center;padding-top:22px;margin-top:35px;color:#829186;font-size:11px}
@@ -729,7 +731,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         <div class="password-input-wrap"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required><button type="button" id="togglePassword" class="password-eye" aria-label="Wachtwoord tonen">◉</button></div>
         <div class="signin-security">◈ &nbsp; Je account wordt gecontroleerd via Supabase. Alleen beheerders hebben toegang tot de beheeromgeving.</div>
         <button type="submit" class="signin-submit">↪ &nbsp; Inloggen</button>
-        <div class="signup-prompt"><span id="signupPromptText">Nog geen account?</span><button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></div>
+        <div class="signup-prompt"><span id="signupPromptText">Nog geen account?</span><button type="button" id="signupToggle" class="signup-link">Account aanmaken</button><a class="signup-link signup-route-link" href="/medqnl/aanmelden/">Registreren op aparte pagina →</a></div>
         <div class="gate-error" id="accessError" aria-live="polite"></div>
       </form>
       <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
@@ -795,9 +797,10 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
   });
   try{sessionStorage.removeItem("medqnl_access")}catch(e){}
-  var signupMode=false;
+  var signupMode=location.pathname.replace(/\/$/,"").endsWith("/aanmelden");
+  if(signupMode){form.dataset.signupMode="true";document.getElementById("signupPromptText").textContent="Account aanmaken";form.querySelector(".signin-submit").textContent="Account aanmaken";document.getElementById("signupToggle").textContent="Terug naar inloggen";}
   document.getElementById("signupToggle").addEventListener("click",function(){
-    signupMode=!signupMode;error.textContent="";
+    signupMode=!signupMode;form.dataset.signupMode=signupMode?"true":"false";error.textContent="";
     document.getElementById("signupPromptText").textContent=signupMode?"Al een account?":"Nog geen account?";
     var submit=form.querySelector('button[type="submit"]');
     submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";
