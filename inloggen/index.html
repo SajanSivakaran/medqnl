@@ -24,6 +24,16 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
 .status{min-height:22px;margin-top:14px;font-size:13px;line-height:1.5;color:#a33b32}
 .back{display:inline-block;margin-top:22px;color:var(--green);font-weight:700;text-decoration:none;font-size:14px}
 @media(max-width:760px){.page{display:block}.brand-panel{display:none}.login-panel{min-height:100vh;padding:28px 22px}.mobile-logo{display:inline-block;margin-bottom:42px}h2{font-size:29px}}
+
+.admin-entry{display:inline-flex;align-items:center;justify-content:center;margin-top:14px;padding:8px 12px;border:1px solid var(--line);border-radius:9px;color:var(--green);background:transparent;font-weight:750;font-size:13px;cursor:pointer}
+.admin-entry:hover{background:#eaf1eb}
+.admin-box{display:none;margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:12px;background:#fff}
+.admin-box[aria-hidden="false"]{display:block}
+.admin-box h3{font-size:18px;margin:0 0 6px}
+.admin-box .hint{font-size:13px;color:var(--muted);line-height:1.5;margin:0 0 10px}
+.admin-box .submit{margin-top:16px}
+.admin-cancel{margin-top:16px;border:0;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}
+
 </style>
 </head>
 <body>
@@ -47,6 +57,18 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
         <p style="margin:14px 0 0;font-size:13px"><a href="#" id="forgot" style="color:var(--green);font-weight:700">Wachtwoord vergeten?</a></p>
         <div class="status" id="status" role="status" aria-live="polite"></div>
       </form>
+      <button class="admin-entry" id="adminToggle" type="button" aria-expanded="false" aria-controls="adminBox">Admin</button>
+      <section class="admin-box" id="adminBox" aria-hidden="true" aria-labelledby="adminTitle">
+        <h3 id="adminTitle">Admin inloggen</h3>
+        <p class="hint">Voer het adminwachtwoord in en meld je daarna aan met je bestaande MedQNL-account. Alleen accounts met de admin-rol krijgen beheertoegang.</p>
+        <form id="adminForm">
+          <label for="adminPassword">Adminwachtwoord</label>
+          <input id="adminPassword" name="adminPassword" type="password" autocomplete="current-password" placeholder="Adminwachtwoord" required>
+          <button class="submit" id="adminSubmit" type="submit">Verder als admin</button>
+          <div class="status" id="adminStatus" role="status" aria-live="polite"></div>
+        </form>
+        <button class="admin-cancel" id="adminCancel" type="button">Annuleren</button>
+      </section>
       <a class="back" href="/medqnl/">← Terug naar de introductiepagina</a>
     </div>
   </section>
@@ -55,19 +77,61 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
 (function(){
  const form=document.getElementById('loginForm'), status=document.getElementById('status'), button=document.getElementById('submit');
  document.getElementById('forgot').addEventListener('click',async function(e){e.preventDefault();const email=document.getElementById('email').value.trim();if(!email){status.textContent='Vul eerst je e-mailadres in.';document.getElementById('email').focus();return;}status.textContent='Resetlink wordt aangevraagd…';try{const r=await fetch('https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/recover?redirect_to='+encodeURIComponent('https://sajansivakaran.github.io/medqnl/wachtwoord-reset/'),{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'},body:JSON.stringify({email})});if(!r.ok){const d=await r.json();throw new Error(d.msg||d.message||'Resetlink aanvragen is mislukt.');}status.style.color='var(--green)';status.textContent='Als dit account bestaat, is een resetmail verstuurd. Controleer je inbox en spammap.';}catch(err){status.style.color='#a33b32';status.textContent=err.message;}});
+ async function signIn(email,password){
+   const response=await fetch('https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/token?grant_type=password',{
+     method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'},
+     body:JSON.stringify({email,password})
+   });
+   const data=await response.json();
+   if(!response.ok)throw new Error(data.msg||data.message||data.error_description||'Inloggen is niet gelukt. Controleer je gegevens.');
+   return data;
+ }
+ async function getProfile(accessToken){
+   const claims=JSON.parse(atob(accessToken.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+   const response=await fetch('https://lwgbufaxwfrzqlonhmry.supabase.co/rest/v1/profiles?select=role&id=eq.'+encodeURIComponent(claims.sub),{
+     headers:{'apikey':'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3','Authorization':'Bearer '+accessToken}
+   });
+   const data=await response.json();
+   if(!response.ok)throw new Error('De accountrol kon niet worden gecontroleerd. Controleer de toegangsregels van het profiel en probeer het opnieuw.');
+   return Array.isArray(data)&&data.length ? data[0] : null;
+ }
  form.addEventListener('submit',async function(event){
-   event.preventDefault();status.textContent='Inloggen wordt gecontroleerd…';button.disabled=true;
+   event.preventDefault();status.style.color='#a33b32';status.textContent='Inloggen wordt gecontroleerd…';button.disabled=true;
    try{
-     const response=await fetch('https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/token?grant_type=password',{
-       method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'},
-       body:JSON.stringify({email:document.getElementById('email').value.trim(),password:document.getElementById('password').value})
-     });
-     const data=await response.json();
-     if(!response.ok)throw new Error(data.msg||data.message||data.error_description||'Inloggen is niet gelukt. Controleer je gegevens.');
+     const data=await signIn(document.getElementById('email').value.trim(),document.getElementById('password').value);
+     const profile=await getProfile(data.access_token);
      sessionStorage.setItem('medqnl_login_access_token',data.access_token);
-     status.textContent='Inloggen is gelukt. De dashboardtoegang moet nog worden gecontroleerd.';
+     if(profile && profile.role==='admin'){
+       sessionStorage.setItem('medqnl_admin_mode','true');
+       status.style.color='var(--green)';status.textContent='Inloggen gelukt. Je adminaccount is herkend.';
+       window.location.href='/medqnl/';
+     }else{
+       sessionStorage.removeItem('medqnl_login_access_token');
+       sessionStorage.removeItem('medqnl_admin_mode');
+       status.textContent='Inloggen is gelukt, maar dit account heeft geen adminrechten. Beheertoegang is geweigerd.';
+     }
    }catch(error){status.textContent=error.message||'Er ging iets mis. Probeer het opnieuw.'}
    finally{button.disabled=false}
+ });
+ const adminToggle=document.getElementById('adminToggle'),adminBox=document.getElementById('adminBox'),adminForm=document.getElementById('adminForm'),adminStatus=document.getElementById('adminStatus'),adminSubmit=document.getElementById('adminSubmit');
+ adminToggle.addEventListener('click',function(){const open=adminBox.getAttribute('aria-hidden')!=='false';adminBox.setAttribute('aria-hidden',String(!open));adminToggle.setAttribute('aria-expanded',String(open));if(open)document.getElementById('adminPassword').focus();});
+ document.getElementById('adminCancel').addEventListener('click',function(){adminBox.setAttribute('aria-hidden','true');adminToggle.setAttribute('aria-expanded','false');adminForm.reset();adminStatus.textContent='';});
+ adminForm.addEventListener('submit',async function(event){
+   event.preventDefault();adminStatus.style.color='#a33b32';adminStatus.textContent='Adminwachtwoord wordt gecontroleerd…';adminSubmit.disabled=true;
+   try{
+     const supplied=document.getElementById('adminPassword').value;
+     if(supplied!=='Chanel')throw new Error('Het adminwachtwoord is onjuist.');
+     const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;
+     if(!email||!password)throw new Error('Vul eerst ook je e-mailadres en je normale accountwachtwoord hierboven in.');
+     const data=await signIn(email,password);
+     const profile=await getProfile(data.access_token);
+     if(!profile||profile.role!=='admin')throw new Error('Dit account heeft geen adminrechten. Beheertoegang is geweigerd.');
+     sessionStorage.setItem('medqnl_login_access_token',data.access_token);
+     sessionStorage.setItem('medqnl_admin_mode','true');
+     adminStatus.style.color='var(--green)';adminStatus.textContent='Admin gecontroleerd. Je wordt doorgestuurd…';
+     window.location.href='/medqnl/';
+   }catch(error){sessionStorage.removeItem('medqnl_login_access_token');sessionStorage.removeItem('medqnl_admin_mode');adminStatus.textContent=error.message||'Inloggen als admin is mislukt.'}
+   finally{adminSubmit.disabled=false}
  });
 })();
 </script>
