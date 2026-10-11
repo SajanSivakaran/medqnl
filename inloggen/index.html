@@ -524,6 +524,8 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate.theme-dark .signup-prompt{background:#20332a;border-color:#3c5549;color:#edf3ed}
 #accessGate .signup-prompt:before{content:"";display:block;width:100%;height:1px;background:var(--line);margin:20px 0 12px}
 #accessGate .signup-link{font-size:13px!important}
+#accessGate a.signup-route-link{display:inline-flex!important;text-decoration:none!important;margin-top:3px!important;color:#214e45!important;background:transparent!important;border:0!important;padding:5px!important;font-size:12px!important}
+#accessGate.theme-dark a.signup-route-link{color:#a9c7b4!important}
 #accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
 #accessGate .signin-card .signin-back:hover{color:#214e45}
 #accessGate .signin-footer{border-top:1px solid #d9d8c9;display:flex;justify-content:space-between;gap:14px;align-items:center;padding-top:22px;margin-top:35px;color:#829186;font-size:11px}
@@ -729,7 +731,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         <div class="password-input-wrap"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required><button type="button" id="togglePassword" class="password-eye" aria-label="Wachtwoord tonen">◉</button></div>
         <div class="signin-security">◈ &nbsp; Je account wordt gecontroleerd via Supabase. Alleen beheerders hebben toegang tot de beheeromgeving.</div>
         <button type="submit" class="signin-submit">↪ &nbsp; Inloggen</button>
-        <div class="signup-prompt"><span id="signupPromptText">Nog geen account?</span><button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></div>
+        <div class="signup-prompt"><span id="signupPromptText">Nog geen account?</span><button type="button" id="signupToggle" class="signup-link">Account aanmaken</button><a class="signup-link signup-route-link" href="/medqnl/aanmelden/">Registreren op aparte pagina →</a></div>
         <div class="gate-error" id="accessError" aria-live="polite"></div>
       </form>
       <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
@@ -778,15 +780,15 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     try{sessionStorage.setItem("medqnl_access","1")}catch(e){}
     if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(startApp,0);
   }
-  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();showSignIn()});
+  document.getElementById("openSignIn").addEventListener("click",function(e){e.preventDefault();window.location.href="/medqnl/inloggen/"});
   document.getElementById("landingTheme").addEventListener("click",function(){var dark=gate.classList.toggle("theme-dark");this.textContent=dark?"☀":"☾";this.setAttribute("aria-label",dark?"Lichte modus":"Donkere modus");try{localStorage.setItem("medqnl_landing_theme",dark?"dark":"light")}catch(e){}});
   document.getElementById("backToLandingTop").addEventListener("click",showLanding);
   document.getElementById("signinTheme").addEventListener("click",function(){var dark=gate.classList.toggle("theme-dark");this.textContent=dark?"☀":"☾";document.getElementById("landingTheme").textContent=dark?"☀":"☾";try{localStorage.setItem("medqnl_landing_theme",dark?"dark":"light")}catch(e){}});
   window.addEventListener("popstate",function(){if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){gate.classList.add("login-mode");landing.style.display="none";signIn.style.display="grid"}else{gate.classList.remove("login-mode");signIn.style.display="none";landing.style.display="block"}});
   if(location.pathname.replace(/\\/$/,"").endsWith("/inloggen")){gate.classList.add("login-mode");landing.style.display="none";signIn.style.display="grid"}
   try{if(localStorage.getItem("medqnl_landing_theme")==="dark"){gate.classList.add("theme-dark");document.getElementById("landingTheme").textContent="☀";document.getElementById("signinTheme").textContent="☀"}}catch(e){}
-  document.getElementById("ctaSignIn").addEventListener("click",showSignIn);
-  document.getElementById("heroSignIn").addEventListener("click",showSignIn);
+  document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
+  document.getElementById("heroSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("backToLanding").addEventListener("click",showLanding);
   document.getElementById("togglePassword").addEventListener("click",function(){input.type=input.type==="password"?"text":"password";this.textContent=input.type==="password"?"◉":"⊙";this.setAttribute("aria-label",input.type==="password"?"Wachtwoord tonen":"Wachtwoord verbergen")});
   document.getElementById("forgotPassword").addEventListener("click",async function(){var email=emailInput.value.trim();if(!email){error.textContent="Vul eerst je e-mailadres in om een herstelmail aan te vragen.";emailInput.focus();return}this.disabled=true;try{var rr=await fetch(AUTH_URL+"/auth/v1/recover",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:email,redirect_to:"https://sajansivakaran.github.io/medqnl/inloggen/"})});if(!rr.ok)throw new Error("De herstelmail kon niet worden aangevraagd. Controleer de instellingen van Supabase Auth.");error.textContent="Als dit e-mailadres bij een account hoort, ontvang je instructies voor wachtwoordherstel."}catch(e){error.textContent=e.message||"Wachtwoordherstel is niet gelukt."}finally{this.disabled=false}});
@@ -795,9 +797,10 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     document.getElementById("landingFeatures").scrollIntoView({behavior:"smooth",block:"center"});
   });
   try{sessionStorage.removeItem("medqnl_access")}catch(e){}
-  var signupMode=false;
+  var signupMode=location.pathname.replace(/\/$/,"").endsWith("/aanmelden");
+  if(signupMode){form.dataset.signupMode="true";document.getElementById("signupPromptText").textContent="Account aanmaken";form.querySelector(".signin-submit").textContent="Account aanmaken";document.getElementById("signupToggle").textContent="Terug naar inloggen";}
   document.getElementById("signupToggle").addEventListener("click",function(){
-    signupMode=!signupMode;error.textContent="";
+    signupMode=!signupMode;form.dataset.signupMode=signupMode?"true":"false";error.textContent="";
     document.getElementById("signupPromptText").textContent=signupMode?"Al een account?":"Nog geen account?";
     var submit=form.querySelector('button[type="submit"]');
     submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";
