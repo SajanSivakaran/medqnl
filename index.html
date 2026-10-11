@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-login-form-always-visible-darkmode-fix-v6">
+<meta name="medqnl-build" content="2026-10-11-login-signup-and-admin-flow-v7">
 <title>MedQNL</title>
 <style>
 :root{
@@ -483,6 +483,9 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate .signin-security{border:1px solid #ccd7cc;background:#e8ebe2;border-radius:32px;padding:15px 17px;color:#53665a;font-size:12px;line-height:1.55;margin:0 0 20px}
 #accessGate .signin-submit{display:block;width:100%;border-radius:999px!important;height:52px;padding:12px 20px;background:#214e45!important;color:#fff!important;font-weight:600}
 #accessGate .signin-submit:disabled{opacity:.65;cursor:wait}
+#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;font-size:12px!important}
+#accessGate .signup-link{padding:0!important;border:0!important;background:transparent!important;color:#214e45!important;font-weight:700!important}
+#accessGate.theme-dark .signup-link{color:#a9c7b4!important}
 #accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
 #accessGate .signin-card .signin-back:hover{color:#214e45}
 #accessGate .signin-footer{border-top:1px solid #d9d8c9;display:flex;justify-content:space-between;gap:14px;align-items:center;padding-top:22px;margin-top:35px;color:#829186;font-size:11px}
@@ -654,6 +657,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         <div class="password-input-wrap"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required><button type="button" id="togglePassword" class="password-eye" aria-label="Wachtwoord tonen">◉</button></div>
         <div class="signin-security">◈ &nbsp; Je account wordt gecontroleerd via Supabase. Alleen beheerders hebben toegang tot de beheeromgeving.</div>
         <button type="submit" class="signin-submit">↪ &nbsp; Inloggen</button>
+        <p class="signup-prompt">Nog geen account? <button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></p>
         <div class="gate-error" id="accessError" aria-live="polite"></div>
       </form>
       <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
@@ -716,11 +720,26 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   var alreadyUnlocked=false;
   try{alreadyUnlocked=sessionStorage.getItem("medqnl_access")==="1"}catch(e){}
   if(alreadyUnlocked)startApp();
+  var signupMode=false;
+  document.getElementById("signupToggle").addEventListener("click",function(){
+    signupMode=!signupMode;error.textContent="";
+    var submit=form.querySelector('button[type="submit"]');
+    submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";
+    document.getElementById("signupToggle").textContent=signupMode?"Terug naar inloggen":"Account aanmaken";
+    input.autocomplete=signupMode?"new-password":"current-password";
+  });
   form.addEventListener("submit",async function(ev){
     ev.preventDefault();
     var submit=form.querySelector('button[type="submit"]');
-    submit.disabled=true;submit.textContent="Bezig met inloggen…";error.textContent="";
+    submit.disabled=true;submit.textContent=signupMode?"Account wordt aangemaakt…":"Bezig met inloggen…";error.textContent="";
     try{
+      if(signupMode){
+        var signupResponse=await fetch(AUTH_URL+"/auth/v1/signup",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
+        var signup=await signupResponse.json();
+        if(!signupResponse.ok)throw new Error(signup.msg||signup.message||signup.error_description||"Account aanmaken is mislukt.");
+        error.textContent=signup.session?"Account aangemaakt. Controleer daarna je beheerdersrol.":"Accountaanvraag ontvangen. Controleer je e-mail om je account te bevestigen. Daarna moet de beheerder je rol activeren.";
+        return;
+      }
       var response=await fetch(AUTH_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
       var auth=await response.json();
       if(!response.ok||!auth.access_token)throw new Error(auth.msg||auth.message||auth.error_description||"Inloggen mislukt. Controleer je e-mailadres en wachtwoord.");
@@ -728,15 +747,15 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       var profiles=await profileResponse.json();
       if(!profileResponse.ok||!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"})){
         await fetch(AUTH_URL+"/auth/v1/logout",{method:"POST",headers:{"apikey":AUTH_KEY,"Authorization":"Bearer "+auth.access_token}});
-        throw new Error("Dit account heeft geen beheerdersrechten.");
+        throw new Error("Dit account heeft nog geen beheerdersrechten. Maak eerst een account aan en laat de rol admin activeren.");
       }
       window.__medqnlAuthSession=auth;
       try{localStorage.setItem("medqnl_auth_v1",JSON.stringify(auth))}catch(e){}
       startApp();
     }catch(err){
       error.textContent=err&&err.message?err.message:"Inloggen is niet gelukt.";
-      input.value="";input.focus();
-    }finally{submit.disabled=false;submit.textContent="Inloggen als admin";}
+      if(!signupMode){input.value="";input.focus();}
+    }finally{submit.disabled=false;submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";}
   });
 })();
 </script>
