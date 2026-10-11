@@ -3,19 +3,19 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-stable-puzzle-nav-fix-v4">
+<meta name="medqnl-build" content="2026-10-11-sage-ivory-fullsite-images-v1">
 <title>MedQNL</title>
 <style>
 :root{
-  --navy:#421827;--navy2:#173e5f;--blue:#2d8de6;--blue2:#eaf5ff;
-  --ink:#1e2a36;--muted:#70808e;--line:#d8e0e7;--bg:#f5f7f9;--card:#fff;
-  --green:#1b7f49;--greenbg:#e9f7ef;--red:#b42318;--redbg:#fff0ed;
-  --shadow:0 2px 10px rgba(10,32,52,.07);
+  --navy:#214e45;--navy2:#2f6658;--blue:#477f70;--blue2:#e5eee8;
+  --ink:#26352f;--muted:#697a70;--line:#d9e2d8;--bg:#f8f6f0;--card:#fffdf8;
+  --green:#28634c;--greenbg:#e3eee5;--red:#a63d35;--redbg:#f8e9e5;
+  --shadow:0 3px 14px rgba(33,78,69,.08);
 }
 body.dark{
-  --navy:#eef3f7;--navy2:#d7e4ef;--blue:#68b4ff;--blue2:#12334e;
-  --ink:#f1f5f8;--muted:#b6c4cf;--line:#344b5d;--bg:#0e1822;--card:#15232f;
-  --green:#8be0ad;--greenbg:#123c28;--red:#ffaca1;--redbg:#431b18;--shadow:none;
+  --navy:#dcebe2;--navy2:#b9d3c5;--blue:#91c3b0;--blue2:#233f35;
+  --ink:#edf3ed;--muted:#b6c7ba;--line:#3c5549;--bg:#17251f;--card:#20332a;
+  --green:#9dd7b5;--greenbg:#234735;--red:#f0aaa0;--redbg:#4a2926;--shadow:none;
 }
 *{box-sizing:border-box}
 html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
@@ -414,6 +414,47 @@ body.gate-locked #app{display:none!important}
 body.gate-unlocked #accessGate{display:none!important}
 @media(max-width:850px){#accessGate .landing-hero{grid-template-columns:1fr}#accessGate .mock-panel{max-width:560px;transform:none}#accessGate .landing-features{margin-top:35px}}
 @media(max-width:600px){#accessGate .landing-nav{height:66px;padding:0 18px}#accessGate .gate-logo{font-size:23px}#accessGate .landing-wrap{padding:35px 18px}#accessGate .landing-title{letter-spacing:-1.5px}#accessGate .landing-copy{font-size:15px}#accessGate .landing-proof{gap:14px}#accessGate .landing-features{grid-template-columns:1fr;margin-top:30px}#accessGate .signin-view{min-height:calc(100vh - 66px);padding:18px}#accessGate .signin-card{padding:23px}}
+
+/* MedQNL groen-, ivoor- en saliepalet: toegepast op de volledige leeromgeving */
+.side{background:#214e45!important;color:#edf3ed!important}
+.navlabel{color:#b8d0c3!important}
+.nav{color:#edf3ed!important}
+.nav:hover,.nav.active{background:#386b5a!important;color:#fff!important}
+.hero{background:linear-gradient(135deg,#214e45,#477f70)!important}
+.library-main-nav-reopen{background:#214e45!important;border-color:#477f70!important}
+.case{border-left-color:var(--blue)!important}
+.daily-puzzle-title .underline,.daily-progress-dot.active,.daily-guess-form button{background:#477f70!important}
+.daily-guess-form button{color:#fff!important}
+#accessGate{background:#f8f6f0;color:#26352f}
+#accessGate .landing-nav{background:rgba(248,246,240,.96);border-bottom-color:#d9e2d8}
+#accessGate .gate-logo,#accessGate .landing-title,#accessGate .signin-card h1{color:#214e45}
+#accessGate .gate-logo span,#accessGate .landing-title em{color:#477f70}
+#accessGate button,#accessGate .admin-form button{background:#214e45;color:#fff}
+#accessGate button:hover,#accessGate .admin-form button:hover{background:#173c33}
+#accessGate .nav-signin{background:#fffdf8;color:#214e45;border-color:#d9e2d8}
+#accessGate .eyebrow,#accessGate .feature-icon{background:#e5eee8;border-color:#d2e0d5;color:#214e45}
+#accessGate .landing-copy,#accessGate .landing-proof,#accessGate .landing-proof strong,#accessGate .signin-card p,#accessGate .admin-form label{color:#52695d}
+#accessGate .mock-panel,#accessGate .feature-card,#accessGate .signin-card{background:#fffdf8;border-color:#d9e2d8}
+#accessGate .mock-top{border-bottom-color:#e0e7dd;color:#697a70}
+#accessGate .mock-pill{background:#e3eee5;color:#28634c}
+#accessGate .mock-question{color:#214e45}
+#accessGate .mock-answer{border-color:#d9e2d8;color:#52695d}
+#accessGate .mock-answer.correct{background:#e3eee5;border-color:#b9d0bd;color:#214e45}
+#accessGate .mock-foot,#accessGate .feature-card p{color:#697a70}
+#accessGate .feature-card h3{color:#214e45}
+#accessGate .landing-footer{border-top-color:#d9e2d8;color:#829186}
+#accessGate .admin-entry{background:#f1f3eb;color:#214e45;border-color:#d9e2d8}
+#accessGate .admin-entry:hover{background:#e5eee8}
+#accessGate .admin-form{border-top-color:#d9e2d8}
+#accessGate .admin-form input{border-color:#cbd8cc;color:#26352f;background:#fffdf8}
+#accessGate .admin-form input:focus{border-color:#477f70;box-shadow:0 0 0 3px rgba(71,127,112,.14)}
+#accessGate .signin-back{color:#697a70}
+#accessGate .signin-back:hover{color:#214e45}
+#accessGate .landing-hero{gap:clamp(28px,5vw,72px)}
+#accessGate .mock-panel{position:relative;overflow:hidden}
+#accessGate .hero-study-image{width:100%;height:145px;object-fit:cover;display:block;border-radius:13px;margin:0 0 16px}
+#accessGate .feature-image{width:100%;height:138px;object-fit:cover;display:block;border-radius:10px;margin-bottom:14px}
+@media(max-width:600px){#accessGate .hero-study-image{height:125px}#accessGate .feature-image{height:160px}}
 .library-main-nav-reopen{position:fixed;left:0;top:88px;z-index:200;border:1px solid #31536d;border-left:0;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;padding:10px 13px;box-shadow:2px 4px 12px rgba(0,0,0,.14);font-size:13px;font-weight:700;cursor:pointer}.library-main-nav-reopen:hover{background:#1f537c}
 .app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
 .layout.app-nav-collapsed .side{display:none!important}.layout.app-nav-collapsed .main{max-width:none;width:100%}
@@ -455,7 +496,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
           </div>
         </div>
         <div class="mock-panel" aria-label="Voorbeeld van een medische oefenvraag">
-          <div class="mock-top"><span>MEDQNL · OEFENVRAAG</span><span class="mock-pill">Tutor-modus</span></div>
+          <img class="hero-study-image" src="https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1000&q=85" alt="Student geneeskunde studeert met medische literatuur" loading="eager"><div class="mock-top"><span>MEDQNL · OEFENVRAAG</span><span class="mock-pill">Tutor-modus</span></div>
           <div class="mock-question">Een patiënt start met amlodipine. Welk effect past het best bij dit geneesmiddel?</div>
           <div class="mock-answer">A. Sterke daling van de hartfrequentie</div>
           <div class="mock-answer correct">B. Arteriolaire vasodilatatie <span aria-hidden="true">✓</span></div>
@@ -465,9 +506,9 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         </div>
       </div>
       <div class="landing-features" id="landingFeatures">
-        <article class="feature-card"><div class="feature-icon">✓</div><h3>Gericht oefenen</h3><p>Train met medische vragen en bekijk uitleg om niet alleen het antwoord, maar ook de redenering te begrijpen.</p></article>
-        <article class="feature-card"><div class="feature-icon">✦</div><h3>Dagelijkse uitdaging</h3><p>Houd je kennis actief met de dagpuzzel en kom regelmatig terug voor een nieuwe oefening.</p></article>
-        <article class="feature-card"><div class="feature-icon">↗</div><h3>Volg je voortgang</h3><p>Bekijk je resultaten, bewaar belangrijke vragen en besteed extra aandacht aan onderwerpen die moeilijk blijven.</p></article>
+        <article class="feature-card"><img class="feature-image" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=700&q=80" alt="Medische student bestudeert leerstof" loading="lazy"><div class="feature-icon">✓</div><h3>Gericht oefenen</h3><p>Train met medische vragen en bekijk uitleg om niet alleen het antwoord, maar ook de redenering te begrijpen.</p></article>
+        <article class="feature-card"><img class="feature-image" src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?auto=format&fit=crop&w=700&q=80" alt="Medische studie en onderzoek" loading="lazy"><div class="feature-icon">✦</div><h3>Dagelijkse uitdaging</h3><p>Houd je kennis actief met de dagpuzzel en kom regelmatig terug voor een nieuwe oefening.</p></article>
+        <article class="feature-card"><img class="feature-image" src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=700&q=80" alt="Zorgprofessional bekijkt medische gegevens" loading="lazy"><div class="feature-icon">↗</div><h3>Volg je voortgang</h3><p>Bekijk je resultaten, bewaar belangrijke vragen en besteed extra aandacht aan onderwerpen die moeilijk blijven.</p></article>
       </div>
     </div>
     <footer class="landing-footer">MedQNL · Een centrale plek voor jouw medische voorbereiding</footer>
