@@ -667,7 +667,9 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       });
       if(!profileResponse.ok)throw new Error("Profile check failed");
       var profiles=await profileResponse.json();
-      if(!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"}))throw new Error("Not an admin");
+      if(!Array.isArray(profiles)||!profiles.length||["admin","student"].indexOf(profiles[0].role)<0)throw new Error("No valid MedQNL role");
+      window.__medqnlAuthRole=profiles[0].role;
+      sessionStorage.setItem("medqnl_admin_mode",profiles[0].role==="admin"?"true":"false");
       startApp(token,user);
     }catch(e){
       try{sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_access")}catch(ignore){}
