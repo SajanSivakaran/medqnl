@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-nav-direct-fix-v2">
+<meta name="medqnl-build" content="2026-10-11-stable-puzzle-nav-fix-v3">
 <title>MedQNL</title>
 <style>
 :root{
@@ -34,7 +34,7 @@ a{color:var(--blue)}
 .main{width:100%;max-width:1450px;margin:0 auto;padding:26px}.main.library-main{padding:0!important;margin-top:0!important}.library-page-head{padding:10px 18px 8px;margin:0}.library-page-head h1{margin:0}.library-page-head p{margin:3px 0 0}.main.library-main .lib-layout{margin:0!important;padding:0!important}.main.library-main .lib-side{margin-top:0!important;top:0!important}
 .pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;margin-bottom:18px}.pagehead h1{margin:0;color:var(--navy);font-size:30px}.pagehead p{margin:6px 0 0;color:var(--muted)}
 .card{background:var(--card);border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);padding:18px}
-.daily-puzzle-page{max-width:820px;margin:0 auto}
+.daily-puzzle-page{max-width:920px;margin:0 auto}
 .daily-puzzle-shell{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:24px}
 .daily-puzzle-topbar{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;margin-bottom:20px}
 .daily-puzzle-title{text-align:left}
@@ -55,13 +55,19 @@ a{color:var(--blue)}
 .daily-hint-text{font-size:14px;font-weight:600}
 .daily-guess-status{margin-top:12px;padding:13px 14px;border-radius:11px;text-align:center;font-size:15px;font-weight:800}
 .daily-guess-status.bad{background:var(--redbg);border:1px solid #e7aaa1;color:var(--red);box-shadow:0 0 12px rgba(180,35,24,.18)}
-.daily-guess-status.good{background:var(--greenbg);border:1px solid #9fd3b2;color:var(--green)}
-.daily-guess-form{display:flex;gap:9px;align-items:center;padding:14px 0 0;background:transparent;border:0}
+.daily-guess-status.good{background:var(--greenbg);border:1px solid #9fd3b6;color:var(--green)}
+.daily-guess-form{display:flex;gap:9px;align-items:flex-start;padding:14px 0 0;background:transparent;border:0}
 .daily-guess-input-wrap{position:relative;flex:1;min-width:0}
 .daily-guess-form input{width:100%;min-width:0;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);padding:12px 13px;outline:none}
 .daily-guess-form input::placeholder{color:var(--muted)}
 .daily-guess-form input:focus{border-color:#4aaea2;box-shadow:0 0 0 3px rgba(74,174,162,.12)}
 .daily-guess-form button{width:auto;margin:0;padding:12px 22px;background:#4aaea2;color:#fff}
+.daily-autocomplete{position:absolute;left:0;right:0;top:calc(100% + 5px);z-index:2000;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 10px 26px rgba(10,32,52,.16);max-height:260px;overflow:auto;display:none}
+.daily-autocomplete.show{display:block}
+.daily-autocomplete-option{display:block;width:100%;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:10px 12px;text-align:left;font-size:13px;cursor:pointer}
+.daily-autocomplete-option:last-child{border-bottom:0}
+.daily-autocomplete-option:hover,.daily-autocomplete-option.active{background:var(--blue2);color:var(--blue)}
+.daily-autocomplete-empty{padding:10px 12px;font-size:12px;color:var(--muted)}
 .daily-guess-list{display:grid;gap:6px;margin-top:10px}
 .daily-guess-row{display:grid;grid-template-columns:30px 1fr 22px;align-items:center;gap:8px;padding:9px 12px;border-radius:10px;background:var(--redbg);border:1px solid #efc0bb;color:var(--red);font-size:13px}
 .daily-guess-row.correct{background:var(--greenbg);border-color:#b7d9c6;color:var(--green)}
@@ -345,7 +351,7 @@ body.dark #accessGate input{background:#0e1822;color:#f1f5f8;border-color:#344b5
 
 .library-main-nav-reopen{position:fixed;left:0;top:88px;z-index:200;border:1px solid #31536d;border-left:0;background:#173e5f;color:#fff;border-radius:0 9px 9px 0;padding:10px 13px;box-shadow:2px 4px 12px rgba(0,0,0,.14);font-size:13px;font-weight:700;cursor:pointer}.library-main-nav-reopen:hover{background:#1f537c}
 .app-nav-global-toggle{width:34px;height:34px;border:0;background:transparent;color:var(--muted);border-radius:7px;font-size:21px;display:flex;align-items:center;justify-content:center;margin-right:8px}.app-nav-global-toggle:hover{background:var(--bg);color:var(--ink)}
-.layout.app-nav-collapsed .side{display:none}.layout.app-nav-collapsed .main{max-width:none;width:100%}
+.layout.app-nav-collapsed .side{display:none!important}.layout.app-nav-collapsed .main{max-width:none;width:100%}
 .lib-layout.lib-nav-collapsed{grid-template-columns:minmax(0,1fr)!important}.lib-layout.lib-nav-collapsed .lib-side{display:none}.standalone-library .lib-article{min-width:0}
 .note-nav-icon{width:17px!important;height:17px!important;display:inline-block;vertical-align:-4px;margin-right:6px;stroke:currentColor;fill:none;stroke-width:1.8}
 .ivtg-landing-head{margin-bottom:10px}.ivtg-landing{max-width:1060px;margin:0 auto}.ivtg-welcome{padding:18px 4px 22px}.ivtg-welcome .small{letter-spacing:1px;font-weight:800;color:var(--blue)}.ivtg-welcome h2{margin:6px 0 7px;font-size:31px;color:var(--navy)}.ivtg-welcome p{margin:0;color:var(--muted);font-size:15px}.ivtg-start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.ivtg-start-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px;min-height:185px;box-shadow:var(--shadow)}.ivtg-start-card h3{font-size:21px;margin:12px 0 7px;color:var(--navy)}.ivtg-start-card p{color:var(--muted);line-height:1.6;margin:0 0 18px}.ivtg-card-icon{width:42px;height:42px;border-radius:10px;background:var(--blue2);color:var(--blue);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800}.ivtg-subject-panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.ivtg-subject-choice{width:100%;display:flex;align-items:center;justify-content:space-between;border:0;border-bottom:1px solid var(--line);background:transparent;color:var(--ink);padding:13px 4px;font-size:14px;text-align:left}.ivtg-subject-choice:last-child{border-bottom:0}.ivtg-subject-choice:hover{color:var(--blue)}@media(max-width:760px){.ivtg-start-grid{grid-template-columns:1fr}}
@@ -1388,15 +1394,17 @@ window.__medqnlGoDashboard=function(){
 window.__medqnlToggleMainNav=function(){
  if(!state.ui)state.ui={};
  state.ui.appNavCollapsed=!state.ui.appNavCollapsed;
- state.ui.libraryAutoCollapsed=false;
- state.ui.libraryNavOpen=false;
  save();render();
 };
 function shell(body){
  var s=stats(),progressOpen=page.indexOf("performance")===0;
  if(!state.ui)state.ui={};
+ if(page!=="ivtg-library"){
+   state.ui.appNavCollapsed=false;
+   state.ui.libraryAutoCollapsed=false;
+   state.ui.libraryNavOpen=false;
+ }
  var appNavCollapsed=!!state.ui.appNavCollapsed;
- if(page!=="ivtg-library"){state.ui.appNavCollapsed=false;state.ui.libraryNavOpen=false}
  var progressExpanded=!!state.ui.progressExpanded;
  var qtree="<div class='progress-nav-group'>"+
  "<button class='nav progress-main-nav "+(progressOpen?"active":"")+"' data-toggle-progress>"+(ICONS.progress||ICONS.qbank)+" Voortgang <span class='progress-chevron'>"+(progressExpanded?"▾":"▸")+"</span></button>"+
@@ -1516,15 +1524,12 @@ function dailyPuzzleCycle(){
  var start=DAILY_PUZZLE_ANCHOR+(cycle*DAILY_PUZZLE_INTERVAL);
  return {cycle:cycle,start:start,end:start+DAILY_PUZZLE_INTERVAL};
 }
-function dailyPuzzleForCycle(cycle){
- return DAILY_PUZZLES[cycle%DAILY_PUZZLES.length];
-}
+function dailyPuzzleForCycle(cycle){return DAILY_PUZZLES[cycle%DAILY_PUZZLES.length]}
 function dailyPuzzleState(){
- var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v2",raw=null,x=null;
+ var info=dailyPuzzleCycle(),key="medqnl_daily_drug_puzzle_v4",raw=null,x=null;
  try{raw=localStorage.getItem(key);x=raw?JSON.parse(raw):null}catch(e){}
- if(!x||x.cycle!==info.cycle||!Array.isArray(x.guesses)){
-  x={cycle:info.cycle,guesses:[],completed:false,correct:false,completedAt:0};
- }
+ if(!x||x.cycle!==info.cycle||!Array.isArray(x.guesses))x={cycle:info.cycle,guesses:[],completed:false,correct:false,flashcardOpen:false,completedAt:0};
+ if(typeof x.flashcardOpen!=="boolean")x.flashcardOpen=false;
  return x;
 }
 function dailyPuzzleStats(){
@@ -1533,35 +1538,42 @@ function dailyPuzzleStats(){
  if(!x||typeof x.current!=="number"||typeof x.best!=="number")x={current:0,best:0,lastCompletedCycle:null};
  return x;
 }
-function saveDailyPuzzleState(x){
- try{localStorage.setItem("medqnl_daily_drug_puzzle_v2",JSON.stringify(x))}catch(e){}
-}
-function saveDailyPuzzleStats(x){
- try{localStorage.setItem("medqnl_daily_streak_v1",JSON.stringify(x))}catch(e){}
-}
-function normalizeDailyGuess(value){
- return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z]/g,"");
-}
+function saveDailyPuzzleState(x){try{localStorage.setItem("medqnl_daily_drug_puzzle_v4",JSON.stringify(x))}catch(e){}}
+function saveDailyPuzzleStats(x){try{localStorage.setItem("medqnl_daily_streak_v1",JSON.stringify(x))}catch(e){}}
+function normalizeDailyGuess(value){return String(value||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
 function isDailyDrugCorrect(puzzle,value){
  var x=normalizeDailyGuess(value),i;
  for(i=0;i<puzzle.answerAliases.length;i++)if(x===normalizeDailyGuess(puzzle.answerAliases[i]))return true;
  return false;
 }
+function dailyDrugMatches(value){
+ var q=normalizeDailyGuess(value),out=[];
+ if(!q)return out;
+ for(var i=0;i<DAILY_DRUG_OPTIONS.length;i++){
+  var name=DAILY_DRUG_OPTIONS[i],n=normalizeDailyGuess(name);
+  if(n.indexOf(q)===0 || n.indexOf(" "+q)>=0)out.push(name);
+ }
+ out.sort(function(a,b){
+  var an=normalizeDailyGuess(a),bn=normalizeDailyGuess(b),as=an.indexOf(q)===0,bs=bn.indexOf(q)===0;
+  if(as!==bs)return as?-1:1;
+  return an.localeCompare(bn);
+ });
+ return out.slice(0,8);
+}
 function dailyPuzzleHintHtml(state,puzzle){
  var revealed=state.correct?Math.min(state.guesses.length,puzzle.levels.length):Math.min(state.guesses.length+1,puzzle.levels.length),h="",i,l;
  if(revealed<1)revealed=1;
- for(i=0;i<revealed;i++){
-  l=puzzle.levels[i];
-  h+="<div class='daily-hint'><div class='daily-hint-level'>Level "+l.level+" · "+esc(l.label)+(i===0?" · Start hier":"")+"</div><div class='daily-hint-text'>"+esc(l.text)+"</div></div>";
- }
+ for(i=0;i<revealed;i++){l=puzzle.levels[i];h+="<div class='daily-hint'><div class='daily-hint-level'>Level "+l.level+" · "+esc(l.label)+"</div><div class='daily-hint-text'>"+esc(l.text)+"</div></div>"}
+ return h;
+}
+function dailyPuzzleProgressHtml(state){
+ var h="",i,max=4,revealed=state.correct?Math.min(state.guesses.length,max):Math.min(state.guesses.length+1,max);
+ for(i=0;i<max;i++)h+="<span class='daily-progress-dot "+(i<revealed?"active":"")+"'></span>";
  return h;
 }
 function dailyPuzzleGuessesHtml(state){
  var h="",i,g,ok;
- for(i=0;i<state.guesses.length;i++){
-  g=state.guesses[i];ok=!!g.correct;
-  h+="<div class='daily-guess-row "+(ok?"correct":"")+"'><span class='daily-guess-num'>"+(i+1)+"</span><span>"+esc(g.value)+"</span><span class='daily-guess-mark'>"+(ok?"✓":"×")+"</span></div>";
- }
+ for(i=0;i<state.guesses.length;i++){g=state.guesses[i];ok=!!g.correct;h+="<div class='daily-guess-row "+(ok?"correct":"")+"'><span class='daily-guess-num'>"+(i+1)+"</span><span>"+esc(g.value)+"</span><span class='daily-guess-mark'>"+(ok?"✓":"×")+"</span></div>"}
  return h;
 }
 function dailyFlashcardHtml(puzzle){
@@ -1570,15 +1582,15 @@ function dailyFlashcardHtml(puzzle){
  return "<div class='daily-flashcard-inline'><div class='daily-flashcard-head'><div><div class='eyebrow'>Geneesmiddel · Flashcard</div><h3>"+esc(puzzle.title)+"</h3></div></div><div class='daily-flashcard-grid'><div class='daily-flashcard-block'><h4>Medicijngroep</h4><p>"+esc(f.group)+"</p></div><div class='daily-flashcard-block'><h4>Kinetiek &amp; dosering</h4><p>"+esc(f.kinetics)+"</p></div><div class='daily-flashcard-block full'><h4>Werkingsmechanisme</h4><p>"+esc(f.mechanism)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste indicaties</h4><p>"+esc(f.indications)+"</p></div><div class='daily-flashcard-block full'><h4>Belangrijkste bijwerkingen</h4><ul>"+ad+"</ul></div></div></div>";
 }
 function dailyPuzzlePage(){
- var info=dailyPuzzleCycle(),puzzle=dailyPuzzleForCycle(info.cycle),state=dailyPuzzleState(),streak=dailyPuzzleStats(),done=!!state.completed;
- var wrong=!state.correct&&state.guesses.length>0&& !done;
- var status=state.correct?"<div class='daily-guess-status good'>Correct!</div>":(done?"<div class='daily-guess-status bad'>Geen juiste gok. Het antwoord was "+esc(puzzle.title)+".</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":""));
- var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><div class='daily-guess-input-wrap'><input id='dailyPuzzleGuess' list='dailyDrugOptions' type='text' maxlength='100' placeholder='Typ een geneesmiddel...' aria-label='Geneesmiddel raden' autocomplete='off'><datalist id='dailyDrugOptions'>"+DAILY_DRUG_OPTIONS.map(function(x){return "<option value='"+esc(x)+"'></option>"}).join("")+"</datalist></div><button class='btn primary' type='submit'>Submit</button></form>");
+ var info=dailyPuzzleCycle(),puzzle=dailyPuzzleForCycle(info.cycle),state=dailyPuzzleState(),streak=dailyPuzzleStats(),done=!!state.completed,wrong=!state.correct&&state.guesses.length>0&&!done;
+ var status=state.correct?"<div class='daily-guess-status good'>Correct! Je streak is bijgewerkt.</div>":(done?"<div class='daily-guess-status bad'>Geen juiste gok. Het antwoord was "+esc(puzzle.title)+".</div>":(wrong?"<div class='daily-guess-status bad'>Incorrect!</div>":""));
+ var form=done?"":("<form id='dailyPuzzleForm' class='daily-guess-form' autocomplete='off'><div class='daily-guess-input-wrap'><input id='dailyPuzzleGuess' type='text' maxlength='100' placeholder='Typ een geneesmiddel...' aria-label='Geneesmiddel raden' autocomplete='off'><div id='dailyAutocomplete' class='daily-autocomplete' role='listbox'></div></div><button class='btn primary' type='submit'>Submit</button></form>");
  var action=done?"<div class='daily-complete-actions'><button type='button' class='btn secondary' data-open-daily-flashcard>Medicijn inzien?</button></div>"+(state.flashcardOpen?dailyFlashcardHtml(puzzle):""):"";
-var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel om "+next.toLocaleDateString("nl-NL",{day:"2-digit",month:"2-digit"})+" · "+next.toLocaleTimeString("nl-NL",{hour:"2-digit",minute:"2-digit"})+"</span></div>";
- return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Ontgrendel de volgende aanwijzing na een foute gok.</p></div></div>"+
- "<div class='daily-puzzle-page'><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div>"+
- "<div class='daily-puzzle-card'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Level 4 is het moeilijkst. Bij elke foute gok komt een makkelijker level vrij.</div></div><div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>");
+ var next=new Date(info.end),progress="<div class='daily-puzzle-footer'><span>Poging "+Math.min(state.guesses.length+1,4)+" van 4</span><span>Nieuwe puzzel over 24 uur</span></div>";
+ return shell("<div class='pagehead'><div><h1>Dagpuzzel</h1><p>Elke 24 uur een nieuw geneesmiddel. Level 4 is het moeilijkst.</p></div></div>"+
+ "<div class='daily-puzzle-page'><div class='daily-puzzle-shell'><div class='daily-puzzle-topbar'><div class='daily-puzzle-title'><h2>What's the Drug?</h2><div class='underline'></div><div class='daily-puzzle-subtitle'>Raad het geneesmiddel. Na iedere foute gok krijg je één extra aanwijzing.</div></div><div class='daily-streaks'><div class='daily-streak-card'><div class='label'>Huidige streak</div><strong>"+streak.current+"</strong></div><div class='daily-streak-card'><div class='label'>Beste streak</div><strong>"+streak.best+"</strong></div></div></div>"+
+ "<div class='daily-level-intro'><span>Hints</span><div class='daily-progress'>"+dailyPuzzleProgressHtml(state)+"</div></div>"+
+ "<div class='daily-hints'>"+dailyPuzzleHintHtml(state,puzzle)+"</div>"+status+form+(state.guesses.length?("<div class='daily-guess-list'>"+dailyPuzzleGuessesHtml(state)+"</div>"):"")+action+progress+"</div></div>");
 }
 function medqnlDailySubmit(){
  var input=document.getElementById("dailyPuzzleGuess"),value=input?String(input.value||"").trim():"";
@@ -1588,14 +1600,15 @@ function medqnlDailySubmit(){
  var correct=isDailyDrugCorrect(puzzle,value);
  state.guesses.push({value:value,correct:correct});
  if(correct||state.guesses.length>=4){
-  state.completed=true;state.correct=correct;state.completedAt=Date.now();
+  state.completed=true;state.correct=correct;state.completedAt=Date.now();state.flashcardOpen=false;
   if(correct){
    var streak=dailyPuzzleStats();
-   if(streak.lastCompletedCycle===info.cycle)return;
-   streak.current=(streak.lastCompletedCycle===info.cycle-1)?streak.current+1:1;
-   streak.best=Math.max(streak.best,streak.current);
-   streak.lastCompletedCycle=info.cycle;
-   saveDailyPuzzleStats(streak);
+   if(streak.lastCompletedCycle!==info.cycle){
+    streak.current=(streak.lastCompletedCycle===info.cycle-1)?streak.current+1:1;
+    streak.best=Math.max(streak.best,streak.current);
+    streak.lastCompletedCycle=info.cycle;
+    saveDailyPuzzleStats(streak);
+   }
   }
  }
  saveDailyPuzzleState(state);render();
@@ -2033,7 +2046,7 @@ function library(){
    // Rebuild the edit form cleanly so the rich editor stays inside the form.
    articleWrap="<form id='libraryArticleForm' data-id='"+esc(a.id)+"'><div class='library-edit-head'><input name='title' class='library-edit-title' value='"+esc(a.title||"")+"' aria-label='Titel van hoofdstuk'><button class='btn primary' type='submit'>Wijzigingen opslaan</button></div><div class='lib-content-wrap'>"+(toc?"<div class='library-toc'>"+toc+"</div>":"")+editorBody.replace("</form>","")+"<div class='footnotes'><strong>Bronnen</strong>"+srcFoot(a.sourceIds||[])+"</div></div></form>";
  }
- return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div>"+(collapsed?"<button type='button' class='library-main-nav-reopen' onclick='window.__medqnlToggleMainNav()' title='Hoofdnavigatie tonen'>☰ <span>Menu</span></button>":"")+"<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap+"</article></div>");
+ return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>"+(canEdit?"Admin-modus: bewerk titel en inhoud direct en sla de wijzigingen op.":"Blader door secties en hoofdstukken.")+"</p></div></div>"+(state.ui.appNavCollapsed?"<button type='button' class='library-main-nav-reopen' onclick='window.__medqnlToggleMainNav()' title='Hoofdnavigatie tonen'>☰ <span>Menu</span></button>":"")+"<div class='lib-layout "+(collapsed?"lib-nav-collapsed":"")+"'><aside class='lib-side'>"+navs+"</aside><article class='lib-article'><div class='lib-library-head'><button class='lib-tool' data-toggle-libnav title='Hoofdstukken tonen/verbergen'>☰</button><input id='libsearch' class='lib-library-search' placeholder='Zoek in iVTG Bibliotheek'></div>"+articleWrap+"</article></div>");
 }
 function sectionTitle(id){var s=byId(state.sections,id);return s?s.title:"Ongecategoriseerd"}
 function result(){
@@ -2526,8 +2539,32 @@ document.addEventListener("click",function(ev){
  var t=ev.target,el;
  el=t.closest?t.closest("[data-toggle-progress]"):null;
  if(el){if(!state.ui)state.ui={};state.ui.progressExpanded=!state.ui.progressExpanded;save();render();return}
+ el=t.closest?t.closest("[data-open-daily-flashcard]"):null;
+ if(el){
+   var ds=dailyPuzzleState();
+   ds.flashcardOpen=true;
+   saveDailyPuzzleState(ds);
+   render();
+   return;
+ }
  el=t.closest?t.closest("[data-flashcard]"):null;if(el){el.classList.toggle("flipped");return}
- el=t.closest?t.closest("[data-page]"):null;if(el){stopChapterTimer();stopSessionTimer();var previousPage=page;page=el.getAttribute("data-page");session=null;if(!state.ui)state.ui={};if(page==="ivtg-library"){state.ui.appNavCollapsed=true;state.ui.libraryNavOpen=false;state.ui.libraryAutoCollapsed=true;startChapterTimer(articleId);}else{state.ui.appNavCollapsed=false;state.ui.libraryAutoCollapsed=false;state.ui.libraryNavOpen=false}save();render();return}
+ el=t.closest?t.closest("[data-page]"):null;
+ if(el){
+   stopChapterTimer();stopSessionTimer();
+   page=el.getAttribute("data-page");session=null;
+   if(!state.ui)state.ui={};
+   if(page==="ivtg-library"){
+     state.ui.appNavCollapsed=true;
+     state.ui.libraryAutoCollapsed=true;
+     state.ui.libraryNavOpen=false;
+     startChapterTimer(articleId);
+   }else{
+     state.ui.appNavCollapsed=false;
+     state.ui.libraryAutoCollapsed=false;
+     state.ui.libraryNavOpen=false;
+   }
+   save();render();return
+ }
  el=t.closest?t.closest("[data-delsec]"):null;if(el){removeSection(el.getAttribute("data-delsec"));return}
  el=t.closest?t.closest("[data-toggle-lib-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.libSectionCollapsed)state.ui.libSectionCollapsed={};var sid=el.getAttribute("data-toggle-lib-section");state.ui.libSectionCollapsed[sid]=!state.ui.libSectionCollapsed[sid];save();render();return}
  el=t.closest?t.closest("[data-toggle-med-section]"):null;if(el){if(!state.ui)state.ui={};if(!state.ui.medicalSectionCollapsed)state.ui.medicalSectionCollapsed={};var msid=el.getAttribute("data-toggle-med-section");state.ui.medicalSectionCollapsed[msid]=!state.ui.medicalSectionCollapsed[msid];save();render();return}
@@ -2541,7 +2578,14 @@ document.addEventListener("click",function(ev){
  if(t.id==="startqb"){startQbankSession();return}
  if(t.id==="globalSearchBtn"){searchGlobal();return}
  el=t.closest?t.closest("[data-editq-search]"):null;if(el){editQuestion(el.getAttribute("data-editq-search"));return}
- el=t.closest?t.closest("[data-art-search]"):null;if(el){articleId=el.getAttribute("data-art-search");page="ivtg-library";startChapterTimer(articleId);render();return}
+ el=t.closest?t.closest("[data-art-search]"):null;if(el){
+   articleId=el.getAttribute("data-art-search");page="ivtg-library";
+   if(!state.ui)state.ui={};
+   state.ui.appNavCollapsed=true;
+   state.ui.libraryAutoCollapsed=true;
+   state.ui.libraryNavOpen=false;
+   startChapterTimer(articleId);save();render();return
+ }
  el=t.closest?t.closest("[data-source-search]"):null;if(el){var sid=el.getAttribute("data-source-search"),src=byId(state.sources,sid);if(src&&src.url)window.open(src.url,"_blank");return}
  if(t.hasAttribute("data-toggle-appnav")){window.__medqnlToggleMainNav();return}
  if(t.hasAttribute("data-toggle-libnav")){if(!state.ui)state.ui={};state.ui.libNavCollapsed=!state.ui.libNavCollapsed;save();render();return}
@@ -2557,7 +2601,14 @@ document.addEventListener("click",function(ev){
  el=t.closest?t.closest("[data-grade-open]"):null;if(el&&session){gradeOpenAnswer(el.getAttribute("data-grade-open"));return}
  el=t.closest?t.closest("[data-end]"):null;if(el&&session){if(confirm("Sessie beëindigen?")){stopChapterTimer();stopSessionTimer();page="result";render()}return}
  el=t.closest?t.closest("[data-print]"):null;if(el){window.print();return}
- el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){stopChapterTimer();stopSessionTimer();page="ivtg-library";render();return}
+ el=t.closest?t.closest("[data-open-library]"):null;if(el&&session){
+   stopChapterTimer();stopSessionTimer();page="ivtg-library";
+   if(!state.ui)state.ui={};
+   state.ui.appNavCollapsed=true;
+   state.ui.libraryAutoCollapsed=true;
+   state.ui.libraryNavOpen=false;
+   save();render();return
+ }
  el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null;openNotebook(nq?nq.id:"general","drawer");return}
  el=t.closest?t.closest("[data-drawer-art]"):null;if(el){articleId=el.getAttribute("data-drawer-art");var d=document.getElementById("ivtgLibraryDrawer");if(d){d.remove();openIVTGLibraryDrawer()}return}
  el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
