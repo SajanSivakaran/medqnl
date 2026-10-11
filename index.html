@@ -617,14 +617,14 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
     if(input)input.value="";
     window.scrollTo(0,0);
   }
-  function startApp(accessToken){
+  function startApp(accessToken,user){
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
     window.__medqnlAuthRole="admin";
-    window.__medqnlAuthSession=accessToken;
+    window.__medqnlAuthSession={access_token:accessToken,user:user};
     if(gate)gate.style.display="none";
     if(input)input.value="";
-    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(function(){startApp(accessToken)},0);
+    if(typeof window.__medqnlBoot==="function")window.__medqnlBoot();else setTimeout(function(){startApp(accessToken,user)},0);
   }
   document.getElementById("openSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
   document.getElementById("ctaSignIn").addEventListener("click",function(){window.location.href="/medqnl/inloggen/"});
@@ -656,7 +656,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       if(!profileResponse.ok)throw new Error("Profile check failed");
       var profiles=await profileResponse.json();
       if(!Array.isArray(profiles)||!profiles.some(function(p){return p.role==="admin"}))throw new Error("Not an admin");
-      startApp(token);
+      startApp(token,user);
     }catch(e){
       try{sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_access")}catch(ignore){}
       if(error)error.textContent="Je admin-sessie is verlopen of dit account heeft geen adminrechten. Log opnieuw in.";
