@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-visible-signup-button-v10">
+<meta name="medqnl-build" content="2026-10-11-login-validation-signup-visible-v11">
 <title>MedQNL</title>
 <style>
 :root{
@@ -518,9 +518,10 @@ body.gate-unlocked #accessGate{display:none!important}
 #accessGate .signin-security{border:1px solid #ccd7cc;background:#e8ebe2;border-radius:32px;padding:15px 17px;color:#53665a;font-size:12px;line-height:1.55;margin:0 0 20px}
 #accessGate .signin-submit{display:block;width:100%;border-radius:999px!important;height:52px;padding:12px 20px;background:#214e45!important;color:#fff!important;font-weight:600}
 #accessGate .signin-submit:disabled{opacity:.65;cursor:wait}
-#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;font-size:12px!important;display:block!important;visibility:visible!important;opacity:1!important;position:relative;z-index:5}
-#accessGate .signup-link{display:inline-block!important;visibility:visible!important;opacity:1!important;padding:4px 2px!important;border:0!important;background:transparent!important;color:#214e45!important;font-weight:700!important;text-decoration:underline!important;cursor:pointer!important}
-#accessGate.theme-dark .signup-link{color:#a9c7b4!important}
+#accessGate .signup-prompt{text-align:center;margin:18px 0 0!important;padding:16px 12px!important;font-size:13px!important;display:flex!important;flex-direction:column;align-items:center;gap:9px;background:#e8eee7;border:1px solid #cddbcf;border-radius:14px;visibility:visible!important;opacity:1!important;position:relative;z-index:5}
+#accessGate .signup-link{display:inline-flex!important;align-items:center;justify-content:center;visibility:visible!important;opacity:1!important;padding:10px 18px!important;border:1px solid #214e45!important;border-radius:999px!important;background:#214e45!important;color:#fff!important;font-weight:700!important;text-decoration:none!important;cursor:pointer!important;width:auto!important;margin:0!important}
+#accessGate.theme-dark .signup-link{background:#a9c7b4!important;color:#17251f!important;border-color:#a9c7b4!important}
+#accessGate.theme-dark .signup-prompt{background:#20332a;border-color:#3c5549;color:#edf3ed}
 #accessGate .signup-prompt:before{content:"";display:block;width:100%;height:1px;background:var(--line);margin:20px 0 12px}
 #accessGate .signup-link{font-size:13px!important}
 #accessGate .signin-card .signin-back{display:block;margin:18px auto 0;color:#697a70;background:transparent!important;padding:10px}
@@ -721,14 +722,14 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       <div class="gate-logo">MedQ<span>NL</span></div>
       <h1>Log in op je <em>MedQNL-account.</em></h1>
       <p>Log in met je e-mailadres en wachtwoord om verder te gaan naar je MedQNL-studieomgeving.</p>
-      <form id="accessForm" class="admin-form signin-form" autocomplete="on" style="display:block">
+      <form id="accessForm" class="admin-form signin-form" autocomplete="on" style="display:block" novalidate>
         <label for="accessEmail">E-mailadres</label>
         <input id="accessEmail" type="email" autocomplete="username" placeholder="jouw@email.nl" required>
         <div class="password-label-row"><label for="accessPassword">Wachtwoord</label><button type="button" class="forgot-password" id="forgotPassword">Wachtwoord vergeten?</button></div>
         <div class="password-input-wrap"><input id="accessPassword" type="password" autocomplete="current-password" placeholder="Voer je wachtwoord in" required><button type="button" id="togglePassword" class="password-eye" aria-label="Wachtwoord tonen">◉</button></div>
         <div class="signin-security">◈ &nbsp; Je account wordt gecontroleerd via Supabase. Alleen beheerders hebben toegang tot de beheeromgeving.</div>
         <button type="submit" class="signin-submit">↪ &nbsp; Inloggen</button>
-        <p class="signup-prompt">Nog geen account? <button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></p>
+        <div class="signup-prompt"><span id="signupPromptText">Nog geen account?</span><button type="button" id="signupToggle" class="signup-link">Account aanmaken</button></div>
         <div class="gate-error" id="accessError" aria-live="polite"></div>
       </form>
       <button type="button" class="signin-back" id="backToLanding">← Terug naar de introductiepagina</button>
@@ -797,6 +798,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   var signupMode=false;
   document.getElementById("signupToggle").addEventListener("click",function(){
     signupMode=!signupMode;error.textContent="";
+    document.getElementById("signupPromptText").textContent=signupMode?"Al een account?":"Nog geen account?";
     var submit=form.querySelector('button[type="submit"]');
     submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";
     document.getElementById("signupToggle").textContent=signupMode?"Terug naar inloggen":"Account aanmaken";
@@ -804,6 +806,10 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
   });
   form.addEventListener("submit",async function(ev){
     ev.preventDefault();
+    error.style.color="#b42318";
+    if(!emailInput.value.trim()||!input.value){error.textContent="Vul je e-mailadres en wachtwoord in.";(!emailInput.value.trim()?emailInput:input).focus();return;}
+    if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(emailInput.value.trim())){error.textContent="Vul een geldig e-mailadres in.";emailInput.focus();return;}
+    if(input.value.length<6){error.textContent="Je wachtwoord moet minimaal 6 tekens bevatten.";input.focus();return;}
     var submit=form.querySelector('button[type="submit"]');
     submit.disabled=true;submit.textContent=signupMode?"Account wordt aangemaakt…":"Bezig met inloggen…";error.textContent="";
     try{
@@ -811,7 +817,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
         var signupResponse=await fetch(AUTH_URL+"/auth/v1/signup",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
         var signup=await signupResponse.json();
         if(!signupResponse.ok)throw new Error(signup.msg||signup.message||signup.error_description||"Account aanmaken is mislukt.");
-        error.textContent=signup.session?"Account aangemaakt. Controleer daarna je beheerdersrol.":"Accountaanvraag ontvangen. Controleer je e-mail om je account te bevestigen. Daarna moet de beheerder je rol activeren.";
+        error.style.color="#214e45";error.textContent=signup.session?"Account aangemaakt. Je kunt nu inloggen.":"Account aangemaakt. Controleer je e-mail om het account te bevestigen. Log daarna in met dit e-mailadres en wachtwoord.";
         return;
       }
       var response=await fetch(AUTH_URL+"/auth/v1/token?grant_type=password",{method:"POST",headers:{"Content-Type":"application/json","apikey":AUTH_KEY},body:JSON.stringify({email:emailInput.value.trim(),password:input.value})});
@@ -828,7 +834,7 @@ body.dark .question-rich-selection-toolbar{box-shadow:0 8px 24px rgba(0,0,0,.35)
       startApp();
     }catch(err){
       error.textContent=err&&err.message?err.message:"Inloggen is niet gelukt.";
-      if(!signupMode){input.value="";input.focus();}
+      if(!signupMode){input.focus();}
     }finally{submit.disabled=false;submit.textContent=signupMode?"Account aanmaken":"↪  Inloggen";}
   });
 })();
