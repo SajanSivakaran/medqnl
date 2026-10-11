@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="medqnl-build" content="2026-10-11-stable-puzzle-nav-fix-v3">
+<meta name="medqnl-build" content="2026-10-11-stable-puzzle-nav-fix-v4">
 <title>MedQNL</title>
 <style>
 :root{
@@ -2402,6 +2402,34 @@ document.addEventListener("keydown",function(ev){
   ev.preventDefault();var form=img.closest("form"),store=form&&form.querySelector("input[name='inlineImages']"),imgs={};if(store)try{imgs=JSON.parse(store.value||"{}")}catch(e){}
   var id=img.getAttribute("data-inline-editor-id");delete imgs[id];if(store)store.value=JSON.stringify(imgs);img.remove();
  }
+});
+function renderDailyAutocomplete(){
+ var input=document.getElementById("dailyPuzzleGuess"),box=document.getElementById("dailyAutocomplete");if(!input||!box)return;
+ var matches=dailyDrugMatches(input.value),html="",i;
+ for(i=0;i<matches.length;i++)html+="<button type='button' class='daily-autocomplete-option' data-daily-option='"+esc(matches[i])+"'>"+esc(matches[i])+"</button>";
+ box.innerHTML=html;box.classList.toggle("show",matches.length>0);
+}
+document.addEventListener("input",function(ev){if(ev.target&&ev.target.id==="dailyPuzzleGuess")renderDailyAutocomplete()});
+document.addEventListener("click",function(ev){
+ var choice=ev.target.closest?ev.target.closest("[data-daily-option]"):null;
+ if(choice){
+  var input=document.getElementById("dailyPuzzleGuess"),box=document.getElementById("dailyAutocomplete");
+  if(input)input.value=choice.getAttribute("data-daily-option");if(box)box.classList.remove("show");if(input)input.focus();return;
+ }
+ var inside=ev.target.closest?ev.target.closest(".daily-guess-input-wrap"):null;
+ if(!inside){var box2=document.getElementById("dailyAutocomplete");if(box2)box2.classList.remove("show")}
+});
+document.addEventListener("keydown",function(ev){
+ var input=ev.target&&ev.target.id==="dailyPuzzleGuess"?ev.target:null;if(!input)return;
+ var box=document.getElementById("dailyAutocomplete");if(!box||!box.classList.contains("show"))return;
+ var opts=Array.from(box.querySelectorAll(".daily-autocomplete-option")),idx=-1,i;
+ for(i=0;i<opts.length;i++)if(opts[i].classList.contains("active"))idx=i;
+ if(ev.key==="ArrowDown"&&opts.length){ev.preventDefault();idx=(idx+1)%opts.length;}
+ else if(ev.key==="ArrowUp"&&opts.length){ev.preventDefault();idx=(idx<=0?opts.length:idx)-1;}
+ else if(ev.key==="Enter"&&idx>=0){ev.preventDefault();input.value=opts[idx].getAttribute("data-daily-option");box.classList.remove("show");return;}
+ else if(ev.key==="Escape"){box.classList.remove("show");return;}
+ else return;
+ for(i=0;i<opts.length;i++)opts[i].classList.toggle("active",i===idx);
 });
 document.addEventListener("click",function(ev){
  var t=ev.target,qimg=t.closest?t.closest("#questionStemEditor .inline-image-editor"):null;
