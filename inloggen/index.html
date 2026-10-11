@@ -44,6 +44,7 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
         <label for="password">Wachtwoord</label>
         <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Je wachtwoord" required>
         <button class="submit" id="submit" type="submit">Inloggen</button>
+        <p style="margin:14px 0 0;font-size:13px"><a href="#" id="forgot" style="color:var(--green);font-weight:700">Wachtwoord vergeten?</a></p>
         <div class="status" id="status" role="status" aria-live="polite"></div>
       </form>
       <a class="back" href="/medqnl/">← Terug naar de introductiepagina</a>
@@ -53,6 +54,7 @@ input:focus{border-color:#4f9273;box-shadow:0 0 0 3px #4f927320}
 <script>
 (function(){
  const form=document.getElementById('loginForm'), status=document.getElementById('status'), button=document.getElementById('submit');
+ document.getElementById('forgot').addEventListener('click',async function(e){e.preventDefault();const email=document.getElementById('email').value.trim();if(!email){status.textContent='Vul eerst je e-mailadres in.';document.getElementById('email').focus();return;}status.textContent='Resetlink wordt aangevraagd…';try{const r=await fetch('https://lwgbufaxwfrzqlonhmry.supabase.co/auth/v1/recover?redirect_to='+encodeURIComponent('https://sajansivakaran.github.io/medqnl/wachtwoord-reset/'),{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_CYEpEZ_WZx9OvCT_yrH2Tg_7Oy77IL3'},body:JSON.stringify({email})});if(!r.ok){const d=await r.json();throw new Error(d.msg||d.message||'Resetlink aanvragen is mislukt.');}status.style.color='var(--green)';status.textContent='Als dit account bestaat, is een resetmail verstuurd. Controleer je inbox en spammap.';}catch(err){status.style.color='#a33b32';status.textContent=err.message;}});
  form.addEventListener('submit',async function(event){
    event.preventDefault();status.textContent='Inloggen wordt gecontroleerd…';button.disabled=true;
    try{
