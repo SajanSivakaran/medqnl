@@ -1454,7 +1454,7 @@ function ensureQuestionBankSeeds(x){
  return changed;
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
-var medqnlCloudContentReady=false,medqnlCloudUserReady=false,medqnlCloudSaveTimer=null,medqnlCloudStatusTimer=null,medqnlCloudSaveRunning=false;
+var medqnlCloudContentReady=false,medqnlCloudUserReady=false,medqnlCloudSaveTimer=null,medqnlCloudStatusTimer=null,medqnlCloudSaveRunning=false,medqnlCloudSaveAgain=false;
 function cloudSaveStatus(message,isError){
  var el=document.getElementById("medqnl-cloud-save-status");
  if(!el){el=document.createElement("div");el.id="medqnl-cloud-save-status";el.setAttribute("role","status");el.style.cssText="position:fixed;right:16px;bottom:16px;z-index:99999;max-width:calc(100vw - 32px);padding:10px 14px;border-radius:9px;box-shadow:0 4px 18px rgba(0,0,0,.16);font:600 13px/1.4 Arial,sans-serif;background:#173d32;color:#fff;";document.body.appendChild(el)}
@@ -1471,10 +1471,11 @@ function medqnlUserStatePayload(){
 function scheduleMedqnlCloudSave(){
  if(!authToken()||(!medqnlCloudContentReady&&!medqnlCloudUserReady))return;
  if(medqnlCloudSaveTimer)clearTimeout(medqnlCloudSaveTimer);
- medqnlCloudSaveTimer=setTimeout(function(){persistMedqnlCloudState()},700);
+ medqnlCloudSaveTimer=setTimeout(function(){medqnlCloudSaveTimer=null;persistMedqnlCloudState()},700);
 }
 async function persistMedqnlCloudState(){
- if(!authToken()||medqnlCloudSaveRunning)return;
+ if(!authToken())return;
+ if(medqnlCloudSaveRunning){medqnlCloudSaveAgain=true;return;}
  medqnlCloudSaveRunning=true;cloudSaveStatus("Opslaan in Supabase…",false);
  try{
   var jobs=[];
@@ -1493,7 +1494,7 @@ async function persistMedqnlCloudState(){
   cloudSaveStatus("NIET opgeslagen in Supabase — "+(e&&e.message?e.message:String(e)),true);
  }finally{
   medqnlCloudSaveRunning=false;
-  if(medqnlCloudSaveTimer){clearTimeout(medqnlCloudSaveTimer);medqnlCloudSaveTimer=null}
+  if(medqnlCloudSaveAgain){medqnlCloudSaveAgain=false;scheduleMedqnlCloudSave()}
  }
 }
 async function syncMedqnlContentFromServer(){
