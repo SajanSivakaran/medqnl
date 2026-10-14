@@ -2973,6 +2973,13 @@ document.addEventListener("mousedown",function(ev){
  var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
  if(btn)ev.preventDefault();
 });
+document.addEventListener("change",function(ev){
+ var qsize=ev.target.closest?ev.target.closest("[data-question-rich-size]"):null;
+ if(!qsize)return;
+ var selectedSize=qsize.value,storedSize=window.__questionRichSelection;
+ if(selectedSize&&storedSize&&storedSize.editorId)applyRichFontSize(storedSize.editorId,selectedSize);
+ qsize.value="";
+});
 document.addEventListener("click",function(ev){
  var qbtn=ev.target.closest?ev.target.closest("[data-question-rich-format]"):null;
  if(qbtn){
@@ -2980,8 +2987,6 @@ document.addEventListener("click",function(ev){
    if(stored&&stored.editorId)applyRichFormat(stored.editorId,qbtn.getAttribute("data-question-rich-format"));
    return;
  }
- var qsize=ev.target.closest?ev.target.closest("[data-question-rich-size]"):null;
- if(qsize){var selectedSize=qsize.value,storedSize=window.__questionRichSelection;qsize.value="";if(selectedSize&&storedSize&&storedSize.editorId)applyRichFontSize(storedSize.editorId,selectedSize);return}
  var sizeSelect=ev.target.closest?ev.target.closest("[data-rich-size-editor]"):null;
  if(sizeSelect){var sizeEditorId=sizeSelect.getAttribute("data-rich-size-editor"),sizeVal=sizeSelect.value;sizeSelect.value="";if(sizeVal)applyRichFontSize(sizeEditorId,sizeVal);return}
  var btn=ev.target.closest?ev.target.closest("[data-rich-format]"):null;
