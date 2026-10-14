@@ -1454,7 +1454,87 @@ function ensureQuestionBankSeeds(x){
  return changed;
 }
 function clone(x){return JSON.parse(JSON.stringify(x))}
-function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+var medqnlCloudContentReady=false,medqnlCloudUserReady=false,medqnlCloudSaveTimer=null,medqnlCloudStatusTimer=null,medqnlCloudSaveRunning=false;
+function cloudSaveStatus(message,isError){
+ var el=document.getElementById("medqnl-cloud-save-status");
+ if(!el){el=document.createElement("div");el.id="medqnl-cloud-save-status";el.setAttribute("role","status");el.style.cssText="position:fixed;right:16px;bottom:16px;z-index:99999;max-width:calc(100vw - 32px);padding:10px 14px;border-radius:9px;box-shadow:0 4px 18px rgba(0,0,0,.16);font:600 13px/1.4 Arial,sans-serif;background:#173d32;color:#fff;";document.body.appendChild(el)}
+ el.textContent=message;el.style.background=isError?"#8a2424":"#173d32";el.style.display="block";
+ if(medqnlCloudStatusTimer)clearTimeout(medqnlCloudStatusTimer);
+ if(!isError&&message.indexOf("Opslaan")!==0)medqnlCloudStatusTimer=setTimeout(function(){var x=document.getElementById("medqnl-cloud-save-status");if(x)x.style.display="none"},3500);
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));scheduleMedqnlCloudSave()}
+function medqnlUserStatePayload(){
+ var x=clone(state);
+ delete x.questions;delete x.articles;delete x.sections;delete x.sources;delete x.feedback;delete x.questionSeedVersion;
+ return x;
+}
+function scheduleMedqnlCloudSave(){
+ if(!authToken()||(!medqnlCloudContentReady&&!medqnlCloudUserReady))return;
+ if(medqnlCloudSaveTimer)clearTimeout(medqnlCloudSaveTimer);
+ medqnlCloudSaveTimer=setTimeout(function(){persistMedqnlCloudState()},700);
+}
+async function persistMedqnlCloudState(){
+ if(!authToken()||medqnlCloudSaveRunning)return;
+ medqnlCloudSaveRunning=true;cloudSaveStatus("Opslaan in Supabase…",false);
+ try{
+  var jobs=[];
+  if(medqnlCloudUserReady){
+   var userId=tokenUserId();
+   if(!userId)throw new Error("Gebruikers-ID ontbreekt; cloudopslag is niet bevestigd.");
+   jobs.push(supabaseAuthedFetch("/rest/v1/user_state?on_conflict=user_id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:userId,state:medqnlUserStatePayload(),updated_at:new Date().toISOString()})}).then(async function(rr){var d=await rr.json().catch(function(){return []});if(!rr.ok)throw new Error((d&&d.message)||"Persoonlijke gegevens konden niet naar Supabase worden opgeslagen.")}));
+  }
+  if(medqnlCloudContentReady&&window.__medqnlAuthRole==="admin"){
+   jobs.push(supabaseAuthedFetch("/rest/v1/app_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:1,content:{version:1,sections:state.sections,articles:state.articles,sources:state.sources},updated_at:new Date().toISOString()})}).then(async function(rr){var d=await rr.json().catch(function(){return []});if(!rr.ok)throw new Error((d&&d.message)||"Bibliotheekinhoud kon niet naar Supabase worden opgeslagen.")}));
+  }
+  await Promise.all(jobs);
+  cloudSaveStatus("Opgeslagen in Supabase",false);
+ }catch(e){
+  console.error("MedQNL cloudopslag mislukt:",e);
+  cloudSaveStatus("NIET opgeslagen in Supabase — "+(e&&e.message?e.message:String(e)),true);
+ }finally{
+  medqnlCloudSaveRunning=false;
+  if(medqnlCloudSaveTimer){clearTimeout(medqnlCloudSaveTimer);medqnlCloudSaveTimer=null}
+ }
+}
+async function syncMedqnlContentFromServer(){
+ var rr=await supabaseAuthedFetch("/rest/v1/app_content?select=id,content&id=eq.1&limit=1",{method:"GET"});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||"Bibliotheek uit Supabase ophalen mislukt.");
+ var row=Array.isArray(d)?d[0]:null;
+ if(!row){
+  if(window.__medqnlAuthRole!=="admin")return;
+  var payload={version:1,sections:state.sections,articles:state.articles,sources:state.sources};
+  var wr=await supabaseAuthedFetch("/rest/v1/app_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({id:1,content:payload,updated_at:new Date().toISOString()})});
+  var wd=await wr.json().catch(function(){return []});
+  if(!wr.ok)throw new Error((wd&&wd.message)||"Eerste bibliotheekopslag in Supabase is mislukt.");
+  row=Array.isArray(wd)?wd[0]:null;
+  if(!row)row={content:payload};
+ }
+ var content=row.content||{};
+ if(Array.isArray(content.sections)&&Array.isArray(content.articles)&&Array.isArray(content.sources)){
+  state.sections=content.sections;state.articles=content.articles;state.sources=content.sources;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  medqnlCloudContentReady=true;
+  cloudSaveStatus("Bibliotheek geladen vanuit Supabase",false);
+ }
+}
+async function syncMedqnlUserStateFromServer(){
+ var userId=tokenUserId();if(!userId||!authToken())return;
+ var rr=await supabaseAuthedFetch("/rest/v1/user_state?select=user_id,state&user_id=eq."+encodeURIComponent(userId)+"&limit=1",{method:"GET"});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||"Persoonlijke gegevens uit Supabase ophalen mislukt.");
+ var row=Array.isArray(d)?d[0]:null;
+ if(row&&row.state&&typeof row.state==="object"){
+  var remote=row.state,excluded={questions:1,articles:1,sections:1,sources:1,feedback:1,questionSeedVersion:1};
+  Object.keys(remote).forEach(function(k){if(!excluded[k])state[k]=remote[k]});
+  localStorage.setItem(KEY,JSON.stringify(state));
+ }else{
+  var wr=await supabaseAuthedFetch("/rest/v1/user_state?on_conflict=user_id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:userId,state:medqnlUserStatePayload(),updated_at:new Date().toISOString()})});
+  var wd=await wr.json().catch(function(){return []});
+  if(!wr.ok)throw new Error((wd&&wd.message)||"Eerste persoonlijke opslag in Supabase is mislukt.");
+ }
+ medqnlCloudUserReady=true;
+}
 function authToken(){return window.__medqnlAuthSession&&window.__medqnlAuthSession.access_token?window.__medqnlAuthSession.access_token:""}
 async function supabaseAuthedFetch(path,options){
  var opts=Object.assign({},options||{}),headers=Object.assign({},opts.headers||{});
@@ -1573,6 +1653,87 @@ async function updateFeedbackRemote(fb){
  if(rr.status===401){logout();throw new Error('Sessie is verlopen. Log opnieuw in.')}
  if(!rr.ok)throw new Error((d&&d.message)||'Feedback bijwerken mislukt.');
  return Array.isArray(d)?d[0]:d;
+}
+var medqnlCloudContentReady=false,medqnlCloudUserReady=false,medqnlCloudSaveTimer=null,medqnlCloudStatusTimer=null,medqnlCloudSaveRunning=false;
+function cloudSaveStatus(message,isError){
+ var el=document.getElementById("medqnl-cloud-save-status");
+ if(!el){el=document.createElement("div");el.id="medqnl-cloud-save-status";el.setAttribute("role","status");el.style.cssText="position:fixed;right:16px;bottom:16px;z-index:99999;max-width:calc(100vw - 32px);padding:10px 14px;border-radius:9px;box-shadow:0 4px 18px rgba(0,0,0,.16);font:600 13px/1.4 Arial,sans-serif;background:#173d32;color:#fff;";document.body.appendChild(el)}
+ el.textContent=message;el.style.background=isError?"#8a2424":"#173d32";el.style.display="block";
+ if(medqnlCloudStatusTimer)clearTimeout(medqnlCloudStatusTimer);
+ if(!isError&&message.indexOf("Opslaan")!==0)medqnlCloudStatusTimer=setTimeout(function(){var x=document.getElementById("medqnl-cloud-save-status");if(x)x.style.display="none"},3500);
+}
+function save(){localStorage.setItem(KEY,JSON.stringify(state));scheduleMedqnlCloudSave()}
+function medqnlUserStatePayload(){
+ var x=clone(state);
+ delete x.questions;delete x.articles;delete x.sections;delete x.sources;delete x.feedback;delete x.questionSeedVersion;
+ return x;
+}
+function scheduleMedqnlCloudSave(){
+ if(!authToken()||(!medqnlCloudContentReady&&!medqnlCloudUserReady))return;
+ if(medqnlCloudSaveTimer)clearTimeout(medqnlCloudSaveTimer);
+ medqnlCloudSaveTimer=setTimeout(function(){persistMedqnlCloudState()},700);
+}
+async function persistMedqnlCloudState(){
+ if(!authToken()||medqnlCloudSaveRunning)return;
+ medqnlCloudSaveRunning=true;cloudSaveStatus("Opslaan in Supabase…",false);
+ try{
+  var jobs=[];
+  if(medqnlCloudUserReady){
+   var userId=tokenUserId();
+   if(!userId)throw new Error("Gebruikers-ID ontbreekt; cloudopslag is niet bevestigd.");
+   jobs.push(supabaseAuthedFetch("/rest/v1/user_state?on_conflict=user_id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:userId,state:medqnlUserStatePayload(),updated_at:new Date().toISOString()})}).then(async function(rr){var d=await rr.json().catch(function(){return []});if(!rr.ok)throw new Error((d&&d.message)||"Persoonlijke gegevens konden niet naar Supabase worden opgeslagen.")}));
+  }
+  if(medqnlCloudContentReady&&window.__medqnlAuthRole==="admin"){
+   jobs.push(supabaseAuthedFetch("/rest/v1/app_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({id:1,content:{version:1,sections:state.sections,articles:state.articles,sources:state.sources},updated_at:new Date().toISOString()})}).then(async function(rr){var d=await rr.json().catch(function(){return []});if(!rr.ok)throw new Error((d&&d.message)||"Bibliotheekinhoud kon niet naar Supabase worden opgeslagen.")}));
+  }
+  await Promise.all(jobs);
+  cloudSaveStatus("Opgeslagen in Supabase",false);
+ }catch(e){
+  console.error("MedQNL cloudopslag mislukt:",e);
+  cloudSaveStatus("NIET opgeslagen in Supabase — "+(e&&e.message?e.message:String(e)),true);
+ }finally{
+  medqnlCloudSaveRunning=false;
+  if(medqnlCloudSaveTimer){clearTimeout(medqnlCloudSaveTimer);medqnlCloudSaveTimer=null}
+ }
+}
+async function syncMedqnlContentFromServer(){
+ var rr=await supabaseAuthedFetch("/rest/v1/app_content?select=id,content&id=eq.1&limit=1",{method:"GET"});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||"Bibliotheek uit Supabase ophalen mislukt.");
+ var row=Array.isArray(d)?d[0]:null;
+ if(!row){
+  if(window.__medqnlAuthRole!=="admin")return;
+  var payload={version:1,sections:state.sections,articles:state.articles,sources:state.sources};
+  var wr=await supabaseAuthedFetch("/rest/v1/app_content?on_conflict=id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=representation"},body:JSON.stringify({id:1,content:payload,updated_at:new Date().toISOString()})});
+  var wd=await wr.json().catch(function(){return []});
+  if(!wr.ok)throw new Error((wd&&wd.message)||"Eerste bibliotheekopslag in Supabase is mislukt.");
+  row=Array.isArray(wd)?wd[0]:null;
+  if(!row)row={content:payload};
+ }
+ var content=row.content||{};
+ if(Array.isArray(content.sections)&&Array.isArray(content.articles)&&Array.isArray(content.sources)){
+  state.sections=content.sections;state.articles=content.articles;state.sources=content.sources;
+  localStorage.setItem(KEY,JSON.stringify(state));
+  medqnlCloudContentReady=true;
+  cloudSaveStatus("Bibliotheek geladen vanuit Supabase",false);
+ }
+}
+async function syncMedqnlUserStateFromServer(){
+ var userId=tokenUserId();if(!userId||!authToken())return;
+ var rr=await supabaseAuthedFetch("/rest/v1/user_state?select=user_id,state&user_id=eq."+encodeURIComponent(userId)+"&limit=1",{method:"GET"});
+ var d=await rr.json().catch(function(){return []});
+ if(!rr.ok)throw new Error((d&&d.message)||"Persoonlijke gegevens uit Supabase ophalen mislukt.");
+ var row=Array.isArray(d)?d[0]:null;
+ if(row&&row.state&&typeof row.state==="object"){
+  var remote=row.state,excluded={questions:1,articles:1,sections:1,sources:1,feedback:1,questionSeedVersion:1};
+  Object.keys(remote).forEach(function(k){if(!excluded[k])state[k]=remote[k]});
+  localStorage.setItem(KEY,JSON.stringify(state));
+ }else{
+  var wr=await supabaseAuthedFetch("/rest/v1/user_state?on_conflict=user_id",{method:"POST",headers:{"Content-Type":"application/json",Prefer:"resolution=merge-duplicates,return=minimal"},body:JSON.stringify({user_id:userId,state:medqnlUserStatePayload(),updated_at:new Date().toISOString()})});
+  var wd=await wr.json().catch(function(){return []});
+  if(!wr.ok)throw new Error((wd&&wd.message)||"Eerste persoonlijke opslag in Supabase is mislukt.");
+ }
+ medqnlCloudUserReady=true;
 }
 function isQuestionMarked(id){return !!(state.questionMarks&&state.questionMarks[id])}
 function toggleQuestionMark(id){if(!state.questionMarks||typeof state.questionMarks!=="object")state.questionMarks={};if(state.questionMarks[id])delete state.questionMarks[id];else state.questionMarks[id]=true;save();render()}
@@ -3249,11 +3410,18 @@ function showAppError(err){
 }
 async function bootMedQNL(){
   try{render();}catch(renderErr){showAppError(renderErr);return;}
-  // Laat de interface direct verschijnen; synchroniseer data op de achtergrond.
-  Promise.resolve().then(function(){return syncQuestionsFromServer();}).then(function(){
+  // Toon de interface direct; laad en activeer cloudopslag daarna op de achtergrond.
+  Promise.resolve().then(function(){return syncFeedbackFromServer();}).then(function(){
+    return syncMedqnlContentFromServer();
+  }).then(function(){
+    return syncMedqnlUserStateFromServer();
+  }).then(function(){
+    return syncQuestionsFromServer();
+  }).then(function(){
     return syncFeedbackFromServer();
   }).then(function(){render();}).catch(function(err){
     console.warn("Achtergrondsynchronisatie:",err&&err.message?err.message:err);
+    cloudSaveStatus("Synchronisatie mislukt — "+(err&&err.message?err.message:String(err)),true);
   });
 }
 
