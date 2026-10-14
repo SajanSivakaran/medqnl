@@ -1572,8 +1572,13 @@ async function deleteQuestionRemote(id){
  }catch(e){console.warn('Verwijdermarkering kon niet worden opgeslagen:',e)}
 }
 function persistQuestionRemote(question){
- upsertQuestionRemote(question).catch(function(err){
-   alert("Vraag is lokaal opgeslagen, maar kon niet permanent worden opgeslagen: "+(err&&err.message?err.message:String(err)));
+ cloudSaveStatus("Vraag opslaan in Supabase…",false);
+ upsertQuestionRemote(question).then(function(){
+   cloudSaveStatus("Vraag opgeslagen in Supabase",false);
+ }).catch(function(err){
+   console.error("Vraag niet opgeslagen in Supabase:",err);
+   cloudSaveStatus("VRAAG NIET opgeslagen in Supabase — "+(err&&err.message?err.message:String(err)),true);
+   alert("Vraag is lokaal opgeslagen, maar NIET in Supabase opgeslagen: "+(err&&err.message?err.message:String(err)));
  });
 }
 async function syncQuestionsFromServer(){
