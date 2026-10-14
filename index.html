@@ -2537,11 +2537,7 @@ function sourcePicker(ids){
 
 function richFormatToolbar(editorId){
  return "<div class='rich-format-toolbar' data-rich-toolbar='"+esc(editorId)+"'>"+
-   "<button type='button' class='rich-format-btn' data-rich-format='bold' data-rich-editor='"+esc(editorId)+"' title='Vet'><strong>B</strong></button>"+
-   "<button type='button' class='rich-format-btn' data-rich-format='italic' data-rich-editor='"+esc(editorId)+"' title='Cursief'><em>I</em></button>"+
-   "<label class='rich-format-size-label' title='Geselecteerde tekstgrootte'>Grootte <select class='rich-format-size' data-rich-size-editor='"+esc(editorId)+"' aria-label='Tekstgrootte'><option value=''>Selecteer grootte</option><option value='12px'>12</option><option value='14px'>14</option><option value='16px'>16</option><option value='18px'>18</option><option value='20px'>20</option><option value='24px'>24</option><option value='28px'>28</option><option value='32px'>32</option><option value='36px'>36</option></select></label>"+
-   "<button type='button' class='rich-format-btn' data-rich-format='formatBlock:h2' data-rich-editor='"+esc(editorId)+"' title='Tussenkop'>H2</button>"+
-   "<button type='button' class='rich-format-btn' data-rich-format='formatBlock:h3' data-rich-editor='"+esc(editorId)+"' title='Kleinere tussenkop'>H3</button>"+
+   "<label class='rich-format-size-label' title='Selecteer eerst tekst en kies daarna de gewenste tekstgrootte'>Tekstgrootte <select class='rich-format-size' data-rich-size-editor='"+esc(editorId)+"' aria-label='Tekstgrootte'><option value=''>Kies grootte</option><option value='12px'>12 px</option><option value='14px'>14 px</option><option value='16px'>16 px</option><option value='18px'>18 px</option><option value='20px'>20 px</option><option value='24px'>24 px</option><option value='28px'>28 px</option><option value='32px'>32 px</option><option value='36px'>36 px</option><option value='40px'>40 px</option><option value='48px'>48 px</option></select></label>"+
  "</div>";
 }
 function questionForm(q){
