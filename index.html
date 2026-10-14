@@ -2439,6 +2439,19 @@ function serializeLibraryBlocks(editor){
  }
  return sanitizeRichHtml(out);
 }
+function syncLibraryEditorImages(editor,form){
+ if(!editor||!form)return;
+ var store=form.querySelector("input[name='inlineImages']"),widthStore=form.querySelector("input[name='inlineImageWidths']"),images={},widths={};
+ try{images=JSON.parse(store?store.value:"{}")}catch(e){}
+ try{widths=JSON.parse(widthStore?widthStore.value:"{}")}catch(e){}
+ var wrappers=editor.querySelectorAll(".inline-image-editor[data-inline-editor-id]"),i,span,id,img;
+ for(i=0;i<wrappers.length;i++){
+  span=wrappers[i];id=span.getAttribute("data-inline-editor-id");img=span.querySelector("img");
+  if(img&&img.src){images[id]=img.src;widths[id]=parseInt(img.style.width,10)||180}
+ }
+ if(store)store.value=JSON.stringify(images);
+ if(widthStore)widthStore.value=JSON.stringify(widths);
+}
 function addLibraryBlock(editor){
  if(!editor)return;
  var section=document.createElement("section");
@@ -3297,7 +3310,7 @@ document.addEventListener("submit",function(ev){
 else if(f.id==="libraryArticleForm"){
    var libraryArticle=byId(state.articles,f.getAttribute("data-id"));
    if(!libraryArticle){alert("Hoofdstuk niet gevonden.");return;}
-   var libraryEditor=document.getElementById("articleEditor"),libraryRichHtml=libraryEditor?serializeLibraryBlocks(libraryEditor):"",libraryText=richHtmlToText(libraryRichHtml),libraryStore=f.querySelector("input[name='inlineImages']"),libraryWstore=f.querySelector("input[name='inlineImageWidths']"),libraryImages={},libraryWidths={};
+   var libraryEditor=document.getElementById("articleEditor");syncLibraryEditorImages(libraryEditor,f);var libraryRichHtml=libraryEditor?serializeLibraryBlocks(libraryEditor):"",libraryText=richHtmlToText(libraryRichHtml),libraryStore=f.querySelector("input[name='inlineImages']"),libraryWstore=f.querySelector("input[name='inlineImageWidths']"),libraryImages={},libraryWidths={};
    try{libraryImages=JSON.parse(libraryStore?libraryStore.value:"{}")}catch(e){}
    try{libraryWidths=JSON.parse(libraryWstore?libraryWstore.value:"{}")}catch(e){}
    libraryArticle.title=String(f.title.value||"").trim()||libraryArticle.title;
