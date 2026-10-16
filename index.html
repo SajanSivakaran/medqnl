@@ -2484,7 +2484,7 @@ function library(){
    if(sectionCandidate.library!=="medical" && hasIvtgArticle)ivtgSections.push(sectionCandidate);
  }
  if(!state.ui)state.ui={};
- var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="",canEdit=window.__medqnlAuthRole==="admin";
+ var a=byId(ivtgArticles,articleId)||ivtgArticles[0],navs="",sectionCollapsed=state.ui.libSectionCollapsed||{},toc="",canEdit=false;
  if(a){try{toc=articleToc(a,"mainsec")||""}catch(e){toc=""}}
  var collapsed=!!state.ui.libNavCollapsed;
  if(!a)return shell("<div class='pagehead library-page-head'><div><h1>iVTG Bibliotheek</h1><p>Blader door secties en hoofdstukken.</p></div></div><div class='empty'>Nog geen iVTG-hoofdstukken beschikbaar.</div>"); articleId=a.id;
