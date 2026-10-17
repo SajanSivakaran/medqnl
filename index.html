@@ -3,6 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){
+  try {
+    var pending = sessionStorage.getItem("medqnl_login_access_token") ||
+      new URLSearchParams(location.hash.replace(/^#/, "")).get("access_token");
+    if (pending) document.documentElement.classList.add("medqnl-auth-pending");
+  } catch (e) {}
+})();
+</script>
 <meta name="medqnl-build" content="2026-10-11-sage-ivory-dutch-intro-v3">
 <title>MedQNL</title>
 <style>
@@ -331,6 +340,7 @@ body.dark .library-toc .toc-link{color:#9fc5df}
 @media(max-width:1050px){.manager-list,.editor-compact{max-height:none}.ivtg-drawer{width:96vw}}
 
 
+html.medqnl-auth-pending #accessGate{display:none!important}
 /* MedQNL toegangspoort */
 #accessGate{position:fixed;inset:0;z-index:99999;overflow:auto;background:#fbf8f2;color:#321a22;font-family:Arial,Helvetica,sans-serif}
 #accessGate .landing-nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:0 clamp(20px,6vw,88px);border-bottom:1px solid #eadfdc;background:rgba(255,255,255,.92)}
@@ -737,6 +747,7 @@ body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{backgrou
       startApp(token,user);
     }catch(e){
       try{sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_access")}catch(ignore){}
+      document.documentElement.classList.remove("medqnl-auth-pending");
       if(gate)gate.style.display="";
       if(error)error.textContent="Je sessie is verlopen of dit account heeft geen toegang. Log opnieuw in.";
     }
