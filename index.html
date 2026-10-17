@@ -657,6 +657,13 @@ body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{backgrou
   var error=document.getElementById("accessError");
   var adminForm=document.getElementById("adminForm");
 
+  // Keep the introduction hidden while an existing login session is verified.
+  var hasPendingSession=false;
+  try{hasPendingSession=!!(sessionStorage.getItem("medqnl_login_access_token")||new URLSearchParams(location.hash.replace(/^#/,"")).get("access_token"))}catch(ignore){}
+  if(hasPendingSession&&gate){
+    gate.style.display="none";
+    document.body.style.background="#f8f6f0";
+  }
   function showSignIn(){
     landing.style.display="none";
     signIn.style.display="flex";
@@ -673,7 +680,6 @@ body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{backgrou
   function startApp(accessToken,user){
     document.body.classList.remove("gate-locked");
     document.body.classList.add("gate-unlocked");
-    window.__medqnlAuthRole="admin";
     window.__medqnlAuthSession={access_token:accessToken,user:user};
     if(gate)gate.style.display="none";
     if(input)input.value="";
@@ -731,7 +737,8 @@ body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{backgrou
       startApp(token,user);
     }catch(e){
       try{sessionStorage.removeItem("medqnl_login_access_token");sessionStorage.removeItem("medqnl_admin_mode");sessionStorage.removeItem("medqnl_access")}catch(ignore){}
-      if(error)error.textContent="Je admin-sessie is verlopen of dit account heeft geen adminrechten. Log opnieuw in.";
+      if(gate)gate.style.display="";
+      if(error)error.textContent="Je sessie is verlopen of dit account heeft geen toegang. Log opnieuw in.";
     }
   }
   validateAdminSession();
