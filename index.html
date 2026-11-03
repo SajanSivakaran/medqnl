@@ -601,6 +601,12 @@ body.dark .ivtg{background:#17191b!important;color:#eef0f1!important}
 /* Readable text selection in dark mode */
 body.dark ::selection{background:#397d70!important;color:#ffffff!important;text-shadow:none!important}
 body.dark ::-moz-selection{background:#397d70!important;color:#ffffff!important;text-shadow:none!important}
+
+/* Keep saved yellow highlights readable against dark-mode text */
+body.dark .article-content mark,
+body.dark #articleText mark,
+body.dark #drawerArticleText mark,
+body.dark .note-editor mark{color:#26352f!important;background-color:#fff2a8!important;-webkit-text-fill-color:#26352f!important}
 </style>
 </head>
 <body class="gate-locked">
