@@ -2812,7 +2812,7 @@ function notebookMarkup(key){
 }
 function openNotebook(key,mode){key=String(key||"general");if(!state.notes||typeof state.notes!=="object")state.notes={};if(!state.notes[key])state.notes[key]={title:"Nieuwe notitie",body:""};var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.setAttribute("data-notebook-key",key);root.innerHTML=notebookMarkup(key);document.body.appendChild(root);updateNotebookStats()}
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
-function saveNotebookNote(key){var root=document.getElementById("modalRoot"),title=document.getElementById("nbTitle"),editor=document.getElementById("nbEditor");key=String(key||(root&&root.getAttribute("data-notebook-key"))||"general");if(!state.notes||typeof state.notes!=="object")state.notes={};if(!state.notes[key])state.notes[key]={title:"Nieuwe notitie",body:""};state.notes[key].title=title&&title.value?title.value:"Nieuwe notitie";state.notes[key].body=editor?editor.innerHTML:"";save();var status=document.getElementById("nbStats");if(status)status.textContent="Opgeslagen · "+String(editor&&editor.innerText||"").trim().split(/\\s+/).filter(Boolean).length+" woorden"}
+function saveNotebookNote(key){var root=document.getElementById("modalRoot"),title=document.getElementById("nbTitle"),editor=document.getElementById("nbEditor");key=String(key||(root&&root.getAttribute("data-notebook-key"))||"general");if(!state.notes||typeof state.notes!=="object")state.notes={};if(!state.notes[key])state.notes[key]={title:"Nieuwe notitie",body:""};state.notes[key].title=title&&title.value?title.value:"Nieuwe notitie";state.notes[key].body=editor?editor.innerHTML:"";save();var status=document.getElementById("nbStats");if(status)status.textContent="Opgeslagen · "+String(editor&&editor.innerText||"").trim().split(/\s+/).filter(Boolean).length+" woorden"}
 function notesPage(){
  return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Open het notitieboek vanuit de bibliotheek of iVTG-omgeving.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
 }
@@ -3160,7 +3160,7 @@ document.addEventListener("click",function(ev){
    state.ui.libraryNavOpen=false;
    save();render();return
  }
- el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null,noteKey=nq?("question:"+nq.id):(page==="ivtg-library"?("article:"+articleId):"general");openNotebook(noteKey,"drawer");return}
+ el=t.closest?t.closest("[data-open-notes]"):null;if(el){var nq=session?session.questions[session.index]:null,noteKey=nq?nq.id:(page==="ivtg-library"?("article:"+articleId):"general");openNotebook(noteKey,"drawer");return}
  el=t.closest?t.closest("[data-drawer-art]"):null;if(el){articleId=el.getAttribute("data-drawer-art");var d=document.getElementById("ivtgLibraryDrawer");if(d){d.remove();openIVTGLibraryDrawer()}return}
  el=t.closest?t.closest("[data-close-drawer]"):null;if(el){closeDrawer();return}
  if(t.id==="toggleTheme"){toggleTheme();render();return}
