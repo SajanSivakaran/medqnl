@@ -1475,10 +1475,14 @@ function clone(x){return JSON.parse(JSON.stringify(x))}
 var medqnlCloudContentReady=false,medqnlCloudUserReady=false,medqnlCloudSaveTimer=null,medqnlCloudStatusTimer=null,medqnlCloudSaveRunning=false,medqnlCloudSaveAgain=false;
 function cloudSaveStatus(message,isError){
  var el=document.getElementById("medqnl-cloud-save-status");
- if(!el){el=document.createElement("div");el.id="medqnl-cloud-save-status";el.setAttribute("role","status");el.style.cssText="position:fixed;right:16px;bottom:16px;z-index:99999;max-width:calc(100vw - 32px);padding:10px 14px;border-radius:9px;box-shadow:0 4px 18px rgba(0,0,0,.16);font:600 13px/1.4 Arial,sans-serif;background:#173d32;color:#fff;";document.body.appendChild(el)}
- el.textContent=message;el.style.background=isError?"#8a2424":"#173d32";el.style.display="block";
+ if(!isError){
+  if(medqnlCloudStatusTimer)clearTimeout(medqnlCloudStatusTimer);
+  if(el)el.style.display="none";
+  return;
+ }
+ if(!el){el=document.createElement("div");el.id="medqnl-cloud-save-status";el.setAttribute("role","alert");el.style.cssText="position:fixed;right:16px;bottom:16px;z-index:99999;max-width:calc(100vw - 32px);padding:10px 14px;border-radius:9px;box-shadow:0 4px 18px rgba(0,0,0,.16);font:600 13px/1.4 Arial,sans-serif;background:#8a2424;color:#fff;";document.body.appendChild(el)}
+ el.textContent=message;el.style.background="#8a2424";el.style.display="block";
  if(medqnlCloudStatusTimer)clearTimeout(medqnlCloudStatusTimer);
- if(!isError&&message.indexOf("Opslaan")!==0)medqnlCloudStatusTimer=setTimeout(function(){var x=document.getElementById("medqnl-cloud-save-status");if(x)x.style.display="none"},3500);
 }
 function save(){localStorage.setItem(KEY,JSON.stringify(state));scheduleMedqnlCloudSave()}
 function medqnlUserStatePayload(){
@@ -2869,18 +2873,25 @@ function removeSelectedMark(){
  }
 }
 
-function hideMarkbar(){var b=document.getElementById("markbar");b.style.display="none"}
+function hideMarkbar(){var b=document.getElementById("markbar");if(b)b.style.display="none"}
 function applyMark(color){var sel=window.getSelection();if(!sel||!sel.rangeCount||sel.isCollapsed){hideMarkbar();return}var range=sel.getRangeAt(0),span=document.createElement("mark");span.style.background="#fff2a8";span.style.color="inherit";try{range.surroundContents(span)}catch(e){span.appendChild(range.extractContents());range.insertNode(span)}sel.removeAllRanges();hideMarkbar();saveCurrentArticleHighlights();}
 function saveCurrentArticleHighlights(){
- var c=document.getElementById("articleText");if(c){state.highlights[articleId]=c.innerHTML;save()}
+ var c=document.getElementById("articleText")||document.getElementById("drawerArticleText");if(c){state.highlights[articleId]=c.innerHTML;save()}
 }
 function showMarkbar(){
- var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed)return;
- var anc=sel.anchorNode,box=document.getElementById("articleText")||document.getElementById("drawerArticleText");if(!box||!box.contains(anc))return;
- var r=sel.getRangeAt(0).getBoundingClientRect(),bar=document.getElementById("markbar");
+ var sel=window.getSelection();if(!sel||sel.rangeCount===0||sel.isCollapsed){hideMarkbar();return}
+ var anc=sel.anchorNode,box=document.getElementById("articleText")||document.getElementById("drawerArticleText");if(!box||!box.contains(anc)){hideMarkbar();return}
+ var r=sel.getRangeAt(0).getBoundingClientRect(),bar=document.getElementById("markbar");if(!bar)return;
  bar.style.display="flex";bar.style.left=Math.max(8,r.left+(r.width/2)-90)+"px";bar.style.top=Math.max(8,r.top-48)+"px";
 }
-document.addEventListener("selectionchange",function(){var sel=window.getSelection();if(!sel||sel.isCollapsed||!sel.rangeCount)return;var node=sel.anchorNode,box=document.getElementById("articleText");if(!box||!box.contains(node))return;showMarkbar()});
+document.addEventListener("selectionchange",function(){window.requestAnimationFrame(showMarkbar)});
+document.addEventListener("click",function(ev){
+ var bar=ev.target&&ev.target.closest?ev.target.closest("#markbar"):null;
+ var article=ev.target&&ev.target.closest?ev.target.closest("#articleText, #drawerArticleText"):null;
+ if(bar)return;
+ if(!article){var sel=window.getSelection();if(sel)sel.removeAllRanges();hideMarkbar();return}
+ window.setTimeout(showMarkbar,0);
+});
 document.addEventListener("keydown",function(ev){
  var ed=document.getElementById("articleEditor"),sel=window.getSelection();if(!ed||!sel||!sel.rangeCount)return;
  var node=sel.anchorNode,el=node&&node.nodeType===3?node.parentElement:node,img=el&&el.closest?el.closest(".inline-image-editor"):null;
