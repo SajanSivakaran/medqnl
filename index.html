@@ -571,6 +571,32 @@ body.dark{--navy:#f0f0ee;--navy2:#d5d5d2;--blue:#b8c5cc;--blue2:#292b2d;--ink:#e
 body.dark .side{background:#202224;color:#e5e5e3}
 body.dark .nav{color:#d8d8d6}body.dark .nav:hover,body.dark .nav.active{background:#303234;color:#fff}
 @media(max-width:850px){.main .grid.g3:has(.stat){grid-template-columns:repeat(2,minmax(0,1fr))}.main:not(.library-main){padding:18px}}
+/* MedQNL dark mode consistency + notebook controls */
+html:has(body.dark),body.dark{background:#17191b!important;color:#eef0f1!important}
+body.dark #app,body.dark .layout,body.dark .main{background:#17191b!important;color:#eef0f1!important}
+body.dark .top{background:#202326!important;border-color:#383d40!important;color:#f2f3f4!important}
+body.dark .top .logo,body.dark .top .badge,body.dark .top button{color:#f2f3f4!important}
+body.dark .side{background:#111b19!important;color:#e9eeee!important;border-right:1px solid #293532!important}
+body.dark .navlabel{color:#9aada7!important}
+body.dark .nav{color:#e2e9e6!important}
+body.dark .nav:hover,body.dark .nav.active{background:#263b35!important;color:#fff!important}
+body.dark .pagehead h1,body.dark .pagehead p,body.dark .main h1,body.dark .main h2,body.dark .main h3,body.dark .main h4,body.dark .main p,body.dark .main label,body.dark .main .title{color:var(--ink)!important}
+body.dark .card,body.dark .stat.card,body.dark .main .card{background:#222629!important;border-color:#3a4145!important;color:#eef0f1!important}
+body.dark .muted,body.dark .small,body.dark .notice,body.dark .stat .label{color:#b9c1c5!important}
+body.dark input,body.dark textarea,body.dark select,body.dark .search,body.dark .note-search,body.dark .notebook-title,body.dark .note-editor{background:#1b2023!important;color:#f0f2f3!important;border-color:#41494d!important}
+body.dark input::placeholder,body.dark textarea::placeholder{color:#aab3b7!important}
+body.dark .notebook{background:#202528!important;color:#f0f2f3!important}
+body.dark .notebook-side{background:#171d20!important;border-color:#3a4145!important}
+body.dark .note-list button{color:#e6ebed!important}
+body.dark .note-list button.active{background:#303a3f!important;color:#fff!important}
+body.dark .note-toolbar,body.dark .note-footer{background:#202528!important;border-color:#3a4145!important;color:#eef0f1!important}
+body.dark .note-toolbar button{color:#eef0f1!important}
+body.dark .note-delete{color:#ffb4ad!important;border:1px solid #70413d!important;background:#342322!important}
+body.dark .ivtg{background:#17191b!important;color:#eef0f1!important}
+.note-list-row{display:flex;align-items:center;gap:4px;margin:2px 0}
+.note-list-row>[data-note-key]{flex:1;min-width:0}
+.note-delete{flex:0 0 30px;width:30px;height:30px;border:1px solid #e1b9b5;border-radius:6px;background:#fff5f4;color:#9b3029;font-weight:700}
+
 </style>
 </head>
 <body class="gate-locked">
@@ -2807,12 +2833,13 @@ function updateNotebookStats(){
 }
 function notebookMarkup(key){
  var keys=noteKeys();if(!key)key=keys[0]||"new";var n=noteRecord(key),list="",i,k;
- for(i=0;i<keys.length;i++){k=keys[i];list+="<button class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button>"}
- return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
+ for(i=0;i<keys.length;i++){k=keys[i];list+="<div class='note-list-row'><button type='button' class='"+(k===key?"active":"")+"' data-note-key='"+esc(k)+"'>"+esc(state.notes[k].title||"Nieuwe notitie")+"</button><button type='button' class='note-delete' data-delete-note='"+esc(k)+"' title='Notitie verwijderen' aria-label='Notitie verwijderen'>×</button></div>"}
+ return "<div class='notebook-overlay' id='notebookOverlay'><div class='notebook'><button class='tiny-btn' style='position:absolute;top:12px;right:14px;z-index:5' data-close-notebook>×</button><aside class='notebook-side'><div class='note-new'>Notities <button class='note-plus' id='newNotebookNote'>+</button></div><input class='note-search' id='noteSearch' placeholder='Zoek notities'><div class='note-list' id='noteList'>"+list+"</div></aside><section class='notebook-main'><input id='nbTitle' class='notebook-title' value='"+esc(n.title||"Nieuwe notitie")+"'><div class='note-toolbar'><button data-format='undo' title='Ongedaan maken'>↶</button><button data-format='redo' title='Opnieuw'>↷</button><span class='note-sep'></span><button data-format='formatBlock:h2' title='Kop 2'>H2</button><button data-format='formatBlock:h3' title='Kop 3'>H3</button><button data-format='bold' title='Vet'><strong>B</strong></button><button data-format='italic' title='Cursief'><em>I</em></button><button data-format='underline' title='Onderstrepen'><u>U</u></button><button data-format='strikeThrough' title='Doorhalen'><s>S</s></button><span class='note-sep'></span><button data-format='insertUnorderedList' title='Opsomming'>•</button><button data-format='insertOrderedList' title='Genummerde lijst'>1.</button><button data-format='formatBlock:blockquote' title='Citaat'>❝</button><button data-format='hiliteColor' title='Markeren'>▰</button><button data-format='removeFormat' title='Opmaak verwijderen'>Tx</button><span class='note-sep'></span><button data-format='justifyLeft' title='Links'>≡</button><button data-format='justifyCenter' title='Centreren'>≡</button><button data-format='justifyRight' title='Rechts'>≡</button></div><div id='nbEditor' class='note-editor' contenteditable='true'>"+noteEditorHtml(n.body||"")+"</div><div class='note-footer'><span class='note-meta' id='nbStats'>0 woorden</span><button type='button' class='note-delete' data-delete-note-current title='Huidige notitie verwijderen'>Verwijderen</button><button class='btn secondary' data-close-notebook>Sluiten</button><button class='btn primary' id='saveNotebookNote' data-key='"+esc(key)+"'>Opslaan</button></div></section></div></div>";
 }
 function openNotebook(key,mode){key=String(key||"general");if(!state.notes||typeof state.notes!=="object")state.notes={};if(!state.notes[key])state.notes[key]={title:"Nieuwe notitie",body:""};var root=document.getElementById("modalRoot");if(root)root.remove();root=document.createElement("div");root.id="modalRoot";root.setAttribute("data-notebook-key",key);root.innerHTML=notebookMarkup(key);document.body.appendChild(root);updateNotebookStats()}
 function createNotebookNote(){var id="note"+Date.now();state.notes[id]={title:"Nieuwe notitie",body:""};save();openNotebook(id,"full")}
 function saveNotebookNote(key){var root=document.getElementById("modalRoot"),title=document.getElementById("nbTitle"),editor=document.getElementById("nbEditor");key=String(key||(root&&root.getAttribute("data-notebook-key"))||"general");if(!state.notes||typeof state.notes!=="object")state.notes={};if(!state.notes[key])state.notes[key]={title:"Nieuwe notitie",body:""};state.notes[key].title=title&&title.value?title.value:"Nieuwe notitie";state.notes[key].body=editor?editor.innerHTML:"";save();var status=document.getElementById("nbStats");if(status)status.textContent="Opgeslagen · "+String(editor&&editor.innerText||"").trim().split(/\s+/).filter(Boolean).length+" woorden"}
+function deleteNotebookNote(key){key=String(key||"");if(!key||!state.notes||!state.notes[key])return;if(!confirm("Weet je zeker dat je deze notitie wilt verwijderen? Dit kan niet ongedaan worden gemaakt."))return;delete state.notes[key];var keys=noteKeys(),next=keys.length?keys[0]:"general";if(!keys.length)state.notes[next]={title:"Nieuwe notitie",body:""};save();openNotebook(next,"full")}
 function notesPage(){
  return shell("<div class='pagehead'><div><h1>Notities</h1><p>Je persoonlijke notitieboek voor samenvattingen, leerpunten en eigen aantekeningen.</p></div></div><div class='card'><div class='title'>Notitieboek</div><div class='notice'>Je notities worden in één notitieboek beheerd. Open het notitieboek vanuit de bibliotheek of iVTG-omgeving.</div><div style='margin-top:12px'><button class='btn secondary' id='openNotebookPage'>Open notitieboek</button></div></div>");
 }
@@ -3169,7 +3196,8 @@ document.addEventListener("click",function(ev){
 if(t.id==="saveName"){state.name=document.getElementById("nameinput").value||"Student";save();render();return}
  if(t.id==="openNotebookPage"){openNotebook("","full");return}
  if(t.id==="newNotebookNote"){createNotebookNote();return}
- if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}
+ if(t.id==="saveNotebookNote"){saveNotebookNote(t.getAttribute("data-key"));return}el=t.closest?t.closest("[data-delete-note]"):null;if(el){deleteNotebookNote(el.getAttribute("data-delete-note"));return}
+ el=t.closest?t.closest("[data-delete-note-current]"):null;if(el){var nr=document.getElementById("modalRoot"),nk=nr&&nr.getAttribute("data-notebook-key");deleteNotebookNote(nk);return}
  el=t.closest?t.closest("[data-note-key]"):null;if(el){openNotebook(el.getAttribute("data-note-key"),"full");return}
  el=t.closest?t.closest("[data-format]"):null;if(el){var fmt=el.getAttribute("data-format"),arg=null;if(fmt.indexOf(":")>0){var parts=fmt.split(":");fmt=parts[0];arg=parts.slice(1).join(":");}if(fmt==="hiliteColor")arg="#fff2a8";if(fmt==="formatBlock")document.execCommand("formatBlock",false,arg);else document.execCommand(fmt,false,arg);updateNotebookStats();return}
  if(t.getAttribute&&t.getAttribute("data-save-feedback")){
